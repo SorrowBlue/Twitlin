@@ -1,0 +1,6 @@
+# Project exclude paths
+/.gradle/
+/buildSrc/.gradle/
+/buildSrc/build/
+/twitlin/build/
+/twitlin/build/intermediates/javac/debug/classes/
