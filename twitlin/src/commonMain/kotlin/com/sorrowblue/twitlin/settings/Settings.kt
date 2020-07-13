@@ -1,6 +1,6 @@
 package com.sorrowblue.twitlin.settings
 
-interface Settings {
+expect class Settings {
 	fun getString(key: String, defValues: String): String
 	fun getStringOrNull(key: String): String?
 	fun getInt(key: String, defValues: Int): Int
@@ -17,7 +17,7 @@ interface Settings {
 	fun getStringSetOrNull(key: String): Set<String>?
 	fun contains(key: String): Boolean
 
-	interface Listener {
+	class Listener {
 		fun remove()
 	}
 
@@ -31,5 +31,6 @@ interface Settings {
 	fun putString(key: String, value: String)
 
 	operator fun minusAssign(key: String)
-	fun remove(key: String) = minusAssign(key)
+	fun remove(key: String)
+
 }

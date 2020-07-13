@@ -20,50 +20,78 @@ import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.parse
-import org.koin.core.KoinComponent
-import org.koin.core.get
 import org.koin.core.module.Module
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-internal expect fun Module.settingsModule()
+object Twitlin {
 
-fun twitlinModule(apiKey: String, apiSecret: String) =
-	module {
-		settingsModule()
-		single { Client(apiKey, apiSecret) }
-		single { AuthenticationApiImp(get()) } bind AuthenticationApi::class
-		single { AccountApiImp(get()) } bind AccountApi::class
-		single { ListsApiImp(get()) } bind ListsApi::class
-		single { TrendsApiImp(get()) } bind TrendsApi::class
-		single { StatusesApiImp(get()) } bind StatusesApi::class
-		single { UsersApiImp(get()) } bind UsersApi::class
-	}
+	private lateinit var _client: Client
+	internal val client get() = _client
 
+	private lateinit var _settings: Settings
+	internal val settings: Settings get() = _settings
 
-object Twitlin : KoinComponent {
-
-	internal val client: Client by lazy { get<Client>() }
-	internal val settings: Settings by lazy { get<Settings>() }
-
+	/**
+	 * TODO
+	 *
+	 * @param apiKey
+	 * @param apiSecret
+	 * @param settings
+	 * @param oAuthToken
+	 * @param oAuthTokenSecret
+	 */
 	@OptIn(ImplicitReflectionSerializer::class, UnstableDefault::class)
-	fun initialize(oAuthToken: String? = null, oAuthTokenSecret: String? = null) {
+	fun initialize(
+		apiKey: String, apiSecret: String,
+		settings: Settings,
+		oAuthToken: String? = null, oAuthTokenSecret: String? = null
+	) {
 		Napier.d("Twitlin has been initialized.", tag = "Twitlin")
+		_settings = settings
 		val accessToken = if (oAuthToken != null && oAuthTokenSecret != null) {
 			AccessToken(oAuthToken, oAuthTokenSecret)
 		} else {
 			settings.getStringOrNull("twitlin_access_token")?.let { Json.parse<AccessToken>(it) }
 		}
-		client.accessToken = accessToken
+		_client = Client(apiKey, apiSecret, accessToken)
 	}
 
-	object api {
-		val authentication: AuthenticationApi by lazy { get<AuthenticationApi>() }
-		val trends: TrendsApi by lazy { get<TrendsApi>() }
-		val lists: ListsApi by lazy { get<ListsApi>() }
-		val account: AccountApi by lazy { get<AccountApi>() }
-		val statuses: StatusesApi by lazy { get<StatusesApi>() }
-		val users: UsersApi by lazy { get<UsersApi>() }
+	/**
+	 * TODO
+	 *
+	 * @param apiKey
+	 * @param apiSecret
+	 * @param settings
+	 * @param oAuthToken
+	 * @param oAuthTokenSecret
+	 * @return
+	 */
+	fun koinModule(
+		apiKey: String, apiSecret: String,
+		settings: Settings,
+		oAuthToken: String? = null, oAuthTokenSecret: String? = null
+	): Module {
+		initialize(apiKey, apiSecret, settings, oAuthToken, oAuthTokenSecret)
+		return module {
+			single { settings }
+			single { client }
+			single { AuthenticationApiImp(get()) } bind AuthenticationApi::class
+			single { AccountApiImp(get()) } bind AccountApi::class
+			single { ListsApiImp(get()) } bind ListsApi::class
+			single { TrendsApiImp(get()) } bind TrendsApi::class
+			single { StatusesApiImp(get()) } bind StatusesApi::class
+			single { UsersApiImp(get()) } bind UsersApi::class
+		}
+	}
+
+	object Api {
+		val authentication: AuthenticationApi by lazy { AuthenticationApiImp(client) }
+		val trends: TrendsApi by lazy { TrendsApiImp(client) }
+		val lists: ListsApi by lazy { ListsApiImp(client) }
+		val account: AccountApi by lazy { AccountApiImp(client) }
+		val statuses: StatusesApi by lazy { StatusesApiImp(client) }
+		val users: UsersApi by lazy { UsersApiImp(client) }
 	}
 
 	val isAuthorizationRequired: Boolean get() = client.accessToken == null

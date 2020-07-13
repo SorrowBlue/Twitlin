@@ -12,7 +12,6 @@ inline operator fun <reified T : Any> Settings.get(key: String): T? =
 		else -> throw IllegalArgumentException("type")
 	} as? T
 
-@Suppress("IMPLICIT_CAST_TO_ANY")
 inline operator fun <reified T : Any> Settings.set(key: String, value: T?) {
 	if (value == null) {
 		this -= key

@@ -1,6 +1,19 @@
 # Project exclude paths
-/.gradle/
-/buildSrc/.gradle/
-/buildSrc/build/
-/twitlin/build/
-/twitlin/build/intermediates/javac/debug/classes/
+
+*.iml
+
+/local.properties
+
+.gradle/
+build/
+
+.idea/*
+.idea/codeStyles/*
+!.idea/codeStyles/
+!.idea/codeStyles/codeStyleConfig.xml
+!.idea/codeStyles/Project.xml
+!.idea/encodings.xml
+!.idea/gradle.xml
+!.idea/kotlinScripting.xml
+!.idea/runConfigurations.xml
+!.idea/vcs.xml

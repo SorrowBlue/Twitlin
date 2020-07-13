@@ -1,2 +1,3 @@
 rootProject.name = "TwitlinSample"
-include("twitlin")
+include(":app")
+include(":twitlin")

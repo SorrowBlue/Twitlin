@@ -83,13 +83,15 @@ internal class StatusesApiImp(private val client: Client) :
 		if (includeCard) fold({
 			Response.success(it.map { value ->
 				val tweet = Tweet.valueOf(value)
-				if (tweet is Tweet.Normal) {
-					tweet.source.entities?.urls?.firstOrNull()?.expandedUrl?.let { TweetUtil.twitterCard(it) }
+				when (tweet) {
+					is Tweet.Normal -> tweet.source.entities?.urls?.firstOrNull()?.expandedUrl
+						?.let { TweetUtil.twitterCard(it) }
 						?.let { value.copy(card = it) } ?: value
-				} else if (tweet is Tweet.Retweet) {
-					tweet.tweet.entities?.urls?.firstOrNull()?.expandedUrl?.let { TweetUtil.twitterCard(it) }
+					is Tweet.Retweet -> tweet.tweet.entities?.urls?.firstOrNull()?.expandedUrl
+						?.let { TweetUtil.twitterCard(it) }
 						?.let { value.copy(retweetedStatus = value.retweetedStatus?.copy(card = it)) } ?: value
-				} else value
+					else -> value
+				}
 			})
 		}, { Response.error<List<TwitterTweet>>(it) })
 		else this

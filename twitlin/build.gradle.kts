@@ -20,7 +20,7 @@ apply(from = "publish.gradle")
 
 kotlin {
 
-	android {
+	android("android") {
 		publishLibraryVariants("release")
 	}
 
@@ -35,6 +35,26 @@ kotlin {
 
 		all {
 			languageSettings.useExperimentalAnnotation("kotlin.RequiresOptIn")
+		}
+
+		commonMain {
+			dependencies {
+				implementation(kotlin("stdlib-common"))
+				implementation(Libs.kotlinx.serialization.`runtime-common`)
+				implementation(Libs.`ktor-client`.core)
+				implementation(Libs.`ktor-client`.serialization.common)
+				implementation(Libs.napier.common)
+				api(Libs.klock.common)
+				implementation(Libs.koin.core)
+			}
+		}
+
+		commonTest {
+			dependencies {
+				implementation(kotlin("test-common"))
+				implementation(kotlin("test-annotations-common"))
+				implementation("androidx.test:core:1.2.0")
+			}
 		}
 
 		val androidMain by getting {
@@ -55,26 +75,6 @@ kotlin {
 		val androidTest by getting {
 			dependencies {
 				implementation(kotlin("test-junit"))
-			}
-		}
-
-		commonMain {
-			dependencies {
-				implementation(kotlin("stdlib-common"))
-				implementation(Libs.kotlinx.serialization.`runtime-common`)
-				implementation(Libs.`ktor-client`.core)
-				implementation(Libs.`ktor-client`.serialization.common)
-				implementation(Libs.napier.common)
-				api(Libs.klock.common)
-				implementation(Libs.koin.core)
-			}
-		}
-
-		commonTest {
-			dependencies {
-				implementation(kotlin("test-common"))
-				implementation(kotlin("test-annotations-common"))
-				implementation("androidx.test:core:1.2.0")
 			}
 		}
 

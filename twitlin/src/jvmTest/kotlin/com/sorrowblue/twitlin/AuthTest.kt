@@ -5,6 +5,7 @@ import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.net.urlEncode
 import com.sorrowblue.twitlin.objects.Entities
 import com.sorrowblue.twitlin.objects.TwitterTweet
+import com.sorrowblue.twitlin.settings.Settings
 import com.sorrowblue.twitlin.utils.TweetUtil
 import io.ktor.http.HttpMethod
 import io.ktor.util.InternalAPI
@@ -18,20 +19,20 @@ private const val ACCESS_TOKEN_SECRET = "V5e6HQ7zfltRkghgR1B0jBeq4bHHmq0VDfNo5ZT
 
 class AuthTest {
 	init {
-		startKoin {
-			modules(
-				twitlinModule("ctNGOKkamPkXfFIcf4iQF37b7", "BlW8VyYa83nHaP84dfkkGoHuEDonBFKwaPdH6HMNJBPD3pRl1T")
-			)
-		}
 		Napier.base(DebugAntilog())
-		Twitlin.initialize(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-//		Twitlin.initialize()
+		Twitlin.initialize(
+			"ctNGOKkamPkXfFIcf4iQF37b7",
+			"BlW8VyYa83nHaP84dfkkGoHuEDonBFKwaPdH6HMNJBPD3pRl1T",
+			Settings(),
+			ACCESS_TOKEN,
+			ACCESS_TOKEN_SECRET
+		)
 	}
 
 	@Test
 	fun authenticateTest() {
 		runBlocking {
-			Twitlin.api.authentication.authenticate("https://snsmate.sorrowblue.com")
+			Twitlin.Api.authentication.authenticate("https://snsmate.sorrowblue.com")
 		}.onError {
 			Napier.e(it.joinToString(", ") { "${it.code} -> ${it.message}" })
 		}.onSuccess {
@@ -42,7 +43,7 @@ class AuthTest {
 	@Test
 	fun homeTimelineTest() {
 		runBlocking {
-			Twitlin.api.statuses.userTimeline(screenName = "sorrowblue_sb")
+			Twitlin.Api.statuses.userTimeline(screenName = "sorrowblue_sb")
 		}.onError {
 			println("ERROR: " + it.joinToString(", ") { "${it.code} -> ${it.message}" })
 		}.getOrNull()?.forEach {
@@ -87,14 +88,14 @@ class AuthTest {
 			${tweet.text}
 		""".trimIndent() + when {
 			tweet.extendedEntities?.media?.firstOrNull()?.videoInfo != null -> showVideo(tweet)
-			tweet.extendedEntities?.media?.firstOrNull()?.type == "photo" -> showPhoto(tweet)
-			tweet.extendedEntities?.media?.firstOrNull()?.type == "animated_gif" -> showGif(tweet)
+			tweet.extendedEntities?.media?.firstOrNull()?.type == Entities.Media.MediaType.PHOTO -> showPhoto(tweet)
+			tweet.extendedEntities?.media?.firstOrNull()?.type == Entities.Media.MediaType.ANIMATED_GIF -> showGif(tweet)
 			else -> ""
 		}
 	}
 
 	fun showVideo(tweet: TwitterTweet): String? {
-		if (tweet.extendedEntities?.media?.firstOrNull()?.type != "video") return null
+		if (tweet.extendedEntities?.media?.firstOrNull()?.type != Entities.Media.MediaType.VIDEO) return null
 		val video = tweet.extendedEntities?.media?.firstOrNull()?.videoInfo ?: throw Exception("動画じゃない")
 		return """
 			長さ : ${video.durationMillis}
@@ -108,7 +109,7 @@ class AuthTest {
 	}
 
 	fun showPhoto(tweet: TwitterTweet): String? {
-		if (tweet.extendedEntities?.media?.firstOrNull()?.type != "photo") return null
+		if (tweet.extendedEntities?.media?.firstOrNull()?.type != Entities.Media.MediaType.PHOTO) return null
 		return tweet.extendedEntities!!.media.map {
 			"""
 				url = ${it.mediaUrlHttps}
@@ -118,7 +119,7 @@ class AuthTest {
 	}
 
 	fun showGif(tweet: TwitterTweet): String? {
-		if (tweet.extendedEntities?.media?.firstOrNull()?.type != "animated_gif") return null
+		if (tweet.extendedEntities?.media?.firstOrNull()?.type != Entities.Media.MediaType.ANIMATED_GIF) return null
 		val gif = tweet.extendedEntities?.media?.firstOrNull()?.videoInfo ?: throw Exception("動画じゃない")
 		return """
 			url = ${gif.variants.first().url}
