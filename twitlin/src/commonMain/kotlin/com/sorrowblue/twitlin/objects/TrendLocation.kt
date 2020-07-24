@@ -1,10 +1,10 @@
 package com.sorrowblue.twitlin.objects
 
 import com.sorrowblue.twitlin.AndroidParcel
-import com.sorrowblue.twitlin.AndroidParcelize
+import com.sorrowblue.twitlin.Parcelize
 import kotlinx.serialization.Serializable
 
-@AndroidParcelize
+@Parcelize
 @Serializable
 data class TrendLocation(
 	val country: String,
@@ -16,7 +16,7 @@ data class TrendLocation(
 	val woeid: Int
 ) : AndroidParcel{
 
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class PlaceType(
 		val code: Int,

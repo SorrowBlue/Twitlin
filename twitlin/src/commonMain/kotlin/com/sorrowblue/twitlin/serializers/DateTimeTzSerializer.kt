@@ -3,7 +3,7 @@ package com.sorrowblue.twitlin.serializers
 import com.soywiz.klock.*
 import kotlinx.serialization.*
 
-private const val TWITTER_PATTERN = "EEE MMM dd HH:mm:ss xx yyyy"
+internal const val TWITTER_PATTERN = "EEE MMM dd HH:mm:ss xx yyyy"
 
 /**
  * [DateTimeTz]用シリアライザ

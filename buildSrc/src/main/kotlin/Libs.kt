@@ -42,6 +42,7 @@ object Libs {
 		private const val VERSION = "2.28.3-alpha"
 		const val `hilt-android` = "com.google.dagger:hilt-android:$VERSION"
 		const val `hilt-android-compiler` = "com.google.dagger:hilt-android-compiler:$VERSION"
+		const val `hilt-android-gradle-plugin` = "com.google.dagger:hilt-android-gradle-plugin:$VERSION"
 	}
 
 	object klock {

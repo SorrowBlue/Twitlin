@@ -1,13 +1,13 @@
 package com.sorrowblue.twitlin.objects
 
 import com.sorrowblue.twitlin.AndroidParcel
-import com.sorrowblue.twitlin.AndroidParcelize
+import com.sorrowblue.twitlin.Parcelize
 import com.sorrowblue.twitlin.serializers.DateTimeTzSerializer
 import com.soywiz.klock.DateTimeTz
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@AndroidParcelize
+@Parcelize
 @Serializable
 data class TwitterTweet(
 	@Serializable(DateTimeTzSerializer::class)
@@ -83,7 +83,7 @@ data class TwitterTweet(
 	 * @property id
 	 * @property idStr
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class CurrentUserRetweet(val id: Long = -1, @SerialName("id_str") val idStr: String = "") : AndroidParcel
 
@@ -118,7 +118,7 @@ data class TwitterTweet(
 	 * @property id
 	 * @property idStr
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class Rule(val tag: String = "", val id: Long = -1, @SerialName("id_str") val idStr: String = "") :
 		AndroidParcel
@@ -131,7 +131,7 @@ data class TwitterTweet(
 
 	 * @property followers
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class Scopes(val followers: Boolean = false) : AndroidParcel
 }
