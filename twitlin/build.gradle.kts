@@ -55,7 +55,7 @@ kotlin {
 
 		val androidMain by getting {
 			dependencies {
-				implementation(kotlin("stdlib"))
+				implementation(kotlin("stdlib-jdk8"))
 				implementation(Libs.dagger.`hilt-android`)
 				implementation(Libs.kotlinx.serialization.runtime)
 				implementation(Libs.andoridx.`startup-runtime`)
@@ -135,7 +135,7 @@ tasks {
 				targets = listOf("Android")
 				platform = "android"
 				sourceRoot {
-					path = kotlin.sourceSets.getByName("androidMain").kotlin.srcDirs.first().toString()
+					path = kotlin.sourceSets.getByName("main").kotlin.srcDirs.first().toString()
 				}
 				sourceRoot {
 					path = kotlin.sourceSets.getByName("commonMain").kotlin.srcDirs.first().toString()
@@ -147,7 +147,7 @@ tasks {
 
 android {
 	compileSdkVersion(30)
-	buildToolsVersion("29.0.3")
+	buildToolsVersion("30.0.1")
 
 	defaultConfig {
 		minSdkVersion(23)
@@ -157,7 +157,7 @@ android {
 	}
 
 	sourceSets.forEach {
-		it.manifest.srcFile("src/androidMain/AndroidManifest.xml")
+		it.manifest.srcFile("src/main/AndroidManifest.xml")
 	}
 	lintOptions {
 		isAbortOnError = false
