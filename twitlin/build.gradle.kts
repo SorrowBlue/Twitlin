@@ -46,6 +46,7 @@ kotlin {
 				implementation(Libs.napier.common)
 				api(Libs.klock.common)
 				implementation(Libs.koin.core)
+				implementation(Libs.dagger.`hilt-android`)
 			}
 		}
 

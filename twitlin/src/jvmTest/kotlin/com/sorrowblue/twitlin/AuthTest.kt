@@ -43,10 +43,11 @@ class AuthTest {
 	@Test
 	fun homeTimelineTest() {
 		runBlocking {
-			Twitlin.Api.statuses.userTimeline(screenName = "sorrowblue_sb")
+			Twitlin.Api.statuses.userTimeline(screenName = "sorrowblue_sb", count = 3)
 		}.onError {
 			println("ERROR: " + it.joinToString(", ") { "${it.code} -> ${it.message}" })
 		}.getOrNull()?.forEach {
+			return
 			if (it.retweetedStatus != null) {
 				"""
 					リツイート

@@ -79,19 +79,21 @@ internal class StatusesApiImp(private val client: Client) :
 		return client.getList<TwitterTweet>("$ROOT/user_timeline.json", query).resolveCard(includeCard)
 	}
 
-	private suspend fun Response<List<TwitterTweet>>.resolveCard(includeCard: Boolean) =
+	private suspend fun Response<List<TwitterTweet>>.resolveCard(includeCard: Boolean): Response<List<TwitterTweet>> =
 		if (includeCard) fold({
 			Response.success(it.map { value ->
 				val tweet = Tweet.valueOf(value)
-				when (tweet) {
-					is Tweet.Normal -> tweet.source.entities?.urls?.firstOrNull()?.expandedUrl
-						?.let { TweetUtil.twitterCard(it) }
-						?.let { value.copy(card = it) } ?: value
-					is Tweet.Retweet -> tweet.tweet.entities?.urls?.firstOrNull()?.expandedUrl
-						?.let { TweetUtil.twitterCard(it) }
-						?.let { value.copy(retweetedStatus = value.retweetedStatus?.copy(card = it)) } ?: value
-					else -> value
-				}
+				if (tweet is Tweet.Normal) {
+					tweet.source.retweetedStatus?.let {
+						it.entities?.urls?.firstOrNull()?.expandedUrl
+							?.let { TweetUtil.twitterCard(it) }
+							?.let { value.copy(retweetedStatus = value.retweetedStatus?.copy(card = it)) } ?: value
+					} ?: kotlin.run {
+						tweet.source.entities?.urls?.firstOrNull()?.expandedUrl
+							?.let { TweetUtil.twitterCard(it) }
+							?.let { value.copy(card = it) } ?: value
+					}
+				} else value
 			})
 		}, { Response.error<List<TwitterTweet>>(it) })
 		else this
