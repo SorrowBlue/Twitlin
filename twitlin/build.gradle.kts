@@ -64,6 +64,7 @@ kotlin {
 				implementation(Libs.`ktor-client`.serialization.jvm)
 				implementation(Libs.napier.android)
 				implementation(Libs.koin.android)
+				implementation(Libs.andoridx.`security-crypto`)
 				api(Libs.klock.android)
 				implementation(Libs.andoridx.`preference-ktx`)
 			}

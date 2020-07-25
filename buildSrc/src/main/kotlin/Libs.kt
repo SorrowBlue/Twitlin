@@ -4,6 +4,7 @@ object Libs {
 		const val `core-ktx` = "androidx.core:core-ktx:1.3.0"
 		const val `preference-ktx` = "androidx.preference:preference-ktx:1.1.1"
 		const val `startup-runtime` = "androidx.startup:startup-runtime:1.0.0-alpha01"
+		const val `security-crypto` = "androidx.security:security-crypto:1.0.0-rc02"
 	}
 
 	object kotlinx {

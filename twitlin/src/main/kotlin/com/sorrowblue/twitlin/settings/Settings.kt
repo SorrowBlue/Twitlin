@@ -4,12 +4,21 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV
+import androidx.security.crypto.EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+import androidx.security.crypto.MasterKeys
 
 actual class Settings(context: Context, name: String? = null) {
 
-	private val pref: SharedPreferences =
-		name?.let { context.getSharedPreferences(it, Context.MODE_PRIVATE) }
-			?: PreferenceManager.getDefaultSharedPreferences(context)
+	private val pref: SharedPreferences
+
+	init {
+		val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+		pref = name?.let {
+			EncryptedSharedPreferences.create(it, masterKeyAlias, context, AES256_SIV, AES256_GCM)
+		} ?: PreferenceManager.getDefaultSharedPreferences(context)
+	}
 
 	actual fun getString(key: String, defValues: String): String =
 		pref.getString(key, defValues) ?: defValues
