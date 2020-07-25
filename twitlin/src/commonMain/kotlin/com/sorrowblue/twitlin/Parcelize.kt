@@ -4,4 +4,4 @@ package com.sorrowblue.twitlin
 @OptionalExpectation
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.BINARY)
-expect annotation class AndroidParcelize()
+expect annotation class Parcelize()

@@ -11,7 +11,8 @@ import io.ktor.http.HttpMethod
 import io.ktor.util.InternalAPI
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import org.koin.core.context.startKoin
+import java.net.URLEncoder
+import java.nio.charset.Charset
 import kotlin.test.assertEquals
 
 private const val ACCESS_TOKEN = "938122027231150081-edSNSs0q0D9ahF9VW3zAUushpIbhrxz"
@@ -30,9 +31,20 @@ class AuthTest {
 	}
 
 	@Test
+	fun authorizeTest() {
+		runBlocking {
+			Twitlin.Api.oauth.authenticate("snsmate://sss.com")
+		}.onError {
+			Napier.e("Error authorizeTest" + it.joinToString(", ") { "${it.code} -> ${it.message}" })
+		}.onSuccess {
+			Napier.d("Success authorizeTest. $it")
+		}
+	}
+
+	@Test
 	fun authenticateTest() {
 		runBlocking {
-			Twitlin.Api.authentication.authenticate("https://snsmate.sorrowblue.com")
+			Twitlin.Api.oauth.authenticate("https://snsmate.sorrowblue.com")
 		}.onError {
 			Napier.e(it.joinToString(", ") { "${it.code} -> ${it.message}" })
 		}.onSuccess {
@@ -47,7 +59,6 @@ class AuthTest {
 		}.onError {
 			println("ERROR: " + it.joinToString(", ") { "${it.code} -> ${it.message}" })
 		}.getOrNull()?.forEach {
-			return
 			if (it.retweetedStatus != null) {
 				"""
 					リツイート
@@ -146,8 +157,14 @@ class AuthTest {
 		assertEquals("An encoded string!".urlEncode(), "An%20encoded%20string%21")
 		assertEquals("Dogs, Cats & Mice".urlEncode(), "Dogs%2C%20Cats%20%26%20Mice")
 		assertEquals("☃".urlEncode(), "%E2%98%83")
+		assertEquals("#$%'()=~|`{*}<>?_[;:]./-^\\".urlEncode(), "%23%24%25%27%28%29%3D%7E%7C%60%7B*%7D%3C%3E%3F_%5B%3B%3A%5D.%2F-%5E%5C")
 	}
 
+	private fun String.urlEncode() = URLEncoder.encode(this, Charset.forName("UTF-8"))
+		.replace("+", "%20")
+		.replace("!", "%21")
+		.replace(",", "%2C")
+		.replace("&", "%26")
 	@Test
 	fun sogTest() {
 		Twitlin.client.oAuthHeader(

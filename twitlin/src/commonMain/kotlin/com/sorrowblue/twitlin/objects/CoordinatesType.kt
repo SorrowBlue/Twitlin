@@ -1,13 +1,13 @@
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.AndroidParcel
-import com.sorrowblue.twitlin.AndroidParcelize
+import com.sorrowblue.twitlin.Parcelable
+import com.sorrowblue.twitlin.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@AndroidParcelize
+@Parcelize
 @Serializable
-enum class CoordinatesType : AndroidParcel {
+enum class CoordinatesType : Parcelable {
 	@SerialName("Polygon")
 	POLYGON,
 	@SerialName("Point")

@@ -1,13 +1,13 @@
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.AndroidParcel
-import com.sorrowblue.twitlin.AndroidParcelize
+import com.sorrowblue.twitlin.Parcelable
+import com.sorrowblue.twitlin.Parcelize
 import com.sorrowblue.twitlin.serializers.DateTimeTzSerializer
 import com.soywiz.klock.DateTimeTz
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@AndroidParcelize
+@Parcelize
 @Serializable
 data class TwitterUser(
 	val id: Long,
@@ -49,23 +49,23 @@ data class TwitterUser(
 	val withheldInCountries: List<String> = emptyList(),
 	@SerialName("withheld_scope")
 	val withheldScope: String = ""
-): AndroidParcel {
-	@AndroidParcelize
+): Parcelable {
+	@Parcelize
 	@Serializable
 	data class Derived(
 		val locations: List<ProfileGeo>
-	): AndroidParcel
+	): Parcelable
 
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class UserEntities(
 		val url: Url? = null,
 		val description: Url? = null
-	) : AndroidParcel{
-		@AndroidParcelize
+	) : Parcelable{
+		@Parcelize
 		@Serializable
 		data class Url(
 			val urls: List<Entities.URL> = emptyList()
-		): AndroidParcel
+		): Parcelable
 	}
 }

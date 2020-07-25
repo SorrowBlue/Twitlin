@@ -1,7 +1,7 @@
 package com.sorrowblue.twitlin.settings
 
 actual class Settings {
-	actual fun getString(key: String, defValues: String): String {
+	actual fun getString(key: String, defValue: String): String {
 		TODO("Not yet implemented")
 	}
 

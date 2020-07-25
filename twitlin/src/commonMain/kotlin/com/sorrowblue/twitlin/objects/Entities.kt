@@ -1,7 +1,7 @@
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.AndroidParcel
-import com.sorrowblue.twitlin.AndroidParcelize
+import com.sorrowblue.twitlin.Parcelable
+import com.sorrowblue.twitlin.Parcelize
 import com.sorrowblue.twitlin.net.MIN
 import com.sorrowblue.twitlin.objects.Entities.Media.MediaSize.Size.Resize
 import com.sorrowblue.twitlin.objects.Entities.URL.Unwound
@@ -28,7 +28,7 @@ import kotlinx.serialization.Serializable
  * @property symbols Represents symbols, i.e. $cashtags, included in the text of the Tweet.
  * @property polls Represents Twitter Polls included in the Tweet.
  */
-@AndroidParcelize
+@Parcelize
 @Serializable
 data class Entities(
 	val hashtags: List<Hashtag> = emptyList(),
@@ -39,7 +39,7 @@ data class Entities(
 	val symbols: List<Symbol> = emptyList(),
 	val polls: List<Poll> = emptyList()
 
-) : AndroidParcel {
+) : Parcelable {
 
 	fun isAllEmpty() =
 		hashtags.isEmpty() && media.isEmpty() && urls.isEmpty() && userMentions.isEmpty() && symbols.isEmpty() && polls.isEmpty()
@@ -56,12 +56,12 @@ data class Entities(
 	 * the two numbers will be the length of the hashtag name plus one (for the ‘#’ character).
 	 * @property text Name of the hashtag, minus the leading ‘#’ character.
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class Hashtag(
 		val indices: List<Int>,
 		val text: String
-	) : AndroidParcel
+	) : Parcelable
 
 	/**
 	 * The [TwitterTweet.entities] section will contain a [Entities.media] array containing a single media object
@@ -111,7 +111,7 @@ data class Entities(
 	 * @property url Wrapped URL for the media link. This corresponds with the URL embedded directly into
 	 * the raw Tweet text, and the values for the [indices] parameter.
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class Media(
 		@SerialName("display_url")
@@ -134,7 +134,7 @@ data class Entities(
 		@SerialName("video_info")
 		val videoInfo: VideoInfo? = null,
 		val additionalMediaInfo: AdditionalMediaInfo? = null
-	) : AndroidParcel {
+	) : Parcelable {
 
 		@Serializable
 		enum class MediaType {
@@ -157,14 +157,14 @@ data class Entities(
 		 * @property medium Information for a medium-sized version of the media.
 		 * @property small Information for a small-sized version of the media.
 		 */
-		@AndroidParcelize
+		@Parcelize
 		@Serializable
 		data class MediaSize(
 			val thumb: Size,
 			val large: Size,
 			val medium: Size,
 			val small: Size
-		) : AndroidParcel {
+		) : Parcelable {
 			/**
 			 * Size object
 			 *
@@ -174,19 +174,19 @@ data class Entities(
 			 * the media was resized to fit one dimension, keeping its native aspect ratio.
 			 * A value of [Resize.CROP] means that the media was cropped in order to fit a specific resolution.
 			 */
-			@AndroidParcelize
+			@Parcelize
 			@Serializable
 			data class Size(
 				val w: Int,
 				val h: Int,
 				val resize: Resize
-			) : AndroidParcel {
+			) : Parcelable {
 				/**
 				 * Resizing method used to obtain this size.
 				 */
-				@AndroidParcelize
+				@Parcelize
 				@Serializable
-				enum class Resize : AndroidParcel {
+				enum class Resize : Parcelable {
 					/**
 					 * the media was resized to fit one dimension
 					 */
@@ -202,7 +202,7 @@ data class Entities(
 			}
 		}
 
-		@AndroidParcelize
+		@Parcelize
 		@Serializable
 		data class VideoInfo(
 			@SerialName("aspect_ratio")
@@ -210,15 +210,15 @@ data class Entities(
 			@SerialName("duration_millis")
 			val durationMillis: Int = 0,
 			val variants: List<Variant>
-		) : AndroidParcel {
-			@AndroidParcelize
+		) : Parcelable {
+			@Parcelize
 			@Serializable
 			data class Variant(
 				@SerialName("content_type")
 				val contentType: Type,
 				val url: String,
 				val bitrate: Int? = null
-			) : AndroidParcel {
+			) : Parcelable {
 
 				@Serializable
 				enum class Type {
@@ -231,11 +231,11 @@ data class Entities(
 			}
 		}
 
-		@AndroidParcelize
+		@Parcelize
 		@Serializable
 		data class AdditionalMediaInfo(
 			val monetizable: Boolean
-		) : AndroidParcel
+		) : Parcelable
 	}
 
 	/**
@@ -257,7 +257,7 @@ data class Entities(
 	 * @property unwound If you are using the Expanded and/or Enhanced URL enrichments,
 	 * the following metadata is available under the [unwound] attribute:
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class URL(
 		@SerialName("display_url") val displayUrl: String,
@@ -265,7 +265,7 @@ data class Entities(
 		val indices: List<Int>,
 		val url: String,
 		val unwound: Unwound? = null
-	) : AndroidParcel {
+	) : Parcelable {
 
 		/**
 		 * If you are using the Expanded and/or Enhanced URL enrichments,
@@ -276,14 +276,14 @@ data class Entities(
 		 * @property title HTML title for the link.
 		 * @property description HTML description for the link.
 		 */
-		@AndroidParcelize
+		@Parcelize
 		@Serializable
 		data class Unwound(
 			val url: String,
 			val status: Int,
 			val title: String,
 			val description: String
-		) : AndroidParcel
+		) : Parcelable
 	}
 
 	/**
@@ -300,7 +300,7 @@ data class Entities(
 	 * @property name Display name of the referenced user.
 	 * @property screenName Screen name of the referenced user.
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class UserMention(
 		val id: Long,
@@ -310,7 +310,7 @@ data class Entities(
 		val name: String,
 		@SerialName("screen_name")
 		val screenName: String
-	) : AndroidParcel
+	) : Parcelable
 
 	/**
 	 * The [TwitterTweet.entities] section will contain a [symbols] array containing an object for every $cashtag
@@ -323,12 +323,12 @@ data class Entities(
 	 * between the two numbers will be the length of the hashtag name plus one (for the ‘$’ character).
 	 * @property text Name of the cashhtag, minus the leading ‘$’ character.
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class Symbol(
 		val indices: List<Int>,
 		val text: String
-	) : AndroidParcel
+	) : Parcelable
 
 	/**
 	 * The [TwitterTweet.entities] section will contain a [polls] array containing a single [Poll] object if the Tweet
@@ -346,7 +346,7 @@ data class Entities(
 	 * @property endDatetime Time stamp (UTC) of when poll ends.
 	 * @property durationMinutes Duration of poll in minutes.
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class Poll(
 		val options: List<Option> = emptyList(),
@@ -355,7 +355,7 @@ data class Entities(
 		val endDatetime: DateTimeTz = DateTimeTz.MIN,
 		@SerialName("duration_minutes")
 		val durationMinutes: Int = -1
-	) : AndroidParcel {
+	) : Parcelable {
 
 		/**
 		 * An array of options, each having a poll position, and the text for that position.
@@ -363,8 +363,8 @@ data class Entities(
 		 * @property position 投票位置
 		 * @property text 投票位置のテキスト
 		 */
-		@AndroidParcelize
+		@Parcelize
 		@Serializable
-		data class Option(val position: Int = -1, val text: String = "") : AndroidParcel
+		data class Option(val position: Int = -1, val text: String = "") : Parcelable
 	}
 }

@@ -1,106 +1,38 @@
 package com.sorrowblue.twitlin.settings
 
+import kotlinx.serialization.ImplicitReflectionSerializer
+import kotlinx.serialization.UnstableDefault
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.parseList
+import kotlinx.serialization.stringify
+import java.util.prefs.Preferences
+
 actual class Settings {
-	actual fun getString(key: String, defValues: String): String {
-		TODO("Not yet implemented")
-	}
 
-	actual fun getStringOrNull(key: String): String? {
-		TODO("Not yet implemented")
-	}
+	private val pref = Preferences.systemNodeForPackage(javaClass)
 
-	actual fun getInt(key: String, defValues: Int): Int {
-		TODO("Not yet implemented")
-	}
+	actual fun contains(key: String) = pref.keys().contains(key)
 
-	actual fun getIntOrNull(key: String): Int? {
-		TODO("Not yet implemented")
-	}
+	actual fun getString(key: String, defValue: String?) = pref.get(key, defValue)
 
-	actual fun getBoolean(key: String, defValues: Boolean): Boolean {
-		TODO("Not yet implemented")
-	}
-
-	actual fun getBooleanOrNull(key: String): Boolean? {
-		TODO("Not yet implemented")
-	}
-
-	actual fun getFloat(key: String, defValues: Float): Float {
-		TODO("Not yet implemented")
-	}
-
-	actual fun getFloatOrNull(key: String): Float? {
-		TODO("Not yet implemented")
-	}
-
-	actual fun getLong(key: String, defValues: Long): Long {
-		TODO("Not yet implemented")
-	}
-
-	actual fun getLongOrNull(key: String): Long? {
-		TODO("Not yet implemented")
-	}
-
-	actual fun getDouble(key: String, defValues: Double): Double {
-		TODO("Not yet implemented")
-	}
-
-	actual fun getDoubleOrNull(key: String): Double? {
-		TODO("Not yet implemented")
-	}
-
+	@OptIn(ImplicitReflectionSerializer::class, UnstableDefault::class)
 	actual fun getStringSet(
 		key: String,
-		defValues: Set<String>
-	): Set<String> {
-		TODO("Not yet implemented")
-	}
+		defValues: Set<String>?
+	): Set<String>? =
+		pref.get(key, null)?.let { Json.parseList<String>(it) }?.toSet() ?: defValues
 
-	actual fun getStringSetOrNull(key: String): Set<String>? {
-		TODO("Not yet implemented")
-	}
+	actual fun putString(key: String, value: String) = use { pref.put(key, value) }
 
-	actual fun contains(key: String): Boolean {
-		TODO("Not yet implemented")
-	}
+	@OptIn(ImplicitReflectionSerializer::class, UnstableDefault::class)
+	actual fun putStringSet(key: String, value: Set<String>) = use { it.put(key, Json.stringify(value.toList())) }
 
-	actual class Listener {
-		actual fun remove() {
+	actual fun remove(key: String) = use { it.remove(key) }
 
+	private fun use(action: (Preferences) -> Unit) {
+		kotlin.runCatching {
+			action(pref)
+			pref.flush()
 		}
-	}
-
-	actual fun addListener(
-		key: String,
-		callback: () -> Unit
-	): Listener {
-		TODO("Not yet implemented")
-	}
-
-	actual fun putDouble(key: String, value: Double) {
-	}
-
-	actual fun putStringSet(key: String, value: Set<String>) {
-	}
-
-	actual fun putLong(key: String, value: Long) {
-	}
-
-	actual fun putFloat(key: String, value: Float) {
-	}
-
-	actual fun putBoolean(key: String, value: Boolean) {
-	}
-
-	actual fun putInt(key: String, value: Int) {
-	}
-
-	actual fun putString(key: String, value: String) {
-	}
-
-	actual operator fun minusAssign(key: String) {
-	}
-
-	actual fun remove(key: String) {
 	}
 }

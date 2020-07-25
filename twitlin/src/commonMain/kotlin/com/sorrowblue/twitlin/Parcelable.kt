@@ -1,3 +1,3 @@
 package com.sorrowblue.twitlin
 
-actual interface AndroidParcel
+expect interface Parcelable

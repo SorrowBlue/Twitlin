@@ -1,13 +1,13 @@
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.AndroidParcel
-import com.sorrowblue.twitlin.AndroidParcelize
+import com.sorrowblue.twitlin.Parcelable
+import com.sorrowblue.twitlin.Parcelize
 import com.sorrowblue.twitlin.serializers.DateTimeTzSerializer
 import com.soywiz.klock.DateTimeTz
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@AndroidParcelize
+@Parcelize
 @Serializable
 data class TwitterTweet(
 	@Serializable(DateTimeTzSerializer::class)
@@ -72,7 +72,7 @@ data class TwitterTweet(
 	@SerialName("withheld_scope")
 	val withheldScope: String? = null,
 	val card: TwitterCard? = null
-) : AndroidParcel {
+) : Parcelable {
 
 	/**
 	 * Details the Tweet ID of the user’s own retweet (if existent) of this Tweet.
@@ -83,9 +83,9 @@ data class TwitterTweet(
 	 * @property id
 	 * @property idStr
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
-	data class CurrentUserRetweet(val id: Long = -1, @SerialName("id_str") val idStr: String = "") : AndroidParcel
+	data class CurrentUserRetweet(val id: Long = -1, @SerialName("id_str") val idStr: String = "") : Parcelable
 
 	/**
 	 * Indicates the maximum value of the [filter_level](https://developer.twitter.com/streaming/overview/request-parameters#filter_level)
@@ -118,10 +118,10 @@ data class TwitterTweet(
 	 * @property id
 	 * @property idStr
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
 	data class Rule(val tag: String = "", val id: Long = -1, @SerialName("id_str") val idStr: String = "") :
-		AndroidParcel
+		Parcelable
 
 	/**
 	 * Currently used by Twitter’s Promoted Products.
@@ -131,7 +131,7 @@ data class TwitterTweet(
 
 	 * @property followers
 	 */
-	@AndroidParcelize
+	@Parcelize
 	@Serializable
-	data class Scopes(val followers: Boolean = false) : AndroidParcel
+	data class Scopes(val followers: Boolean = false) : Parcelable
 }

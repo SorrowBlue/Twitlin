@@ -1,7 +1,7 @@
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.AndroidParcel
-import com.sorrowblue.twitlin.AndroidParcelize
+import com.sorrowblue.twitlin.Parcelable
+import com.sorrowblue.twitlin.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,7 +22,7 @@ import kotlinx.serialization.Serializable
  * @property attributes When using PowerTrack, 30-Day and Full-Archive Search APIs,
  * and Volume Streams this hash is `null`.
  */
-@AndroidParcelize
+@Parcelize
 @Serializable
 data class Place(
 	val id: String,
@@ -38,4 +38,4 @@ data class Place(
 	@SerialName("bounding_box")
 	val boundingBox: BoundingBox
 //	val attributes: JsonObject? = null
-) : AndroidParcel
+) : Parcelable

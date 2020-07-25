@@ -1,10 +1,10 @@
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.AndroidParcel
-import com.sorrowblue.twitlin.AndroidParcelize
+import com.sorrowblue.twitlin.Parcelable
+import com.sorrowblue.twitlin.Parcelize
 import kotlinx.serialization.Serializable
 
-@AndroidParcelize
+@Parcelize
 @Serializable
 data class TwitterCard(
 	val title: String,
@@ -13,7 +13,7 @@ data class TwitterCard(
 	val image: String,
 	val type: CardType,
 	val site: String
-): AndroidParcel {
+): Parcelable {
 	enum class CardType {
 		SUMMARY,
 		SUMMARY_LARGE_IMAGE,

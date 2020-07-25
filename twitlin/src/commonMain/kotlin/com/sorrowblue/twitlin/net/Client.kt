@@ -3,7 +3,7 @@ package com.sorrowblue.twitlin.net
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.Twitlin
 import com.sorrowblue.twitlin.basics.AccessToken
-import com.sorrowblue.twitlin.basics.OAuth2Token
+import com.sorrowblue.twitlin.basics.oauth2.BearerToken
 import com.soywiz.klock.DateTime
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
@@ -25,6 +25,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.parse
 import kotlinx.serialization.parseList
+import kotlin.random.Random
 
 @OptIn(UnstableDefault::class, ExperimentalStdlibApi::class, ImplicitReflectionSerializer::class)
 internal open class Client(
@@ -32,6 +33,9 @@ internal open class Client(
 	internal val apiSecretKey: String,
 	var accessToken: AccessToken? = null
 ) {
+
+	internal var bearerToken: BearerToken? = null
+	private var accessTokens: AccessToken? = null
 
 	val json = Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true, isLenient = true))
 
@@ -131,8 +135,7 @@ internal open class Client(
 	}
 
 	private fun generateNonce() =
-		"kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg"
-//		Random.nextBytes(32).decodeToString().encodeNoPaddingBase64()
+		Random.nextBytes(32).decodeToString().encodeNoPaddingBase64()
 
 	fun oAuthHeader(method: HttpMethod, urlString: String, params: List<Pair<String, String>>): String {
 		val headerParams = collectingParameters + params
@@ -141,10 +144,10 @@ internal open class Client(
 			.joinToString(", ") { "${it.first.urlEncode()}=\"${it.second.urlEncode()}\"" }
 	}
 
-	private var _oAuth2Token: OAuth2Token? = null
+	private var _bearerToken: BearerToken? = null
 
 	@OptIn(ImplicitReflectionSerializer::class, InternalAPI::class, UnstableDefault::class)
-	suspend fun oAuth2Token() = _oAuth2Token ?: kotlin.run {
+	suspend fun oAuth2Token() = _bearerToken ?: kotlin.run {
 		val bearer = "${apiKey.urlEncode()}:${apiSecretKey.urlEncode()}".encodeBase64()
 		val response = httpClient.post<HttpResponse>("${Urls.OAUTH2}/token") {
 			header(HttpHeaders.Authorization, "Basic $bearer")
@@ -152,7 +155,7 @@ internal open class Client(
 			body = "grant_type=client_credentials"
 		}
 		(if (response.status.isSuccess()) response.content.readUTF8Line()
-			?.let { Json.parse<OAuth2Token>(it) } else null)?.also { _oAuth2Token = it }
+			?.let { Json.parse<BearerToken>(it) } else null)?.also { _bearerToken = it }
 	}
 }
 
