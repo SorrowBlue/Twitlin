@@ -4,7 +4,6 @@ plugins {
 }
 
 buildscript {
-	val kotlin_version by extra("1.3.72")
 	repositories {
 		google()
 		jcenter()
@@ -21,7 +20,6 @@ allprojects {
 	repositories {
 		google()
 		jcenter()
-		maven("https://dl.bintray.com/ekito/koin")
 	}
 }
 

@@ -3,6 +3,7 @@ object Libs {
 	object andoridx {
 		const val `core-ktx` = "androidx.core:core-ktx:1.3.0"
 		const val `preference-ktx` = "androidx.preference:preference-ktx:1.1.1"
+		const val `security-crypto` = "androidx.security:security-crypto:1.0.0-rc02"
 	}
 
 	object kotlinx {
@@ -21,27 +22,20 @@ object Libs {
 
 	object `ktor-client` {
 		private const val client = "io.ktor:ktor-client"
-		private const val `ktor-client_version` = "1.3.2"
-		const val core = "$client-core:${`ktor-client_version`}"
-		const val okhttp = "$client-okhttp:${`ktor-client_version`}"
-		const val android = "$client-android:${`ktor-client_version`}"
-		const val ios = "$client-ios:${`ktor-client_version`}"
-		const val js = "$client-js:${`ktor-client_version`}"
+		private const val VERSION = "1.3.2"
+		const val core = "$client-core:${VERSION}"
+		const val okhttp = "$client-okhttp:${VERSION}"
+		const val android = "$client-android:${VERSION}"
+		const val ios = "$client-ios:${VERSION}"
+		const val js = "$client-js:${VERSION}"
 
 		object serialization {
 			private const val serialization = "io.ktor:ktor-client-serialization"
-			const val common = "$serialization:${`ktor-client_version`}"
-			const val jvm = "$serialization-jvm:${`ktor-client_version`}"
-			const val native = "$serialization-native:${`ktor-client_version`}"
-			const val js = "$serialization-js:${`ktor-client_version`}"
+			const val common = "$serialization:${VERSION}"
+			const val jvm = "$serialization-jvm:${VERSION}"
+			const val native = "$serialization-native:${VERSION}"
+			const val js = "$serialization-js:${VERSION}"
 		}
-	}
-
-	object dagger {
-		private const val VERSION = "2.28.3-alpha"
-		const val `hilt-android` = "com.google.dagger:hilt-android:$VERSION"
-		const val `hilt-android-compiler` = "com.google.dagger:hilt-android-compiler:$VERSION"
-		const val `hilt-android-gradle-plugin` = "com.google.dagger:hilt-android-gradle-plugin:$VERSION"
 	}
 
 	object klock {
@@ -54,23 +48,7 @@ object Libs {
 		const val js = "$group:klock-js:$klock_version"
 	}
 
-	object koin {
-		const val koin_version = "3.0.0-alpha-2"
-		const val core = "org.koin:koin-core:$koin_version"
-		const val android = "org.koin:koin-android:$koin_version"
-	}
-
 	const val krypto = "com.soywiz.korlibs.krypto:krypto:1.11.1"
-	object settings {
-		private const val version = "0.6"
-		private const val settings = "com.russhwolf:multiplatform-settings"
-		const val common = "$settings:$version"
-		const val `no-arg` = "$settings-no-arg:$version"
-		const val android = "$settings-android:$version"
-		const val jvm = "$settings-jvm:$version"
-		const val js = "$settings-js:$version"
-		const val ios = "$settings-ios:$version"
-	}
 
 	object napier {
 		private const val version = "1.3.0"

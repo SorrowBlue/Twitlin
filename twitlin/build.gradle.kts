@@ -5,8 +5,8 @@ plugins {
 	`kotlin-multiplatform`
 	kotlin("plugin.serialization") version Version.kotlin
 	`kotlin-kapt`
+	`kotlin-android-extensions`
 	id("org.jetbrains.dokka") version "0.10.1"
-	id("dagger.hilt.android.plugin")
 }
 
 group = "com.sorrowblue.twitlin"
@@ -41,7 +41,6 @@ kotlin {
 				implementation(Libs.`ktor-client`.serialization.common)
 				implementation(Libs.napier.common)
 				api(Libs.klock.common)
-				implementation(Libs.koin.core)
 			}
 		}
 
@@ -55,13 +54,11 @@ kotlin {
 		val androidMain by getting {
 			dependencies {
 				implementation(kotlin("stdlib-jdk8"))
-				implementation(Libs.dagger.`hilt-android`)
 				implementation(Libs.kotlinx.serialization.runtime)
 				implementation("org.jsoup:jsoup:1.13.1")
 				implementation(Libs.`ktor-client`.android)
 				implementation(Libs.`ktor-client`.serialization.jvm)
 				implementation(Libs.napier.android)
-				implementation(Libs.koin.android)
 				implementation(Libs.andoridx.`security-crypto`)
 				api(Libs.klock.android)
 				implementation(Libs.andoridx.`preference-ktx`)
@@ -162,11 +159,5 @@ android {
 		isAbortOnError = false
 	}
 }
-
-dependencies {
-	add("kapt", Libs.dagger.`hilt-android-compiler`)
-}
-
-
 
 configurations.create("compileClasspath")
