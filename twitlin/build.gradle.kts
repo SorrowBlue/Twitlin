@@ -1,21 +1,17 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
+	ComAndroidPluginGroup(this).library
 	`kotlin-multiplatform`
 	kotlin("plugin.serialization") version Version.kotlin
-	`maven-publish`
+	`kotlin-kapt`
 	id("org.jetbrains.dokka") version "0.10.1"
-}
-
-repositories {
-	mavenCentral()
-	jcenter()
+	id("dagger.hilt.android.plugin")
 }
 
 group = "com.sorrowblue.twitlin"
 version = "0.0.1"
 
-apply(from = "android.gradle")
 apply(from = "publish.gradle")
 
 kotlin {
@@ -46,7 +42,6 @@ kotlin {
 				implementation(Libs.napier.common)
 				api(Libs.klock.common)
 				implementation(Libs.koin.core)
-				implementation(Libs.dagger.`hilt-android`)
 			}
 		}
 
@@ -59,13 +54,15 @@ kotlin {
 
 		val androidMain by getting {
 			dependencies {
-				implementation(kotlin("stdlib"))
+				implementation(kotlin("stdlib-jdk8"))
+				implementation(Libs.dagger.`hilt-android`)
 				implementation(Libs.kotlinx.serialization.runtime)
 				implementation("org.jsoup:jsoup:1.13.1")
 				implementation(Libs.`ktor-client`.android)
 				implementation(Libs.`ktor-client`.serialization.jvm)
 				implementation(Libs.napier.android)
 				implementation(Libs.koin.android)
+				implementation(Libs.andoridx.`security-crypto`)
 				api(Libs.klock.android)
 				implementation(Libs.andoridx.`preference-ktx`)
 			}
@@ -137,7 +134,7 @@ tasks {
 				targets = listOf("Android")
 				platform = "android"
 				sourceRoot {
-					path = kotlin.sourceSets.getByName("androidMain").kotlin.srcDirs.first().toString()
+					path = kotlin.sourceSets.getByName("main").kotlin.srcDirs.first().toString()
 				}
 				sourceRoot {
 					path = kotlin.sourceSets.getByName("commonMain").kotlin.srcDirs.first().toString()
@@ -146,5 +143,30 @@ tasks {
 		}
 	}
 }
+
+android {
+	compileSdkVersion(30)
+	buildToolsVersion("30.0.1")
+
+	defaultConfig {
+		minSdkVersion(23)
+		targetSdkVersion(30)
+		versionCode = 1
+		versionName = "0.0.1"
+	}
+
+	sourceSets.forEach {
+		it.manifest.srcFile("src/main/AndroidManifest.xml")
+	}
+	lintOptions {
+		isAbortOnError = false
+	}
+}
+
+dependencies {
+	add("kapt", Libs.dagger.`hilt-android-compiler`)
+}
+
+
 
 configurations.create("compileClasspath")
