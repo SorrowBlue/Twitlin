@@ -1,6 +1,5 @@
 package com.sorrowblue.twitlin.basics.oauth
 
-import com.sorrowblue.twitlin.basics.Authenticate
 import com.sorrowblue.twitlin.net.Response
 
 interface OAuthApi {

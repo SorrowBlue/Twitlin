@@ -3,7 +3,7 @@ package com.sorrowblue.twitlin.basics.oauth2
 import com.sorrowblue.twitlin.net.Client
 import com.sorrowblue.twitlin.net.Response
 import com.sorrowblue.twitlin.net.Urls
-import com.sorrowblue.twitlin.net.urlEncode
+import com.sorrowblue.twitlin.utils.urlEncode
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse

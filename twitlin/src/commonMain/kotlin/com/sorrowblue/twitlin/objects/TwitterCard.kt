@@ -20,10 +20,5 @@ data class TwitterCard(
 		APP,
 		PLAYER,
 		UNDEFINED;
-
-		companion object {
-			fun valueOf2(value: String) =
-				kotlin.runCatching { valueOf(value.toUpperCase()) }.getOrElse { UNDEFINED }
-		}
 	}
 }

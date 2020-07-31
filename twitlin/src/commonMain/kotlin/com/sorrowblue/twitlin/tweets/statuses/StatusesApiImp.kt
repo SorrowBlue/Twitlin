@@ -30,7 +30,7 @@ internal class StatusesApiImp(private val client: Client) :
 			sinceId?.let { add("since_id" to it.toString()) }
 			maxId?.let { add("max_id" to it.toString()) }
 		}
-		return client.getList<TwitterTweet>("$ROOT/user_timeline.json", query).resolveCard(includeCard)
+		return client.getList<TwitterTweet>("$ROOT/home_timeline.json", query).resolveCard(includeCard)
 	}
 
 	override suspend fun userTimeline(

@@ -2,10 +2,10 @@ package com.sorrowblue.twitlin.objects
 
 import com.sorrowblue.twitlin.Parcelable
 import com.sorrowblue.twitlin.Parcelize
-import com.sorrowblue.twitlin.net.MIN
 import com.sorrowblue.twitlin.objects.Entities.Media.MediaSize.Size.Resize
 import com.sorrowblue.twitlin.objects.Entities.URL.Unwound
 import com.sorrowblue.twitlin.serializers.DateTimeTzSerializer
+import com.soywiz.klock.DateTime
 import com.soywiz.klock.DateTimeTz
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -352,7 +352,7 @@ data class Entities(
 		val options: List<Option> = emptyList(),
 		@Serializable(DateTimeTzSerializer::class)
 		@SerialName("end_datetime")
-		val endDatetime: DateTimeTz = DateTimeTz.MIN,
+		val endDatetime: DateTimeTz = DateTime.EPOCH.local,
 		@SerialName("duration_minutes")
 		val durationMinutes: Int = -1
 	) : Parcelable {

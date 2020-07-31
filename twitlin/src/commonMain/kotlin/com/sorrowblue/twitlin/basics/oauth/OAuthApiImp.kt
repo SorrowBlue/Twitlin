@@ -1,8 +1,7 @@
 package com.sorrowblue.twitlin.basics.oauth
 
+import com.sorrowblue.twitlin.Account
 import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.basics.AccessToken
-import com.sorrowblue.twitlin.basics.Authenticate
 import com.sorrowblue.twitlin.basics.OAuthToken
 import com.sorrowblue.twitlin.net.*
 import kotlinx.serialization.ImplicitReflectionSerializer
@@ -32,10 +31,16 @@ internal class OAuthApiImp(private val client: Client) :
 				listOf("oauth_verifier" to authenticate.oauthVerifier),
 				overrideOAuthToken = authenticate.oauthToken
 			).fold({ s ->
-				AccessToken.fromString(s).let {
-					client.accessToken = it
-					Twitlin.settings.getString("twitlin_access_token", Json.stringify(it))
-					Response.success(Unit)
+				AccessToken.fromString(s).let { accessToken ->
+					client.account = Account(0, "", "", "", accessToken)
+					Twitlin.Api.account.verifyCredentials(
+						includeEntities = false,
+						skipStatus = false,
+						includeEmail = false
+					).getOrNull()?.let {
+						Twitlin.account = Account(it.id, it.profileImageUrlHttps, it.name, it.screenName, accessToken)
+						Response.success(Unit)
+					} ?: Response.error<Unit>(ErrorMessages.Error("アカウント情報が首都デキませんでした", -203))
 				}
 			}, { Response.error<Unit>(it) })
 		}

@@ -54,7 +54,6 @@ kotlin {
 			dependencies {
 				implementation(kotlin("test-common"))
 				implementation(kotlin("test-annotations-common"))
-				implementation("androidx.test:core:1.2.0")
 			}
 		}
 
@@ -62,7 +61,6 @@ kotlin {
 			dependencies {
 				implementation(kotlin("stdlib"))
 				implementation(Libs.kotlinx.serialization.runtime)
-				implementation(Libs.andoridx.`startup-runtime`)
 				implementation("org.jsoup:jsoup:1.13.1")
 				implementation(Libs.`ktor-client`.android)
 				implementation(Libs.`ktor-client`.serialization.jvm)

@@ -40,5 +40,15 @@ afterEvaluate {
 				moduleDescriptorGenerator = null
 			}
 		}
+		repositories {
+			maven {
+				name = "GitHubPackages"
+				url = uri("https://maven.pkg.github.com/SorrowBlue/twitlin")
+				credentials {
+					username = "SorrowBlue"
+					password = "83838d3408f404add280e6c556494260636c5fef"
+				}
+			}
+		}
 	}
 }

@@ -3,7 +3,6 @@ object Libs {
 	object andoridx {
 		const val `core-ktx` = "androidx.core:core-ktx:1.3.0"
 		const val `preference-ktx` = "androidx.preference:preference-ktx:1.1.1"
-		const val `startup-runtime` = "androidx.startup:startup-runtime:1.0.0-alpha01"
 	}
 
 	object kotlinx {
@@ -42,6 +41,7 @@ object Libs {
 		private const val VERSION = "2.28.3-alpha"
 		const val `hilt-android` = "com.google.dagger:hilt-android:$VERSION"
 		const val `hilt-android-compiler` = "com.google.dagger:hilt-android-compiler:$VERSION"
+		const val `hilt-android-gradle-plugin` = "com.google.dagger:hilt-android-gradle-plugin:$VERSION"
 	}
 
 	object klock {

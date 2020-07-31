@@ -1,8 +1,8 @@
 package com.sorrowblue.twitlin
 
+import com.github.aakira.napier.Antilog
 import com.github.aakira.napier.DebugAntilog
 import com.github.aakira.napier.Napier
-import com.sorrowblue.twitlin.net.urlEncode
 import com.sorrowblue.twitlin.objects.Entities
 import com.sorrowblue.twitlin.objects.TwitterTweet
 import com.sorrowblue.twitlin.settings.Settings
@@ -24,20 +24,21 @@ class AuthTest {
 		Twitlin.initialize(
 			"ctNGOKkamPkXfFIcf4iQF37b7",
 			"BlW8VyYa83nHaP84dfkkGoHuEDonBFKwaPdH6HMNJBPD3pRl1T",
-			Settings(),
+			Settings()/*,
 			ACCESS_TOKEN,
 			ACCESS_TOKEN_SECRET
-		)
+*/		)
 	}
 
 	@Test
 	fun authorizeTest() {
 		runBlocking {
-			Twitlin.Api.oauth.authenticate("snsmate://sss.com")
+			Twitlin.Api.oauth.authenticate("snsmate.sorrowblue.com/resones")
+//			Twitlin.Api.oauth.authenticate("snsmate://snsmate.sorrowblue.com/resones")
 		}.onError {
-			Napier.e("Error authorizeTest" + it.joinToString(", ") { "${it.code} -> ${it.message}" })
+			Napier.e(it.joinToString(", ") { "${it.code} -> ${it.message}" }, tag = "authorizeTest")
 		}.onSuccess {
-			Napier.d("Success authorizeTest. $it")
+			Napier.d("AuthenticateUrl = $it" , tag = "authorizeTest")
 		}
 	}
 
@@ -100,15 +101,20 @@ class AuthTest {
 			${tweet.text}
 		""".trimIndent() + when {
 			tweet.extendedEntities?.media?.firstOrNull()?.videoInfo != null -> showVideo(tweet)
-			tweet.extendedEntities?.media?.firstOrNull()?.type == Entities.Media.MediaType.PHOTO -> showPhoto(tweet)
-			tweet.extendedEntities?.media?.firstOrNull()?.type == Entities.Media.MediaType.ANIMATED_GIF -> showGif(tweet)
+			tweet.extendedEntities?.media?.firstOrNull()?.type == Entities.Media.MediaType.PHOTO -> showPhoto(
+				tweet
+			)
+			tweet.extendedEntities?.media?.firstOrNull()?.type == Entities.Media.MediaType.ANIMATED_GIF -> showGif(
+				tweet
+			)
 			else -> ""
 		}
 	}
 
 	fun showVideo(tweet: TwitterTweet): String? {
 		if (tweet.extendedEntities?.media?.firstOrNull()?.type != Entities.Media.MediaType.VIDEO) return null
-		val video = tweet.extendedEntities?.media?.firstOrNull()?.videoInfo ?: throw Exception("動画じゃない")
+		val video =
+			tweet.extendedEntities?.media?.firstOrNull()?.videoInfo ?: throw Exception("動画じゃない")
 		return """
 			長さ : ${video.durationMillis}
 			アスペクト比 : ${video.aspectRatio.joinToString("/")}
@@ -132,7 +138,8 @@ class AuthTest {
 
 	fun showGif(tweet: TwitterTweet): String? {
 		if (tweet.extendedEntities?.media?.firstOrNull()?.type != Entities.Media.MediaType.ANIMATED_GIF) return null
-		val gif = tweet.extendedEntities?.media?.firstOrNull()?.videoInfo ?: throw Exception("動画じゃない")
+		val gif =
+			tweet.extendedEntities?.media?.firstOrNull()?.videoInfo ?: throw Exception("動画じゃない")
 		return """
 			url = ${gif.variants.first().url}
 			contentType = ${gif.variants.first().contentType}
@@ -153,11 +160,19 @@ class AuthTest {
 	@OptIn(InternalAPI::class)
 	@Test
 	fun urlEncodeTest() {
+		println("Ladies + Gentlemen".urlEncode() + " = " + "Ladies%20%2B%20Gentlemen")
 		assertEquals("Ladies + Gentlemen".urlEncode(), "Ladies%20%2B%20Gentlemen")
+		println("An encoded string!".urlEncode() + " = " + "An%20encoded%20string%21")
 		assertEquals("An encoded string!".urlEncode(), "An%20encoded%20string%21")
+		println("Dogs, Cats & Mice".urlEncode() + " = " + "Dogs%2C%20Cats%20%26%20Mice")
 		assertEquals("Dogs, Cats & Mice".urlEncode(), "Dogs%2C%20Cats%20%26%20Mice")
+		println("☃".urlEncode() + " = " + "%E2%98%83")
 		assertEquals("☃".urlEncode(), "%E2%98%83")
-		assertEquals("#$%'()=~|`{*}<>?_[;:]./-^\\".urlEncode(), "%23%24%25%27%28%29%3D%7E%7C%60%7B*%7D%3C%3E%3F_%5B%3B%3A%5D.%2F-%5E%5C")
+		println("#$%'()=~|`{*}<>?_[;:]./-^\\".urlEncode() + " = " + "%23%24%25%27%28%29%3D~%7C%60%7B*%7D%3C%3E%3F_%5B%3B%3A%5D.%2F-%5E%5C")
+		assertEquals(
+			"#$%'()=~|`{*}<>?_[;:]./-^\\".urlEncode(),
+			"%23%24%25%27%28%29%3D~%7C%60%7B*%7D%3C%3E%3F_%5B%3B%3A%5D.%2F-%5E%5C"
+		)
 	}
 
 	private fun String.urlEncode() = URLEncoder.encode(this, Charset.forName("UTF-8"))
@@ -165,6 +180,7 @@ class AuthTest {
 		.replace("!", "%21")
 		.replace(",", "%2C")
 		.replace("&", "%26")
+
 	@Test
 	fun sogTest() {
 		Twitlin.client.oAuthHeader(

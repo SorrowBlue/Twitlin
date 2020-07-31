@@ -9,7 +9,7 @@ import java.util.prefs.Preferences
 
 actual class Settings {
 
-	private val pref = Preferences.systemNodeForPackage(javaClass)
+	private val pref = Preferences.userNodeForPackage(javaClass)
 
 	actual fun contains(key: String) = pref.keys().contains(key)
 

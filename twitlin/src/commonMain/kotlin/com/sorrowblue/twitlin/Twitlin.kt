@@ -7,7 +7,7 @@ import com.sorrowblue.twitlin.accounts_users.lists.ListsApi
 import com.sorrowblue.twitlin.accounts_users.lists.ListsApiImp
 import com.sorrowblue.twitlin.accounts_users.users.UsersApi
 import com.sorrowblue.twitlin.accounts_users.users.UsersApiImp
-import com.sorrowblue.twitlin.basics.AccessToken
+import com.sorrowblue.twitlin.basics.oauth.AccessToken
 import com.sorrowblue.twitlin.basics.oauth.OAuthApi
 import com.sorrowblue.twitlin.basics.oauth.OAuthApiImp
 import com.sorrowblue.twitlin.basics.oauth2.OAuth2Api
@@ -22,6 +22,7 @@ import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.parse
+import kotlinx.serialization.stringify
 
 object Twitlin {
 
@@ -29,15 +30,6 @@ object Twitlin {
 
 	internal lateinit var settings: Settings private set
 
-	/**
-	 * TODO
-	 *
-	 * @param apiKey
-	 * @param apiSecret
-	 * @param settings
-	 * @param oAuthToken
-	 * @param oAuthTokenSecret
-	 */
 	@OptIn(ImplicitReflectionSerializer::class, UnstableDefault::class)
 	fun initialize(
 		apiKey: String, apiSecret: String,
@@ -46,13 +38,15 @@ object Twitlin {
 	) {
 		Napier.d("Twitlin has been initialized.", tag = "Twitlin")
 		this.settings = settings
-		val accessToken = if (oAuthToken != null && oAuthTokenSecret != null) {
-			AccessToken(oAuthToken, oAuthTokenSecret)
+		settings.getStringSet("accounts", null)?.map { Json.parse<Account>(it) }
+			?.also { accounts = it }
+		val account = if (oAuthToken != null && oAuthTokenSecret != null) {
+			Account(0, "", "", "", AccessToken(oAuthToken, oAuthTokenSecret))
 		} else {
-//			settings.getString("twitlin_access_token", "")?.let { Json.parse<AccessToken>(it) }
-			null
+			settings.getString("now_account", null)?.let { Json.parse<Account>(it) }
 		}
-		client = Client(apiKey, apiSecret, accessToken)
+		client = Client(apiKey, apiSecret, account)
+		this.account = account
 	}
 
 
@@ -66,14 +60,34 @@ object Twitlin {
 		val users: UsersApi by lazy { UsersApiImp(client) }
 	}
 
-	val isAuthorizationRequired: Boolean get() = client.accessToken == null
+	val isAuthorizationRequired: Boolean get() = client.account == null
 
 	var onInvalidToken: () -> Unit = {}
 
-	fun switchAccount() {
+	var accounts: List<Account> = emptyList()
+		internal set
 
-	}
-
+	@OptIn(ImplicitReflectionSerializer::class, UnstableDefault::class)
+	var account: Account?
+		get() = client.account
+		set(value) {
+			value ?: return
+			if (accounts.any { it.id == value.id }) {
+				client.account = value
+				Napier.d("Account changed to @${value.name}.", tag = "Twitlin")
+			} else {
+				accounts = accounts + value
+				client.account = value
+				Napier.d("Account added and changed to @${value.name}.", tag = "Twitlin")
+			}
+			settings.putString("now_account", Json.stringify(value))
+			settings.putStringSet("accounts", accounts.map { Json.stringify(it) }.toSet())
+			Napier.d(
+				"""The currently stored accounts are as follows.
+				${accounts.joinToString("\n")}
+			""".trimIndent()
+			)
+		}
 }
 
 

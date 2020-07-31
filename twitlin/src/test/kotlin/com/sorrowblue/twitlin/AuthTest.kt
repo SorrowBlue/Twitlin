@@ -2,7 +2,7 @@ package com.sorrowblue.twitlin
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.sorrowblue.twitlin.basics.AccessToken
+import com.sorrowblue.twitlin.basics.oauth.AccessToken
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.koin.core.context.startKoin
@@ -11,7 +11,10 @@ import org.koin.core.context.startKoin
 private const val ACCESS_TOKEN = "938122027231150081-nWR2QO576Hr6y1lkzgzfvzR0MymQfcw"
 private const val ACCESS_TOKEN_SECRET = "938122027231150081-nWR2QO576Hr6y1lkzgzfvzR0MymQfcw"
 
-private val accessToken = AccessToken(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+private val accessToken = AccessToken(
+	ACCESS_TOKEN,
+	ACCESS_TOKEN_SECRET
+)
 
 class AuthTest {
 

@@ -2,6 +2,7 @@ package com.sorrowblue.twitlin.utils
 
 import com.sorrowblue.twitlin.objects.TwitterCard
 import org.jsoup.Jsoup
+import java.util.*
 
 actual fun bodyToCard(body: String): TwitterCard {
 	val jsoup = Jsoup.parse(body)
@@ -21,7 +22,9 @@ actual fun bodyToCard(body: String): TwitterCard {
 		url?.attr("content") ?: "",
 		description?.attr("content") ?: "",
 		image?.attr("content") ?: "",
-		card?.attr("content")?.let { TwitterCard.CardType.valueOf2(it) } ?: TwitterCard.CardType.UNDEFINED,
+		card?.attr("content")
+			?.let { runCatching { TwitterCard.CardType.valueOf(it.toUpperCase(Locale.getDefault())) }.getOrElse { TwitterCard.CardType.UNDEFINED } }
+			?: TwitterCard.CardType.UNDEFINED,
 		site?.attr("content") ?: ""
 	)
 }

@@ -4,8 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.github.aakira.napier.DebugAntilog
+import com.github.aakira.napier.Napier
 
 actual class Settings(context: Context, name: String? = null) {
+
+	init {
+		Napier.base(DebugAntilog())
+	}
 
 	private val pref: SharedPreferences =
 		name?.let { context.getSharedPreferences(it, Context.MODE_PRIVATE) }

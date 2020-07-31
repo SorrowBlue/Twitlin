@@ -1,4 +1,4 @@
-package com.sorrowblue.twitlin.basics
+package com.sorrowblue.twitlin.basics.oauth
 
 data class Authenticate(
 	val oauthToken: String,
