@@ -1,5 +1,6 @@
 package com.sorrowblue.twitlin.net
 
+import io.ktor.http.encodeURLParameter
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -15,3 +16,5 @@ internal class StringKtTest {
 		assertEquals("-._~".urlEncode(), "-._~")
 	}
 }
+
+private fun String.urlEncode() = encodeURLParameter()
