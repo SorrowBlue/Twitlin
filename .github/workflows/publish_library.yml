@@ -15,10 +15,11 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
       - uses: actions/checkout@master
       - name: Publish library
+        uses: actions/setup-java@v1
+        with:
+          java-version:1.8
         env:
           USERNAME: SorrowBlue
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
