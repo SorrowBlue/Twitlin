@@ -24,22 +24,22 @@ jobs:
         env:
           USERNAME: SorrowBlue
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew build
-
-#      - uses: actions/checkout@v1
-#      - uses: actions/create-release@master
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
+        run: ./gradlew twitlin:publish
+        
+      - name: Publish
+        uses: actions/create-release@master
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
           # リリースのタグ (必須)
-#          tag_name: ${{ github.ref }}
+          tag_name: ${{ github.ref }}
           # リリースのタイトル (必須)
-#          release_name: 1. タグを push したら自動でリリースの下書きを作成する
+          release_name: 1. タグを push したら自動でリリースの下書きを作成する
           # リリースのタイトル (省略可能)
-#          body: |
-#            リリースの作成テストです。
-#            下書きかつプレリリースの状態で作成されます。
+          body: |
+            リリースの作成テストです。
+            下書きかつプレリリースの状態で作成されます。
           # 下書き状態で作成する場合は true (省略時 false)
-#          draft: true
+          draft: true
           # プレリリース表示を付ける場合は true (省略時 false)
-#          prerelease: true
+          prerelease: true
