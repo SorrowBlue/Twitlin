@@ -3,13 +3,13 @@ on:
   push:
     branches:
       - master
-#    tags:
-#      - "*"
+    tags:
+      - "*"
   pull_request:
     branches:
       - master
-#    tags:
-#      - "*"
+    tags:
+      - "*"
 
 jobs:
   build:
