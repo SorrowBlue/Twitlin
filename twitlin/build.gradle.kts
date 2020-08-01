@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.sorrowblue.twitlin"
-version = "0.0.3"
+version = "0.0.1--dev001"
 
 apply(from = "publish.gradle")
 
