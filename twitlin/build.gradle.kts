@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
@@ -10,7 +12,7 @@ plugins {
 }
 
 group = "com.sorrowblue.twitlin"
-version = "0.0.2"
+version = "0.0.3"
 
 apply(from = "publish.gradle")
 
