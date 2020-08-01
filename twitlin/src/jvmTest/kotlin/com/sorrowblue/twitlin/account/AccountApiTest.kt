@@ -29,7 +29,7 @@ class AccountApiTest {
 			Twitlin.Api.account.verifyCredentials()
 		}.onError {
 			Napier.e(
-				it.joinToString(", ") { "${it.code} -> ${it.message}" },
+				it.joinToString(", ") { error -> "${error.code} -> ${error.message}" },
 				tag = "verifyCredentialsTest"
 			)
 		}.onSuccess {
