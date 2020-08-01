@@ -27,7 +27,7 @@ jobs:
         run: ./gradlew twitlin:publish
         
       - name: Publish
-      - uses: actions/create-release@master
+        uses: actions/create-release@master
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
