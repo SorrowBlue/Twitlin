@@ -24,7 +24,7 @@ jobs:
         env:
           USERNAME: SorrowBlue
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew assembleRelease publish
+        run: ./gradlew assembleRelease
 
 #      - uses: actions/checkout@v1
 #      - uses: actions/create-release@master
