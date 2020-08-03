@@ -58,6 +58,8 @@ kotlin {
 				implementation(Libs.`ktor-client`.js)
 				implementation(Libs.`ktor-client`.serialization.js)
 				implementation(Libs.napier.js)
+
+				implementation("org.webjars.npm:crypto-js:4.0.0")
 			}
 		}
 		val jsTest by getting {
