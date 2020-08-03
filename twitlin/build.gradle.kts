@@ -15,7 +15,6 @@ plugins {
 group = "com.sorrowblue.twitlin"
 version = "0.0.1-dev-001"
 
-
 kotlin {
 	android {
 		publishLibraryVariants("release")
