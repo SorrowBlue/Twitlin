@@ -18,11 +18,10 @@ import com.sorrowblue.twitlin.trends.TrendsApi
 import com.sorrowblue.twitlin.trends.TrendsApiImp
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApiImp
-import kotlinx.serialization.ImplicitReflectionSerializer
-import kotlinx.serialization.UnstableDefault
+import io.ktor.util.*
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.parse
-import kotlinx.serialization.stringify
 
 object Twitlin {
 
@@ -30,7 +29,6 @@ object Twitlin {
 
 	internal lateinit var settings: Settings private set
 
-	@OptIn(ImplicitReflectionSerializer::class, UnstableDefault::class)
 	fun initialize(
 		apiKey: String, apiSecret: String,
 		settings: Settings,
@@ -38,12 +36,12 @@ object Twitlin {
 	) {
 		Napier.d("Twitlin has been initialized.", tag = "Twitlin")
 		this.settings = settings
-		settings.getStringSet("accounts", null)?.map { Json.parse<Account>(it) }
+		settings.getStringSet("accounts", null)?.map { Json.decodeFromString<Account>(it) }
 			?.also { accounts = it }
 		val account = if (oAuthToken != null && oAuthTokenSecret != null) {
 			Account(0, "", "", "", AccessToken(oAuthToken, oAuthTokenSecret))
 		} else {
-			settings.getString("now_account", null)?.let { Json.parse<Account>(it) }
+			settings.getString("now_account", null)?.let { Json.decodeFromString<Account>(it) }
 		}
 		client = Client(apiKey, apiSecret, account)
 		this.account = account
@@ -67,7 +65,6 @@ object Twitlin {
 	var accounts: List<Account> = emptyList()
 		internal set
 
-	@OptIn(ImplicitReflectionSerializer::class, UnstableDefault::class)
 	var account: Account?
 		get() = client.account
 		set(value) {
@@ -80,8 +77,8 @@ object Twitlin {
 				client.account = value
 				Napier.d("Account added and changed to @${value.name}.", tag = "Twitlin")
 			}
-			settings.putString("now_account", Json.stringify(value))
-			settings.putStringSet("accounts", accounts.map { Json.stringify(it) }.toSet())
+			settings.putString("now_account", Json.encodeToString(value))
+			settings.putStringSet("accounts", accounts.map(Json::encodeToString).toSet())
 			Napier.d(
 				"""The currently stored accounts are as follows.
 				${accounts.joinToString("\n")}

@@ -13,17 +13,15 @@ internal class DateTimeTzSerializerTest {
 	private val strSource = """{"date":"Tue Jul 11 08:38:19 +0000 2017"}"""
 
 
-	@OptIn(UnstableDefault::class, ImplicitReflectionSerializer::class)
 	@Test
 	fun deserialize() {
-		val json = Json.parse<TestData>(strSource)
+		val json = Json.decodeFromString<TestData>(strSource)
 		assertEquals(source, json.date)
 	}
 
-	@OptIn(UnstableDefault::class, ImplicitReflectionSerializer::class)
 	@Test
 	fun serialize() {
-		assertEquals(strSource, Json.stringify(TestData(source)))
+		assertEquals(strSource, Json.encodeToString(TestData(source)))
 	}
 }
 

@@ -17,17 +17,12 @@ import io.ktor.http.*
 import io.ktor.util.InternalAPI
 import io.ktor.util.encodeBase64
 import io.ktor.utils.io.readUTF8Line
-import kotlinx.serialization.ImplicitReflectionSerializer
-import kotlinx.serialization.UnstableDefault
+import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import kotlinx.serialization.parse
-import kotlinx.serialization.parseList
 import kotlin.random.Random
 
 typealias Params = List<Pair<String, String>>
 
-@OptIn(UnstableDefault::class, ExperimentalStdlibApi::class, ImplicitReflectionSerializer::class)
 internal open class Client(
 	internal val apiKey: String,
 	internal val apiSecretKey: String,
@@ -36,7 +31,10 @@ internal open class Client(
 
 	internal var bearerToken: BearerToken? = null
 
-	val json = Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true, isLenient = true))
+	val json: Json = Json {
+		isLenient = true
+		ignoreUnknownKeys = true
+	}
 
 	val httpClient
 		get() = HttpClient(clientEngine) {
@@ -52,7 +50,7 @@ internal open class Client(
 			if (useOAuth2) "Bearer ${oAuth2Token()?.accessToken}"
 			else "OAuth ${oAuthHeader(method, url, params)}"
 		header(HttpHeaders.Authorization, value)
-	}.onSuccess { json.parse<T>(it) }
+	}.onSuccess(json::decodeFromString)
 
 	suspend inline fun <reified T : Any> getList(
 		url: String, params: Params = emptyList(), useOAuth2: Boolean = false
@@ -67,7 +65,7 @@ internal open class Client(
 				"The request for \"$url\" was successful. The response body is \"$it\".",
 				tag = "Twitlin Client"
 			)
-			json.parseList<T>(it)
+			json.decodeFromString(it)
 		}
 
 	suspend inline fun <reified T : Any> post(
@@ -85,7 +83,7 @@ internal open class Client(
 			else "OAuth ${oAuthHeader(method, url, authHeaderParams.toList())}"
 		header(HttpHeaders.Authorization, authorizationValue)
 	}.onSuccess {
-		if (T::class == String::class) it as T else json.parse(it)
+		if (T::class == String::class) it as T else json.decodeFromString(it)
 	}
 
 	private val collectingParameters
@@ -137,7 +135,7 @@ internal open class Client(
 
 	private var _bearerToken: BearerToken? = null
 
-	@OptIn(ImplicitReflectionSerializer::class, InternalAPI::class, UnstableDefault::class)
+	@OptIn(InternalAPI::class)
 	suspend fun oAuth2Token() = _bearerToken ?: kotlin.run {
 		val bearer = "${apiKey.urlEncode()}:${apiSecretKey.urlEncode()}".encodeBase64()
 		val response = httpClient.post<HttpResponse>("${Urls.OAUTH2}/token") {
@@ -146,7 +144,7 @@ internal open class Client(
 			body = "grant_type=client_credentials"
 		}
 		(if (response.status.isSuccess()) response.content.readUTF8Line()
-			?.let { Json.parse<BearerToken>(it) } else null)?.also { _bearerToken = it }
+			?.let { Json.decodeFromString<BearerToken>(it) } else null)?.also { _bearerToken = it }
 	}
 }
 

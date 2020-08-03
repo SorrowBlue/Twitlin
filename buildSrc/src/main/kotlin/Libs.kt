@@ -8,7 +8,7 @@ object Libs {
 
 	object kotlinx {
 		object serialization {
-			private const val serialization_version = "0.20.0"
+			private const val serialization_version = "1.0-M1-1.4.0-rc-218"
 			const val runtime =
 				"org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serialization_version"
 			const val `runtime-common` =
@@ -22,7 +22,7 @@ object Libs {
 
 	object `ktor-client` {
 		private const val client = "io.ktor:ktor-client"
-		private const val VERSION = "1.3.2"
+		private const val VERSION = "1.3.2-1.4.0-rc"
 		const val core = "$client-core:${VERSION}"
 		const val okhttp = "$client-okhttp:${VERSION}"
 		const val android = "$client-android:${VERSION}"
@@ -38,15 +38,8 @@ object Libs {
 		}
 	}
 
-	object klock {
-		private const val group = "com.soywiz.korlibs.klock"
-		private const val klock_version = "1.11.13"
-		const val common = "$group:klock:$klock_version"
-		const val jvm = "$group:klock-jvm:$klock_version"
-		const val android = "$group:klock-android:$klock_version"
-		const val iosx64 = "$group:klock-iosx64:$klock_version"
-		const val js = "$group:klock-js:$klock_version"
-	}
+	const val klock = "com.soywiz.korlibs.klock:klock:2.0.0-alpha-1.4.0-rc"
+	const val jsoup = "org.jsoup:jsoup:1.13.1"
 
 	const val krypto = "com.soywiz.korlibs.krypto:krypto:1.11.1"
 

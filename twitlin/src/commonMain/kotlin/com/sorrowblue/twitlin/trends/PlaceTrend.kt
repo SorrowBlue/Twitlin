@@ -2,6 +2,10 @@ package com.sorrowblue.twitlin.trends
 
 import com.soywiz.klock.*
 import kotlinx.serialization.*
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 @Serializable
 data class PlaceTrend(
@@ -23,7 +27,7 @@ data class PlaceTrend(
 
 private object DateTimeTzSerializer2 : KSerializer<DateTimeTz> {
 	private const val TWITTER_PATTERN = "yyyy-MM-ddTHH:mm:ssZ"
-	override val descriptor = PrimitiveDescriptor("com.soywiz.klock.DateTimeTz2", PrimitiveKind.STRING)
+	override val descriptor = PrimitiveSerialDescriptor("com.soywiz.klock.DateTimeTz2", PrimitiveKind.STRING)
 	override fun deserialize(decoder: Decoder) =
 		DateFormat(TWITTER_PATTERN).parse(decoder.decodeString()).toOffset(TimezoneOffset.local(DateTime.EPOCH))
 

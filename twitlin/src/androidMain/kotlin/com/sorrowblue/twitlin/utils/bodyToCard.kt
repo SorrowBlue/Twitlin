@@ -2,7 +2,6 @@ package com.sorrowblue.twitlin.utils
 
 import com.sorrowblue.twitlin.objects.TwitterCard
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.util.*
 

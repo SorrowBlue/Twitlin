@@ -19,4 +19,4 @@ object TweetUtil {
 
 }
 
-expect fun bodyToCard(body: String): TwitterCard
+expect fun bodyToCard(body: String): TwitterCard?

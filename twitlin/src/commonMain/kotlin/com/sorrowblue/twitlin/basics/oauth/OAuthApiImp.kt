@@ -4,10 +4,6 @@ import com.sorrowblue.twitlin.Account
 import com.sorrowblue.twitlin.Twitlin
 import com.sorrowblue.twitlin.basics.OAuthToken
 import com.sorrowblue.twitlin.net.*
-import kotlinx.serialization.ImplicitReflectionSerializer
-import kotlinx.serialization.UnstableDefault
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.stringify
 
 internal class OAuthApiImp(private val client: Client) :
 	OAuthApi {
@@ -21,7 +17,6 @@ internal class OAuthApiImp(private val client: Client) :
 		}.let { Response.SUCCESS("${Urls.OAUTH}/authenticate?oauth_token=${it.oauthToken}") }
 	}
 
-	@OptIn(ImplicitReflectionSerializer::class, UnstableDefault::class)
 	override suspend fun accessToken(authenticate: Authenticate): Response<Unit> {
 		return if (authenticate.oauthToken != token?.oauthToken) {
 			Response.error(ErrorMessages.Error("OAuth token does not match", -202))

@@ -1,3 +1,1 @@
-object Version {
-	const val kotlin = "1.3.72"
-}
+const val KOTLIN_VERSION = "1.4.0-rc"
