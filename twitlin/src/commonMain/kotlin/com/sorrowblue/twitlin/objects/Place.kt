@@ -19,7 +19,6 @@ import kotlinx.serialization.Serializable
  * @property countryCode Shortened country code representing the country containing this place.
  * @property country Name of the country containing this place.
  * @property boundingBox A bounding box of coordinates which encloses this place.
- * @property attributes When using PowerTrack, 30-Day and Full-Archive Search APIs,
  * and Volume Streams this hash is `null`.
  */
 @Parcelize

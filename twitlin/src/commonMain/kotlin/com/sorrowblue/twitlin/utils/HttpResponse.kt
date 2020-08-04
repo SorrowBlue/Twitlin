@@ -37,6 +37,6 @@ internal suspend fun <R> HttpResponse.onSuccess(parse: (String) -> R) =
 				Twitlin.client.account = null
 				Twitlin.onInvalidToken.invoke()
 			}
-			Response.Error<R>(messages.errors)
-		} ?: Response.Error<R>(emptyList())
+			Response.Error(messages.errors)
+		} ?: Response.Error(emptyList())
 	}

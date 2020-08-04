@@ -67,8 +67,14 @@ object Twitlin {
 
 	var account: Account?
 		get() = client.account
-		set(value) {
-			value ?: return
+		internal set(value) {
+			if (value == null) {
+				val nowAccount = client.account ?: return
+				accounts = accounts - nowAccount
+				settings.remove("now_account")
+				settings.putStringSet("accounts", accounts.map(Json::encodeToString).toSet())
+				return
+			}
 			if (accounts.any { it.id == value.id }) {
 				client.account = value
 				Napier.d("Account changed to @${value.name}.", tag = "Twitlin")

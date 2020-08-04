@@ -41,9 +41,6 @@ data class Entities(
 
 ) : Parcelable {
 
-	fun isAllEmpty() =
-		hashtags.isEmpty() && media.isEmpty() && urls.isEmpty() && userMentions.isEmpty() && symbols.isEmpty() && polls.isEmpty()
-
 	/**
 	 * The [TwitterTweet.entities] section will contain a [Entities.hashtags] array containing an object for every
 	 * hashtag included in the Tweet body, and include an empty array if no hashtags are present.

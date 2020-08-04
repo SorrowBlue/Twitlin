@@ -3,8 +3,6 @@ package com.sorrowblue.twitlin.settings
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.parseList
-import kotlinx.serialization.stringify
 import java.util.prefs.Preferences
 
 actual class Settings {
@@ -13,7 +11,7 @@ actual class Settings {
 
 	actual fun contains(key: String) = pref.keys().contains(key)
 
-	actual fun getString(key: String, defValue: String?) = pref.get(key, defValue)
+	actual fun getString(key: String, defValue: String?): String? = pref.get(key, defValue)
 
 	actual fun getStringSet(
 		key: String,

@@ -80,12 +80,12 @@ internal class StatusesApiImp(private val client: Client) :
 	}
 
 	private suspend fun Response<List<TwitterTweet>>.resolveCard(includeCard: Boolean): Response<List<TwitterTweet>> =
-		if (includeCard) fold({
-			Response.success(it.map { value ->
+		if (includeCard) fold({ list ->
+			Response.success(list.map { value ->
 				val tweet = Tweet.valueOf(value)
 				if (tweet is Tweet.Normal) {
-					tweet.source.retweetedStatus?.let {
-						it.entities?.urls?.firstOrNull()?.expandedUrl
+					tweet.source.retweetedStatus?.let { twitterTweet ->
+						twitterTweet.entities?.urls?.firstOrNull()?.expandedUrl
 							?.let { TweetUtil.twitterCard(it) }
 							?.let { value.copy(retweetedStatus = value.retweetedStatus?.copy(card = it)) } ?: value
 					} ?: kotlin.run {

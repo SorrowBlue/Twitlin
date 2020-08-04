@@ -16,7 +16,6 @@ import io.ktor.util.encodeBase64
 import io.ktor.utils.io.readUTF8Line
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.parse
 
 internal class OAuth2ApiImp(private val client: Client) : OAuth2Api {
 

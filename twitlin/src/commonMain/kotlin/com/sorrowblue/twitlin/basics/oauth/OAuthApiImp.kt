@@ -46,7 +46,7 @@ internal class OAuthApiImp(private val client: Client) :
 			{ Response.error<String>(it) })
 
 	override suspend fun invalidateToken() {
-		TODO("Not yet implemented")
+		Twitlin.account = null
 	}
 
 	private suspend fun requestToken(callbackUrl: String): Response<OAuthToken> =

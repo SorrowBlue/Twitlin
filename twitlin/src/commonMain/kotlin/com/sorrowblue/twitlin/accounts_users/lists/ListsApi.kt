@@ -24,7 +24,6 @@ interface ListsApi {
 	 * Helpful for disambiguating when a valid screen name is also a user ID.
 	 * @param reverse Set this to `true` if you would like owned lists to be returned first.
 	 * See description above for information on how this parameter works.
-	 * @param useOAuth2
 	 */
 	suspend fun list(
 		userId: Int? = null,
