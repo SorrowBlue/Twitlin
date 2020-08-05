@@ -23,6 +23,11 @@ sealed class Response<T> {
 		return this
 	}
 
+	fun <R> changeSuccess(action: (T) -> R): Response<R> = when (this) {
+		is SUCCESS -> success(action.invoke(value))
+		is Error -> error(errors)
+	}
+
 	inline fun onError(action: (List<ErrorMessages.Error>) -> Unit): Response<T> {
 		if (this is Error) {
 			action.invoke(errors)
@@ -42,11 +47,11 @@ sealed class Response<T> {
 
 @Serializable
 data class ErrorMessages(
-	val errors: List<Error> = emptyList()
+	val errors: List<Error> = emptyList(),
 ) {
 	@Serializable
 	data class Error(
 		val message: String = "",
-		val code: Int = 0
+		val code: Int = 0,
 	)
 }
