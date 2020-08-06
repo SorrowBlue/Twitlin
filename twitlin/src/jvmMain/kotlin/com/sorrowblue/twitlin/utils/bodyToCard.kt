@@ -2,26 +2,40 @@ package com.sorrowblue.twitlin.utils
 
 import com.sorrowblue.twitlin.objects.TwitterCard
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.util.*
 
-actual fun bodyToCard(body: String): TwitterCard? {
-	val head: Element = Jsoup.parse(body).head()
-	val title = head.getContentByAttributeValue("property", "og:title", "twitter:title") ?: return null
-	val url = head.getContentByAttributeValue("property", "og:url", "twitter:url") ?: return null
+actual fun resolveCard(source: String): TwitterCard? {
+	val document: Document = Jsoup.parse(source)
+	val head: Element = document.head()
+	val body: Element by lazy { document.body() }
+	val title = head.getContentByAttributeValue("property" to "og:title", "name" to "twitter:title")
+		?: body.getContentByAttributeValue("property" to "og:title", "name" to "twitter:title")
+		?: ""
+	val url = head.getContentByAttributeValue("property" to "og:url", "name" to "twitter:url")
+		?: body.getContentByAttributeValue("property" to "og:url", "name" to "twitter:url")
+		?: ""
 	val description =
-		head.getContentByAttributeValue("property", "og:description", "twitter:description") ?: return null
-	val image = head.getContentByAttributeValue("property", "og:image", "twitter:image:src") ?: return null
-	val card = head.getContentByAttributeValue("name", "twitter:card")?.let {
-		runCatching { TwitterCard.CardType.valueOf(it.toUpperCase(Locale.getDefault())) }.getOrElse { TwitterCard.CardType.UNDEFINED }
-	} ?: return null
-	val site = head.getContentByAttributeValue("name", "twitter:site") ?: return null
+		head.getContentByAttributeValue("property" to "og:description", "name" to "twitter:description")
+			?: body.getContentByAttributeValue("property" to "og:description", "name" to "twitter:description")
+			?: ""
+	val image = head.getContentByAttributeValue("property" to "og:image", "name" to "twitter:image:src")
+		?: body.getContentByAttributeValue("property" to "og:image", "name" to "twitter:image:src")
+		?: ""
+	val card = (head.getContentByAttributeValue("name" to "twitter:card")
+		?: body.getContentByAttributeValue("name" to "twitter:card"))?.let {
+		runCatching { TwitterCard.CardType.valueOf(it.toUpperCase(Locale.getDefault())) }.getOrElse { TwitterCard.CardType.SUMMARY }
+	} ?: TwitterCard.CardType.SUMMARY
+	val site = head.getContentByAttributeValue("name" to "twitter:site")
+		?: body.getContentByAttributeValue("name" to "twitter:site")
+		?: ""
 	return TwitterCard(title, url, description, image, card, site)
 }
 
-private fun Element.getContentByAttributeValue(key: String, vararg values: String): String? {
-	values.forEach {
-		val s = getElementsByAttributeValue(key, it).attr("content")
+private fun Element.getContentByAttributeValue(vararg keyValues: Pair<String, String>): String? {
+	keyValues.forEach {
+		val s = getElementsByAttributeValue(it.first, it.second).attr("content")
 		if (s.isNotEmpty()) return s
 	}
 	return null

@@ -1,15 +1,13 @@
 package com.sorrowblue.twitlin.utils
 
 import com.sorrowblue.twitlin.objects.TwitterCard
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class TwitterUtilTest {
 	@Test
 	fun bodyToCardTest() {
-		val card = bodyToCard(SOURCE)
+		val card = resolveCard(SOURCE)
 		assertEquals("Echo Dotをワイヤレスにして持ち運べる！ポータブルバッテリーベース GGMM D3", card?.title)
 		assertEquals("https://www.orefolder.net/blog/2020/08/echo-dot-ggmm-d3/", card?.url)
 		assertEquals("Echo Dot（第3世代）に装着してワイヤレスで使えるようになるポータブルバッテリーベース「GGMM D3」を購入してみました。これを使えば、自由にEcho Dotを持ち運んで家の中のどこでも使える",

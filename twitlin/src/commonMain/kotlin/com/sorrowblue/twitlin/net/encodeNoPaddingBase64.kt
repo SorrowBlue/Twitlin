@@ -1,6 +1,5 @@
 package com.sorrowblue.twitlin.net
 
-import io.ktor.util.encodeBase64
 import io.ktor.utils.io.core.ByteReadPacket
 import io.ktor.utils.io.core.buildPacket
 import io.ktor.utils.io.core.readAvailable

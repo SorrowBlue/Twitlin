@@ -13,12 +13,11 @@ data class TwitterCard(
 	val image: String,
 	val type: CardType,
 	val site: String
-): Parcelable {
+) : Parcelable {
 	enum class CardType {
 		SUMMARY,
 		SUMMARY_LARGE_IMAGE,
 		APP,
 		PLAYER,
-		UNDEFINED;
 	}
 }

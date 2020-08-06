@@ -13,10 +13,10 @@ object TweetUtil {
 	suspend fun twitterCard(url: String): TwitterCard? {
 		val response = HttpClient(clientEngine).get<HttpResponse>(url)
 		return if (response.status.isSuccess()) kotlin.runCatching {
-			bodyToCard(response.readText())
+			resolveCard(response.readText())
 		}.getOrNull() else null
 	}
 
 }
 
-expect fun bodyToCard(body: String): TwitterCard?
+expect fun resolveCard(source: String): TwitterCard?

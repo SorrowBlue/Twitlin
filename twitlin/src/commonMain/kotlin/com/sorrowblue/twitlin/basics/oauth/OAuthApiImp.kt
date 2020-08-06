@@ -35,15 +35,15 @@ internal class OAuthApiImp(private val client: Client) :
 					).getOrNull()?.let {
 						Twitlin.account = Account(it.id, it.profileImageUrlHttps, it.name, it.screenName, accessToken)
 						Response.success(Unit)
-					} ?: Response.error<Unit>(ErrorMessages.Error("アカウント情報が首都デキませんでした", -203))
+					} ?: Response.error(ErrorMessages.Error("アカウント情報が首都デキませんでした", -203))
 				}
-			}, { Response.error<Unit>(it) })
+			}, { Response.error(it) })
 		}
 	}
 
 	override suspend fun authorize(forceLogin: Boolean, screenName: String) =
 		requestToken("snsmate://dawd.com").fold({ Response.success("${Urls.OAUTH}/authorize?oauth_token=${it.oauthToken}") },
-			{ Response.error<String>(it) })
+			{ Response.error(it) })
 
 	override suspend fun invalidateToken() {
 		Twitlin.account = null

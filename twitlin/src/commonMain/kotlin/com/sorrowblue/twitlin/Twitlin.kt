@@ -3,6 +3,10 @@ package com.sorrowblue.twitlin
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.accounts_users.account.AccountApi
 import com.sorrowblue.twitlin.accounts_users.account.AccountApiImp
+import com.sorrowblue.twitlin.accounts_users.followers.FollowersApi
+import com.sorrowblue.twitlin.accounts_users.followers.FollowersApiImp
+import com.sorrowblue.twitlin.accounts_users.friends.FriendsApi
+import com.sorrowblue.twitlin.accounts_users.friends.FriendsApiImp
 import com.sorrowblue.twitlin.accounts_users.lists.ListsApi
 import com.sorrowblue.twitlin.accounts_users.lists.ListsApiImp
 import com.sorrowblue.twitlin.accounts_users.users.UsersApi
@@ -18,7 +22,6 @@ import com.sorrowblue.twitlin.trends.TrendsApi
 import com.sorrowblue.twitlin.trends.TrendsApiImp
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApiImp
-import io.ktor.util.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -41,7 +44,7 @@ object Twitlin {
 		val account = if (oAuthToken != null && oAuthTokenSecret != null) {
 			Account(0, "", "", "", AccessToken(oAuthToken, oAuthTokenSecret))
 		} else {
-			settings.getString("now_account", null)?.let { Json.decodeFromString<Account>(it) }
+			settings.getString("now_account", null)?.let { Json.decodeFromString(it) }
 		}
 		client = Client(apiKey, apiSecret, account)
 		this.account = account
@@ -56,6 +59,8 @@ object Twitlin {
 		val account: AccountApi by lazy { AccountApiImp(client) }
 		val statuses: StatusesApi by lazy { StatusesApiImp(client) }
 		val users: UsersApi by lazy { UsersApiImp(client) }
+		val followers: FollowersApi by lazy { FollowersApiImp(client) }
+		val friends: FriendsApi by lazy { FriendsApiImp(client) }
 	}
 
 	val isAuthorizationRequired: Boolean get() = client.account == null

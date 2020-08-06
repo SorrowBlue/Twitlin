@@ -32,9 +32,9 @@ internal class OAuth2ApiImp(private val client: Client) : OAuth2Api {
 				client.bearerToken = it
 					Response.success(it)
 			}
-				?: Response.error<BearerToken>()
+				?: Response.error()
 		} else {
-			Response.error<BearerToken>()
+			Response.error()
 		}
 	}
 
