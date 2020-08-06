@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "com.sorrowblue.twitlin"
-version = "0.0.1-dev-002"
+version = "v0.0.1-dev-002"
 
 kotlin {
 	android {
