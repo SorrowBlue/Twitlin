@@ -4,12 +4,12 @@ on:
     branches:
       - master
     tags:
-      - "*"
+      - "v*"
   pull_request:
     branches:
       - master
     tags:
-      - "*"
+      - "v*"
 
 jobs:
   build:
@@ -34,10 +34,10 @@ jobs:
           # リリースのタグ (必須)
           tag_name: ${{ github.ref }}
           # リリースのタイトル (必須)
-          release_name: First Release 0.0.1-dev-001
+          release_name: Developer Release 0.0.1-dev-002
           # リリースのタイトル (省略可能)
           body: |
-            # Twitlin First Release
+            # Twitlin Developer Release
             Twitlin is a wrapper library for the Twitter API.<br />
             I am happy to be able to publish it.<br />
             **Not all features are implemented in this version yet.**
