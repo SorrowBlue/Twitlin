@@ -30,11 +30,11 @@ internal suspend fun <R> HttpResponse.onSuccess(parse: (String) -> R) =
 			method = ${request.method}
 			url = ${request.url}
 			headers = ${request.headers.toMap()}
+			text = ${content.readUTF8Line()}
 			""".trimIndent(), tag = "HttpResponse.onSuccess"
 		)
 		content.readUTF8Line()?.let { Json.decodeFromString<ErrorMessages>(it) }?.let { messages ->
 			if (messages.errors.any { it.code == 89 }) {
-				Twitlin.client.account = null
 				Twitlin.onInvalidToken.invoke()
 			}
 			Response.Error(messages.errors)

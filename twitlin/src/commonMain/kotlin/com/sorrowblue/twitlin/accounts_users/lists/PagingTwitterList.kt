@@ -1,14 +1,11 @@
-package com.sorrowblue.twitlin.objects
+package com.sorrowblue.twitlin.accounts_users.lists
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Parcelize
 @Serializable
-data class PagingUser(
-	val users: List<TwitterUser>,
+data class PagingTwitterList(
+	val lists: List<TwitterList>,
 	@SerialName("next_cursor")
 	val nextCursor: Long,
 	@SerialName("next_cursor_str")
@@ -16,7 +13,5 @@ data class PagingUser(
 	@SerialName("previous_cursor")
 	val previousCursor: Long,
 	@SerialName("previous_cursor_str")
-	val previousCursorStr: String,
-	@SerialName("total_count")
-	val totalCount: Int? = null
-) : Parcelable
+	val previousCursorStr: String
+)

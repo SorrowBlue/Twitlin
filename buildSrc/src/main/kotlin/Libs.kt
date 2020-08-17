@@ -3,7 +3,7 @@ object Libs {
 	object andoridx {
 		const val `core-ktx` = "androidx.core:core-ktx:1.3.0"
 		const val `preference-ktx` = "androidx.preference:preference-ktx:1.1.1"
-		const val `security-crypto` = "androidx.security:security-crypto:1.0.0-rc02"
+		const val `security-crypto` = "androidx.security:security-crypto:1.1.0-alpha02"
 	}
 
 	object kotlinx {
@@ -17,6 +17,11 @@ object Libs {
 				"org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version"
 			const val `runtime-native` =
 				"org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$serialization_version"
+		}
+		object coroutines {
+			private const val VERSION = "1.3.8"
+			const val `core-common` = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$VERSION"
+			const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$VERSION"
 		}
 	}
 
@@ -38,7 +43,7 @@ object Libs {
 		}
 	}
 
-	const val klock = "com.soywiz.korlibs.klock:klock:2.0.0-alpha-1.4.0-rc"
+	const val klock = "com.soywiz.korlibs.klock:klock:1.12.0"
 	const val jsoup = "org.jsoup:jsoup:1.13.1"
 
 	const val krypto = "com.soywiz.korlibs.krypto:krypto:1.11.1"

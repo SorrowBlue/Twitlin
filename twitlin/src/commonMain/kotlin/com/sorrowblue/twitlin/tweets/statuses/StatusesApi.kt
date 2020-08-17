@@ -9,31 +9,33 @@ interface StatusesApi {
 		count: Int = 20,
 		sinceId: Long? = null,
 		maxId: Long? = null,
-		trimUser: Boolean = false,
-		excludeReplies: Boolean = false,
-		includeEntities: Boolean = false,
-		includeCard: Boolean = false
+		trimUser: Boolean? = null,
+		excludeReplies: Boolean? = null,
+		includeEntities: Boolean? = null,
+		includeCard: Boolean? = null
 	): Response<List<TwitterTweet>>
 
 	suspend fun userTimeline(
 		userId: Long,
 		sinceId: Long? = null,
 		maxId: Long? = null,
-		count: Int = 20,
-		trimUser: Boolean = false,
-		excludeReplies: Boolean = false,
-		includeRetweet: Boolean = true,
-		includeCard: Boolean = false
+		count: Int? = null,
+		trimUser: Boolean? = null,
+		excludeReplies: Boolean? = null,
+		includeRetweet: Boolean? = null,
+		includeCard: Boolean? = null
 	): Response<List<TwitterTweet>>
 
 	suspend fun userTimeline(
 		screenName: String,
 		sinceId: Long? = null,
 		maxId: Long? = null,
-		count: Int = 20,
-		trimUser: Boolean = false,
-		excludeReplies: Boolean = false,
-		includeRetweet: Boolean = true,
-		includeCard: Boolean = false
+		count: Int? = null,
+		trimUser: Boolean? = null,
+		excludeReplies: Boolean? = null,
+		includeRetweet: Boolean? = null,
+		includeCard: Boolean? = null
 	): Response<List<TwitterTweet>>
+
+	suspend fun lookup(id: List<Long>): Response<List<TwitterTweet>>
 }

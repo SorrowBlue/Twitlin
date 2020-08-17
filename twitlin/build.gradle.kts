@@ -1,19 +1,17 @@
 @file:Suppress("UNUSED_VARIABLE")
 
-import org.jetbrains.dokka.gradle.DokkaTask
-
 plugins {
 	`kotlin-multiplatform`
 	ComAndroidPluginGroup(this).library
 	`kotlin-android-extensions`
 	`kotlin-kapt`
 	kotlin("plugin.serialization") version KOTLIN_VERSION
-	id("org.jetbrains.dokka") version "0.10.1"
+	id("org.jetbrains.dokka") version "1.4.0-rc-24"
 	`maven-publish`
 }
 
 group = "com.sorrowblue.twitlin"
-version = "v0.0.1-dev-002"
+version = "0.0.1-dev-004"
 
 kotlin {
 	android {
@@ -41,6 +39,7 @@ kotlin {
 		commonMain {
 			dependencies {
 				implementation(Libs.kotlinx.serialization.runtime)
+
 				implementation(Libs.`ktor-client`.core)
 				implementation(Libs.`ktor-client`.serialization.common)
 				implementation(Libs.napier.common)
@@ -102,7 +101,7 @@ kotlin {
 
 android {
 	compileSdkVersion(30)
-	buildToolsVersion("30.0.1")
+	buildToolsVersion("30.0.2")
 
 	defaultConfig {
 		minSdkVersion(23)
@@ -115,25 +114,24 @@ android {
 	}
 }
 
-tasks.named<DokkaTask>("dokka") {
-	outputFormat = "html"
+tasks.named<org.jetbrains.dokka.gradle.DokkaTask>("dokkaHtml") {
 	outputDirectory = "${rootProject.projectDir}/docs"
-
-	multiplatform {
-		create("jvm") {
-			targets = listOf("JVM")
+	dokkaSourceSets {
+		register("commonMain") {
+			displayName = "common"
+			platform = "common"
+		}
+		register("jvmMain") {
+			displayName = "jvm"
 			platform = "jvm"
-			skipEmptyPackages = true
 		}
-		create("android") {
-			targets = listOf("Android")
+		create("androidMain") {
+			displayName = "android"
 			platform = "android"
-			skipEmptyPackages = true
 		}
-		create("js") {
-			targets = listOf("js")
+		create("jsMain") {
+			displayName = "js"
 			platform = "js"
-			skipEmptyPackages = true
 		}
 	}
 }
@@ -153,19 +151,18 @@ afterEvaluate {
 	}
 	publishing {
 		val projectName = project.name
-		publications.all<MavenPublication> {
-			artifactId = projectName
-			groupId = "com.sorrowblue.twitlin"
-			when (name) {
+		publications.all<org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication> {
+			artifactId = when (name) {
 				"kotlinMultiplatform" -> {
-					artifactId = projectName
 					artifact(sourcesJar)
+					"$projectName-ios"
 				}
-				"metadata" -> artifactId = "$projectName-common"
-				"androidRelease" -> artifactId = "$projectName-android"
-				else -> {
-					artifactId = "$projectName-$name"
-				}
+				"metadata" -> projectName
+				"androidRelease" -> "$projectName-android"
+				else -> "$projectName-$name"
+			}
+			if (it.name.contains("ios").not() && it.name != "kotlinMultiPlatform") {
+				setModuleDescriptorGenerator(null)
 			}
 		}
 		repositories {
@@ -173,8 +170,10 @@ afterEvaluate {
 				name = "GitHubPackages"
 				url = uri("https://maven.pkg.github.com/SorrowBlue/twitlin")
 				credentials {
-					username = project.findProperty("gpr.user")?.toString() ?: System.getenv("USERNAME")
-					password = project.findProperty("gpr.token")?.toString() ?: System.getenv("TOKEN")
+					username =
+						project.findProperty("gpr.user")?.toString() ?: System.getenv("USERNAME")
+					password =
+						project.findProperty("gpr.token")?.toString() ?: System.getenv("TOKEN")
 				}
 			}
 		}

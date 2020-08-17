@@ -1,59 +1,30 @@
 package com.sorrowblue.twitlin.basics.oauth
 
-import com.sorrowblue.twitlin.Account
-import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.basics.OAuthToken
 import com.sorrowblue.twitlin.net.*
 
-internal class OAuthApiImp(private val client: Client) :
-	OAuthApi {
+private const val OAUTH = "${Urls.ROOT}/oauth"
 
-	private var token: OAuthToken? = null
+internal class OAuthApiImp(private val client: Client) : OAuthApi {
 
-	override suspend fun authenticate(callbackUrl: String): Response<String> {
-		return when (val res = requestToken(callbackUrl)) {
-			is Response.SUCCESS -> (res.value).also { token = it }
-			is Response.Error -> return Response.Error(res.errors)
-		}.let { Response.SUCCESS("${Urls.OAUTH}/authenticate?oauth_token=${it.oauthToken}") }
-	}
-
-	override suspend fun accessToken(authenticate: Authenticate): Response<Unit> {
-		return if (authenticate.oauthToken != token?.oauthToken) {
-			Response.error(ErrorMessages.Error("OAuth token does not match", -202))
-		} else {
-			client.post<String>(
-				"${Urls.OAUTH}/access_token",
-				listOf("oauth_verifier" to authenticate.oauthVerifier),
-				overrideOAuthToken = authenticate.oauthToken
-			).fold({ s ->
-				AccessToken.fromString(s).let { accessToken ->
-					client.account = Account(0, "", "", "", accessToken)
-					Twitlin.Api.account.verifyCredentials(
-						includeEntities = false,
-						skipStatus = false,
-						includeEmail = false
-					).getOrNull()?.let {
-						Twitlin.account = Account(it.id, it.profileImageUrlHttps, it.name, it.screenName, accessToken)
-						Response.success(Unit)
-					} ?: Response.error(ErrorMessages.Error("アカウント情報が首都デキませんでした", -203))
-				}
-			}, { Response.error(it) })
-		}
-	}
-
-	override suspend fun authorize(forceLogin: Boolean, screenName: String) =
-		requestToken("snsmate://dawd.com").fold({ Response.success("${Urls.OAUTH}/authorize?oauth_token=${it.oauthToken}") },
-			{ Response.error(it) })
-
-	override suspend fun invalidateToken() {
-		Twitlin.account = null
-	}
-
-	private suspend fun requestToken(callbackUrl: String): Response<OAuthToken> =
+	override suspend fun accessToken(authenticate: Authenticate): Response<AccessToken> =
 		client.post<String>(
-			"${Urls.OAUTH}/request_token",
-			listOf("oauth_callback" to callbackUrl),
-			oauthEnabled = false
-		)
-			.fold({ Response.SUCCESS(OAuthToken.fromString(it)) }, { Response.Error(it) })
+			"$OAUTH/access_token",
+			"oauth_verifier" to authenticate.oauthVerifier,
+			overrideOAuthToken = authenticate.oauthToken
+		).fold({ Response.success(AccessToken.fromString(it)) }, { Response.error(it) })
+
+	override fun authenticate(oAuthToken: OAuthToken, forceLogin: Boolean, screenName: String?) =
+		"$OAUTH/authenticate?oauth_token=${oAuthToken.oauthToken}&force_login=$forceLogin${screenName?.let { "screen_name=$it" } ?: ""}"
+
+	override fun authorize(oAuthToken: OAuthToken, forceLogin: Boolean, screenName: String?) =
+		"$OAUTH/authorize?oauth_token=${oAuthToken.oauthToken}&force_login=$forceLogin${screenName?.let { "screen_name=$it" } ?: ""}"
+
+	override suspend fun requestToken(oauthCallback: String): Response<OAuthToken> =
+		client.post<String>(
+			"$OAUTH/request_token",
+			"oauth_callback" to oauthCallback,
+			oauthToken = false
+		).fold({ Response.success(OAuthToken.fromString(it)) }, { Response.Error(it) })
+
+	override suspend fun invalidateToken(): Response<Unit> = client.post("$OAUTH/invalidate_token")
 }

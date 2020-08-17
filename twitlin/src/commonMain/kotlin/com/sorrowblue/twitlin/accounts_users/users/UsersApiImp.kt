@@ -9,29 +9,23 @@ internal class UsersApiImp(private val client: Client) : UsersApi {
 
 	override suspend fun lookup(
 		vararg screenNames: String,
-		includeEntities: Boolean,
-		tweetMode: UsersApi.Mode
-	): Response<List<TwitterUser>> {
-		return client.getList(
-			"${Urls.USERS}/lookup.json", listOf(
-				"screen_name" to screenNames.joinToString(","),
-				"include_entities" to includeEntities.toString(),
-				"tweet_mode" to tweetMode.value
-			)
-		)
-	}
+		includeEntities: Boolean?,
+		tweetMode: UsersApi.Mode?
+	): Response<List<TwitterUser>> = client.getList(
+		"${Urls.USERS}/lookup.json",
+		"screen_name" to screenNames.joinToString(","),
+		"include_entities" to includeEntities,
+		"tweet_mode" to tweetMode?.value
+	)
 
 	override suspend fun lookup(
 		vararg userIds: Long,
-		includeEntities: Boolean,
-		tweetMode: UsersApi.Mode
-	): Response<List<TwitterUser>> {
-		return client.getList(
-			"${Urls.USERS}/lookup.json", listOf(
-				"user_id" to userIds.joinToString(","),
-				"include_entities" to includeEntities.toString(),
-				"tweet_mode" to tweetMode.value
-			)
-		)
-	}
+		includeEntities: Boolean?,
+		tweetMode: UsersApi.Mode?
+	): Response<List<TwitterUser>> = client.getList(
+		"${Urls.USERS}/lookup.json",
+		"user_id" to userIds.joinToString(","),
+		"include_entities" to includeEntities,
+		"tweet_mode" to tweetMode?.value
+	)
 }

@@ -11,73 +11,65 @@ private const val ROOT = "${Urls._1_1}/statuses"
 
 internal class StatusesApiImp(private val client: Client) :
 	StatusesApi {
-
 	override suspend fun homeTimeline(
 		count: Int,
 		sinceId: Long?,
 		maxId: Long?,
-		trimUser: Boolean,
-		excludeReplies: Boolean,
-		includeEntities: Boolean,
-		includeCard: Boolean
-	): Response<List<TwitterTweet>> {
-		val query: List<Pair<String, String>> = mutableListOf(
-			"count" to count.toString(),
-			"trim_user" to trimUser.toString(),
-			"exclude_replies" to excludeReplies.toString(),
-			"include_entities" to includeEntities.toString()
-		).apply {
-			sinceId?.let { add("since_id" to it.toString()) }
-			maxId?.let { add("max_id" to it.toString()) }
-		}
-		return client.getList<TwitterTweet>("$ROOT/home_timeline.json", query).resolveCard(includeCard)
-	}
+		trimUser: Boolean?,
+		excludeReplies: Boolean?,
+		includeEntities: Boolean?,
+		includeCard: Boolean?
+	): Response<List<TwitterTweet>> = client.getList<TwitterTweet>(
+		"$ROOT/home_timeline.json",
+		"count" to count,
+		"since_id" to sinceId,
+		"max_id" to maxId,
+		"trim_user" to trimUser,
+		"exclude_replies" to excludeReplies,
+		"include_entities" to includeEntities
+	).resolveCard(includeCard == true)
 
 	override suspend fun userTimeline(
 		userId: Long,
 		sinceId: Long?,
 		maxId: Long?,
-		count: Int,
-		trimUser: Boolean,
-		excludeReplies: Boolean,
-		includeRetweet: Boolean,
-		includeCard: Boolean
-	): Response<List<TwitterTweet>> {
-		val query: List<Pair<String, String>> = mutableListOf(
-			"user_id" to userId.toString(),
-			"count" to count.toString(),
-			"trim_user" to trimUser.toString(),
-			"exclude_replies" to excludeReplies.toString(),
-			"include_rts" to includeRetweet.toString()
-		).apply {
-			sinceId?.let { add("since_id" to it.toString()) }
-			maxId?.let { add("max_id" to it.toString()) }
-		}
-		return client.getList<TwitterTweet>("$ROOT/user_timeline.json", query).resolveCard(includeCard)
-	}
+		count: Int?,
+		trimUser: Boolean?,
+		excludeReplies: Boolean?,
+		includeRetweet: Boolean?,
+		includeCard: Boolean?
+	): Response<List<TwitterTweet>> = client.getList<TwitterTweet>(
+		"$ROOT/user_timeline.json",
+		"user_id" to userId,
+		"since_id" to sinceId,
+		"max_id" to maxId,
+		"count" to count,
+		"trim_user" to trimUser,
+		"exclude_replies" to excludeReplies,
+		"include_rts" to includeRetweet
+	).resolveCard(includeCard == true)
 
 	override suspend fun userTimeline(
 		screenName: String,
 		sinceId: Long?,
 		maxId: Long?,
-		count: Int,
-		trimUser: Boolean,
-		excludeReplies: Boolean,
-		includeRetweet: Boolean,
-		includeCard: Boolean
-	): Response<List<TwitterTweet>> {
-		val query: List<Pair<String, String>> = mutableListOf(
-			"screen_name" to screenName,
-			"count" to count.toString(),
-			"trim_user" to trimUser.toString(),
-			"exclude_replies" to excludeReplies.toString(),
-			"include_rts" to includeRetweet.toString()
-		).apply {
-			sinceId?.let { add("since_id" to it.toString()) }
-			maxId?.let { add("max_id" to it.toString()) }
-		}
-		return client.getList<TwitterTweet>("$ROOT/user_timeline.json", query).resolveCard(includeCard)
-	}
+		count: Int?,
+		trimUser: Boolean?,
+		excludeReplies: Boolean?,
+		includeRetweet: Boolean?,
+		includeCard: Boolean?
+	): Response<List<TwitterTweet>> = client.getList<TwitterTweet>(
+		"$ROOT/user_timeline.json",
+		"screenName" to screenName,
+		"since_id" to sinceId,
+		"max_id" to maxId,
+		"count" to count,
+		"trim_user" to trimUser,
+		"exclude_replies" to excludeReplies,
+		"include_rts" to includeRetweet
+	).resolveCard(includeCard == true)
+
+	override suspend fun lookup(id: List<Long>): Response<List<TwitterTweet>> = client.get<List<TwitterTweet>>("$ROOT/lookup.json", "id" to id.joinToString(","))
 
 	private suspend fun Response<List<TwitterTweet>>.resolveCard(includeCard: Boolean): Response<List<TwitterTweet>> {
 		return getOrNull()?.map { value ->
@@ -86,7 +78,8 @@ internal class StatusesApiImp(private val client: Client) :
 				tweet.source.retweetedStatus?.let { twitterTweet ->
 					twitterTweet.entities?.urls?.firstOrNull()?.expandedUrl
 						?.let { TweetUtil.twitterCard(it) }
-						?.let { value.copy(retweetedStatus = value.retweetedStatus?.copy(card = it)) } ?: value
+						?.let { value.copy(retweetedStatus = value.retweetedStatus?.copy(card = it)) }
+						?: value
 				} ?: kotlin.run {
 					tweet.source.entities?.urls?.firstOrNull()?.expandedUrl
 						?.let { TweetUtil.twitterCard(it) }

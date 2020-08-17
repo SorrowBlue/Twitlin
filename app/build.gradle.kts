@@ -20,22 +20,34 @@ android {
 	buildTypes {
 		val release by getting {
 			isMinifyEnabled = false
-			proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+			proguardFiles(
+				getDefaultProguardFile("proguard-android-optimize.txt"),
+				"proguard-rules.pro"
+			)
 		}
 	}
 	packagingOptions {
 		excludes.plusAssign("META-INF/**.kotlin_module")
 	}
+	compileOptions {
+		sourceCompatibility = JavaVersion.VERSION_1_8
+		targetCompatibility = JavaVersion.VERSION_1_8
+	}
+
+	kotlinOptions.jvmTarget = "1.8"
+	buildFeatures.viewBinding = true
 }
 
 dependencies {
-	implementation (kotlin("stdlib", KOTLIN_VERSION))
+	implementation(kotlin("stdlib", KOTLIN_VERSION))
 	implementation("androidx.core:core-ktx:1.5.0-alpha01")
+	implementation("androidx.activity:activity-ktx:1.2.0-alpha07")
 	implementation("androidx.appcompat:appcompat:1.3.0-alpha01")
 	implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-alpha06")
 	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-alpha06")
 	implementation("androidx.constraintlayout:constraintlayout:2.0.0-rc1")
-	implementation(project (":twitlin"))
+	implementation("androidx.webkit:webkit:1.3.0-rc02")
+	implementation(project(":twitlin"))
 	testImplementation("junit:junit:4.13")
 	androidTestImplementation("androidx.test.ext:junit:1.1.2-rc02")
 	androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0-rc02")

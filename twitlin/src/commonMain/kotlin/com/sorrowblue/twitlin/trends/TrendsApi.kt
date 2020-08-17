@@ -45,5 +45,5 @@ interface TrendsApi {
 	 * @param woeid
 	 * @param exclude
 	 */
-	suspend fun place(woeid: Int, exclude: Boolean = false): Response<List<PlaceTrend>>
+	suspend fun place(woeid: Int, exclude: Boolean? = null): Response<List<PlaceTrend>>
 }

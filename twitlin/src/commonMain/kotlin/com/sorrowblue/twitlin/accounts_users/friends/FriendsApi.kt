@@ -2,25 +2,38 @@ package com.sorrowblue.twitlin.accounts_users.friends
 
 import com.sorrowblue.twitlin.accounts_users.UserIds
 import com.sorrowblue.twitlin.net.Response
-import com.sorrowblue.twitlin.objects.PagingUser
+import com.sorrowblue.twitlin.objects.PagingTwitterUser
 
 interface FriendsApi {
 
 	suspend fun ids(
-		userId: Long? = null,
-		screenName: String? = null,
-		cursor: Long = -1,
-		stringifyIds: Boolean = false,
+		userId: Long,
+		cursor: Long? = null,
+		stringifyIds: Boolean? = null,
 		count: Int? = null
 	): Response<UserIds>
 
 
+	suspend fun ids(
+		screenName: String,
+		cursor: Long? = null,
+		stringifyIds: Boolean? = null,
+		count: Int? = null
+	): Response<UserIds>
+
 	suspend fun list(
-		userId: Long? = null,
+		userId: Long,
+		cursor: Long? = null,
+		count: Int? = null,
+		skipStatus: Boolean? = null,
+		includeUserEntities: Boolean? = null
+	): Response<PagingTwitterUser>
+
+	suspend fun list(
 		screenName: String? = null,
-		cursor: Long = -1,
-		count: Int = 20,
-		skipStatus: Boolean = false,
-		includeUserEntities: Boolean = true
-	): Response<PagingUser>
+		cursor: Long? = null,
+		count: Int? = null,
+		skipStatus: Boolean? = null,
+		includeUserEntities: Boolean? = null
+	): Response<PagingTwitterUser>
 }

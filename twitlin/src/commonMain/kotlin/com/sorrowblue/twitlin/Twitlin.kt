@@ -17,37 +17,30 @@ import com.sorrowblue.twitlin.basics.oauth.OAuthApiImp
 import com.sorrowblue.twitlin.basics.oauth2.OAuth2Api
 import com.sorrowblue.twitlin.basics.oauth2.OAuth2ApiImp
 import com.sorrowblue.twitlin.net.Client
-import com.sorrowblue.twitlin.settings.Settings
 import com.sorrowblue.twitlin.trends.TrendsApi
 import com.sorrowblue.twitlin.trends.TrendsApiImp
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApiImp
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import com.sorrowblue.twitlin.v2.tweets.TweetsApi
+import com.sorrowblue.twitlin.v2.tweets.TweetsApiImp
+import com.sorrowblue.twitlin.v2.Client as V2Client
 
 object Twitlin {
 
 	internal lateinit var client: Client private set
+	internal lateinit var v2Client: V2Client private set
 
-	internal lateinit var settings: Settings private set
-
-	fun initialize(
-		apiKey: String, apiSecret: String,
-		settings: Settings,
-		oAuthToken: String? = null, oAuthTokenSecret: String? = null
-	) {
-		Napier.d("Twitlin has been initialized.", tag = "Twitlin")
-		this.settings = settings
-		settings.getStringSet("accounts", null)?.map { Json.decodeFromString<Account>(it) }
-			?.also { accounts = it }
-		val account = if (oAuthToken != null && oAuthTokenSecret != null) {
-			Account(0, "", "", "", AccessToken(oAuthToken, oAuthTokenSecret))
-		} else {
-			settings.getString("now_account", null)?.let { Json.decodeFromString(it) }
+	var accessToken: AccessToken?
+		get() = client.accessToken
+		set(value) {
+			client.accessToken = value
+			v2Client.accessToken = value
 		}
-		client = Client(apiKey, apiSecret, account)
-		this.account = account
+
+	fun initialize(apiKey: String, apiSecret: String, accessToken: AccessToken? = null) {
+		Napier.d("Twitlin has been initialized.", tag = "Twitlin")
+		client = Client(apiKey, apiSecret, accessToken)
+		v2Client = V2Client(apiKey, apiSecret, accessToken)
 	}
 
 
@@ -62,40 +55,16 @@ object Twitlin {
 		val followers: FollowersApi by lazy { FollowersApiImp(client) }
 		val friends: FriendsApi by lazy { FriendsApiImp(client) }
 	}
+	object v2 {
+		val usersApi: com.sorrowblue.twitlin.v2.users.UsersApi by lazy {
+			com.sorrowblue.twitlin.v2.users.UsersApiImp(v2Client)
+		}
+		val tweetsApi: TweetsApi by lazy { TweetsApiImp(v2Client) }
+	}
 
-	val isAuthorizationRequired: Boolean get() = client.account == null
+	val isAuthorizationRequired: Boolean get() = client.accessToken == null
 
 	var onInvalidToken: () -> Unit = {}
-
-	var accounts: List<Account> = emptyList()
-		internal set
-
-	var account: Account?
-		get() = client.account
-		internal set(value) {
-			if (value == null) {
-				val nowAccount = client.account ?: return
-				accounts = accounts - nowAccount
-				settings.remove("now_account")
-				settings.putStringSet("accounts", accounts.map(Json::encodeToString).toSet())
-				return
-			}
-			if (accounts.any { it.id == value.id }) {
-				client.account = value
-				Napier.d("Account changed to @${value.name}.", tag = "Twitlin")
-			} else {
-				accounts = accounts + value
-				client.account = value
-				Napier.d("Account added and changed to @${value.name}.", tag = "Twitlin")
-			}
-			settings.putString("now_account", Json.encodeToString(value))
-			settings.putStringSet("accounts", accounts.map(Json::encodeToString).toSet())
-			Napier.d(
-				"""The currently stored accounts are as follows.
-				${accounts.joinToString("\n")}
-			""".trimIndent()
-			)
-		}
 }
 
 

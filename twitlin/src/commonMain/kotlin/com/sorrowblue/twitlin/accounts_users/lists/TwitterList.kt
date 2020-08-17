@@ -6,6 +6,7 @@ import com.soywiz.klock.DateTimeTz
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Serializable
 data class TwitterList(
 	val id: Long,
 	@SerialName("id_str")
