@@ -6,15 +6,13 @@ import com.sorrowblue.twitlin.basics.oauth.OAuthToken
 import com.sorrowblue.twitlin.objects.TwitterUser
 import com.sorrowblue.twitlin.test.*
 import com.sorrowblue.twitlin.test.Test.runTest
-import com.sorrowblue.twitlin.utils.urlEncode
 import kotlin.test.Test
 
 class Test {
 
 	init {
-//		initializeTest()
 		Napier.base(TestAntilog())
-		Twitlin.initialize(API_KEY, API_SECRET, null)
+		Twitlin.initialize(TestKey.API_KEY, TestKey.API_SECRET, null)
 	}
 
 	@Test

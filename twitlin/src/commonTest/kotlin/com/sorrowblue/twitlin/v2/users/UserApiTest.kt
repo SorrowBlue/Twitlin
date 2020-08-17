@@ -2,13 +2,10 @@ package com.sorrowblue.twitlin.v2.users
 
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.test.Test.runTest
 import com.sorrowblue.twitlin.test.initializeTest
-import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.tweets.TweetField
 import com.sorrowblue.twitlin.v2.tweets.UserField
-import com.sorrowblue.twitlin.v2.tweets.toParameter
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
