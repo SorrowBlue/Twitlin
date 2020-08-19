@@ -3,20 +3,19 @@ package com.sorrowblue.twitlin.basic.oauth
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.*
 import com.sorrowblue.twitlin.basics.oauth.Authenticate
-import com.sorrowblue.twitlin.test.API_KEY
-import com.sorrowblue.twitlin.test.API_SECRET
 import com.sorrowblue.twitlin.test.Test.runTest
-import com.sorrowblue.twitlin.test.TestAntilog
+import com.sorrowblue.twitlin.test.initializeTest
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 class OAuthApiTest {
 
 	init {
-		Napier.base(TestAntilog())
-		Twitlin.initialize(API_KEY, API_SECRET, null)
+		initializeTest()
 	}
 
+	@Ignore
 	@Test
 	fun accessTokenTest() = runTest {
 		val accessToken = Twitlin.Api.oauth.accessToken(
@@ -61,6 +60,7 @@ class OAuthApiTest {
 		assertNotNull(token, "oauthToken is null")
 	}
 
+	@Ignore
 	@Test
 	fun invalidateToken() {
 		TODO()

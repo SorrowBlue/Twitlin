@@ -6,7 +6,6 @@ import com.sorrowblue.twitlin.test.Test.runTest
 import com.sorrowblue.twitlin.test.initializeTest
 import kotlin.test.Test
 import kotlin.test.assertNotNull
-
 class TweetsApiTest {
 
 	init {
@@ -14,6 +13,7 @@ class TweetsApiTest {
 	}
 
 	@Test
+
 	fun tweetsIdTest() = runTest {
 		val tweet = Twitlin.v2.tweetsApi.tweets("1067094924124872705")
 			.onSuccess {

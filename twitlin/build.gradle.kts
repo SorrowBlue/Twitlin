@@ -23,6 +23,7 @@ kotlin {
 		}
 	}
 	js {
+		nodejs()
 		browser {
 			testTask {
 				useKarma {
@@ -38,12 +39,12 @@ kotlin {
 		}
 		commonMain {
 			dependencies {
-				implementation(Libs.kotlinx.serialization.runtime)
-
+				implementation(Libs.kotlinx.serialization)
 				implementation(Libs.`ktor-client`.core)
-				implementation(Libs.`ktor-client`.serialization.common)
-				implementation(Libs.napier.common)
+				implementation(Libs.`ktor-client`.serialization)
 				api(Libs.klock)
+
+				implementation(Libs.napier.common)
 			}
 		}
 		commonTest {
@@ -55,7 +56,6 @@ kotlin {
 		val jsMain by getting {
 			dependencies {
 				implementation(Libs.`ktor-client`.js)
-				implementation(Libs.`ktor-client`.serialization.js)
 				implementation(Libs.napier.js)
 
 				implementation("org.webjars.npm:crypto-js:4.0.0")
@@ -69,12 +69,10 @@ kotlin {
 		val androidMain by getting {
 			dependencies {
 				implementation(Libs.`ktor-client`.android)
-				implementation(Libs.`ktor-client`.serialization.jvm)
 				implementation(Libs.napier.android)
 
 				implementation(Libs.jsoup)
 				implementation(Libs.andoridx.`security-crypto`)
-				implementation(Libs.andoridx.`preference-ktx`)
 			}
 		}
 		val androidTest by getting {
@@ -85,7 +83,6 @@ kotlin {
 		val jvmMain by getting {
 			dependencies {
 				implementation(Libs.`ktor-client`.okhttp)
-				implementation(Libs.`ktor-client`.serialization.jvm)
 				implementation(Libs.napier.jvm)
 
 				implementation(Libs.jsoup)

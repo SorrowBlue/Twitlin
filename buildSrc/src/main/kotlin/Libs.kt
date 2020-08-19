@@ -1,3 +1,5 @@
+@file:Suppress("ClassName")
+
 object Libs {
 
 	object andoridx {
@@ -7,54 +9,29 @@ object Libs {
 	}
 
 	object kotlinx {
-		object serialization {
-			private const val serialization_version = "1.0-M1-1.4.0-rc-218"
-			const val runtime =
-				"org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serialization_version"
-			const val `runtime-common` =
-				"org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serialization_version"
-			const val `runtime-js` =
-				"org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version"
-			const val `runtime-native` =
-				"org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$serialization_version"
-		}
-		object coroutines {
-			private const val VERSION = "1.3.8"
-			const val `core-common` = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$VERSION"
-			const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$VERSION"
-		}
+		const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC"
 	}
 
 	object `ktor-client` {
-		private const val client = "io.ktor:ktor-client"
-		private const val VERSION = "1.3.2-1.4.0-rc"
-		const val core = "$client-core:${VERSION}"
-		const val okhttp = "$client-okhttp:${VERSION}"
-		const val android = "$client-android:${VERSION}"
-		const val ios = "$client-ios:${VERSION}"
-		const val js = "$client-js:${VERSION}"
+		private const val VERSION = "1.4.0"
+		const val core = "io.ktor:ktor-client-core:${VERSION}"
+		const val okhttp = "io.ktor:ktor-client-okhttp:${VERSION}"
+		const val android = "io.ktor:ktor-client-android:${VERSION}"
+		const val ios = "io.ktor:ktor-client-ios:${VERSION}"
+		const val js = "io.ktor:ktor-client-js:${VERSION}"
 
-		object serialization {
-			private const val serialization = "io.ktor:ktor-client-serialization"
-			const val common = "$serialization:${VERSION}"
-			const val jvm = "$serialization-jvm:${VERSION}"
-			const val native = "$serialization-native:${VERSION}"
-			const val js = "$serialization-js:${VERSION}"
-		}
+		const val serialization = "io.ktor:ktor-client-serialization:${VERSION}"
 	}
 
 	const val klock = "com.soywiz.korlibs.klock:klock:1.12.0"
 	const val jsoup = "org.jsoup:jsoup:1.13.1"
 
-	const val krypto = "com.soywiz.korlibs.krypto:krypto:1.11.1"
-
 	object napier {
 		private const val version = "1.3.0"
-		private const val napier = "com.github.aakira:napier"
-		const val common = "$napier:$version"
-		const val android = "$napier-android:$version"
-		const val ios = "$napier-ios:$version"
-		const val js = "$napier-js:$version"
-		const val jvm = "$napier-jvm:$version"
+		const val common = "com.github.aakira:napier:$version"
+		const val android = "com.github.aakira:napier-android:$version"
+		const val ios = "com.github.aakira:napier-ios:$version"
+		const val js = "com.github.aakira:napier-js:$version"
+		const val jvm = "com.github.aakira:napier-jvm:$version"
 	}
 }
