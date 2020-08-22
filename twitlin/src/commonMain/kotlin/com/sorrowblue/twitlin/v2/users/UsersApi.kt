@@ -6,6 +6,10 @@ import com.sorrowblue.twitlin.v2.tweets.Field
 import com.sorrowblue.twitlin.v2.tweets.TweetField
 import com.sorrowblue.twitlin.v2.tweets.UserField
 
+@RequiresOptIn(level = RequiresOptIn.Level.WARNING)
+annotation class TwitterAPIV2
+
+@TwitterAPIV2
 interface UsersApi {
 
 	enum class Expansion(override val value: String) : Field {

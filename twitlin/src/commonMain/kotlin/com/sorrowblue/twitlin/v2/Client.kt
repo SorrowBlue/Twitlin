@@ -1,7 +1,6 @@
 package com.sorrowblue.twitlin.v2
 
 import com.github.aakira.napier.Napier
-import com.sorrowblue.twitlin.Twitlin
 import com.sorrowblue.twitlin.basics.oauth.AccessToken
 import com.sorrowblue.twitlin.basics.oauth2.BearerToken
 import com.sorrowblue.twitlin.foundation.buildHeaderString
@@ -60,9 +59,8 @@ internal open class Client(
 					buildHeaderString(apiKey, nonce, signature, timestamp, accessToken?.oauthToken)
 				val value = if (useOAuth2) "Bearer ${bearerToken?.accessToken}" else headerString
 				header(HttpHeaders.Authorization, value)
-			}.onSuccess<T, Response.Success<T>, Response.Failure<T>>()
+			}.toResponse<T, Response.Success<T>, Response.Failure<T>>()
 		}.getOrElse {
-			it.printStackTrace()
 			Napier.e(it.toString(), tag = "Client GET")
 			Napier.e(it.message ?: "unknown error", tag = "Client GET")
 			if (it.toString().contains("java.net.UnknownHostException")) {
@@ -117,7 +115,7 @@ internal open class Client(
 				val value =
 					if (bearerToken) "Bearer ${this@Client.bearerToken?.accessToken}" else headerString
 				header(HttpHeaders.Authorization, value)
-			}.onSuccess<T, Response.Success<T>, Response.Failure<T>>()
+			}.toResponse<T, Response.Success<T>, Response.Failure<T>>()
 		}.getOrElse {
 			it.printStackTrace()
 			Napier.e(it.toString(), tag = "Client POST")
@@ -187,93 +185,28 @@ internal open class Client(
 			}
 		}
 	}
-
-	private val collectingParameters
-		get() = mutableListOf(
-			"oauth_consumer_key" to apiKey,
-			"oauth_nonce" to generateNonce(),
-			"oauth_signature_method" to "HMAC-SHA1",
-			"oauth_timestamp" to (DateTime.nowUnixLong() / 1000).toString(),
-			"oauth_version" to "1.0"
-		).apply {
-			accessToken?.let { add("oauth_token" to it.oauthToken) }
-		}
-
-
-	private fun createSignature(
-		method: String,
-		url: String,
-		params: List<Pair<String, String>>,
-	): String {
-		val parameterStr = params.map { it.first.urlEncode() to it.second.urlEncode() }
-			.sortedBy { it.first }
-			.joinToString("&") { "${it.first}=${it.second}" }
-		val baseString = "$method&${url.urlEncode()}&${parameterStr.urlEncode()}"
-		val signingKey = "${apiSecretKey.urlEncode()}&${accessToken?.oauthTokenSecret.orEmpty()}"
-		return hmacSHA1(signingKey.encodeToByteArray(), baseString.encodeToByteArray()).also {
-			Napier.i(
-				"""
-				createSignature
-				Parameter string: $parameterStr
-				base string     : $baseString
-				signing key     : $signingKey
-				signature       : $it
-			""".trimIndent()
-			)
-		}
-	}
-
-
-	private fun oAuthHeader(
-		method: String,
-		urlString: String,
-		params: List<Pair<String, String>>,
-	): String {
-		val headerParams = collectingParameters + params
-		val signature = createSignature(method, urlString, headerParams)
-		Napier.i(
-			"""
-			Collecting parameters
-			${headerParams.joinToString("\n") { it.first + " = " + it.second }}
-			oauth_signature = signature
-		""".trimIndent()
-		)
-		return headerParams.plus("oauth_signature" to signature).toList()
-			.joinToString(", ") { "${it.first.urlEncode()}=\"${it.second.urlEncode()}\"" }
-	}
-
 */
 
-	internal suspend inline fun <T : Any, reified R : Response.Success<T>, reified F : Response.Failure<T>> HttpResponse.onSuccess(): Response<T> {
+	internal suspend inline fun <T : Any, reified R : Response.Success<T>, reified F : Response.Failure<T>> HttpResponse.toResponse(): Response<T> {
 		val text = readText(Charsets.UTF_8)
+		Napier.i(
+			"""
+					HttpResponse
+						method = ${request.method}
+						url = ${request.url}
+						statusCode = ${status.value}
+						headers = ${request.headers.toMap()}
+						body = $text
+				""".trimIndent(), tag = "Client"
+		)
 		return if (status.value == 200) {
-			Napier.d(
-				""" SUCCESS
-			method = ${request.method}
-			url = ${request.url}
-			headers = ${request.headers.toMap()}
-			body = $text
-			""".trimIndent(), tag = "HttpResponse.onSuccess"
-			)
-			kotlin.runCatching {
-				json.decodeFromString<R>(text)
-			}.onFailure { Napier.d(it.message.orEmpty(), tag = "HttpResponse.onSuccess") }
+			kotlin.runCatching { json.decodeFromString<R>(text) }
+				.onFailure { Napier.e(it.message.orEmpty(), tag = "Client") }
 				.getOrElse { json.decodeFromString<F>(text) }
 		} else {
-			Napier.e(
-				""" ERROR
-			method = ${request.method}
-			url = ${request.url}
-			headers = ${request.headers.toMap()}
-			text = $text
-			""".trimIndent(), tag = "HttpResponse.onSuccess"
-			)
-			kotlin.runCatching {
-				json.decodeFromString<F>(text)
-					.also { if (status.value == 401) Twitlin.onInvalidToken() }
-			}.getOrElse {
-				Response.Failure(status.value, listOf(json.decodeFromString(text)))
-			}
+			kotlin.runCatching { json.decodeFromString<F>(text) }
+				.onFailure { Napier.e(it.message.orEmpty(), tag = "Client") }
+				.getOrElse { Response.Failure(status.value, listOf(json.decodeFromString(text))) }
 		}
 	}
 

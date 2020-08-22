@@ -19,7 +19,7 @@ internal class StatusesApiImp(private val client: Client) :
 		excludeReplies: Boolean?,
 		includeEntities: Boolean?,
 		includeCard: Boolean?
-	): Response<List<TwitterTweet>> = client.getList<TwitterTweet>(
+	): Response<List<TwitterTweet>> = client.get<List<TwitterTweet>>(
 		"$ROOT/home_timeline.json",
 		"count" to count,
 		"since_id" to sinceId,
@@ -38,7 +38,7 @@ internal class StatusesApiImp(private val client: Client) :
 		excludeReplies: Boolean?,
 		includeRetweet: Boolean?,
 		includeCard: Boolean?
-	): Response<List<TwitterTweet>> = client.getList<TwitterTweet>(
+	): Response<List<TwitterTweet>> = client.get<List<TwitterTweet>>(
 		"$ROOT/user_timeline.json",
 		"user_id" to userId,
 		"since_id" to sinceId,
@@ -58,7 +58,7 @@ internal class StatusesApiImp(private val client: Client) :
 		excludeReplies: Boolean?,
 		includeRetweet: Boolean?,
 		includeCard: Boolean?
-	): Response<List<TwitterTweet>> = client.getList<TwitterTweet>(
+	): Response<List<TwitterTweet>> = client.get<List<TwitterTweet>>(
 		"$ROOT/user_timeline.json",
 		"screenName" to screenName,
 		"since_id" to sinceId,

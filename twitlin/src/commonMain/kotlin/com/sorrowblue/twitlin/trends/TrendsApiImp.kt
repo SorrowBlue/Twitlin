@@ -10,13 +10,13 @@ private const val ROOT = "${Urls._1_1}/trends"
 internal class TrendsApiImp(private val client: Client) : TrendsApi {
 
 	override suspend fun available(): Response<List<TrendsPlace>> =
-		client.getList("$ROOT/available.json")
+		client.get("$ROOT/available.json")
 
 	override suspend fun closest(lat: Double, long: Double): Response<List<TrendsPlace>> =
-		client.getList("$ROOT/available.json", "lat" to lat, "long" to long)
+		client.get("$ROOT/available.json", "lat" to lat, "long" to long)
 
 	override suspend fun place(woeid: Int, exclude: Boolean?): Response<List<PlaceTrend>> =
-		client.getList("$ROOT/place.json", "id" to woeid, "exclude" to exclude)
+		client.get("$ROOT/place.json", "id" to woeid, "exclude" to exclude)
 }
 
 @Serializable

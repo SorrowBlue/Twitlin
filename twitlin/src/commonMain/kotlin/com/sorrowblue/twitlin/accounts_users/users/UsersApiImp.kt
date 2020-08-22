@@ -11,7 +11,7 @@ internal class UsersApiImp(private val client: Client) : UsersApi {
 		vararg screenNames: String,
 		includeEntities: Boolean?,
 		tweetMode: UsersApi.Mode?
-	): Response<List<TwitterUser>> = client.getList(
+	): Response<List<TwitterUser>> = client.get(
 		"${Urls.USERS}/lookup.json",
 		"screen_name" to screenNames.joinToString(","),
 		"include_entities" to includeEntities,
@@ -22,7 +22,7 @@ internal class UsersApiImp(private val client: Client) : UsersApi {
 		vararg userIds: Long,
 		includeEntities: Boolean?,
 		tweetMode: UsersApi.Mode?
-	): Response<List<TwitterUser>> = client.getList(
+	): Response<List<TwitterUser>> = client.get(
 		"${Urls.USERS}/lookup.json",
 		"user_id" to userIds.joinToString(","),
 		"include_entities" to includeEntities,

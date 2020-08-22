@@ -1,17 +1,24 @@
 package com.sorrowblue.twitlin.foundation
 
+import com.sorrowblue.twitlin.basics.oauth2.BearerToken
 import com.sorrowblue.twitlin.net.encodeNoPaddingBase64
 import com.sorrowblue.twitlin.net.hmacSHA1
 import com.sorrowblue.twitlin.utils.urlEncode
 import com.soywiz.klock.DateTime
 import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.http.content.*
 import kotlin.random.Random
 
 fun generateNonce() = Random.nextBytes(32).decodeToString().encodeNoPaddingBase64()
+
 fun generateTimestamp() = (DateTime.nowUnixLong() / 1000).toString()
-fun Array<out Pair<String, Any?>>.notNullParams() = mapNotNull {
-	if (it.second != null) it.first to it.second.toString() else null
-}
+
+fun Array<out Pair<String, Any?>>.notNullParams() =
+	mapNotNull { if (it.second != null) it.first to it.second.toString() else null }
+
+internal fun String.combineParams(params: Array<out Pair<String, Any?>>) =
+	if (params.isEmpty()) this else "$this?${params.notNullParams().formUrlEncode()}"
 
 internal fun buildHeaderString(
 	consumerKey: String,
@@ -32,20 +39,7 @@ internal fun buildHeaderString(
 		add("oauth_version" to "1.0")
 		addAll(appEnd)
 	}.sortedBy { it.first }
-	val dst = StringBuilder()
-	dst.append("OAuth ")
-	list.forEachIndexed { index, pair ->
-		dst.append(pair.first.urlEncode())
-		dst.append("=")
-		dst.append("\"")
-		dst.append(pair.second.urlEncode())
-		dst.append("\"")
-		if (index != list.lastIndex) {
-			dst.append(", ")
-		}
-	}
-	return dst.toString()
-}
+	return "OAuth ${list.joinToString(", ") { "${it.first.urlEncode()}=\"${it.second.urlEncode()}\"" }}" }
 
 /**
  * Collecting parameters
@@ -169,4 +163,32 @@ internal fun HttpRequestBuilder.createSignature(
 	val baseString = creatingSignatureBaseString(parameterString)
 	val signingKey = getSigningKey(consumerSecret, oauthTokenSecret)
 	return calculateSignature(baseString, signingKey)
+}
+
+internal fun HttpRequestBuilder.headerForTwitter(
+	apiKey: String, apiSecretKey: String,
+	params: Array<out Pair<String, Any?>>,
+	oauthToken: String?, oauthTokenSecret: String?,
+	bearerToken: BearerToken?
+): String {
+	val nonce = generateNonce()
+	val timestamp = generateTimestamp()
+	val nonNullParams = params.notNullParams()
+	bearerToken?.let {
+		return "Bearer ${it.accessToken}"
+	} ?: kotlin.run {
+		val signature =
+			createSignature(
+				apiKey, apiSecretKey, nonce, timestamp,
+				oauthToken, oauthTokenSecret, nonNullParams
+			)
+		return buildHeaderString(apiKey, nonce, signature, timestamp, oauthToken, nonNullParams)
+	}
+}
+
+internal fun HttpRequestBuilder.bodyForTwitter(params: Array<out Pair<String, Any?>>) {
+	body = TextContent(
+		params.notNullParams().joinToString("&") { "${it.first.urlEncode()}=${it.second.urlEncode()}" },
+		contentType = ContentType.Application.FormUrlEncoded
+	)
 }

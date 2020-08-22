@@ -2,6 +2,7 @@ package com.sorrowblue.twitlin.v2.users
 
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.Twitlin
+import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.test.Test.runTest
 import com.sorrowblue.twitlin.test.initializeTest
 import com.sorrowblue.twitlin.v2.tweets.TweetField
@@ -9,6 +10,7 @@ import com.sorrowblue.twitlin.v2.tweets.UserField
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
+@TwitterAPIV2
 class UserApiTest {
 
 	init {
@@ -33,7 +35,7 @@ class UserApiTest {
 
 	@Test
 	fun usersIdsTest() = runTest {
-		Twitlin.v2.usersApi.users(
+		TwitterAPI.V2.usersApi.users(
 			listOf("2244994945", "6253282"),
 			tweetFields = TweetField.all(),
 			userFields = UserField.all(),

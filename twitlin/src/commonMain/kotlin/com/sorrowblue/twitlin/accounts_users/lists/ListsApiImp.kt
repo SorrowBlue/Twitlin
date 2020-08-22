@@ -6,7 +6,6 @@ import com.sorrowblue.twitlin.net.Urls
 import com.sorrowblue.twitlin.objects.PagingTwitterUser
 import com.sorrowblue.twitlin.objects.TwitterTweet
 import com.sorrowblue.twitlin.objects.TwitterUser
-import kotlin.math.absoluteValue
 
 private const val LISTS = "${Urls._1_1}/lists"
 
@@ -17,7 +16,7 @@ internal class ListsApiImp(private val client: Client) : ListsApi {
 		screenName: String?,
 		reverse: Boolean?,
 	): Response<List<TwitterList>> =
-		client.getList(
+		client.get(
 			"$LISTS/list.json",
 			"user_id" to userId,
 			"screen_name" to screenName,
@@ -147,7 +146,7 @@ internal class ListsApiImp(private val client: Client) : ListsApi {
 		count: Long?,
 		includeEntities: Boolean?,
 		includeRts: Boolean?
-	): Response<List<TwitterTweet>> = client.getList(
+	): Response<List<TwitterTweet>> = client.get(
 		"$LISTS/statuses.json",
 		"list_id" to listId,
 		"since_id" to sinceId,
@@ -166,7 +165,7 @@ internal class ListsApiImp(private val client: Client) : ListsApi {
 		count: Long?,
 		includeEntities: Boolean?,
 		includeRts: Boolean?
-	): Response<List<TwitterTweet>> = client.getList(
+	): Response<List<TwitterTweet>> = client.get(
 		"$LISTS/statuses.json",
 		"slug" to slug,
 		"owner_screen_name" to ownerScreenName,
