@@ -10,6 +10,7 @@ import com.sorrowblue.twitlin.v2.tweets.toParameter
 
 private const val USERS_API = "$TWITTER_API_V2/users"
 
+@TwitterAPIV2
 internal class UsersApiImp(private val client: Client) : UsersApi {
 
 	override suspend fun users(
@@ -17,7 +18,7 @@ internal class UsersApiImp(private val client: Client) : UsersApi {
 		expansions: List<UsersApi.Expansion>?,
 		tweetFields: List<TweetField>?,
 		userFields: List<UserField>?,
-	): Response<User> = client.get<User>("$USERS_API/$id",
+	): Response<User> = client.get("$USERS_API/$id",
 		"expansions" to expansions?.toParameter(),
 		"tweet.fields" to tweetFields?.toParameter(),
 		"user.fields" to userFields?.toParameter())
@@ -34,22 +35,22 @@ internal class UsersApiImp(private val client: Client) : UsersApi {
 		"user.fields" to userFields?.toParameter())
 
 	override suspend fun byUsername(
+		username: String,
+		expansions: List<UsersApi.Expansion>?,
+		tweetFields: List<TweetField>?,
+		userFields: List<UserField>?,
+	): Response<User> = client.get("$USERS_API/by/username/$username",
+		"expansions" to expansions?.toParameter(),
+		"tweet.fields" to tweetFields?.toParameter(),
+		"user.fields" to userFields?.toParameter())
+
+	override suspend fun byUsername(
 		usernames: List<String>,
 		expansions: List<UsersApi.Expansion>?,
 		tweetFields: List<TweetField>?,
 		userFields: List<UserField>?,
 	): Response<List<User>> = client.get("$USERS_API/by",
 		"usernames" to usernames.joinToString(","),
-		"expansions" to expansions?.toParameter(),
-		"tweet.fields" to tweetFields?.toParameter(),
-		"user.fields" to userFields?.toParameter())
-
-	override suspend fun byUsername(
-		username: String,
-		expansions: List<UsersApi.Expansion>?,
-		tweetFields: List<TweetField>?,
-		userFields: List<UserField>?,
-	): Response<List<User>> = client.get("$USERS_API/by/username",
 		"expansions" to expansions?.toParameter(),
 		"tweet.fields" to tweetFields?.toParameter(),
 		"user.fields" to userFields?.toParameter())

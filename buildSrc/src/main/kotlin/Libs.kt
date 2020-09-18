@@ -27,7 +27,7 @@ object Libs {
 	const val jsoup = "org.jsoup:jsoup:1.13.1"
 
 	object napier {
-		private const val version = "1.3.0"
+		private const val version = "1.4.0"
 		const val common = "com.github.aakira:napier:$version"
 		const val android = "com.github.aakira:napier-android:$version"
 		const val ios = "com.github.aakira:napier-ios:$version"

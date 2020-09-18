@@ -1,20 +1,16 @@
 package com.sorrowblue.twitlin.accounts_users.account
 
 import com.github.aakira.napier.Napier
-import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.test.Test.runTest
-import com.sorrowblue.twitlin.test.initializeTest
+import com.sorrowblue.twitlin.TwitterAPI
+import com.sorrowblue.twitlin.test.AbstractTest
+import com.sorrowblue.twitlin.test.runTest
 import kotlin.test.Test
 
-class AccountApiTest {
-
-	init {
-		initializeTest()
-	}
+class AccountApiTest: AbstractTest {
 
 	@Test
 	fun verifyCredentialsTest() = runTest {
-		Twitlin.Api.account.verifyCredentials()
+		TwitterAPI.account.verifyCredentials()
 			.onError {
 				Napier.e(
 					it.joinToString(", ") { error -> "${error.code} -> ${error.message}" },

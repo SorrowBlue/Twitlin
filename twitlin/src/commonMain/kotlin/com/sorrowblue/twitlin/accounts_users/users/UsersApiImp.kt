@@ -28,4 +28,7 @@ internal class UsersApiImp(private val client: Client) : UsersApi {
 		"include_entities" to includeEntities,
 		"tweet_mode" to tweetMode?.value
 	)
+
+	override suspend fun profileBanner(userId: Long): Response<ProfileBanner> =
+		client.get("${Urls.USERS}/profile_banner.json", "user_id" to userId)
 }

@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-	id("com.github.ben-manes.versions") version "0.29.0"
+	id("com.github.ben-manes.versions") version "0.30.0"
 }
 
 buildscript {
@@ -25,5 +25,6 @@ allprojects {
 		jcenter()
 		mavenCentral()
 		maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+		maven(url = "https://kotlin.bintray.com/kotlinx/")
 	}
 }

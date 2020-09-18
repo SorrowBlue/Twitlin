@@ -1,25 +1,20 @@
 package com.sorrowblue.twitlin.basic.oauth
 
 import com.github.aakira.napier.Napier
-import com.sorrowblue.twitlin.*
+import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.basics.oauth.Authenticate
-import com.sorrowblue.twitlin.test.Test.runTest
-import com.sorrowblue.twitlin.test.initializeTest
+import com.sorrowblue.twitlin.test.AbstractTest
+import com.sorrowblue.twitlin.test.runTest
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
-class OAuthApiTest {
+class OAuthApiTest : AbstractTest{
 
-	init {
-		initializeTest()
-	}
-
-	@Ignore
 	@Test
 	fun accessTokenTest() = runTest {
-		val accessToken = Twitlin.Api.oauth.accessToken(
-			Authenticate("8i8GHgAAAAABEkL_AAABc8wxupU", "VKiCob2juC3GTYr9MeXU5eBt5QqAHzhs")
+		val accessToken = TwitterAPI.oauth.accessToken(
+			Authenticate("etQh_QAAAAABEkL_AAABdFc_n68", "yyDhGg66AwElV1qUNodd4EaU7LgJ54KK")
 		).onSuccess {
 			Napier.d("accessToken = $it")
 		}.onError {
@@ -31,8 +26,8 @@ class OAuthApiTest {
 	@Test
 	fun authenticateTest() = runTest {
 		val url =
-			Twitlin.Api.oauth.requestToken("https://snsmate.sorrowblue.com").getOrNull()?.let {
-				Twitlin.Api.oauth.authenticate(it)
+			TwitterAPI.oauth.requestToken("https://snsmate.sorrowblue.com").getOrNull()?.let {
+				TwitterAPI.oauth.authenticate(it)
 			}
 		Napier.d("authenticate = $url")
 		assertNotNull(url, "authenticate url is null")
@@ -41,8 +36,8 @@ class OAuthApiTest {
 	@Test
 	fun authorize() = runTest {
 		val url =
-			Twitlin.Api.oauth.requestToken("https://snsmate.sorrowblue.com").getOrNull()?.let {
-				Twitlin.Api.oauth.authorize(it)
+			TwitterAPI.oauth.requestToken("https://snsmate.sorrowblue.com").getOrNull()?.let {
+				TwitterAPI.oauth.authorize(it)
 			}
 		Napier.d("authorize = $url")
 		assertNotNull(url, "authorize url is null")
@@ -51,7 +46,7 @@ class OAuthApiTest {
 
 	@Test
 	fun requestToken() = runTest {
-		val token = Twitlin.Api.oauth.requestToken("https://snsmate.sorrowblue.com")
+		val token = TwitterAPI.oauth.requestToken("https://snsmate.sorrowblue.com")
 			.onSuccess {
 				Napier.d("oAuthToken = $it")
 			}.onError {

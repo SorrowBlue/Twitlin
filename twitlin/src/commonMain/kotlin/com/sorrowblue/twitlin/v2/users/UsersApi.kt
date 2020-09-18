@@ -36,14 +36,14 @@ interface UsersApi {
 	): Response<List<User>>
 
 	suspend fun byUsername(
-		usernames: List<String>,
+		username: String,
 		expansions: List<Expansion>? = null,
 		tweetFields: List<TweetField>? = null,
 		userFields: List<UserField>? = null,
-	): Response<List<User>>
+	): Response<User>
 
 	suspend fun byUsername(
-		username: String,
+		usernames: List<String>,
 		expansions: List<Expansion>? = null,
 		tweetFields: List<TweetField>? = null,
 		userFields: List<UserField>? = null,

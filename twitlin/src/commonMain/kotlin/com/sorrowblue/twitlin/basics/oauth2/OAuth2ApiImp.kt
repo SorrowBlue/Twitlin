@@ -5,7 +5,6 @@ import com.sorrowblue.twitlin.net.ErrorMessages
 import com.sorrowblue.twitlin.net.Response
 import com.sorrowblue.twitlin.net.Urls
 import com.sorrowblue.twitlin.utils.urlEncode
-import io.ktor.client.features.*
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.statement.*
@@ -35,7 +34,7 @@ internal class OAuth2ApiImp(private val client: Client) : OAuth2Api {
 	private suspend fun <R> basicAuthorizationPost(url: String, onSuccess: (String) -> R) =
 		client.httpClient.post<HttpResponse>(url) {
 			val bearer =
-				"${client.apiKey.urlEncode()}:${client.apiSecretKey.urlEncode()}".encodeBase64()
+				"${client.apiKey.urlEncode()}:${client.secretKey.urlEncode()}".encodeBase64()
 			header(HttpHeaders.Authorization, "Basic $bearer")
 			contentType(ContentType.parse("application/x-www-form-urlencoded;charset=UTF-8"))
 			body = "grant_type=client_credentials"

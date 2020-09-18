@@ -1,45 +1,8 @@
-package com.sorrowblue.twitlin.foundation
+package com.sorrowblue.twitlin.foundation.authentication
 
-import com.sorrowblue.twitlin.basics.oauth2.BearerToken
-import com.sorrowblue.twitlin.net.encodeNoPaddingBase64
+import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.net.hmacSHA1
 import com.sorrowblue.twitlin.utils.urlEncode
-import com.soywiz.klock.DateTime
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.http.content.*
-import kotlin.random.Random
-
-fun generateNonce() = Random.nextBytes(32).decodeToString().encodeNoPaddingBase64()
-
-fun generateTimestamp() = (DateTime.nowUnixLong() / 1000).toString()
-
-fun Array<out Pair<String, Any?>>.notNullParams() =
-	mapNotNull { if (it.second != null) it.first to it.second.toString() else null }
-
-internal fun String.combineParams(params: Array<out Pair<String, Any?>>) =
-	if (params.isEmpty()) this else "$this?${params.notNullParams().formUrlEncode()}"
-
-internal fun buildHeaderString(
-	consumerKey: String,
-	nonce: String,
-	signature: String,
-	timestamp: String,
-	oauthToken: String?,
-	appEnd: List<Pair<String, String>> = emptyList()
-): String {
-	val list = mutableListOf(
-		"oauth_consumer_key" to consumerKey,
-		"oauth_nonce" to nonce,
-		"oauth_signature" to signature,
-		"oauth_signature_method" to "HMAC-SHA1",
-		"oauth_timestamp" to timestamp,
-	).apply {
-		oauthToken?.let { add("oauth_token" to oauthToken) }
-		add("oauth_version" to "1.0")
-		addAll(appEnd)
-	}.sortedBy { it.first }
-	return "OAuth ${list.joinToString(", ") { "${it.first.urlEncode()}=\"${it.second.urlEncode()}\"" }}" }
 
 /**
  * Collecting parameters
@@ -70,23 +33,29 @@ internal fun buildHeaderString(
  * @param params
  * @return
  */
-internal fun collectParametersForSignature(
+internal fun collectParameters(
 	consumerKey: String,
 	nonce: String,
 	timestamp: String,
 	oauthToken: String?,
-	params: List<Pair<String, Any?>>,
+	params: List<Pair<String, String>>
 ): String = listOf(
 	"oauth_consumer_key" to consumerKey,
 	"oauth_nonce" to nonce,
 	"oauth_signature_method" to "HMAC-SHA1",
 	"oauth_timestamp" to timestamp,
 	"oauth_version" to "1.0"
-).plus(params)
-	.run { oauthToken?.let { plus("oauth_token" to it) } ?: this }
-	.map { it.first.urlEncode() to it.second?.toString()?.urlEncode() }
+).plus(params).run { oauthToken?.let { plus("oauth_token" to it) } ?: this }
+	// 1. Percent encode every key and value that will be signed.
+	.map { it.first.urlEncode() to it.second.urlEncode() }
+	// 2. Sort the list of parameters alphabetically [1] by encoded key [2].
 	.sortedBy { it.first }
+	// 3. Append the encoded key to the output string.
+	// 4. Append the ‘=’ character to the output string.
+	// 5. Append the encoded value to the output string.
+	// 6. If there are more key/value pairs remaining, append a ‘&’ character to the output string.
 	.joinToString("&") { "${it.first}=${it.second}" }
+	.also { Napier.i("collectParameters() = $it", tag = "TwitlinClient") }
 
 /**
  * Creating the signature base string
@@ -98,19 +67,20 @@ internal fun collectParametersForSignature(
  * @param parameterString
  * @return
  */
-internal fun HttpRequestBuilder.creatingSignatureBaseString(parameterString: String) =
+internal fun creatingSignatureBaseString(method: String, url: String, parameterString: String) =
 	StringBuilder()
 		// 1. Convert the HTTP Method to uppercase and set the output string equal to this value.
-		.append(method.value)
+		.append(method)
 		// 2. Append the ‘&’ character to the output string.
 		.append("&")
 		// 3. Percent encode the URL and append it to the output string.
-		.append("${url.protocol.name}://${url.host}${url.encodedPath}".urlEncode())
+		.append(url.urlEncode())
 		// 4. Append the ‘&’ character to the output string.
 		.append("&")
 		// 5. Percent encode the parameter string and append it to the output string.
 		.append(parameterString.urlEncode())
 		.toString()
+		.also { Napier.i("creatingSignatureBaseString() = $it", tag = "TwitlinClient") }
 
 /**
  * Getting a signing key
@@ -133,62 +103,3 @@ internal fun getSigningKey(consumerSecret: String, oAuthTokenSecret: String?) =
 
 internal fun calculateSignature(baseString: String, signingKey: String) =
 	hmacSHA1(signingKey.encodeToByteArray(), baseString.encodeToByteArray())
-
-/**
- * Creating a signature
- *
- * This explains how to generate an OAuth 1.0a HMAC-SHA1 signature for an HTTP request.
- * This signature will be suitable for passing to the Twitter API as part of an authorized request,
- * as described in [authorizing a request](https://developer.twitter.com/en/docs/basics/authentication/oauth-1-0a/authorizing-a-request).
- *
- * @param consumerKey
- * @param consumerSecret
- * @param nonce
- * @param timestamp
- * @param oauthToken
- * @param params
- * @return
- */
-internal fun HttpRequestBuilder.createSignature(
-	consumerKey: String,
-	consumerSecret: String,
-	nonce: String,
-	timestamp: String,
-	oauthToken: String?,
-	oauthTokenSecret: String?,
-	params: List<Pair<String, Any?>>,
-): String {
-	val parameterString =
-		collectParametersForSignature(consumerKey, nonce, timestamp, oauthToken, params)
-	val baseString = creatingSignatureBaseString(parameterString)
-	val signingKey = getSigningKey(consumerSecret, oauthTokenSecret)
-	return calculateSignature(baseString, signingKey)
-}
-
-internal fun HttpRequestBuilder.headerForTwitter(
-	apiKey: String, apiSecretKey: String,
-	params: Array<out Pair<String, Any?>>,
-	oauthToken: String?, oauthTokenSecret: String?,
-	bearerToken: BearerToken?
-): String {
-	val nonce = generateNonce()
-	val timestamp = generateTimestamp()
-	val nonNullParams = params.notNullParams()
-	bearerToken?.let {
-		return "Bearer ${it.accessToken}"
-	} ?: kotlin.run {
-		val signature =
-			createSignature(
-				apiKey, apiSecretKey, nonce, timestamp,
-				oauthToken, oauthTokenSecret, nonNullParams
-			)
-		return buildHeaderString(apiKey, nonce, signature, timestamp, oauthToken, nonNullParams)
-	}
-}
-
-internal fun HttpRequestBuilder.bodyForTwitter(params: Array<out Pair<String, Any?>>) {
-	body = TextContent(
-		params.notNullParams().joinToString("&") { "${it.first.urlEncode()}=${it.second.urlEncode()}" },
-		contentType = ContentType.Application.FormUrlEncoded
-	)
-}

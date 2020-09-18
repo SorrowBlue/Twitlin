@@ -69,7 +69,7 @@ internal class StatusesApiImp(private val client: Client) :
 		"include_rts" to includeRetweet
 	).resolveCard(includeCard == true)
 
-	override suspend fun lookup(id: List<Long>): Response<List<TwitterTweet>> = client.get<List<TwitterTweet>>("$ROOT/lookup.json", "id" to id.joinToString(","))
+	override suspend fun lookup(id: List<Long>): Response<List<TwitterTweet>> = client.get("$ROOT/lookup.json", "id" to id.joinToString(","))
 
 	private suspend fun Response<List<TwitterTweet>>.resolveCard(includeCard: Boolean): Response<List<TwitterTweet>> {
 		return getOrNull()?.map { value ->

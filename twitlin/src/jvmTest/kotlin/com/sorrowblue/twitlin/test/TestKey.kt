@@ -1,12 +1,15 @@
 package com.sorrowblue.twitlin.test
 
+import java.io.File
+import java.util.*
+
 actual object TestKey {
-	actual val API_KEY: String
-		get() = TODO("Not yet implemented")
-	actual val API_SECRET: String
-		get() = TODO("Not yet implemented")
-	actual val ACCESS_TOKEN: String
-		get() = TODO("Not yet implemented")
-	actual val ACCESS_TOKEN_SECRET: String
-		get() = TODO("Not yet implemented")
+
+	private val prop =
+		Properties().apply { load(File("src/commonTest/resources/local.properties").inputStream()) }
+
+	actual val API_KEY: String = prop.getProperty("API_KEY")
+	actual val API_SECRET: String = prop.getProperty("API_SECRET")
+	actual val ACCESS_TOKEN: String = prop.getProperty("ACCESS_TOKEN")
+	actual val ACCESS_TOKEN_SECRET: String = prop.getProperty("ACCESS_TOKEN_SECRET")
 }

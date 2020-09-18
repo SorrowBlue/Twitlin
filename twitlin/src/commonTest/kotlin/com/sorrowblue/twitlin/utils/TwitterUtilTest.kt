@@ -1,7 +1,7 @@
 package com.sorrowblue.twitlin.utils
 
 import com.sorrowblue.twitlin.objects.TwitterCard
-import com.sorrowblue.twitlin.test.Test.runTest
+import com.sorrowblue.twitlin.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

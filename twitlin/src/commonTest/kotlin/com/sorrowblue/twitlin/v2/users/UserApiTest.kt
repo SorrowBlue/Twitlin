@@ -1,36 +1,26 @@
 package com.sorrowblue.twitlin.v2.users
 
-import com.github.aakira.napier.Napier
-import com.sorrowblue.twitlin.Twitlin
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.test.Test.runTest
-import com.sorrowblue.twitlin.test.initializeTest
+import com.sorrowblue.twitlin.test.AbstractTest
+import com.sorrowblue.twitlin.test.runTest
+import com.sorrowblue.twitlin.v2.testResult
 import com.sorrowblue.twitlin.v2.tweets.TweetField
 import com.sorrowblue.twitlin.v2.tweets.UserField
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 @TwitterAPIV2
-class UserApiTest {
-
-	init {
-		initializeTest()
-	}
+class UserApiTest : AbstractTest {
 
 	@Test
 	fun usersIdTest() = runTest {
-		Twitlin.v2.usersApi.users(
-			"2244994945",
+		TwitterAPI.V2.usersApi.users(
+//			"2244994945",
+			"938122027231150081",
 			tweetFields = TweetField.all(),
 			userFields = UserField.all(),
 			expansions = UsersApi.Expansion.all()
-		).onSuccess {
-			Napier.d("onSuccess = $it")
-		}.onFailure {
-			Napier.e("onFailure = $it")
-		}.dataOrNull().also {
-			assertNotNull(it, "")
-		}
+		).testResult().also(::assertNotNull)
 	}
 
 	@Test
@@ -40,11 +30,19 @@ class UserApiTest {
 			tweetFields = TweetField.all(),
 			userFields = UserField.all(),
 			expansions = UsersApi.Expansion.all()
-		).onSuccess {
-			Napier.d("onSuccess = $it")
-		}.onFailure {
-			Napier.e("onFailure = $it")
-		}.dataOrNull().also {
+		).testResult().also {
+			assertNotNull(it, "")
+		}
+	}
+
+	@Test
+	fun byUsernameTest() = runTest {
+		TwitterAPI.V2.usersApi.byUsername(
+			"TwitterDev",
+			tweetFields = TweetField.all(),
+			userFields = UserField.all(),
+			expansions = UsersApi.Expansion.all()
+		).testResult().also {
 			assertNotNull(it, "")
 		}
 	}

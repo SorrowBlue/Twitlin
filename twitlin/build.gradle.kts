@@ -6,7 +6,7 @@ plugins {
 	`kotlin-android-extensions`
 	`kotlin-kapt`
 	kotlin("plugin.serialization") version KOTLIN_VERSION
-	id("org.jetbrains.dokka") version "1.4.0-rc-24"
+	id("org.jetbrains.dokka") version "1.4.0"
 	`maven-publish`
 }
 
@@ -23,7 +23,6 @@ kotlin {
 		}
 	}
 	js {
-		nodejs()
 		browser {
 			testTask {
 				useKarma {
@@ -39,9 +38,11 @@ kotlin {
 		}
 		commonMain {
 			dependencies {
+				api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.0")
 				implementation(Libs.kotlinx.serialization)
 				implementation(Libs.`ktor-client`.core)
 				implementation(Libs.`ktor-client`.serialization)
+				implementation(kotlin("reflect", "1.4.0"))
 				api(Libs.klock)
 
 				implementation(Libs.napier.common)
@@ -56,7 +57,6 @@ kotlin {
 		val jsMain by getting {
 			dependencies {
 				implementation(Libs.`ktor-client`.js)
-				implementation(Libs.napier.js)
 
 				implementation("org.webjars.npm:crypto-js:4.0.0")
 			}
@@ -69,7 +69,6 @@ kotlin {
 		val androidMain by getting {
 			dependencies {
 				implementation(Libs.`ktor-client`.android)
-				implementation(Libs.napier.android)
 
 				implementation(Libs.jsoup)
 				implementation(Libs.andoridx.`security-crypto`)
@@ -83,7 +82,6 @@ kotlin {
 		val jvmMain by getting {
 			dependencies {
 				implementation(Libs.`ktor-client`.okhttp)
-				implementation(Libs.napier.jvm)
 
 				implementation(Libs.jsoup)
 			}
@@ -111,24 +109,21 @@ android {
 	}
 }
 
-tasks.named<org.jetbrains.dokka.gradle.DokkaTask>("dokkaHtml") {
-	outputDirectory = "${rootProject.projectDir}/docs"
+tasks.dokkaHtml.configure {
+	outputDirectory.set(rootProject.projectDir.resolve("docs/javadoc"))
 	dokkaSourceSets {
-		register("commonMain") {
-			displayName = "common"
-			platform = "common"
+		named("commonMain") {
+			displayName.set("common")
+			platform.set(org.jetbrains.dokka.Platform.common)
 		}
-		register("jvmMain") {
-			displayName = "jvm"
-			platform = "jvm"
+		named("jvmMain") {
+			platform.set(org.jetbrains.dokka.Platform.jvm)
 		}
-		create("androidMain") {
-			displayName = "android"
-			platform = "android"
+		named("jsMain") {
+			platform.set(org.jetbrains.dokka.Platform.js)
 		}
-		create("jsMain") {
-			displayName = "js"
-			platform = "js"
+		named("androidMain") {
+			platform.set(org.jetbrains.dokka.Platform.valueOf("android"))
 		}
 	}
 }

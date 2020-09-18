@@ -1,24 +1,22 @@
 package com.sorrowblue.twitlin.tweets.status
 
-import com.github.aakira.napier.Napier
-import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.test.Test.runTest
-import com.sorrowblue.twitlin.test.initializeTest
+import com.sorrowblue.twitlin.TwitterAPI
+import com.sorrowblue.twitlin.test.AbstractTest
+import com.sorrowblue.twitlin.test.runTest
+import com.sorrowblue.twitlin.test.testResult
 import kotlin.test.Test
+import kotlin.test.assertNotNull
 
-class StatusApiTest {
-
-	init {
-		initializeTest()
-	}
+class StatusApiTest : AbstractTest {
 
 	@Test
 	fun lookupTest() = runTest {
-		Twitlin.Api.statuses.lookup(listOf(1284807458699894785))
-			.onSuccess {
-				Napier.d("tweet = $it")
-			}.onError {
-				Napier.e("error = $it")
-			}
+		assertNotNull(TwitterAPI.statuses.lookup(listOf(1284807458699894785)).testResult())
+	}
+
+	@Test
+	fun timelineTest() = runTest {
+		assertNotNull(TwitterAPI.statuses.homeTimeline(count = 100).testResult())
 	}
 }
+
