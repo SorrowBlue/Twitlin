@@ -4,12 +4,12 @@ on:
     branches:
       - master
     tags:
-      - "v*"
+      - v*
   pull_request:
     branches:
       - master
     tags:
-      - "v*"
+      - v*
 
 jobs:
   build:
