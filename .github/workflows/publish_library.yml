@@ -34,7 +34,7 @@ jobs:
           # リリースのタグ (必須)
           tag_name: ${{ github.ref }}
           # リリースのタイトル (必須)
-          release_name: Developer Release 0.0.1-dev-002
+          release_name: ${{ github.ref }}
           # リリースのタイトル (省略可能)
           body: |
             # Twitlin Developer Release
@@ -42,6 +42,6 @@ jobs:
             I am happy to be able to publish it.<br />
             **Not all features are implemented in this version yet.**
           # 下書き状態で作成する場合は true (省略時 false)
-          draft: false
+          draft: true
           # プレリリース表示を付ける場合は true (省略時 false)
           prerelease: true

@@ -6,7 +6,7 @@ plugins {
 	`kotlin-android-extensions`
 	`kotlin-kapt`
 	kotlin("plugin.serialization") version KOTLIN_VERSION
-	id("org.jetbrains.dokka") version "1.4.0"
+	id("org.jetbrains.dokka") version "1.4.10.2"
 	`maven-publish`
 }
 
@@ -42,7 +42,7 @@ kotlin {
 				implementation(Libs.kotlinx.serialization)
 				implementation(Libs.`ktor-client`.core)
 				implementation(Libs.`ktor-client`.serialization)
-				implementation(kotlin("reflect", "1.4.0"))
+				implementation(kotlin("reflect", "1.4.10"))
 				api(Libs.klock)
 
 				implementation(Libs.napier.common)

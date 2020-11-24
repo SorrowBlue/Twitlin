@@ -9,11 +9,11 @@ object Libs {
 	}
 
 	object kotlinx {
-		const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC"
+		const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1"
 	}
 
 	object `ktor-client` {
-		private const val VERSION = "1.4.0"
+		private const val VERSION = "1.4.2"
 		const val core = "io.ktor:ktor-client-core:${VERSION}"
 		const val okhttp = "io.ktor:ktor-client-okhttp:${VERSION}"
 		const val android = "io.ktor:ktor-client-android:${VERSION}"

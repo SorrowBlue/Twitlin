@@ -257,8 +257,8 @@ data class Entities(
 	@Parcelize
 	@Serializable
 	data class URL(
-		@SerialName("display_url") val displayUrl: String,
-		@SerialName("expanded_url") val expandedUrl: String,
+		@SerialName("display_url") val displayUrl: String? = null,
+		@SerialName("expanded_url") val expandedUrl: String?,
 		val indices: List<Int>,
 		val url: String,
 		val unwound: Unwound? = null

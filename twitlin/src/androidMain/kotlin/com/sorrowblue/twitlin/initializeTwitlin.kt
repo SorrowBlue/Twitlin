@@ -9,8 +9,9 @@ actual fun initializeTwitlin(
 	apiKey: String,
 	apiSecret: String,
 	accessToken: AccessToken?,
-	bearerToken: BearerToken?
+	bearerToken: BearerToken?,
+	isEnabledDebug: Boolean
 ) {
-	Napier.base(DebugAntilog())
+	if (isEnabledDebug) Napier.base(DebugAntilog("Twitlin"))
 	Twitlin.initialize(apiKey, apiSecret, accessToken, bearerToken)
 }

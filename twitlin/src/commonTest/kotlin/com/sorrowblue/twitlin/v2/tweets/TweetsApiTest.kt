@@ -5,7 +5,9 @@ import com.sorrowblue.twitlin.objects.TwitterTweet
 import com.sorrowblue.twitlin.test.AbstractTest
 import com.sorrowblue.twitlin.test.runTest
 import com.sorrowblue.twitlin.v2.objects.AddSearchStreamRule
+import com.sorrowblue.twitlin.v2.objects.ReferenceTweet
 import com.sorrowblue.twitlin.v2.objects.SearchStreamRule
+import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.testResult
 import com.sorrowblue.twitlin.v2.users.TwitterAPIV2
 import kotlin.test.Test
@@ -14,12 +16,43 @@ import kotlin.test.assertNotNull
 @TwitterAPIV2
 class TweetsApiTest : AbstractTest {
 	@Test
+	fun timeline() = runTest {
+//		val list = TwitterAPI.statuses.userTimeline("sorrowblue_sb",count = 2).getOrNull()?.map(TwitterTweet::idStr) ?: return@runTest
+		val list = TwitterAPI.statuses.homeTimeline(count = 40).getOrNull()?.map(TwitterTweet::idStr) ?: return@runTest
+		TwitterAPI.V2.tweetsApi.tweets(
+			list,
+			tweetFields = listOf(TweetField.CREATED_AT, TweetField.TEXT, TweetField.ENTITIES, TweetField.ATTACHMENTS, TweetField.CONVERSATION_ID),
+			expansions = Expansion.all(),
+			mediaFields = listOf(MediaField.URL, MediaField.TYPE, MediaField.MEDIA_KEY, MediaField.DURATION_MS),
+			pollFields = PollField.all(),
+			userFields = listOf(UserField.PROFILE_IMAGE_URL, UserField.NAME, UserField.USERNAME)
+		).testResult().also(::assertNotNull)
+	}
+
+	@Test
 	fun tweetsIdTest() = runTest {
 		TwitterAPI.V2.tweetsApi.tweets(
-			"1263145271946551300",
-			tweetFields = listOf(TweetField.ENTITIES),
-			expansions = Expansion.all()
+			"1320424794433597440",
+			tweetFields = listOf(TweetField.CREATED_AT, TweetField.TEXT, TweetField.ENTITIES, TweetField.ATTACHMENTS),
+			expansions = Expansion.all(),
+			mediaFields = listOf(MediaField.URL, MediaField.TYPE, MediaField.MEDIA_KEY, MediaField.DURATION_MS),
+			pollFields = PollField.all(),
+			userFields = listOf(UserField.PROFILE_IMAGE_URL, UserField.NAME, UserField.USERNAME)
 		).testResult().also(::assertNotNull)
+	}
+
+@Test
+	fun recentTest() = runTest {
+		TwitterAPI.V2.tweetsApi.searchRecent(
+			"conversation_id:1323199167095689216",
+			tweetFields = listOf(TweetField.CREATED_AT, TweetField.TEXT, TweetField.ENTITIES, TweetField.ATTACHMENTS),
+			expansions = Expansion.all(),
+			mediaFields = listOf(MediaField.URL, MediaField.TYPE, MediaField.MEDIA_KEY, MediaField.DURATION_MS),
+			pollFields = PollField.all(),
+			userFields = listOf(UserField.PROFILE_IMAGE_URL, UserField.NAME, UserField.USERNAME)
+		).testResult()?.tweets?.filterNot { it.referencedTweets?.any { it.type == ReferenceTweet.Type.RETWEETED } ?: false }?.also {
+			println("list = ${it.map(Tweet::text)}")
+		}
 	}
 
 	@Test

@@ -38,3 +38,7 @@ private fun Element.getContentByAttributeValue(vararg keyValues: Pair<String, St
 	}
 	return null
 }
+
+actual fun resolveTweetCardType(source: String): TweetCardType {
+    TODO("Not yet implemented")
+}

@@ -50,7 +50,7 @@ internal open class Client(
 
 	suspend inline fun <reified T : Any> post(
 		url: String,
-		vararg params: Pair<String, String>,
+		vararg params: Pair<String, Any?>,
 		oauthToken: String? = null,
 		useBearerToken: Boolean = false
 	): Response<T> = catchResponse {
@@ -59,7 +59,7 @@ internal open class Client(
 				headerForTwitter(this@Client.bearerToken)
 			} else {
 				val accessToken =
-					oauthToken?.let { accessToken?.copy(oauthToken = it) ?: AccessToken(it, "") }
+					oauthToken?.let { accessToken?.copy(oauthToken = it) ?: AccessToken(it, "") } ?: accessToken
 				headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
 			}
 			bodyForTwitter(params.notNullParams)
@@ -72,11 +72,6 @@ internal open class Client(
 				val text: String
 				if (status.value == 200) {
 					text = readText()
-					Response.SUCCESS(json.decodeFromString<T>(text))
-				} else {
-					text = content.readUTF8Line()!!
-					Response.Error(Json.decodeFromString<ErrorMessages>(text).errors)
-				}.also {
 					Napier.d(
 						"""
 						method = ${request.method}
@@ -85,6 +80,18 @@ internal open class Client(
 						body = $text
 					""".trimIndent(), tag = "HttpResponse.onSuccess"
 					)
+					Response.SUCCESS(json.decodeFromString<T>(text))
+				} else {
+					text = content.readUTF8Line()!!
+					Napier.d(
+						"""
+						method = ${request.method}
+						url = ${request.url}
+						headers = ${request.headers.toMap()}
+						body = $text
+					""".trimIndent(), tag = "HttpResponse.onSuccess"
+					)
+					Response.Error(Json.decodeFromString<ErrorMessages>(text).errors)
 				}
 			}
 		}.getOrElse {

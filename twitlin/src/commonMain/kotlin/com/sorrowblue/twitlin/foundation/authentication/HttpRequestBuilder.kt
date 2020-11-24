@@ -1,5 +1,6 @@
 package com.sorrowblue.twitlin.foundation.authentication
 
+import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.basics.oauth.AccessToken
 import com.sorrowblue.twitlin.basics.oauth2.BearerToken
 import com.sorrowblue.twitlin.utils.urlEncode
@@ -66,4 +67,5 @@ internal fun HttpRequestBuilder.bodyForTwitter(params: List<Pair<String, String>
 			.joinToString("&") { "${it.first.urlEncode()}=${it.second.urlEncode()}" },
 		contentType = ContentType.Application.FormUrlEncoded
 	)
+	Napier.d(body.toString(),tag =  "TAG")
 }

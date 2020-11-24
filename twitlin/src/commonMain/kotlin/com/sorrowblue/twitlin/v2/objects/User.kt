@@ -34,7 +34,7 @@ data class User(
 	@Serializable
 	data class Entities(
 		val url: EntitiesUrl,
-		val description: Description
+		val description: Description? = null
 	) : Parcelable {
 
 		@Parcelize

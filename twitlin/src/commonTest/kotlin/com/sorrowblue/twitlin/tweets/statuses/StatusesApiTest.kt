@@ -1,4 +1,4 @@
-package com.sorrowblue.twitlin.tweets.status
+package com.sorrowblue.twitlin.tweets.statuses
 
 import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.test.AbstractTest
@@ -7,7 +7,7 @@ import com.sorrowblue.twitlin.test.testResult
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
-class StatusApiTest : AbstractTest {
+class StatusesApiTest : AbstractTest {
 
 	@Test
 	fun lookupTest() = runTest {
@@ -17,6 +17,11 @@ class StatusApiTest : AbstractTest {
 	@Test
 	fun timelineTest() = runTest {
 		assertNotNull(TwitterAPI.statuses.homeTimeline(count = 100).testResult())
+	}
+
+	@Test
+	fun updateTest() = runTest {
+		TwitterAPI.statuses.update("Tweet test from Twitlin.", "")
 	}
 }
 

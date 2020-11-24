@@ -14,4 +14,7 @@ class HelpApiTest : AbstractTest {
 
 	@Test
 	fun languages() = runTest { assertNotNull(TwitterAPI.help.languages().testResult()) }
+
+	@Test
+	fun lateLimit() = runTest { TwitterAPI.application.rateLimitStatus().testResult()}
 }

@@ -5,7 +5,25 @@ import com.sorrowblue.twitlin.objects.TwitterTweet
 
 interface StatusesApi {
 
-	suspend fun homeTimeline(
+    suspend fun update(
+		status: String,
+		inReplyToStatusId: String? = null,
+		autoPopulateReplyMetadata: Boolean = false,
+		excludeReplyUserIds: List<Long>? = null,
+		attachmentUrl: String? = null,
+		mediaIds: List<Long>? = null,
+		possiblySensitive: Boolean = false,
+		lat: Float? = null,
+		long: Float? = null,
+		placeId: String? = null,
+		displayCoordinates: Boolean? = null,
+		trimUser: Boolean = false,
+		enableDmcommands: Boolean = false,
+		failDmcommands: Boolean = true,
+		cardUri: String? = null
+	): Response<TwitterTweet>
+
+    suspend fun homeTimeline(
 		count: Int = 20,
 		sinceId: Long? = null,
 		maxId: Long? = null,
@@ -15,7 +33,7 @@ interface StatusesApi {
 		includeCard: Boolean? = null
 	): Response<List<TwitterTweet>>
 
-	suspend fun userTimeline(
+    suspend fun userTimeline(
 		userId: Long,
 		sinceId: Long? = null,
 		maxId: Long? = null,
@@ -26,7 +44,7 @@ interface StatusesApi {
 		includeCard: Boolean? = null
 	): Response<List<TwitterTweet>>
 
-	suspend fun userTimeline(
+    suspend fun userTimeline(
 		screenName: String,
 		sinceId: Long? = null,
 		maxId: Long? = null,
@@ -37,5 +55,5 @@ interface StatusesApi {
 		includeCard: Boolean? = null
 	): Response<List<TwitterTweet>>
 
-	suspend fun lookup(id: List<Long>): Response<List<TwitterTweet>>
+    suspend fun lookup(id: List<Long>): Response<List<TwitterTweet>>
 }

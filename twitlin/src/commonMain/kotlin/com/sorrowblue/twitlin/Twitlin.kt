@@ -36,5 +36,6 @@ expect fun initializeTwitlin(
 	apiKey: String,
 	apiSecret: String,
 	accessToken: AccessToken? = null,
-	bearerToken: BearerToken? = null
+	bearerToken: BearerToken? = null,
+	isEnabledDebug: Boolean = false
 )

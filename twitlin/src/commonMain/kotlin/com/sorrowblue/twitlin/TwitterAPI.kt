@@ -16,8 +16,12 @@ import com.sorrowblue.twitlin.basics.oauth2.OAuth2Api
 import com.sorrowblue.twitlin.basics.oauth2.OAuth2ApiImp
 import com.sorrowblue.twitlin.trends.TrendsApi
 import com.sorrowblue.twitlin.trends.TrendsApiImp
+import com.sorrowblue.twitlin.tweets.favorites.FavoritesApi
+import com.sorrowblue.twitlin.tweets.favorites.FavoritesApiImp
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApiImp
+import com.sorrowblue.twitlin.utilities.ApplicationApi
+import com.sorrowblue.twitlin.utilities.ApplicationApiImp
 import com.sorrowblue.twitlin.utilities.HelpApi
 import com.sorrowblue.twitlin.utilities.HelpApiImp
 import com.sorrowblue.twitlin.v2.tweets.TweetsApi
@@ -37,6 +41,8 @@ object TwitterAPI {
 	val followers: FollowersApi by lazy { FollowersApiImp(Twitlin.client) }
 	val friends: FriendsApi by lazy { FriendsApiImp(Twitlin.client) }
 	val help: HelpApi by lazy { HelpApiImp(Twitlin.client) }
+	val application: ApplicationApi by lazy { ApplicationApiImp(Twitlin.client) }
+	val favorites: FavoritesApi by lazy { FavoritesApiImp(Twitlin.client) }
 
 	@TwitterAPIV2
 	object V2 {

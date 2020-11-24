@@ -11,6 +11,7 @@ data class Media(
 	@SerialName("media_key")
 	val mediaKey: String,
 	val type: Type,
+	val url: String? = "",
 	@SerialName("duration_ms")
 	val durationMs: Int? = null,
 	val height: Int? = null,

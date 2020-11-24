@@ -40,3 +40,11 @@ private fun Element.getContentByAttributeValue(vararg keyValues: Pair<String, St
 	}
 	return null
 }
+
+actual fun resolveTweetCardType(source: String): TweetCardType {
+	val document: Document = Jsoup.parse(source)
+	return (document.head().getContentByAttributeValue("name" to "twitter:card")
+		?: document.body().getContentByAttributeValue("name" to "twitter:card"))?.let {
+		runCatching { TweetCardType.valueOf(it.toUpperCase(Locale.getDefault())) }.getOrElse { TweetCardType.SUMMARY }
+	} ?: TweetCardType.SUMMARY
+}

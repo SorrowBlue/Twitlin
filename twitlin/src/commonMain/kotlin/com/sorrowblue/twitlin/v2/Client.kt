@@ -24,229 +24,198 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+
+val json: Json = Json {
+    isLenient = true
+    ignoreUnknownKeys = true
+    encodeDefaults = false
+}
+
 internal open class Client(
-	private val apiKey: String,
-	private val secretKey: String,
-	var accessToken: AccessToken? = null,
-	var bearerToken: BearerToken? = null
+    private val apiKey: String,
+    private val secretKey: String,
+    var accessToken: AccessToken? = null,
+    var bearerToken: BearerToken? = null
 ) {
 
 
-	val json: Json = Json {
-		isLenient = true
-		ignoreUnknownKeys = true
-		encodeDefaults = false
-	}
+    val httpClient
+        get() = HttpClient(clientEngine) {
+            install(JsonFeature) {
+                serializer = KotlinxSerializer(json)
+            }
+        }
 
-	val httpClient
-		get() = HttpClient(clientEngine) {
-			install(JsonFeature) {
-				serializer = KotlinxSerializer(json)
-			}
-		}
+    suspend inline fun <reified T : Any> get(
+        url: String,
+        vararg params: Pair<String, Any?> = emptyArray(),
+        useBearerToken: Boolean = false
+    ): Response<T> =
+        httpClient.get<HttpResponse>(url.combineParams(params.notNullParams)) {
+            if (useBearerToken) {
+                headerForTwitter(this@Client.bearerToken)
+            } else {
+                headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+            }
+        }.toResponse()
 
-	suspend inline fun <reified T : Any> get(
-		url: String,
-		vararg params: Pair<String, Any?> = emptyArray(),
-		useBearerToken: Boolean = false
-	): Response<T> =
-		httpClient.get<HttpResponse>(url.combineParams(params.notNullParams)) {
-			if (useBearerToken) {
-				headerForTwitter(this@Client.bearerToken)
-			} else {
-				headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
-			}
-		}.toResponse()
+    suspend inline fun <reified T : Any, reified V : Any> getCustom(
+        url: String,
+        vararg params: Pair<String, Any?> = emptyArray(),
+        useBearerToken: Boolean = false,
+        converter: (V, HttpResponse) -> Response<T>
+    ): Response<T> =
+        httpClient.get<HttpResponse>(url.combineParams(params.notNullParams)) {
+            if (useBearerToken) {
+                headerForTwitter(this@Client.bearerToken)
+            } else {
+                headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+            }
+        }.toCustomResponse(converter)
 
-	suspend inline fun <reified T : Any, reified V : Any> getCustom(
-		url: String,
-		vararg params: Pair<String, Any?> = emptyArray(),
-		useBearerToken: Boolean = false,
-		converter: (V, HttpResponse) -> Response<T>
-	): Response<T> =
-		httpClient.get<HttpResponse>(url.combineParams(params.notNullParams)) {
-			if (useBearerToken) {
-				headerForTwitter(this@Client.bearerToken)
-			} else {
-				headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
-			}
-		}.toCustomResponse(converter)
+    suspend inline fun <reified T : Any> post(
+        url: String,
+        vararg params: Pair<String, Any?> = emptyArray(),
+        oauthToken: String? = null,
+        useBearerToken: Boolean = false
+    ): Response<T> =
+        httpClient.post<HttpResponse>(url) {
+            if (useBearerToken) {
+                headerForTwitter(this@Client.bearerToken)
+            } else {
+                val accessToken = oauthToken?.let { accessToken?.copy(oauthToken = it) }
+                headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+            }
+            bodyForTwitter(params.notNullParams)
+        }.toResponse()
 
-	suspend inline fun <reified T : Any> post(
-		url: String,
-		vararg params: Pair<String, Any?> = emptyArray(),
-		oauthToken: String? = null,
-		useBearerToken: Boolean = false
-	): Response<T> =
-		httpClient.post<HttpResponse>(url) {
-			if (useBearerToken) {
-				headerForTwitter(this@Client.bearerToken)
-			} else {
-				val accessToken = oauthToken?.let { accessToken?.copy(oauthToken = it) }
-				headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
-			}
-			bodyForTwitter(params.notNullParams)
-		}.toResponse()
+    suspend inline fun <reified V : Any, reified T : Any> postJson(
+        url: String,
+        vararg params: Pair<String, Any?> = emptyArray(),
+        body: V,
+        oauthToken: String? = null,
+        useBearerToken: Boolean = false
+    ): Response<T> = httpClient.post<HttpResponse>(url) {
+        if (useBearerToken) {
+            headerForTwitter(this@Client.bearerToken)
+        } else {
+            val accessToken = oauthToken?.let { accessToken?.copy(oauthToken = it) }
+            headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+        }
+        this.body =
+            TextContent(json.encodeToString(body), contentType = ContentType.Application.Json)
+    }.toResponse()
 
-	suspend inline fun <reified V : Any, reified T : Any> postJson(
-		url: String,
-		vararg params: Pair<String, Any?> = emptyArray(),
-		body: V,
-		oauthToken: String? = null,
-		useBearerToken: Boolean = false
-	): Response<T> = httpClient.post<HttpResponse>(url) {
-		if (useBearerToken) {
-			headerForTwitter(this@Client.bearerToken)
-		} else {
-			val accessToken = oauthToken?.let { accessToken?.copy(oauthToken = it) }
-			headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
-		}
-		this.body =
-			TextContent(json.encodeToString(body), contentType = ContentType.Application.Json)
-	}.toResponse()
+    suspend inline fun <reified V : Any, reified T : Any, reified B : Any> postJsonCustom(
+        url: String,
+        vararg params: Pair<String, Any?> = emptyArray(),
+        body: B,
+        oauthToken: String? = null,
+        useBearerToken: Boolean = false,
+        converter: (V, HttpResponse) -> Response<T>
+    ): Response<T> = httpClient.post<HttpResponse>(url) {
+        if (useBearerToken) {
+            headerForTwitter(this@Client.bearerToken)
+        } else {
+            val accessToken = oauthToken?.let { accessToken?.copy(oauthToken = it) }
+            headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+        }
+        this.body =
+            TextContent(json.encodeToString(body), contentType = ContentType.Application.Json)
+    }.toCustomResponse(converter)
 
-	suspend inline fun <reified V : Any, reified T : Any, reified B : Any> postJsonCustom(
-		url: String,
-		vararg params: Pair<String, Any?> = emptyArray(),
-		body: B,
-		oauthToken: String? = null,
-		useBearerToken: Boolean = false,
-		converter: (V, HttpResponse) -> Response<T>
-	): Response<T> = httpClient.post<HttpResponse>(url) {
-		if (useBearerToken) {
-			headerForTwitter(this@Client.bearerToken)
-		} else {
-			val accessToken = oauthToken?.let { accessToken?.copy(oauthToken = it) }
-			headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
-		}
-		this.body =
-			TextContent(json.encodeToString(body), contentType = ContentType.Application.Json)
-	}.toCustomResponse(converter)
+    suspend inline fun <reified T : Any, reified V : Any> put(url: String, body: V): Response<T> =
+        httpClient.put<HttpResponse>(url) {
+            headerForTwitter(apiKey, secretKey, emptyList(), accessToken)
+            this.body =
+                TextContent(json.encodeToString(body), contentType = ContentType.Application.Json)
+        }.toResponse()
 
-	suspend inline fun <reified T : Any, reified V : Any> put(url: String, body: V): Response<T> =
-		httpClient.put<HttpResponse>(url) {
-			headerForTwitter(apiKey, secretKey, emptyList(), accessToken)
-			this.body =
-				TextContent(json.encodeToString(body), contentType = ContentType.Application.Json)
-		}.toResponse()
+    @ExperimentalCoroutinesApi
+    inline fun <reified T : Any> streaming(
+        url: String,
+        vararg params: Pair<String, Any?> = emptyArray(),
+        useBearerToken: Boolean = false
+    ): Flow<Response<T>> {
+        return channelFlow {
+            httpClient.get<HttpStatement>(url.combineParams(params.notNullParams)) {
+                if (useBearerToken) {
+                    headerForTwitter(this@Client.bearerToken)
+                } else {
+                    headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+                }
+            }.execute { response ->
+                do {
+                    response.toResponse<T>().let(channel::offer)
+                } while (isClosedForSend.not())
+            }
+        }
+    }
+}
 
-	@ExperimentalCoroutinesApi
-	inline fun <reified T : Any> streaming(
-		url: String,
-		vararg params: Pair<String, Any?> = emptyArray(),
-		useBearerToken: Boolean = false
-	): Flow<Response<T>> {
-		return channelFlow {
-			httpClient.get<HttpStatement>(url.combineParams(params.notNullParams)) {
-				if (useBearerToken) {
-					headerForTwitter(this@Client.bearerToken)
-				} else {
-					headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
-				}
-			}.execute { response ->
-				do {
-					kotlin.runCatching {
-						val text: String
-						if (response.status.value == 200) {
-							text = response.readText()
-							json.decodeFromString<Response.Success<T>>(text)
-						} else {
-							text = response.content.readUTF8Line()!!
-							json.decodeFromString<Response.Failure<T>>(text)
-						}.also {
-							Napier.i(
-								"""
-							method = ${response.request.method}
-							url = ${response.request.url}
-							headers = ${response.request.headers.toMap()}
-							body = $text
-							""".trimIndent(), tag = "TwitlinClient"
-							)
-						}
-					}.getOrElse {
-						val statusCode =
-							if (it.toString()
-									.contains("java.net.UnknownHostException")
-							) -400 else -99
-						Response.Failure(
-							statusCode = statusCode,
-							Error(
-								title = it.message ?: "Unknown error",
-								detail = it.stackTraceToString(),
-								type = "TwitlinClient"
-							)
-						)
-					}.let(channel::offer)
-				} while (isClosedForSend.not())
-			}
-		}
-	}
+fun HttpResponse.sendLog(content: String) {
+    Napier.i(
+        """
+            status  = $status
+		    method  = ${request.method}
+		    url     = ${request.url}
+		    headers = ${request.headers.toMap()}
+		    content = $content
+		""".trimIndent(), tag = TAG
+    )
 }
 
 suspend inline fun <reified T : Any> HttpResponse.toResponse(): Response<T> = kotlin.runCatching {
-	val content: String
-	if (status.isSuccess()) {
-		content  = readText()
-		Napier.i(
-			"""
-		status  = $status
-		method  = ${request.method}
-		url     = ${request.url}
-		headers = ${request.headers.toMap()}
-		content = $content
-		""".trimIndent(), tag = TAG
-		)
-		Json.decodeFromString<Response.Success<T>>(content)
-	} else {
-		content  = this.content.readUTF8Line()!!
-		Napier.i(
-			"""
-		status  = $status
-		method  = ${request.method}
-		url     = ${request.url}
-		headers = ${request.headers.toMap()}
-		content = $content
-		""".trimIndent(), tag = TAG
-		)
-		Json.decodeFromString<Response.Failure<T>>(content)
-	}
-}.getOrElse {
-	Napier.e(it.stackTraceToString(), it, TAG)
-	val statusCode =
-		if (it.toString().contains("java.net.UnknownHostException")) STATUS_CODE_NO_NETWORK
-		else STATUS_CODE_CLIENT_ERROR
-	Response.Failure(
-		statusCode,
-		Error(it.message.orEmpty(), it.stackTraceToString(), "Client error")
-	)
-}
+    if (status.isSuccess()) {
+        readText().let {
+            sendLog(it)
+            json.decodeFromString<Response.Success<T>>(it)
+        }
+    } else {
+        content.readUTF8Line()!!.let {
+            sendLog(it)
+            json.decodeFromString<Response.Failure<T>>(it)
+        }
+    }
+}.getOrElse { it.toFailure() }
 
 suspend inline fun <reified T : Any, V : Any> HttpResponse.toCustomResponse(converter: (T, HttpResponse) -> Response<V>): Response<V> {
-	return kotlin.runCatching {
-		val content: String = content.readUTF8Line()!!
-		Napier.i(
-			"""
-			method  = ${request.method}
-			url     = ${request.url}
-			headers = ${request.headers.toMap()}
-			content = $content
-			""".trimIndent(), tag = TAG
-		)
-		if (status.isSuccess()) {
-			converter(Json.decodeFromString(content), this)
-		} else {
-			Json.decodeFromString<Response.Failure<V>>(content)
-		}
-	}.getOrElse {
-		Napier.e(it.stackTraceToString(), it, TAG)
-		val statusCode =
-			if (it.toString().contains("java.net.UnknownHostException")) STATUS_CODE_NO_NETWORK
-			else STATUS_CODE_CLIENT_ERROR
-		Response.Failure(
-			statusCode,
-			Error(it.message.orEmpty(), it.stackTraceToString(), "Client error")
-		)
-	}
+    return kotlin.runCatching {
+        if (status.isSuccess()) {
+            readText().let {
+                sendLog(it)
+                converter(json.decodeFromString(it), this)
+            }
+        } else {
+            content.readUTF8Line()!!.let {
+                sendLog(it)
+                json.decodeFromString<Response.Failure<V>>(it)
+            }
+        }
+    }.getOrElse { it.toFailure() }
+}
+
+fun <T : Any> Throwable.toFailure(): Response.Failure<T> {
+    Napier.e(stackTraceToString(), this, TAG)
+    return if (toString().contains("java.net.UnknownHostException")) {
+        Response.Failure(
+            statusCode = STATUS_CODE_NO_NETWORK,
+            Error(
+                title = "UnknownHostException",
+                detail = stackTraceToString(),
+                type = Error.Type.UNKNOWN_HOST_EXCEPTION
+            )
+        )
+    } else {
+        Response.Failure(
+            statusCode = STATUS_CODE_CLIENT_ERROR,
+            Error(
+                title = "unknowns",
+                detail = stackTraceToString(),
+                type = Error.Type.UNKNOWNS
+            )
+        )
+    }
 }
 
 const val TAG = "TwitlinClient"

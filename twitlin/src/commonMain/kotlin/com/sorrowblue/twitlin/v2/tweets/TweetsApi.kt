@@ -2,6 +2,7 @@ package com.sorrowblue.twitlin.v2.tweets
 
 import com.sorrowblue.twitlin.v2.Response
 import com.sorrowblue.twitlin.v2.objects.*
+import com.sorrowblue.twitlin.v2.users.TwitterAPIV2
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 
@@ -10,6 +11,7 @@ import kotlinx.datetime.LocalDateTime
  * TODO
  *
  */
+@TwitterAPIV2
 interface TweetsApi {
 	/**
 	 * Returns a variety of information about a single Tweet specified by the requested ID.
@@ -119,7 +121,7 @@ interface TweetsApi {
 		pollFields: List<PollField>? = null,
 		tweetFields: List<TweetField>? = null,
 		userFields: List<UserField>? = null
-	): Response<Tweet>
+	): Response<SearchRecent>
 
 	/**
 	 * Streams about 1% of all Tweets in real-time.
