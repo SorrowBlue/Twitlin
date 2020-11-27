@@ -10,6 +10,7 @@ object Libs {
 
 	object kotlinx {
 		const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1"
+		const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
 	}
 
 	object `ktor-client` {

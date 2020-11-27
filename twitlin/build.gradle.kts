@@ -1,5 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
+
 plugins {
 	`kotlin-multiplatform`
 	ComAndroidPluginGroup(this).library
@@ -38,11 +40,11 @@ kotlin {
 		}
 		commonMain {
 			dependencies {
-				api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.0")
+				api(Libs.kotlinx.datetime)
 				implementation(Libs.kotlinx.serialization)
 				implementation(Libs.`ktor-client`.core)
 				implementation(Libs.`ktor-client`.serialization)
-				implementation(kotlin("reflect", "1.4.10"))
+				implementation(kotlin("reflect", KOTLIN_VERSION))
 				api(Libs.klock)
 
 				implementation(Libs.napier.common)
@@ -143,7 +145,7 @@ afterEvaluate {
 	}
 	publishing {
 		val projectName = project.name
-		publications.all<org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication> {
+		publications.all<DefaultMavenPublication> {
 			artifactId = when (name) {
 				"kotlinMultiplatform" -> {
 					artifact(sourcesJar)
