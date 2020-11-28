@@ -9,7 +9,11 @@ import com.sorrowblue.twitlin.objects.ResourceName
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.int
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.long
 
 interface ApplicationApi {
     suspend fun rateLimitStatus(): Response<RateLimitStatus>

@@ -8,8 +8,9 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 enum class CoordinatesType : Parcelable {
-	@SerialName("Polygon")
-	POLYGON,
-	@SerialName("Point")
-	POINT
+    @SerialName("Polygon")
+    POLYGON,
+
+    @SerialName("Point")
+    POINT
 }

@@ -13,59 +13,59 @@ import kotlin.random.Random
 
 @OptIn(InternalAPI::class)
 internal val nextNonce
-	get() = Random.nextBytes(32).encodeBase64().trim('=')
+    get() = Random.nextBytes(32).encodeBase64().trim('=')
 
 internal val nowTimestamp
-	get() = Clock.System.now().epochSeconds.toString()
+    get() = Clock.System.now().epochSeconds.toString()
 
 internal val Array<out Pair<String, Any?>>.notNullParams: List<Pair<String, String>>
-	get() = mapNotNull { pair -> pair.second?.let { pair.first to it.toString() } }
+    get() = mapNotNull { pair -> pair.second?.let { pair.first to it.toString() } }
 
 internal fun HttpRequestBuilder.createSignature(
-	consumerKey: String,
-	consumerSecret: String,
-	nonce: String,
-	timestamp: String,
-	accessToken: AccessToken?,
-	params: List<Pair<String, String>>,
+    consumerKey: String,
+    consumerSecret: String,
+    nonce: String,
+    timestamp: String,
+    accessToken: AccessToken?,
+    params: List<Pair<String, String>>,
 ): String {
-	val parameterString =
-		collectParameters(consumerKey, nonce, timestamp, accessToken?.oauthToken, params)
-	val baseString = creatingSignatureBaseString(
-		method.value,
-		"${url.protocol.name}://${url.host}${url.encodedPath}",
-		parameterString
-	)
-	val signingKey = getSigningKey(consumerSecret, accessToken?.oauthTokenSecret)
-	return calculateSignature(baseString, signingKey)
+    val parameterString =
+        collectParameters(consumerKey, nonce, timestamp, accessToken?.oauthToken, params)
+    val baseString = creatingSignatureBaseString(
+        method.value,
+        "${url.protocol.name}://${url.host}${url.encodedPath}",
+        parameterString
+    )
+    val signingKey = getSigningKey(consumerSecret, accessToken?.oauthTokenSecret)
+    return calculateSignature(baseString, signingKey)
 }
 
 internal val List<Pair<String, String>>.oauthParams get() = takeWhile { it.first.startsWith("oauth_") }
 
 internal fun HttpRequestBuilder.headerForTwitter(
-	consumerKey: String,
-	consumerSecret: String,
-	params: List<Pair<String, String>>,
-	accessToken: AccessToken?
+    consumerKey: String,
+    consumerSecret: String,
+    params: List<Pair<String, String>>,
+    accessToken: AccessToken?
 ) {
-	val nc = nextNonce
-	val ts = nowTimestamp
-	val sign =
-		createSignature(consumerKey, consumerSecret, nc, ts, accessToken, params)
-	val parameters =
-		collectParameters(consumerKey, nc, sign, ts, accessToken?.oauthToken, params.oauthParams)
-	header(HttpHeaders.Authorization, buildHeaderString(parameters))
+    val nc = nextNonce
+    val ts = nowTimestamp
+    val sign =
+        createSignature(consumerKey, consumerSecret, nc, ts, accessToken, params)
+    val parameters =
+        collectParameters(consumerKey, nc, sign, ts, accessToken?.oauthToken, params.oauthParams)
+    header(HttpHeaders.Authorization, buildHeaderString(parameters))
 }
 
 internal fun HttpRequestBuilder.headerForTwitter(bearerToken: BearerToken?) =
-	header(HttpHeaders.Authorization, "Bearer ${bearerToken?.accessToken}")
+    header(HttpHeaders.Authorization, "Bearer ${bearerToken?.accessToken}")
 
 internal fun HttpRequestBuilder.bodyForTwitter(params: List<Pair<String, String>>) {
-	body = TextContent(
-		params
-			.mapNotNull { if (it.first.startsWith("oauth_")) null else it }
-			.joinToString("&") { "${it.first.urlEncode()}=${it.second.urlEncode()}" },
-		contentType = ContentType.Application.FormUrlEncoded
-	)
-	Napier.d(body.toString(),tag =  "TAG")
+    body = TextContent(
+        params
+            .mapNotNull { if (it.first.startsWith("oauth_")) null else it }
+            .joinToString("&") { "${it.first.urlEncode()}=${it.second.urlEncode()}" },
+        contentType = ContentType.Application.FormUrlEncoded
+    )
+    Napier.d(body.toString(), tag = "TAG")
 }

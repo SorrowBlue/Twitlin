@@ -14,16 +14,16 @@ import kotlinx.serialization.encoding.Encoder
  * [LocalDateTime]用シリアライザ
  */
 object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
-	override val descriptor =
-		PrimitiveSerialDescriptor("kotlinx.datetime.toLocalDateTime", PrimitiveKind.STRING)
+    override val descriptor =
+        PrimitiveSerialDescriptor("kotlinx.datetime.toLocalDateTime", PrimitiveKind.STRING)
 
-	override fun deserialize(decoder: Decoder) =
-		decoder.decodeString().toInstant().toLocalDateTime(TimeZone.currentSystemDefault())
+    override fun deserialize(decoder: Decoder) =
+        decoder.decodeString().toInstant().toLocalDateTime(TimeZone.currentSystemDefault())
 
-	override fun serialize(encoder: Encoder, value: LocalDateTime) {
-		val s = value.toInstant(TimeZone.UTC).toString()
+    override fun serialize(encoder: Encoder, value: LocalDateTime) {
+        val s = value.toInstant(TimeZone.UTC).toString()
 //		encoder.encodeString(s)
-		val s2 = s.takeLast(10)
-		encoder.encodeString(s.replace(s2, s2.replace("0", "").take(3)) + "Z")
-	}
+        val s2 = s.takeLast(10)
+        encoder.encodeString(s.replace(s2, s2.replace("0", "").take(3)) + "Z")
+    }
 }

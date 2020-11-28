@@ -7,17 +7,23 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 data class TwitterCard(
-	val title: String,
-	val url: String,
-	val description: String,
-	val image: String,
-	val type: CardType,
-	val site: String
+    val title: String,
+    val url: String,
+    val description: String,
+    val image: String,
+    val type: Type,
+    val site: String
 ) : Parcelable {
-	enum class CardType {
-		SUMMARY,
-		SUMMARY_LARGE_IMAGE,
-		APP,
-		PLAYER,
-	}
+    enum class Type {
+        SUMMARY,
+        SUMMARY_LARGE_IMAGE,
+        APP,
+        PLAYER;
+
+        companion object {
+
+            fun parse(value: String) =
+                runCatching { valueOf(value.toUpperCase()) }.getOrElse { SUMMARY }
+        }
+    }
 }

@@ -10,6 +10,6 @@ package com.sorrowblue.twitlin.basics.oauth
  * @property oauthVerifier Set the value of `oauth_verifier`
  */
 data class Authenticate(
-	val oauthToken: String,
-	val oauthVerifier: String
+    val oauthToken: String,
+    val oauthVerifier: String
 )

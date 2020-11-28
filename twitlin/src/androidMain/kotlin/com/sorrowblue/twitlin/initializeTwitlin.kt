@@ -6,12 +6,12 @@ import com.sorrowblue.twitlin.basics.oauth.AccessToken
 import com.sorrowblue.twitlin.basics.oauth2.BearerToken
 
 actual fun initializeTwitlin(
-	apiKey: String,
-	apiSecret: String,
-	accessToken: AccessToken?,
-	bearerToken: BearerToken?,
-	isEnabledDebug: Boolean
+    apiKey: String,
+    apiSecret: String,
+    accessToken: AccessToken?,
+    bearerToken: BearerToken?,
+    isEnabledDebug: Boolean
 ) {
-	if (isEnabledDebug) Napier.base(DebugAntilog("Twitlin"))
-	Twitlin.initialize(apiKey, apiSecret, accessToken, bearerToken)
+    if (isEnabledDebug) Napier.base(DebugAntilog("Twitlin"))
+    Twitlin.initialize(apiKey, apiSecret, accessToken, bearerToken)
 }

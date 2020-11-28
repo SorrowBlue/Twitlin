@@ -9,19 +9,19 @@ import kotlin.test.assertNotNull
 
 class StatusesApiTest : AbstractTest {
 
-	@Test
-	fun lookupTest() = runTest {
-		assertNotNull(TwitterAPI.statuses.lookup(listOf(1284807458699894785)).testResult())
-	}
+    @Test
+    fun lookupTest() = runTest {
+        assertNotNull(TwitterAPI.statuses.lookup(listOf(1284807458699894785)).testResult())
+    }
 
-	@Test
-	fun timelineTest() = runTest {
-		assertNotNull(TwitterAPI.statuses.homeTimeline(count = 100).testResult())
-	}
+    @Test
+    fun timelineTest() = runTest {
+        assertNotNull(TwitterAPI.statuses.homeTimeline(count = 100).testResult())
+    }
 
-	@Test
-	fun updateTest() = runTest {
-		TwitterAPI.statuses.update("Tweet test from Twitlin.", "")
-	}
+    @Test
+    fun updateTest() = runTest {
+        TwitterAPI.statuses.update("Tweet test from Twitlin.", "")
+    }
 }
 

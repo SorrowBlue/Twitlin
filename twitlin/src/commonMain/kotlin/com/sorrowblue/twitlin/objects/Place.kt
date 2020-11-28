@@ -24,17 +24,17 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 data class Place(
-	val id: String,
-	val url: String,
-	@SerialName("place_type")
-	val placeType: String,
-	val name: String,
-	@SerialName("full_name")
-	val fullName: String,
-	@SerialName("country_code")
-	val countryCode: String,
-	val country: String,
-	@SerialName("bounding_box")
-	val boundingBox: BoundingBox
+    val id: String,
+    val url: String,
+    @SerialName("place_type")
+    val placeType: String,
+    val name: String,
+    @SerialName("full_name")
+    val fullName: String,
+    @SerialName("country_code")
+    val countryCode: String,
+    val country: String,
+    @SerialName("bounding_box")
+    val boundingBox: BoundingBox
 //	val attributes: JsonObject? = null
 ) : Parcelable

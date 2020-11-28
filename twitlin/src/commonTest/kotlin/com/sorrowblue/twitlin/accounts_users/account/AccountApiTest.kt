@@ -6,18 +6,18 @@ import com.sorrowblue.twitlin.test.AbstractTest
 import com.sorrowblue.twitlin.test.runTest
 import kotlin.test.Test
 
-class AccountApiTest: AbstractTest {
+class AccountApiTest : AbstractTest {
 
-	@Test
-	fun verifyCredentialsTest() = runTest {
-		TwitterAPI.account.verifyCredentials()
-			.onError {
-				Napier.e(
-					it.joinToString(", ") { error -> "${error.code} -> ${error.message}" },
-					tag = "verifyCredentialsTest"
-				)
-			}.onSuccess {
-				Napier.d(it.toString(), tag = "verifyCredentialsTest")
-			}
-	}
+    @Test
+    fun verifyCredentialsTest() = runTest {
+        TwitterAPI.account.verifyCredentials()
+            .onError {
+                Napier.e(
+                    it.joinToString(", ") { error -> "${error.code} -> ${error.message}" },
+                    tag = "verifyCredentialsTest"
+                )
+            }.onSuccess {
+                Napier.d(it.toString(), tag = "verifyCredentialsTest")
+            }
+    }
 }

@@ -13,19 +13,19 @@ package com.sorrowblue.twitlin.basics.oauth
  * @property oauthCallbackConfirmed true if the oauth callback was confirmed
  */
 data class OAuthToken(
-	val oauthToken: String,
-	val oauthTokenSecret: String,
-	val oauthCallbackConfirmed: Boolean
+    val oauthToken: String,
+    val oauthTokenSecret: String,
+    val oauthCallbackConfirmed: Boolean
 ) {
-	internal companion object {
-		fun fromString(string: String): OAuthToken = string.split("&").map {
-			it.split("=").run { getOrNull(0) to getOrNull(1) }
-		}.toMap().let {
-			OAuthToken(
-				it["oauth_token"].orEmpty(),
-				it["oauth_token_secret"].orEmpty(),
-				it["oauth_callback_confirmed"].toBoolean()
-			)
-		}
-	}
+    internal companion object {
+        fun fromString(string: String): OAuthToken = string.split("&").map {
+            it.split("=").run { getOrNull(0) to getOrNull(1) }
+        }.toMap().let {
+            OAuthToken(
+                it["oauth_token"].orEmpty(),
+                it["oauth_token_secret"].orEmpty(),
+                it["oauth_callback_confirmed"].toBoolean()
+            )
+        }
+    }
 }

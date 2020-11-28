@@ -1,6 +1,6 @@
 package com.sorrowblue.twitlin.net
 
-import io.ktor.client.engine.HttpClientEngineConfig
-import io.ktor.client.engine.HttpClientEngineFactory
+import io.ktor.client.engine.*
+
 
 internal expect val clientEngine: HttpClientEngineFactory<HttpClientEngineConfig>

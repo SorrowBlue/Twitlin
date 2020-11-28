@@ -2,7 +2,11 @@ package com.sorrowblue.twitlin.v2
 
 import com.sorrowblue.twitlin.Parcelable
 import com.sorrowblue.twitlin.Parcelize
-import com.sorrowblue.twitlin.v2.objects.*
+import com.sorrowblue.twitlin.v2.objects.Media
+import com.sorrowblue.twitlin.v2.objects.Place
+import com.sorrowblue.twitlin.v2.objects.Poll
+import com.sorrowblue.twitlin.v2.objects.Tweet
+import com.sorrowblue.twitlin.v2.objects.User
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

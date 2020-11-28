@@ -16,18 +16,17 @@ object TweetUtil {
         }.getOrNull() else null
     }
 
-    suspend fun tweetCardType(url: String): TweetCardType {
+    suspend fun tweetCardType(url: String): TwitterCard.Type {
         val response = HttpClient(clientEngine).get<HttpResponse>(url)
         return if (response.status.isSuccess()) kotlin.runCatching {
             resolveTweetCardType(response.readText())
-        }.getOrElse { TweetCardType.SUMMARY } else TweetCardType.SUMMARY
+        }.getOrElse { TwitterCard.Type.SUMMARY } else TwitterCard.Type.SUMMARY
     }
-
 }
 
-expect fun resolveCard(source: String): TwitterCard?
+expect fun resolveCard(source: String): TwitterCard
 
-expect fun resolveTweetCardType(source: String): TweetCardType
+expect fun resolveTweetCardType(source: String): TwitterCard.Type
 
 enum class TweetCardType {
     SUMMARY,
@@ -35,3 +34,5 @@ enum class TweetCardType {
     APP,
     PLAYER
 }
+
+

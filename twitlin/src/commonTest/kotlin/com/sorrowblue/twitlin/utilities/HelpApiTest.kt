@@ -9,12 +9,12 @@ import kotlin.test.assertNotNull
 
 class HelpApiTest : AbstractTest {
 
-	@Test
-	fun configuration() = runTest { assertNotNull(TwitterAPI.help.configuration().testResult()) }
+    @Test
+    fun configuration() = runTest { assertNotNull(TwitterAPI.help.configuration().testResult()) }
 
-	@Test
-	fun languages() = runTest { assertNotNull(TwitterAPI.help.languages().testResult()) }
+    @Test
+    fun languages() = runTest { assertNotNull(TwitterAPI.help.languages().testResult()) }
 
-	@Test
-	fun lateLimit() = runTest { TwitterAPI.application.rateLimitStatus().testResult()}
+    @Test
+    fun lateLimit() = runTest { TwitterAPI.application.rateLimitStatus().testResult() }
 }

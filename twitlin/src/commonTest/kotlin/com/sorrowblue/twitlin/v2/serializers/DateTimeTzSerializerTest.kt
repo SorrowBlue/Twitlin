@@ -11,24 +11,24 @@ import kotlin.test.assertEquals
 
 internal class LocalDateTimeSerializerTest {
 
-	private val source = LocalDateTime(2010, 6, 1, 22, 19, 44, 475)
-	private val strSource = """{"date":"2010-06-01T22:19:44.475Z"}"""
+    private val source = LocalDateTime(2010, 6, 1, 22, 19, 44, 475)
+    private val strSource = """{"date":"2010-06-01T22:19:44.475Z"}"""
 
 
-	@Test
-	fun deserialize() {
-		val json = Json.decodeFromString<TestData>(strSource)
-		assertEquals(source, json.date)
-	}
+    @Test
+    fun deserialize() {
+        val json = Json.decodeFromString<TestData>(strSource)
+        assertEquals(source, json.date)
+    }
 
-	@Test
-	fun serialize() {
-		assertEquals(strSource, Json.encodeToString(TestData(source)))
-	}
+    @Test
+    fun serialize() {
+        assertEquals(strSource, Json.encodeToString(TestData(source)))
+    }
 }
 
 @Serializable
 private class TestData(
-	@Serializable(LocalDateTimeSerializer::class)
-	val date: LocalDateTime
+    @Serializable(LocalDateTimeSerializer::class)
+    val date: LocalDateTime
 )

@@ -7,19 +7,19 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 data class TrendLocation(
-	val country: String,
-	val countryCode: String?,
-	val name: String,
-	val parentid: Int,
-	val placeType: PlaceType,
-	val url: String,
-	val woeid: Int
-) : Parcelable{
+    val country: String,
+    val countryCode: String?,
+    val name: String,
+    val parentid: Int,
+    val placeType: PlaceType,
+    val url: String,
+    val woeid: Int
+) : Parcelable {
 
-	@Parcelize
-	@Serializable
-	data class PlaceType(
-		val code: Int,
-		val name: String
-	): Parcelable
+    @Parcelize
+    @Serializable
+    data class PlaceType(
+        val code: Int,
+        val name: String
+    ) : Parcelable
 }

@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 data class BoundingBox(
-	val coordinates: List<List<List<Double>>>,
-	val type: String
-): Parcelable
+    val coordinates: List<List<List<Double>>>,
+    val type: String
+) : Parcelable
 

@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Trend(
-	val name: String,
-	@SerialName("promoted_content")
-	val promotedContent: Boolean?,
-	val query: String,
-	val tweetVolume: Long? = null,
-	val url: String
+    val name: String,
+    @SerialName("promoted_content")
+    val promotedContent: Boolean?,
+    val query: String,
+    val tweetVolume: Long? = null,
+    val url: String
 )

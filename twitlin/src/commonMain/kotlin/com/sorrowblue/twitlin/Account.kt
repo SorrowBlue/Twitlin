@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Account internal constructor(
-	val id: Long,
-	val profileImageUrlHttps: String,
-	val name: String,
-	val screenName: String,
-	internal val accessToken: AccessToken
+    val id: Long,
+    val profileImageUrlHttps: String,
+    val name: String,
+    val screenName: String,
+    internal val accessToken: AccessToken
 )

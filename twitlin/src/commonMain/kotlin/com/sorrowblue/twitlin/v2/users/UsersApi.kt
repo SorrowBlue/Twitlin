@@ -12,40 +12,40 @@ annotation class TwitterAPIV2
 @TwitterAPIV2
 interface UsersApi {
 
-	enum class Expansion(override val value: String) : Field {
-		PINNED_TWEET_ID("pinned_tweet_id"),
-		;
+    enum class Expansion(override val value: String) : Field {
+        PINNED_TWEET_ID("pinned_tweet_id"),
+        ;
 
-		companion object {
-			fun all() = listOf(PINNED_TWEET_ID)
-		}
-	}
+        companion object {
+            fun all() = listOf(PINNED_TWEET_ID)
+        }
+    }
 
-	suspend fun users(
-		id: String,
-		expansions: List<Expansion>? = null,
-		tweetFields: List<TweetField>? = null,
-		userFields: List<UserField>? = null,
-	): Response<User>
+    suspend fun users(
+        id: String,
+        expansions: List<Expansion>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null,
+    ): Response<User>
 
-	suspend fun users(
-		ids: List<String>,
-		expansions: List<Expansion>? = null,
-		tweetFields: List<TweetField>? = null,
-		userFields: List<UserField>? = null,
-	): Response<List<User>>
+    suspend fun users(
+        ids: List<String>,
+        expansions: List<Expansion>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null,
+    ): Response<List<User>>
 
-	suspend fun byUsername(
-		username: String,
-		expansions: List<Expansion>? = null,
-		tweetFields: List<TweetField>? = null,
-		userFields: List<UserField>? = null,
-	): Response<User>
+    suspend fun byUsername(
+        username: String,
+        expansions: List<Expansion>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null,
+    ): Response<User>
 
-	suspend fun byUsername(
-		usernames: List<String>,
-		expansions: List<Expansion>? = null,
-		tweetFields: List<TweetField>? = null,
-		userFields: List<UserField>? = null,
-	): Response<List<User>>
+    suspend fun byUsername(
+        usernames: List<String>,
+        expansions: List<Expansion>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null,
+    ): Response<List<User>>
 }

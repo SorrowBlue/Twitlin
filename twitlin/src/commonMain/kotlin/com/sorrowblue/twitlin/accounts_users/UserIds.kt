@@ -14,9 +14,9 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class UserIds(
-	val ids: List<Long>,
-	@SerialName("next_cursor") val nextCursor: Long,
-	@SerialName("next_cursor_str") val nextCursorStr: String,
-	@SerialName("previous_cursor") val previousCursor: Long,
-	@SerialName("previous_cursor_str") val previousCursorStr: String
+    val ids: List<Long>,
+    @SerialName("next_cursor") val nextCursor: Long,
+    @SerialName("next_cursor_str") val nextCursorStr: String,
+    @SerialName("previous_cursor") val previousCursor: Long,
+    @SerialName("previous_cursor_str") val previousCursorStr: String
 )

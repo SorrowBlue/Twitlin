@@ -15,6 +15,6 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 data class Coordinates(
-	val coordinates: List<Double>,
-	val type: CoordinatesType
-): Parcelable
+    val coordinates: List<Double>,
+    val type: CoordinatesType
+) : Parcelable

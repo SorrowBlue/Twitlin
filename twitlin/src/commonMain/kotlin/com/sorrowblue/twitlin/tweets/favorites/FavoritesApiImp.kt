@@ -3,7 +3,6 @@ package com.sorrowblue.twitlin.tweets.favorites
 import com.sorrowblue.twitlin.net.Client
 import com.sorrowblue.twitlin.net.Response
 import com.sorrowblue.twitlin.net.Urls._1_1
-import com.sorrowblue.twitlin.objects.Tweet
 import com.sorrowblue.twitlin.objects.TwitterTweet
 
 private val FAVORITES = "$_1_1/favorites"
