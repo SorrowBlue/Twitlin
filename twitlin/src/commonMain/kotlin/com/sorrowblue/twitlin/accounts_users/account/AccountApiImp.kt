@@ -31,7 +31,7 @@ internal class AccountApiImp(private val client: Client) : AccountApi {
         if (sleepTime == null && timeZone == null && trendLocationWoeid == null && lang == null) {
             client.get("$ACCOUNT/settings.json")
         } else {
-            client.get(
+            client.post(
                 "$ACCOUNT/settings.json",
                 "sleep_time_enabled" to sleepTime?.enabled,
                 "start_sleep_time" to sleepTime?.startTime,
@@ -47,11 +47,20 @@ internal class AccountApiImp(private val client: Client) : AccountApi {
         url: String?,
         location: String?,
         description: String?,
+        profileLinkColor: String?,
         includeEntities: Boolean,
         skipStatus: Boolean
-    ): Response<TwitterUser> {
-        TODO("Not yet implemented")
-    }
+    ): Response<TwitterUser> =
+        client.post(
+            "$ACCOUNT/update_profile.json",
+            "name" to name,
+            "url" to url,
+            "location" to location,
+            "description" to description,
+            "profile_link_color" to profileLinkColor,
+            "include_entities" to includeEntities,
+            "skip_status" to skipStatus,
+        )
 
     override suspend fun updateProfileBanner(banner: String): Response<Unit> {
         TODO("Not yet implemented")

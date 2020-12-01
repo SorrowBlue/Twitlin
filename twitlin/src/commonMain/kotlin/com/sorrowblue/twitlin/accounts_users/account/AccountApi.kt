@@ -70,6 +70,7 @@ interface AccountApi {
         url: String? = null,
         location: String? = null,
         description: String? = null,
+        profileLinkColor: String? = null,
         includeEntities: Boolean = true,
         skipStatus: Boolean = false
     ): Response<TwitterUser>

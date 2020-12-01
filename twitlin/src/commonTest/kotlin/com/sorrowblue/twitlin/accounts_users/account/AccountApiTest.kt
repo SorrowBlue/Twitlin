@@ -4,6 +4,7 @@ import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.test.AbstractTest
 import com.sorrowblue.twitlin.test.runTest
+import com.sorrowblue.twitlin.test.testResult
 import kotlin.test.Test
 
 class AccountApiTest : AbstractTest {
@@ -19,5 +20,17 @@ class AccountApiTest : AbstractTest {
             }.onSuccess {
                 Napier.d(it.toString(), tag = "verifyCredentialsTest")
             }
+    }
+
+    @Test
+    fun settingTest() = runTest {
+        TwitterAPI.account.settings().testResult()
+    }
+
+    @Test
+    fun updateProfileLinkColorTest() = runTest {
+        TwitterAPI.account.updateProfile(
+            profileLinkColor = "FF0000"
+        ).testResult()
     }
 }
