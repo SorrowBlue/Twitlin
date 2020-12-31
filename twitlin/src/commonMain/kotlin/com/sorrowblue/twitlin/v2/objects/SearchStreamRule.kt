@@ -1,10 +1,15 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.v2.objects
 
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.v2.Error
 import com.sorrowblue.twitlin.v2.Includes
 import com.sorrowblue.twitlin.v2.Response
 import com.sorrowblue.twitlin.v2.serializer.LocalDateTimeSerializer
-import io.ktor.client.statement.*
+import io.ktor.client.statement.HttpResponse
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,17 +20,17 @@ import kotlinx.serialization.Serializable
  * @property rules
  * @property sent
  */
-data class SearchStreamRule(
+public data class SearchStreamRule(
     val rules: List<StreamRule>,
     @Serializable(LocalDateTimeSerializer::class)
     val sent: LocalDateTime
-) {
+) : JvmSerializable {
     @Serializable
-    data class StreamRule(
+    public data class StreamRule(
         val id: String,
         val value: String,
         val tag: String? = null
-    )
+    ) : JvmSerializable
 }
 
 /**
@@ -35,10 +40,10 @@ data class SearchStreamRule(
  * @property tag
  */
 @Serializable
-class AddSearchStreamRule(
+public data class AddSearchStreamRule(
     val value: String,
     val tag: String? = null
-)
+) : JvmSerializable
 
 /**
  * TODO
@@ -47,19 +52,20 @@ class AddSearchStreamRule(
  * @property sent
  * @property summary
  */
-data class AddSearchStreamRuleResult(
+public data class AddSearchStreamRuleResult(
     val rules: List<SearchStreamRule.StreamRule>,
     val sent: LocalDateTime,
     val summary: Summary
-) {
+) : JvmSerializable {
+
     @Serializable
-    data class Summary(
+    public data class Summary(
         val created: Int,
         @SerialName("not_created")
         val notCreated: Int,
         val valid: Int,
         val invalid: Int
-    )
+    ) : JvmSerializable
 }
 
 /**
@@ -68,16 +74,16 @@ data class AddSearchStreamRuleResult(
  * @property sent
  * @property summary
  */
-data class DeleteSearchStreamRuleResult(
+public data class DeleteSearchStreamRuleResult(
     val sent: LocalDateTime,
     val summary: Summary
-) {
+) : JvmSerializable {
     @Serializable
-    data class Summary(
+    public data class Summary(
         val deleted: Int,
         @SerialName("not_deleted")
         val notDeleted: Int
-    )
+    ) : JvmSerializable
 }
 
 /**
@@ -130,13 +136,13 @@ internal class SearchStreamRuleResponse(
     )
 }
 
-class SearchRecent(
+public data class SearchRecent(
     val tweets: List<Tweet>,
     val meta: Meta
-) {
+) : JvmSerializable {
 
     @Serializable
-    class Meta(
+    public data class Meta(
         @SerialName("newest_id")
         val newestId: String? = null,
         @SerialName("oldest_id")

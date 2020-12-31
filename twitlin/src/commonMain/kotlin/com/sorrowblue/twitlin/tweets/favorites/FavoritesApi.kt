@@ -1,10 +1,15 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.tweets.favorites
 
-import com.sorrowblue.twitlin.net.Response
+import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.objects.TwitterTweet
 
-interface FavoritesApi {
-    suspend fun list(
+public interface FavoritesApi {
+
+    public suspend fun list(
         userId: Long,
         count: Int = 20,
         sinceId: Long? = null,
@@ -12,7 +17,7 @@ interface FavoritesApi {
         includeEntities: Boolean = true
     ): Response<List<TwitterTweet>>
 
-    suspend fun list(
+    public suspend fun list(
         screenName: String,
         count: Int = 20,
         sinceId: Long? = null,

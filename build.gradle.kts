@@ -1,3 +1,7 @@
+/*
+ * (c) 2020.
+ */
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id("com.github.ben-manes.versions") version "0.36.0"
@@ -21,6 +25,7 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
+        mavenLocal()
         maven(url = "https://kotlin.bintray.com/kotlinx/")
     }
 }

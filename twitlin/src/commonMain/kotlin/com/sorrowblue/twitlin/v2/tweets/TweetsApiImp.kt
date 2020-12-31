@@ -1,6 +1,10 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.v2.tweets
 
-import com.sorrowblue.twitlin.net.Urls
+import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.v2.Client
 import com.sorrowblue.twitlin.v2.Response
 import com.sorrowblue.twitlin.v2.objects.AddSearchStreamRule
@@ -16,14 +20,12 @@ import com.sorrowblue.twitlin.v2.objects.SearchRecentResponse
 import com.sorrowblue.twitlin.v2.objects.SearchStreamRule
 import com.sorrowblue.twitlin.v2.objects.SearchStreamRuleResponse
 import com.sorrowblue.twitlin.v2.objects.Tweet
-import com.sorrowblue.twitlin.v2.users.TwitterAPIV2
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 
-private const val TWEETS = "${Urls._2}/tweets"
+private const val TWEETS = "${Urls.V2}/tweets"
 
-@TwitterAPIV2
 internal class TweetsApiImp(private val client: Client) : TweetsApi {
 
     override suspend fun tweets(
@@ -153,13 +155,13 @@ internal class TweetsApiImp(private val client: Client) : TweetsApi {
     ) { res: DeleteSearchStreamRuleResponse, httpRes -> res.toSuccess(httpRes.status.value) }
 }
 
-fun List<Field>.toParameter() = joinToString(",") { it.value }
+public fun List<Field>.toParameter(): String = joinToString(",") { it.value }
 
-interface Field {
-    val value: String
+public interface Field {
+    public val value: String
 }
 
-enum class Expansion(override val value: String) : Field {
+public enum class Expansion(override val value: String) : Field {
     AUTHOR_ID("author_id"),
     REFERENCED_TWEETS_ID("referenced_tweets.id"),
     IN_REPLY_TO_USER_ID("in_reply_to_user_id"),
@@ -167,11 +169,10 @@ enum class Expansion(override val value: String) : Field {
     ATTACHMENTS_POLL_IDS("attachments.poll_ids"),
     GEO_PLACE_ID("geo.place_id"),
     ENTITIES_MENTIONS_USERNAME("entities.mentions.username"),
-    REFERENCED_TWEETS_ID_AUTHOR_ID("referenced_tweets.id.author_id"),
-    ;
+    REFERENCED_TWEETS_ID_AUTHOR_ID("referenced_tweets.id.author_id");
 
-    companion object {
-        fun all() = listOf(
+    public companion object {
+        public fun all(): List<Expansion> = listOf(
             AUTHOR_ID,
             REFERENCED_TWEETS_ID,
             IN_REPLY_TO_USER_ID,
@@ -184,7 +185,7 @@ enum class Expansion(override val value: String) : Field {
     }
 }
 
-enum class MediaField(override val value: String) : Field {
+public enum class MediaField(override val value: String) : Field {
     DURATION_MS("duration_ms"),
     HEIGHT("height"),
     MEDIA_KEY("media_key"),
@@ -195,11 +196,10 @@ enum class MediaField(override val value: String) : Field {
     PUBLIC_METRICS("public_metrics"),
     NON_PUBLIC_METRICS("non_public_metrics"),
     ORGANIC_METRICS("organic_metrics"),
-    PROMOTED_METRICS("promoted_metrics"),
-    ;
+    PROMOTED_METRICS("promoted_metrics");
 
-    companion object {
-        fun all() = listOf(
+    public companion object {
+        public fun all(): List<MediaField> = listOf(
             DURATION_MS, HEIGHT,
             MEDIA_KEY,
             PREVIEW_IMAGE_URL,
@@ -209,12 +209,12 @@ enum class MediaField(override val value: String) : Field {
             PUBLIC_METRICS,
             NON_PUBLIC_METRICS,
             ORGANIC_METRICS,
-            PROMOTED_METRICS,
+            PROMOTED_METRICS
         )
     }
 }
 
-enum class PlaceField(override val value: String) : Field {
+public enum class PlaceField(override val value: String) : Field {
     CONTAINED_WITHIN("contained_within"),
     COOUNTRY("country"),
     COUNTRY_CODE("country_code"),
@@ -222,11 +222,10 @@ enum class PlaceField(override val value: String) : Field {
     GEO("geo"),
     ID("id"),
     NAME("name"),
-    PLACE_TYPE("place_type"),
-    ;
+    PLACE_TYPE("place_type");
 
-    companion object {
-        fun all() = listOf(
+    public companion object {
+        public fun all(): List<PlaceField> = listOf(
             CONTAINED_WITHIN,
             COOUNTRY,
             COUNTRY_CODE,
@@ -234,31 +233,30 @@ enum class PlaceField(override val value: String) : Field {
             GEO,
             ID,
             NAME,
-            PLACE_TYPE,
+            PLACE_TYPE
         )
     }
 }
 
-enum class PollField(override val value: String) : Field {
+public enum class PollField(override val value: String) : Field {
     DURATION_MINUTES("duration_minutes"),
     END_DATETIME("end_datetime"),
     ID("id"),
     OPTIONS("options"),
-    VOTING_STATUS("voting_status"),
-    ;
+    VOTING_STATUS("voting_status");
 
-    companion object {
-        fun all() = listOf(
+    public companion object {
+        public fun all(): List<PollField> = listOf(
             DURATION_MINUTES,
             END_DATETIME,
             ID,
             OPTIONS,
-            VOTING_STATUS,
+            VOTING_STATUS
         )
     }
 }
 
-enum class TweetField(override val value: String) : Field {
+public enum class TweetField(override val value: String) : Field {
     ATTACHMENTS("attachments"),
     AUTHOR_ID("author_id"),
     CONTEXT_ANNOTATIONS("context_annotations"),
@@ -277,11 +275,10 @@ enum class TweetField(override val value: String) : Field {
     REFERENCED_TWEETS("referenced_tweets"),
     SOURCE("source"),
     TEXT("text"),
-    WITHHELD("withheld"),
-    ;
+    WITHHELD("withheld");
 
-    companion object {
-        fun all() = listOf(
+    public companion object {
+        public fun all(): List<TweetField> = listOf(
             ATTACHMENTS,
             AUTHOR_ID,
             CONTEXT_ANNOTATIONS,
@@ -300,12 +297,12 @@ enum class TweetField(override val value: String) : Field {
             REFERENCED_TWEETS,
             SOURCE,
             TEXT,
-            WITHHELD,
+            WITHHELD
         )
     }
 }
 
-enum class UserField(override val value: String) : Field {
+public enum class UserField(override val value: String) : Field {
     CREATED_AT("created_at"),
     DESCRIPTION("description"),
     ENTITIES("entities"),
@@ -322,8 +319,8 @@ enum class UserField(override val value: String) : Field {
     WITHHELD("withheld"),
     ;
 
-    companion object {
-        fun all() = listOf(
+    public companion object {
+        public fun all(): List<UserField> = listOf(
             CREATED_AT,
             DESCRIPTION,
             ENTITIES,

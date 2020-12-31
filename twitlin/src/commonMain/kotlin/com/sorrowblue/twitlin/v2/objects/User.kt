@@ -1,14 +1,19 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.v2.objects
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
+import com.sorrowblue.twitlin.annotation.JvmSerializable
+
+
 import com.sorrowblue.twitlin.v2.serializer.LocalDateTimeSerializer
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class User(
+public data class User(
     val id: String,
     val name: String,
     val username: String,
@@ -28,38 +33,38 @@ data class User(
     val url: String? = null,
     val verified: Boolean? = null,
     val withheld: Withheld? = null
-) {
+) : JvmSerializable {
 
-    @Parcelize
+
     @Serializable
-    data class Entities(
-        val url: EntitiesUrl,
+    public data class Entities(
+        val url: EntitiesUrl? = null,
         val description: Description? = null
-    ) : Parcelable {
+    ) : JvmSerializable {
 
-        @Parcelize
+
         @Serializable
-        data class EntitiesUrl(
+        public data class EntitiesUrl(
             val urls: List<Url>
-        ) : Parcelable
+        ) : JvmSerializable
 
-        @Parcelize
+
         @Serializable
-        data class Description(
+        public data class Description(
             val urls: List<Url>? = null,
             val hashtags: List<Hashtag>? = null,
             val mentions: List<Mention>? = null,
             val cashtags: List<CashTag>? = null
-        ) : Parcelable
+        ) : JvmSerializable
 
-        @Parcelize
+
         @Serializable
-        data class Url(
+        public data class Url(
             val start: Int,
             val end: Int,
             val url: String,
-            @SerialName("expanded_url") val expandedUrl: String,
-            @SerialName("display_url") val displayUrl: String,
-        ) : Parcelable
+            @SerialName("expanded_url") val expandedUrl: String? = null,
+            @SerialName("display_url") val displayUrl: String? = null,
+        ) : JvmSerializable
     }
 }

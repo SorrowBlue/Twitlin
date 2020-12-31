@@ -1,10 +1,14 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.basic.oauth
 
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.basics.oauth.Authenticate
 import com.sorrowblue.twitlin.test.AbstractTest
 import com.sorrowblue.twitlin.test.runTest
+import com.sorrowblue.twitlin.test.testResult
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertNotNull
@@ -13,23 +17,18 @@ class OAuthApiTest : AbstractTest {
 
     @Test
     fun accessTokenTest() = runTest {
-        val accessToken = TwitterAPI.oauth.accessToken(
-            Authenticate("etQh_QAAAAABEkL_AAABdFc_n68", "yyDhGg66AwElV1qUNodd4EaU7LgJ54KK")
-        ).onSuccess {
-            Napier.d("accessToken = $it")
-        }.onError {
-            Napier.e(it.joinToString(", ") { "${it.code}:${it.message}" })
-        }.getOrNull()
-        assertNotNull(accessToken, "accessToken is null")
+        TwitterAPI.oauth.accessToken(
+            "etQh_QAAAAABEkL_AAABdFc_n68",
+            "yyDhGg66AwElV1qUNodd4EaU7LgJ54KK"
+        ).testResult()
     }
 
     @Test
     fun authenticateTest() = runTest {
         val url =
             TwitterAPI.oauth.requestToken("https://snsmate.sorrowblue.com").getOrNull()?.let {
-                TwitterAPI.oauth.authenticate(it)
+                TwitterAPI.oauth.authenticate(it.oauthToken)
             }
-        Napier.d("authenticate = $url")
         assertNotNull(url, "authenticate url is null")
     }
 
@@ -37,7 +36,7 @@ class OAuthApiTest : AbstractTest {
     fun authorize() = runTest {
         val url =
             TwitterAPI.oauth.requestToken("https://snsmate.sorrowblue.com").getOrNull()?.let {
-                TwitterAPI.oauth.authorize(it)
+                TwitterAPI.oauth.authorize(it.oauthToken)
             }
         Napier.d("authorize = $url")
         assertNotNull(url, "authorize url is null")
@@ -47,11 +46,7 @@ class OAuthApiTest : AbstractTest {
     @Test
     fun requestToken() = runTest {
         val token = TwitterAPI.oauth.requestToken("https://snsmate.sorrowblue.com")
-            .onSuccess {
-                Napier.d("oAuthToken = $it")
-            }.onError {
-                Napier.e(it.joinToString(", ") { "${it.code}:${it.message}" })
-            }.getOrNull()
+            .testResult()
         assertNotNull(token, "oauthToken is null")
     }
 

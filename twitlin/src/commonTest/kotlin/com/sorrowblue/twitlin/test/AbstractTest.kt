@@ -1,9 +1,13 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.test
 
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.basics.oauth.AccessToken
-import com.sorrowblue.twitlin.basics.oauth2.BearerToken
+import com.sorrowblue.twitlin.authentication.AccessToken
+import com.sorrowblue.twitlin.authentication.BearerToken
 import kotlin.test.BeforeTest
 
 interface AbstractTest {
@@ -13,7 +17,7 @@ interface AbstractTest {
         Twitlin.initialize(
             TestKey.API_KEY,
             TestKey.API_SECRET,
-            AccessToken(TestKey.ACCESS_TOKEN, TestKey.ACCESS_TOKEN_SECRET)
+            AccessToken(TestKey.ACCESS_TOKEN, TestKey.ACCESS_TOKEN_SECRET, "", "")
         )
         Twitlin.client.bearerToken = BearerToken(
             "Bearer",

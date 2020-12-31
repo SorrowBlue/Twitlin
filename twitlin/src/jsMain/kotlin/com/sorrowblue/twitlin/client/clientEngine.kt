@@ -1,0 +1,11 @@
+/*
+ * (c) 2020.
+ */
+
+package com.sorrowblue.twitlin.client
+
+import io.ktor.client.engine.HttpClientEngineConfig
+import io.ktor.client.engine.HttpClientEngineFactory
+import io.ktor.client.engine.js.Js
+
+internal actual val clientEngineFactory: HttpClientEngineFactory<HttpClientEngineConfig> = Js

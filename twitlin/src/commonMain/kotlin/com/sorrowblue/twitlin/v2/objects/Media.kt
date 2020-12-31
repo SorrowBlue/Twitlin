@@ -1,13 +1,15 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.v2.objects
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Parcelize
 @Serializable
-data class Media(
+public data class Media(
     @SerialName("media_key")
     val mediaKey: String,
     val type: Type,
@@ -26,10 +28,10 @@ data class Media(
     @SerialName("public_metrics")
     val publicMetrics: PublicMetrics? = null,
     val width: Int? = null,
-) : Parcelable {
+) : JvmSerializable {
 
     @Serializable
-    enum class Type {
+    public enum class Type {
         @SerialName("animated_gif")
         ANIMATED_GIF,
 

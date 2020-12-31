@@ -1,6 +1,11 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.v2.tweets
 
 import com.sorrowblue.twitlin.TwitterAPI
+import com.sorrowblue.twitlin.TwitterV2API
 import com.sorrowblue.twitlin.objects.TwitterTweet
 import com.sorrowblue.twitlin.test.AbstractTest
 import com.sorrowblue.twitlin.test.runTest
@@ -9,11 +14,9 @@ import com.sorrowblue.twitlin.v2.objects.ReferenceTweet
 import com.sorrowblue.twitlin.v2.objects.SearchStreamRule
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.testResult
-import com.sorrowblue.twitlin.v2.users.TwitterAPIV2
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
-@TwitterAPIV2
 class TweetsApiTest : AbstractTest {
     @Test
     fun timeline() = runTest {
@@ -21,7 +24,7 @@ class TweetsApiTest : AbstractTest {
         val list =
             TwitterAPI.statuses.homeTimeline(count = 40).getOrNull()?.map(TwitterTweet::idStr)
                 ?: return@runTest
-        TwitterAPI.V2.tweetsApi.tweets(
+        TwitterV2API.tweetsApi.tweets(
             list,
             tweetFields = listOf(
                 TweetField.CREATED_AT,
@@ -44,7 +47,7 @@ class TweetsApiTest : AbstractTest {
 
     @Test
     fun tweetsIdTest() = runTest {
-        TwitterAPI.V2.tweetsApi.tweets(
+        TwitterV2API.tweetsApi.tweets(
             "1320424794433597440",
             tweetFields = listOf(
                 TweetField.CREATED_AT,
@@ -66,7 +69,7 @@ class TweetsApiTest : AbstractTest {
 
     @Test
     fun recentTest() = runTest {
-        TwitterAPI.V2.tweetsApi.searchRecent(
+        TwitterV2API.tweetsApi.searchRecent(
             "conversation_id:1323199167095689216",
             tweetFields = listOf(
                 TweetField.CREATED_AT,
@@ -95,7 +98,7 @@ class TweetsApiTest : AbstractTest {
         val ids =
             TwitterAPI.statuses.homeTimeline(count = 100).getOrNull()?.map(TwitterTweet::idStr)
                 ?: return@runTest
-        TwitterAPI.V2.tweetsApi.tweets(
+        TwitterV2API.tweetsApi.tweets(
             ids,
             expansions = Expansion.all(),
             tweetFields = listOf(TweetField.CREATED_AT, TweetField.TEXT),
@@ -119,38 +122,38 @@ class TweetsApiTest : AbstractTest {
 
     @Test
     fun searchStreamRulesTest() = runTest {
-        TwitterAPI.V2.tweetsApi.searchStreamRules().testResult()
+        TwitterV2API.tweetsApi.searchStreamRules().testResult()
     }
 
     @Test
     fun addSearchStreamRuleTest() = runTest {
-        TwitterAPI.V2.tweetsApi.searchStreamRules().dataOrNull()?.let {
-            TwitterAPI.V2.tweetsApi.deleteSearchStreamRules(it.rules.map(SearchStreamRule.StreamRule::id))
+        TwitterV2API.tweetsApi.searchStreamRules().dataOrNull()?.let {
+            TwitterV2API.tweetsApi.deleteSearchStreamRules(it.rules.map(SearchStreamRule.StreamRule::id))
                 .testResult()
         }
-        TwitterAPI.V2.tweetsApi.addSearchStreamRules(
+        TwitterV2API.tweetsApi.addSearchStreamRules(
             listOf(AddSearchStreamRule("cat", tag = "CAT IMAGE"))
         ).testResult()
     }
 
     @Test
     fun deleteSearchStreamRulesTest() = runTest {
-        val nowIds = TwitterAPI.V2.tweetsApi.searchStreamRules().testResult()
+        val nowIds = TwitterV2API.tweetsApi.searchStreamRules().testResult()
             ?.rules?.map(SearchStreamRule.StreamRule::id).let(::assertNotNull)
         if (nowIds.isEmpty()) {
-            TwitterAPI.V2.tweetsApi.addSearchStreamRules(
+            TwitterV2API.tweetsApi.addSearchStreamRules(
                 listOf(
                     AddSearchStreamRule(value = "cat image", tag = "CAT_IMAGE"),
                     AddSearchStreamRule(value = "dog txt"),
                     AddSearchStreamRule(value = "foo", tag = "BAR")
                 )
             ).testResult().let(::assertNotNull)
-            TwitterAPI.V2.tweetsApi.searchStreamRules()
+            TwitterV2API.tweetsApi.searchStreamRules()
                 .testResult()?.rules?.map(SearchStreamRule.StreamRule::id)?.let {
-                    TwitterAPI.V2.tweetsApi.deleteSearchStreamRules(it)
+                    TwitterV2API.tweetsApi.deleteSearchStreamRules(it)
                 }?.testResult().let(::assertNotNull)
         } else {
-            TwitterAPI.V2.tweetsApi.deleteSearchStreamRules(nowIds).testResult()
+            TwitterV2API.tweetsApi.deleteSearchStreamRules(nowIds).testResult()
                 .let(::assertNotNull)
         }
     }

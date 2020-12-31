@@ -1,3 +1,7 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.v2.tweets
 
 import com.sorrowblue.twitlin.v2.Response
@@ -8,17 +12,14 @@ import com.sorrowblue.twitlin.v2.objects.Hidden
 import com.sorrowblue.twitlin.v2.objects.SearchRecent
 import com.sorrowblue.twitlin.v2.objects.SearchStreamRule
 import com.sorrowblue.twitlin.v2.objects.Tweet
-import com.sorrowblue.twitlin.v2.users.TwitterAPIV2
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
-
 
 /**
  * TODO
  *
  */
-@TwitterAPIV2
-interface TweetsApi {
+public interface TweetsApi {
     /**
      * Returns a variety of information about a single Tweet specified by the requested ID.
      *
@@ -35,7 +36,7 @@ interface TweetsApi {
      * By default, the endpoint does not return any user field. To use this parameter, you must include the [TweetField.AUTHOR_ID] expansion parameter in the request.
      * @return A single Tweet specified by the requested ID.
      */
-    suspend fun tweets(
+    public suspend fun tweets(
         id: String,
         expansions: List<Expansion>? = null,
         mediaFields: List<MediaField>? = null,
@@ -61,7 +62,7 @@ interface TweetsApi {
      * By default, the endpoint does not return any user field. To use this parameter, you must include the [TweetField.AUTHOR_ID] expansion parameter in the request.
      * @return Tweet specified by the requested ID or list of IDs.
      */
-    suspend fun tweets(
+    public suspend fun tweets(
         ids: List<String>,
         expansions: List<Expansion>? = null,
         mediaFields: List<MediaField>? = null,
@@ -80,7 +81,7 @@ interface TweetsApi {
      * If [isHidden] is not specified, it will be hidden.
      * @return `true` if the reply is visible, `false` if hidden.
      */
-    suspend fun hidden(id: String, isHidden: Boolean = true): Response<Hidden>
+    public suspend fun hidden(id: String, isHidden: Boolean = true): Response<Hidden>
 
     /**
      * The recent search endpoint returns Tweets from the last 7 days that match a search query.
@@ -113,7 +114,7 @@ interface TweetsApi {
      * By default, the endpoint does not return any user field. To use this parameter, you must include the [TweetField.AUTHOR_ID] expansion parameter in the request.
      * @return Recent tweets specified by parameters
      */
-    suspend fun searchRecent(
+    public suspend fun searchRecent(
         query: String,
         maxResults: Int? = null,
         nextToken: String? = null,
@@ -144,7 +145,7 @@ interface TweetsApi {
      * By default, the endpoint does not return any user field. To use this parameter, you must include the [TweetField.AUTHOR_ID] expansion parameter in the request.
      * @return About 1% of all Tweets.
      */
-    fun sampleStream(
+    public fun sampleStream(
         expansions: List<Expansion>? = null,
         mediaFields: List<MediaField>? = null,
         placeFields: List<PlaceField>? = null,
@@ -168,7 +169,7 @@ interface TweetsApi {
      * By default, the endpoint does not return any user field. To use this parameter, you must include the [TweetField.AUTHOR_ID] expansion parameter in the request.
      * @return About 1% of all Tweets.
      */
-    fun searchStream(
+    public fun searchStream(
         expansions: List<Expansion>? = null,
         mediaFields: List<MediaField>? = null,
         placeFields: List<PlaceField>? = null,
@@ -183,7 +184,7 @@ interface TweetsApi {
      * @param ids List of rule IDs. If omitted, all rules are returned.
      * @return List of rules currently active on the streaming endpoint.
      */
-    suspend fun searchStreamRules(ids: List<String>? = null): Response<SearchStreamRule>
+    public suspend fun searchStreamRules(ids: List<String>? = null): Response<SearchStreamRule>
 
     /**
      * Add or delete rules to your stream.
@@ -194,7 +195,7 @@ interface TweetsApi {
      * This is useful if you want to check the syntax of a rule before removing one or more of your existing rules.
      * @return
      */
-    suspend fun deleteSearchStreamRules(
+    public suspend fun deleteSearchStreamRules(
         ids: List<String>, dryRun: Boolean? = null
     ): Response<DeleteSearchStreamRuleResult>
 
@@ -207,7 +208,7 @@ interface TweetsApi {
      * This is useful if you want to check the syntax of a rule before removing one or more of your existing rules.
      * @return
      */
-    suspend fun addSearchStreamRules(
+    public suspend fun addSearchStreamRules(
         rules: List<AddSearchStreamRule>, dryRun: Boolean? = null
     ): Response<AddSearchStreamRuleResult>
 

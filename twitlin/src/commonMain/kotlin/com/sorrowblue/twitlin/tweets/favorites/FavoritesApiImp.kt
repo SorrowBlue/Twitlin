@@ -1,13 +1,17 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.tweets.favorites
 
-import com.sorrowblue.twitlin.net.Client
-import com.sorrowblue.twitlin.net.Response
-import com.sorrowblue.twitlin.net.Urls._1_1
+import com.sorrowblue.twitlin.client.Response
+import com.sorrowblue.twitlin.client.TwitlinClient
+import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.objects.TwitterTweet
 
-private val FAVORITES = "$_1_1/favorites"
+private val FAVORITES = "${Urls.V1}/favorites"
 
-internal class FavoritesApiImp(private val client: Client) : FavoritesApi {
+internal class FavoritesApiImp(private val client: TwitlinClient) : FavoritesApi {
 
     override suspend fun list(
         userId: Long,

@@ -1,6 +1,9 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.accounts_users.account
 
-import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.test.AbstractTest
 import com.sorrowblue.twitlin.test.runTest
@@ -11,15 +14,11 @@ class AccountApiTest : AbstractTest {
 
     @Test
     fun verifyCredentialsTest() = runTest {
-        TwitterAPI.account.verifyCredentials()
-            .onError {
-                Napier.e(
-                    it.joinToString(", ") { error -> "${error.code} -> ${error.message}" },
-                    tag = "verifyCredentialsTest"
-                )
-            }.onSuccess {
-                Napier.d(it.toString(), tag = "verifyCredentialsTest")
-            }
+        TwitterAPI.account.verifyCredentials(
+            includeEntities = true,
+            includeEmail = true,
+            skipStatus = false
+        ).testResult()
     }
 
     @Test

@@ -1,15 +1,17 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
-import com.sorrowblue.twitlin.serializers.DateTimeTzSerializer
-import com.soywiz.klock.DateTimeTz
+import com.sorrowblue.twitlin.annotation.JvmSerializable
+import com.sorrowblue.twitlin.serializers.LocalDateTimeRFC822Serializer
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Parcelize
 @Serializable
-data class TwitterUser(
+public data class TwitterUser(
     val id: Long,
     @SerialName("id_str")
     val idStr: String,
@@ -34,13 +36,15 @@ data class TwitterUser(
     @SerialName("statuses_count")
     val statusesCount: Int,
     val status: TwitterTweet? = null,
-    @Serializable(DateTimeTzSerializer::class)
+    @Serializable(LocalDateTimeRFC822Serializer::class)
     @SerialName("created_at")
-    val createdAt: DateTimeTz,
+    val createdAt: LocalDateTime,
     @SerialName("profile_banner_url")
     val profileBannerUrl: String = "",
     @SerialName("profile_image_url_https")
     val profileImageUrlHttps: String,
+    @SerialName("profile_link_color")
+    val profileLinkColor: String = "",
     @SerialName("default_profile")
     val defaultProfile: Boolean,
     @SerialName("default_profile_image")
@@ -48,24 +52,24 @@ data class TwitterUser(
     @SerialName("withheld_in_countries")
     val withheldInCountries: List<String> = emptyList(),
     @SerialName("withheld_scope")
-    val withheldScope: String = ""
-) : Parcelable {
-    @Parcelize
-    @Serializable
-    data class Derived(
-        val locations: List<ProfileGeo>
-    ) : Parcelable
+    val withheldScope: String = "",
+) : JvmSerializable {
 
-    @Parcelize
     @Serializable
-    data class UserEntities(
+    public data class Derived(
+        val locations: List<ProfileGeo>
+    ) : JvmSerializable
+
+
+    @Serializable
+    public data class UserEntities(
         val url: Url? = null,
         val description: Url? = null
-    ) : Parcelable {
-        @Parcelize
+    ) : JvmSerializable {
+
         @Serializable
-        data class Url(
+        public data class Url(
             val urls: List<Entities.URL> = emptyList()
-        ) : Parcelable
+        ) : JvmSerializable
     }
 }

@@ -1,7 +1,12 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.v2.objects
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
+import com.sorrowblue.twitlin.annotation.JvmSerializable
+
+
 import com.sorrowblue.twitlin.v2.serializer.LocalDateTimeSerializer
 import com.sorrowblue.twitlin.v2.tweets.Expansion
 import com.sorrowblue.twitlin.v2.tweets.TweetField
@@ -51,14 +56,14 @@ import kotlinx.serialization.Serializable
  * @property promotedMetrics Engagement metrics, tracked in a promoted context, for the Tweet at the time of the request.
  * Requires user context authentication.
  * @property publicMetrics Public engagement metrics for the Tweet at the time of the request.
- * @property referenceTweets A list of Tweets this Tweet refers to.
+ * @property referencedTweets A list of Tweets this Tweet refers to.
  * For example, if the parent Tweet is a Retweet, a Retweet with comment (also known as Quoted Tweet) or a Reply,
  * it will include the related Tweet referenced to by its parent.
  * @property source The name of the app the user Tweeted from.
  * @property withheld When present, contains withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country).
  */
 @Serializable
-data class Tweet(
+public data class Tweet(
     val id: String,
     val text: String,
     val attachments: Attachments? = null,
@@ -84,106 +89,95 @@ data class Tweet(
     val referencedTweets: List<ReferenceTweet>? = null,
     val source: String? = null,
     val withheld: Withheld? = null,
-) {
-    @Parcelize
+) : JvmSerializable {
+
     @Serializable
-    data class Entities(
+    public data class Entities(
         val annotations: List<Annotation>? = null,
         val cashtags: List<CashTag>? = null,
         val hashtags: List<Hashtag>? = null,
         val mentions: List<Mention>? = null,
         val urls: List<Url>? = null,
-    ) : Parcelable {
+    ) : JvmSerializable {
 
-        @Parcelize
         @Serializable
-        data class Annotation(
+        public data class Annotation(
             val start: Int,
             val end: Int,
             val probability: Float,
             val type: String,
             @SerialName("normalized_text")
             val normalizedText: String,
-        ) : Parcelable
+        ) : JvmSerializable
 
-        @Parcelize
         @Serializable
-        data class Url(
+        public data class Url(
             val start: Int,
             val end: Int,
             val url: String,
-            @SerialName("expanded_url") val expandedUrl: String,
-            @SerialName("display_url") val displayUrl: String,
+            @SerialName("expanded_url") val expandedUrl: String? = null,
+            @SerialName("display_url") val displayUrl: String? = null,
             val images: List<Image>? = null,
             val status: String? = null,
             val title: String? = null,
             val description: String? = null,
             @SerialName("unwound_url") val unwoundUrl: String? = null,
-        ) : Parcelable {
+        ) : JvmSerializable {
 
-            @Parcelize
             @Serializable
-            data class Image(
+            public data class Image(
                 val url: String,
                 val width: Int,
                 val height: Int
-            ) : Parcelable
+            ) : JvmSerializable
         }
-
     }
 
-    @Parcelize
     @Serializable
-    data class PublicMetrics(
+    public data class PublicMetrics(
         @SerialName("like_count") val likeCount: Int,
         @SerialName("reply_count") val replyCount: Int,
         @SerialName("retweet_count") val retweetCount: Int,
         @SerialName("quote_count") val quoteCount: Int,
-    ) : Parcelable
+    ) : JvmSerializable
 }
 
-@Parcelize
 @Serializable
-data class Mention(
+public data class Mention(
     val start: Int,
     val end: Int,
     val username: String,
-) : Parcelable
+) : JvmSerializable
 
-@Parcelize
 @Serializable
-data class CashTag(
+public data class CashTag(
     val start: Int,
     val end: Int,
     val tag: String,
-) : Parcelable
+) : JvmSerializable
 
-@Parcelize
 @Serializable
-data class Hashtag(
+public data class Hashtag(
     val start: Int,
     val end: Int,
     val tag: String,
-) : Parcelable
+) : JvmSerializable
 
-
-@Parcelize
 @Serializable
-data class Withheld(
+public data class Withheld(
     val copyright: Boolean,
     @SerialName("country_codes")
     val countryCodes: List<String>,
-) : Parcelable
+) : JvmSerializable
 
-@Parcelize
 @Serializable
-data class ReferenceTweet(
+public data class ReferenceTweet(
     val type: Type,
     val id: String,
-) : Parcelable {
+) : JvmSerializable {
 
     @Serializable
-    enum class Type {
+    public enum class Type {
         @SerialName("replied_to")
         REPLIED_TO,
 
@@ -191,67 +185,60 @@ data class ReferenceTweet(
         QUOTED,
 
         @SerialName("retweeted")
-        RETWEETED,
+        RETWEETED
     }
 }
 
-@Parcelize
 @Serializable
-data class Attachments(
+public data class Attachments(
     @SerialName("poll_ids")
     val pollIds: List<String>? = null,
     @SerialName("media_keys")
-    val media_keys: List<String>? = null,
-) : Parcelable
+    val media_keys: List<String>? = null
+) : JvmSerializable
 
-@Parcelize
 @Serializable
-data class ContextAnnotation(
+public data class ContextAnnotation(
     val domain: Domain,
-    val entity: Entity,
-) : Parcelable {
+    val entity: Entity
+) : JvmSerializable {
 
-    @Parcelize
     @Serializable
-    data class Domain(
+    public data class Domain(
         val id: String,
         val name: String,
-        val description: String,
-    ) : Parcelable
+        val description: String
+    ) : JvmSerializable
 
-    @Parcelize
     @Serializable
-    data class Entity(
+    public data class Entity(
         val id: String,
         val name: String,
-    ) : Parcelable
+    ) : JvmSerializable
 }
 
-@Parcelize
 @Serializable
-data class Metrics(
+public data class Metrics(
     @SerialName("impression_count") val impressionCount: Int,
     @SerialName("like_count") val likeCount: Int,
     @SerialName("reply_count") val replyCount: Int,
     @SerialName("retweet_count") val retweetCount: Int,
     @SerialName("url_link_clicks") val urlLinkClicks: Int,
     @SerialName("user_profile_clicks") val userProfileClicks: Int,
-) : Parcelable
+) : JvmSerializable
 
-@Parcelize
 @Serializable
-data class NonPublicMetrics(
+public data class NonPublicMetrics(
     @SerialName("impression_count")
     val impressionCount: Int,
     @SerialName("urlLinkClicks")
     val urlLinkClicks: Int,
     @SerialName("user_profile_clicks")
     val userProfileClicks: Int,
-) : Parcelable
+) : JvmSerializable
 
-@Parcelize
 @Serializable
-data class PublicMetrics(
+public data class PublicMetrics(
     @SerialName("followers_count")
     val followersCount: Int,
     @SerialName("following_count")
@@ -260,20 +247,18 @@ data class PublicMetrics(
     val tweetCount: Int,
     @SerialName("listed_count")
     val listedCount: Int,
-) : Parcelable
+) : JvmSerializable
 
-@Parcelize
 @Serializable
-data class Geo(
+public data class Geo(
     val coordinates: Coordinates? = null,
     @SerialName("place_id")
     val placeId: String,
-) : Parcelable {
+) : JvmSerializable {
 
-    @Parcelize
     @Serializable
-    data class Coordinates(
+    public data class Coordinates(
         val type: String,
         val coordinates: List<Double>,
-    ) : Parcelable
+    ) : JvmSerializable
 }

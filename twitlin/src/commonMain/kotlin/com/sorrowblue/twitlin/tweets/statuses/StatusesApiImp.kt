@@ -1,15 +1,19 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.tweets.statuses
 
-import com.sorrowblue.twitlin.net.Client
-import com.sorrowblue.twitlin.net.Response
-import com.sorrowblue.twitlin.net.Urls
+import com.sorrowblue.twitlin.client.Response
+import com.sorrowblue.twitlin.client.TwitlinClient
+import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.objects.Tweet
 import com.sorrowblue.twitlin.objects.TwitterTweet
 import com.sorrowblue.twitlin.utils.TweetUtil
 
-private const val ROOT = "${Urls._1_1}/statuses"
+private const val ROOT = "${Urls.V1}/statuses"
 
-internal class StatusesApiImp(private val client: Client) : StatusesApi {
+internal class StatusesApiImp(private val client: TwitlinClient) : StatusesApi {
 
     override suspend fun update(
         status: String,
@@ -122,6 +126,8 @@ internal class StatusesApiImp(private val client: Client) : StatusesApi {
                         ?.let { value.copy(card = it) } ?: value
                 }
             } else value
-        }?.let(Response.Companion::success) ?: this
+        }?.let {
+            Response.Success(it)
+        } ?: this
     }
 }

@@ -1,3 +1,7 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.tweets.statuses
 
 import com.sorrowblue.twitlin.TwitterAPI
@@ -11,7 +15,7 @@ class StatusesApiTest : AbstractTest {
 
     @Test
     fun lookupTest() = runTest {
-        assertNotNull(TwitterAPI.statuses.lookup(listOf(1284807458699894785)).testResult())
+        assertNotNull(TwitterAPI.statuses.lookup(listOf(1340446874583457792)).testResult())
     }
 
     @Test

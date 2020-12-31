@@ -1,5 +1,11 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.foundation.authentication
 
+import com.sorrowblue.twitlin.client.buildHeaderString
+import com.sorrowblue.twitlin.client.collectParameters
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -1,3 +1,7 @@
+/*
+ * (c) 2020.
+ */
+
 @file:Suppress("UNUSED_VARIABLE")
 
 plugins {
@@ -7,7 +11,7 @@ plugins {
 
 android {
     compileSdkVersion(30)
-    buildToolsVersion = "30.0.2"
+    buildToolsVersion = "30.0.3"
     defaultConfig {
         applicationId = "com.sorrowblue.twitlin.androidsample"
         minSdkVersion(26)
@@ -40,13 +44,13 @@ android {
 dependencies {
     implementation(kotlin("stdlib", KOTLIN_VERSION))
     implementation("androidx.core:core-ktx:1.5.0-alpha05")
-    implementation("androidx.activity:activity-ktx:1.2.0-beta01")
+    implementation("androidx.activity:activity-ktx:1.2.0-rc01")
     implementation("androidx.appcompat:appcompat:1.3.0-alpha02")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-beta01")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-beta01")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-rc01")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
-    implementation("androidx.webkit:webkit:1.3.0")
-    implementation("androidx.recyclerview:recyclerview:1.2.0-alpha06")
+    implementation("androidx.webkit:webkit:1.4.0")
+    implementation("androidx.recyclerview:recyclerview:1.2.0-beta01")
     implementation(project(":twitlin"))
     testImplementation("junit:junit:4.13.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")

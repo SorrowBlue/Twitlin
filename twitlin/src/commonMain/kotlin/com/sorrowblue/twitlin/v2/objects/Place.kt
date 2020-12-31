@@ -1,13 +1,15 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.v2.objects
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Parcelize
 @Serializable
-data class Place(
+public data class Place(
     @SerialName("full_name")
     val fullName: String,
     val id: String,
@@ -20,4 +22,4 @@ data class Place(
     val name: String? = null,
     @SerialName("placeType")
     val place_type: String? = null,
-) : Parcelable
+) : JvmSerializable

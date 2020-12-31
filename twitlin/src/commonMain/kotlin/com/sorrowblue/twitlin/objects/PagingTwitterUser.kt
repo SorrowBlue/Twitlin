@@ -1,13 +1,15 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Parcelize
 @Serializable
-data class PagingTwitterUser(
+public data class PagingTwitterUser(
     val users: List<TwitterUser>,
     @SerialName("next_cursor")
     val nextCursor: Long,
@@ -19,4 +21,4 @@ data class PagingTwitterUser(
     val previousCursorStr: String,
     @SerialName("total_count")
     val totalCount: Int? = null
-) : Parcelable
+) : JvmSerializable

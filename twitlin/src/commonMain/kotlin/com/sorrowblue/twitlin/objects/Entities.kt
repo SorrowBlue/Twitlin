@@ -1,12 +1,14 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.objects.Entities.Media.MediaSize.Size.Resize
 import com.sorrowblue.twitlin.objects.Entities.URL.Unwound
-import com.sorrowblue.twitlin.serializers.DateTimeTzSerializer
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeTz
+import com.sorrowblue.twitlin.serializers.LocalDateTimeRFC822Serializer
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -28,9 +30,8 @@ import kotlinx.serialization.Serializable
  * @property symbols Represents symbols, i.e. $cashtags, included in the text of the Tweet.
  * @property polls Represents Twitter Polls included in the Tweet.
  */
-@Parcelize
 @Serializable
-data class Entities(
+public data class Entities(
     val hashtags: List<Hashtag> = emptyList(),
     val media: List<Media> = emptyList(),
     val urls: List<URL> = emptyList(),
@@ -38,8 +39,7 @@ data class Entities(
     val userMentions: List<UserMention> = emptyList(),
     val symbols: List<Symbol> = emptyList(),
     val polls: List<Poll> = emptyList()
-
-) : Parcelable {
+) : JvmSerializable {
 
     /**
      * The [TwitterTweet.entities] section will contain a [Entities.hashtags] array containing an object for every
@@ -53,12 +53,11 @@ data class Entities(
      * the two numbers will be the length of the hashtag name plus one (for the ‘#’ character).
      * @property text Name of the hashtag, minus the leading ‘#’ character.
      */
-    @Parcelize
     @Serializable
-    data class Hashtag(
+    public data class Hashtag(
         val indices: List<Int>,
         val text: String
-    ) : Parcelable
+    ) : JvmSerializable
 
     /**
      * The [TwitterTweet.entities] section will contain a [Entities.media] array containing a single media object
@@ -108,9 +107,8 @@ data class Entities(
      * @property url Wrapped URL for the media link. This corresponds with the URL embedded directly into
      * the raw Tweet text, and the values for the [indices] parameter.
      */
-    @Parcelize
     @Serializable
-    data class Media(
+    public data class Media(
         @SerialName("display_url")
         val displayUrl: String,
         @SerialName("expanded_url")
@@ -131,10 +129,10 @@ data class Entities(
         @SerialName("video_info")
         val videoInfo: VideoInfo? = null,
         val additionalMediaInfo: AdditionalMediaInfo? = null
-    ) : Parcelable {
+    ) : JvmSerializable {
 
         @Serializable
-        enum class MediaType {
+        public enum class MediaType {
             @SerialName("photo")
             PHOTO,
 
@@ -156,14 +154,14 @@ data class Entities(
          * @property medium Information for a medium-sized version of the media.
          * @property small Information for a small-sized version of the media.
          */
-        @Parcelize
         @Serializable
-        data class MediaSize(
+        public data class MediaSize(
             val thumb: Size,
             val large: Size,
             val medium: Size,
             val small: Size
-        ) : Parcelable {
+        ) : JvmSerializable {
+
             /**
              * Size object
              *
@@ -173,19 +171,18 @@ data class Entities(
              * the media was resized to fit one dimension, keeping its native aspect ratio.
              * A value of [Resize.CROP] means that the media was cropped in order to fit a specific resolution.
              */
-            @Parcelize
             @Serializable
-            data class Size(
+            public data class Size(
                 val w: Int,
                 val h: Int,
                 val resize: Resize
-            ) : Parcelable {
+            ) : JvmSerializable {
                 /**
                  * Resizing method used to obtain this size.
                  */
-                @Parcelize
+
                 @Serializable
-                enum class Resize : Parcelable {
+                public enum class Resize : JvmSerializable {
                     /**
                      * the media was resized to fit one dimension
                      */
@@ -201,26 +198,25 @@ data class Entities(
             }
         }
 
-        @Parcelize
         @Serializable
-        data class VideoInfo(
+        public data class VideoInfo(
             @SerialName("aspect_ratio")
             val aspectRatio: List<Int>,
             @SerialName("duration_millis")
             val durationMillis: Int = 0,
             val variants: List<Variant>
-        ) : Parcelable {
-            @Parcelize
+        ) : JvmSerializable {
+
             @Serializable
-            data class Variant(
+            public data class Variant(
                 @SerialName("content_type")
                 val contentType: Type,
                 val url: String,
                 val bitrate: Int? = null
-            ) : Parcelable {
+            ) : JvmSerializable {
 
                 @Serializable
-                enum class Type {
+                public enum class Type {
                     @SerialName("video/mp4")
                     VIDEO_MP4,
 
@@ -230,11 +226,10 @@ data class Entities(
             }
         }
 
-        @Parcelize
         @Serializable
-        data class AdditionalMediaInfo(
+        public data class AdditionalMediaInfo(
             val monetizable: Boolean
-        ) : Parcelable
+        ) : JvmSerializable
     }
 
     /**
@@ -256,15 +251,14 @@ data class Entities(
      * @property unwound If you are using the Expanded and/or Enhanced URL enrichments,
      * the following metadata is available under the [unwound] attribute:
      */
-    @Parcelize
     @Serializable
-    data class URL(
+    public data class URL(
         @SerialName("display_url") val displayUrl: String? = null,
         @SerialName("expanded_url") val expandedUrl: String?,
         val indices: List<Int>,
         val url: String,
         val unwound: Unwound? = null
-    ) : Parcelable {
+    ) : JvmSerializable {
 
         /**
          * If you are using the Expanded and/or Enhanced URL enrichments,
@@ -275,14 +269,13 @@ data class Entities(
          * @property title HTML title for the link.
          * @property description HTML description for the link.
          */
-        @Parcelize
         @Serializable
-        data class Unwound(
+        public data class Unwound(
             val url: String,
             val status: Int,
             val title: String,
             val description: String
-        ) : Parcelable
+        ) : JvmSerializable
     }
 
     /**
@@ -299,9 +292,8 @@ data class Entities(
      * @property name Display name of the referenced user.
      * @property screenName Screen name of the referenced user.
      */
-    @Parcelize
     @Serializable
-    data class UserMention(
+    public data class UserMention(
         val id: Long,
         @SerialName("id_str")
         val idStr: String,
@@ -309,7 +301,7 @@ data class Entities(
         val name: String,
         @SerialName("screen_name")
         val screenName: String
-    ) : Parcelable
+    ) : JvmSerializable
 
     /**
      * The [TwitterTweet.entities] section will contain a [symbols] array containing an object for every $cashtag
@@ -322,12 +314,11 @@ data class Entities(
      * between the two numbers will be the length of the hashtag name plus one (for the ‘$’ character).
      * @property text Name of the cashhtag, minus the leading ‘$’ character.
      */
-    @Parcelize
     @Serializable
-    data class Symbol(
+    public data class Symbol(
         val indices: List<Int>,
         val text: String
-    ) : Parcelable
+    ) : JvmSerializable
 
     /**
      * The [TwitterTweet.entities] section will contain a [polls] array containing a single [Poll] object if the Tweet
@@ -345,16 +336,15 @@ data class Entities(
      * @property endDatetime Time stamp (UTC) of when poll ends.
      * @property durationMinutes Duration of poll in minutes.
      */
-    @Parcelize
     @Serializable
-    data class Poll(
-        val options: List<Option> = emptyList(),
-        @Serializable(DateTimeTzSerializer::class)
+    public data class Poll(
+        val options: List<Option>,
+        @Serializable(LocalDateTimeRFC822Serializer::class)
         @SerialName("end_datetime")
-        val endDatetime: DateTimeTz = DateTime.EPOCH.local,
+        val endDatetime: LocalDateTime,
         @SerialName("duration_minutes")
-        val durationMinutes: Int = -1
-    ) : Parcelable {
+        val durationMinutes: Int
+    ) : JvmSerializable {
 
         /**
          * An array of options, each having a poll position, and the text for that position.
@@ -362,8 +352,7 @@ data class Entities(
          * @property position 投票位置
          * @property text 投票位置のテキスト
          */
-        @Parcelize
         @Serializable
-        data class Option(val position: Int = -1, val text: String = "") : Parcelable
+        public data class Option(val position: Int = -1, val text: String = "") : JvmSerializable
     }
 }

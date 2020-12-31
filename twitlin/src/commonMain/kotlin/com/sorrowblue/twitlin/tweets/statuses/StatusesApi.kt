@@ -1,11 +1,15 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.tweets.statuses
 
-import com.sorrowblue.twitlin.net.Response
+import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.objects.TwitterTweet
 
-interface StatusesApi {
+public interface StatusesApi {
 
-    suspend fun update(
+    public suspend fun update(
         status: String,
         inReplyToStatusId: String? = null,
         autoPopulateReplyMetadata: Boolean = false,
@@ -23,7 +27,7 @@ interface StatusesApi {
         cardUri: String? = null
     ): Response<TwitterTweet>
 
-    suspend fun homeTimeline(
+    public suspend fun homeTimeline(
         count: Int = 20,
         sinceId: Long? = null,
         maxId: Long? = null,
@@ -33,7 +37,7 @@ interface StatusesApi {
         includeCard: Boolean? = null
     ): Response<List<TwitterTweet>>
 
-    suspend fun userTimeline(
+    public suspend fun userTimeline(
         userId: Long,
         sinceId: Long? = null,
         maxId: Long? = null,
@@ -44,7 +48,7 @@ interface StatusesApi {
         includeCard: Boolean? = null
     ): Response<List<TwitterTweet>>
 
-    suspend fun userTimeline(
+    public suspend fun userTimeline(
         screenName: String,
         sinceId: Long? = null,
         maxId: Long? = null,
@@ -55,5 +59,5 @@ interface StatusesApi {
         includeCard: Boolean? = null
     ): Response<List<TwitterTweet>>
 
-    suspend fun lookup(id: List<Long>): Response<List<TwitterTweet>>
+    public suspend fun lookup(id: List<Long>): Response<List<TwitterTweet>>
 }

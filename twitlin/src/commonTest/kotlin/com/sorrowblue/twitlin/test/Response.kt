@@ -1,7 +1,11 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.test
 
 import com.github.aakira.napier.Napier
-import com.sorrowblue.twitlin.net.Response
+import com.sorrowblue.twitlin.client.Response
 
 internal fun <T> Response<T>.testResult(): T? {
     onSuccess {

@@ -1,22 +1,26 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
-import com.sorrowblue.twitlin.serializers.DateTimeTzSerializer
-import com.soywiz.klock.DateTimeTz
+import com.sorrowblue.twitlin.annotation.JvmSerializable
+import com.sorrowblue.twitlin.serializers.LocalDateTimeRFC822Serializer
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Parcelize
 @Serializable
-data class TwitterTweet(
-    @Serializable(DateTimeTzSerializer::class)
+public data class TwitterTweet(
+    @Serializable(LocalDateTimeRFC822Serializer::class)
     @SerialName("created_at")
-    val createdAt: DateTimeTz,
+    val createdAt: LocalDateTime,
     val id: Long,
     @SerialName("id_str")
     val idStr: String,
-    val text: String,
+    val text: String = "",
+    @SerialName("full_text")
+    val fullText: String = "",
     val source: String,
     val truncated: Boolean,
     @SerialName("in_reply_to_status_id")
@@ -72,7 +76,7 @@ data class TwitterTweet(
     @SerialName("withheld_scope")
     val withheldScope: String? = null,
     val card: TwitterCard? = null
-) : Parcelable {
+) : JvmSerializable {
 
     /**
      * Details the Tweet ID of the user’s own retweet (if existent) of this Tweet.
@@ -83,10 +87,12 @@ data class TwitterTweet(
      * @property id
      * @property idStr
      */
-    @Parcelize
+
     @Serializable
-    data class CurrentUserRetweet(val id: Long = -1, @SerialName("id_str") val idStr: String = "") :
-        Parcelable
+    public data class CurrentUserRetweet(
+        val id: Long = -1,
+        @SerialName("id_str") val idStr: String = ""
+    ) : JvmSerializable
 
     /**
      * Indicates the maximum value of the [filter_level](https://developer.twitter.com/streaming/overview/request-parameters#filter_level)
@@ -96,7 +102,7 @@ data class TwitterTweet(
      * @author SorrowBlue
      */
     @Serializable
-    enum class FilterLevel {
+    public enum class FilterLevel {
         @SerialName("low")
         LOW,
 
@@ -119,14 +125,13 @@ data class TwitterTweet(
      * @property id
      * @property idStr
      */
-    @Parcelize
+
     @Serializable
-    data class Rule(
+    public data class Rule(
         val tag: String = "",
         val id: Long = -1,
         @SerialName("id_str") val idStr: String = ""
-    ) :
-        Parcelable
+    ) : JvmSerializable
 
     /**
      * Currently used by Twitter’s Promoted Products.
@@ -136,7 +141,7 @@ data class TwitterTweet(
 
      * @property followers
      */
-    @Parcelize
+
     @Serializable
-    data class Scopes(val followers: Boolean = false) : Parcelable
+    public data class Scopes(val followers: Boolean = false) : JvmSerializable
 }

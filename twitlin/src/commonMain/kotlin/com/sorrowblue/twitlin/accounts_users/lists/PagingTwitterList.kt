@@ -1,10 +1,14 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.accounts_users.lists
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PagingTwitterList(
+public data class PagingTwitterList(
     val lists: List<TwitterList>,
     @SerialName("next_cursor")
     val nextCursor: Long,

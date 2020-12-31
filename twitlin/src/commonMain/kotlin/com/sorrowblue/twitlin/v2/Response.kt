@@ -1,7 +1,11 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.v2
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
+
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.v2.objects.Media
 import com.sorrowblue.twitlin.v2.objects.Place
 import com.sorrowblue.twitlin.v2.objects.Poll
@@ -11,31 +15,31 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class Response<T : Any> {
-    inline fun onSuccess(action: (Success<T>) -> Unit): Response<T> {
+public sealed class Response<T : Any> {
+    public inline fun onSuccess(action: (Success<T>) -> Unit): Response<T> {
         if (this is Success) {
             action(this)
         }
         return this
     }
 
-    inline fun onFailure(action: (Failure<T>) -> Unit): Response<T> {
+    public inline fun onFailure(action: (Failure<T>) -> Unit): Response<T> {
         if (this is Failure) {
             action(this)
         }
         return this
     }
 
-    fun dataOrNull(): T? = if (this is Success) data else null
+    public fun dataOrNull(): T? = if (this is Success) data else null
 
-    inline fun <R> fold(onSuccess: (Success<T>) -> R, onFailure: (Failure<T>) -> R): R =
+    public inline fun <R> fold(onSuccess: (Success<T>) -> R, onFailure: (Failure<T>) -> R): R =
         when (this) {
             is Success -> onSuccess(this)
             is Failure -> onFailure(this)
         }
 
     @Serializable
-    data class Success<T : Any>(
+    public data class Success<T : Any>(
         val statusCode: Int = 200,
         val data: T,
         val includes: Includes? = null,
@@ -43,20 +47,26 @@ sealed class Response<T : Any> {
     ) : Response<T>()
 
     @Serializable
-    data class Failure<T : Any>(
+    public data class Failure<T : Any>(
         val statusCode: Int = -1,
         val errors: List<Error>,
         val title: String,
         val detail: String,
         val type: String
     ) : Response<T>() {
-        constructor(statusCode: Int, error: Error) : this(statusCode, listOf(error), "", "", "")
+        public constructor(statusCode: Int, error: Error) : this(
+            statusCode,
+            listOf(error),
+            "",
+            "",
+            ""
+        )
     }
 
 }
 
 @Serializable
-data class Error(
+public data class Error(
     val title: String? = null,
     val detail: String? = null,
     val type: Type? = null,
@@ -69,11 +79,11 @@ data class Error(
     val section: String? = null,
     val parameters: Parameters? = null,
     val message: String? = null,
-) {
+) : JvmSerializable {
 
 
     @Serializable
-    enum class Type {
+    public enum class Type {
         /**
          * about:blank
          * A generic problem with no additional information beyond that provided by the HTTP status code.
@@ -190,16 +200,16 @@ data class Error(
         UNKNOWNS
     }
 
-    @Parcelize
+
     @Serializable
-    data class Parameters(val ids: List<String>) : Parcelable
+    public data class Parameters(val ids: List<String>) : JvmSerializable
 }
 
 @Serializable
-data class Includes(
+public data class Includes(
     val tweets: List<Tweet>? = null,
     val users: List<User>? = null,
     val places: List<Place>? = null,
     val media: List<Media>? = null,
     val polls: List<Poll>? = null,
-)
+) : JvmSerializable

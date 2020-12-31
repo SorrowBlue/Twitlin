@@ -1,7 +1,10 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.Serializable
 
 /**
@@ -12,9 +15,8 @@ import kotlinx.serialization.Serializable
  * @property type The type of data encoded in the coordinates property.
  * This will be “Point” for Tweet coordinates fields.
  */
-@Parcelize
 @Serializable
-data class Coordinates(
+public data class Coordinates(
     val coordinates: List<Double>,
     val type: CoordinatesType
-) : Parcelable
+) : JvmSerializable

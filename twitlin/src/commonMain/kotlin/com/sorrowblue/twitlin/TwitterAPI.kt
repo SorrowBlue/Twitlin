@@ -1,53 +1,97 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin
 
-import com.sorrowblue.twitlin.accounts_users.account.AccountApi
-import com.sorrowblue.twitlin.accounts_users.account.AccountApiImp
-import com.sorrowblue.twitlin.accounts_users.followers.FollowersApi
-import com.sorrowblue.twitlin.accounts_users.followers.FollowersApiImp
-import com.sorrowblue.twitlin.accounts_users.friends.FriendsApi
-import com.sorrowblue.twitlin.accounts_users.friends.FriendsApiImp
-import com.sorrowblue.twitlin.accounts_users.lists.ListsApi
-import com.sorrowblue.twitlin.accounts_users.lists.ListsApiImp
-import com.sorrowblue.twitlin.accounts_users.users.UsersApi
-import com.sorrowblue.twitlin.accounts_users.users.UsersApiImp
-import com.sorrowblue.twitlin.basics.oauth.OAuthApi
-import com.sorrowblue.twitlin.basics.oauth.OAuthApiImp
-import com.sorrowblue.twitlin.basics.oauth2.OAuth2Api
-import com.sorrowblue.twitlin.basics.oauth2.OAuth2ApiImp
+import com.sorrowblue.twitlin.authentication.OAuth2Api
+import com.sorrowblue.twitlin.authentication.OAuthApi
+import com.sorrowblue.twitlin.authentication.impl.OAuth2ApiImpl
+import com.sorrowblue.twitlin.authentication.impl.OAuthApiImpl
+import com.sorrowblue.twitlin.geo.GeoApi
+import com.sorrowblue.twitlin.geo.impl.GeoApiImpl
+import com.sorrowblue.twitlin.media.MediaApi
+import com.sorrowblue.twitlin.media.impl.MediaApiImpl
 import com.sorrowblue.twitlin.trends.TrendsApi
-import com.sorrowblue.twitlin.trends.TrendsApiImp
+import com.sorrowblue.twitlin.trends.impl.TrendsApiImpl
 import com.sorrowblue.twitlin.tweets.favorites.FavoritesApi
 import com.sorrowblue.twitlin.tweets.favorites.FavoritesApiImp
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApiImp
+import com.sorrowblue.twitlin.users.AccountApi
+import com.sorrowblue.twitlin.users.BlocksApi
+import com.sorrowblue.twitlin.users.FollowersApi
+import com.sorrowblue.twitlin.users.FriendsApi
+import com.sorrowblue.twitlin.users.FriendshipsApi
+import com.sorrowblue.twitlin.users.MutesApi
+import com.sorrowblue.twitlin.users.SavedSearchesApi
+import com.sorrowblue.twitlin.users.UsersApi
+import com.sorrowblue.twitlin.users.impl.AccountApiImpl
+import com.sorrowblue.twitlin.users.impl.BlocksApiImpl
+import com.sorrowblue.twitlin.users.impl.FollowersApiImpl
+import com.sorrowblue.twitlin.users.impl.FriendsApiImpl
+import com.sorrowblue.twitlin.users.impl.FriendshipsApiImpl
+import com.sorrowblue.twitlin.users.impl.MutesApiImpl
+import com.sorrowblue.twitlin.users.impl.SavedSearchesApiImpl
+import com.sorrowblue.twitlin.users.impl.UsersApiImpl
 import com.sorrowblue.twitlin.utilities.ApplicationApi
-import com.sorrowblue.twitlin.utilities.ApplicationApiImp
 import com.sorrowblue.twitlin.utilities.HelpApi
-import com.sorrowblue.twitlin.utilities.HelpApiImp
-import com.sorrowblue.twitlin.v2.tweets.TweetsApi
-import com.sorrowblue.twitlin.v2.tweets.TweetsApiImp
-import com.sorrowblue.twitlin.v2.users.TwitterAPIV2
-import com.sorrowblue.twitlin.v2.users.UsersApi as V2UsersApi
-import com.sorrowblue.twitlin.v2.users.UsersApiImp as V2UsersApiImp
+import com.sorrowblue.twitlin.utilities.impl.ApplicationApiImpl
+import com.sorrowblue.twitlin.utilities.impl.HelpApiImpl
 
-object TwitterAPI {
-    val oauth: OAuthApi by lazy { OAuthApiImp(Twitlin.client) }
-    val oauth2: OAuth2Api by lazy { OAuth2ApiImp(Twitlin.client) }
-    val trends: TrendsApi by lazy { TrendsApiImp(Twitlin.client) }
-    val lists: ListsApi by lazy { ListsApiImp(Twitlin.client) }
-    val account: AccountApi by lazy { AccountApiImp(Twitlin.client) }
-    val statuses: StatusesApi by lazy { StatusesApiImp(Twitlin.client) }
-    val users: UsersApi by lazy { UsersApiImp(Twitlin.client) }
-    val followers: FollowersApi by lazy { FollowersApiImp(Twitlin.client) }
-    val friends: FriendsApi by lazy { FriendsApiImp(Twitlin.client) }
-    val help: HelpApi by lazy { HelpApiImp(Twitlin.client) }
-    val application: ApplicationApi by lazy { ApplicationApiImp(Twitlin.client) }
-    val favorites: FavoritesApi by lazy { FavoritesApiImp(Twitlin.client) }
+/**
+ * TODO
+ */
+public object TwitterAPI {
 
-    @TwitterAPIV2
-    object V2 {
+    // region authentication
 
-        val tweetsApi: TweetsApi by lazy { TweetsApiImp(Twitlin.v2Client) }
-        val usersApi: V2UsersApi by lazy { V2UsersApiImp(Twitlin.v2Client) }
-    }
+    public val oauth: OAuthApi by lazy { OAuthApiImpl(Twitlin.client) }
+
+    public val oauth2: OAuth2Api by lazy { OAuth2ApiImpl(Twitlin.client) }
+    // endregion
+
+    // region users
+
+    public val account: AccountApi by lazy { AccountApiImpl(Twitlin.client) }
+
+    public val blocks: BlocksApi by lazy { BlocksApiImpl(Twitlin.client) }
+
+    public val mutesApi: MutesApi by lazy { MutesApiImpl(Twitlin.client) }
+
+    public val followers: FollowersApi by lazy { FollowersApiImpl(Twitlin.client) }
+
+    public val friends: FriendsApi by lazy { FriendsApiImpl(Twitlin.client) }
+
+    public val friendships: FriendshipsApi by lazy { FriendshipsApiImpl(Twitlin.client) }
+
+    public val savedSearches: SavedSearchesApi by lazy { SavedSearchesApiImpl(Twitlin.client) }
+
+    public val users: UsersApi by lazy { UsersApiImpl(Twitlin.client) }
+    // endregion
+
+    // region utilities
+
+    public val application: ApplicationApi by lazy { ApplicationApiImpl(Twitlin.client) }
+
+    public val help: HelpApi by lazy { HelpApiImpl(Twitlin.client) }
+    // endregion
+
+    // region geo
+
+    public val geo: GeoApi by lazy { GeoApiImpl(Twitlin.client) }
+    // endregion
+
+    // region trends
+
+    public val trends: TrendsApi by lazy { TrendsApiImpl(Twitlin.client) }
+    // endregion
+
+    // region media
+
+    public val media: MediaApi by lazy { MediaApiImpl(Twitlin.client) }
+
+    // endregion
+    public val favorites: FavoritesApi by lazy { FavoritesApiImp(Twitlin.client) }
+    public val statuses: StatusesApi by lazy { StatusesApiImp(Twitlin.client) }
 }

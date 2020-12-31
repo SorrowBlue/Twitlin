@@ -1,3 +1,7 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.utils
 
 import com.sorrowblue.twitlin.objects.TwitterCard
@@ -5,7 +9,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
-actual fun resolveCard(source: String): TwitterCard {
+public actual fun resolveCard(source: String): TwitterCard {
     val document = Jsoup.parse(source)
     val head = document.head()
     val body = document.body()
@@ -32,7 +36,7 @@ private fun Element.getContentByAttributeValue(keyValues: List<Pair<String, Stri
     return null
 }
 
-actual fun resolveTweetCardType(source: String): TwitterCard.Type {
+public actual fun resolveTweetCardType(source: String): TwitterCard.Type {
     val document: Document = Jsoup.parse(source)
     val card = document.head().getContentByAttributeValue(TweetCardUtil.Attribute.card)
         ?: document.body().getContentByAttributeValue(TweetCardUtil.Attribute.card).orEmpty()

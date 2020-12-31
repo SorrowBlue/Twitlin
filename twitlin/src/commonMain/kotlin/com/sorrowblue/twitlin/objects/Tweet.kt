@@ -1,18 +1,26 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.objects
 
 import kotlin.jvm.JvmStatic
 
-sealed class Tweet(val source: TwitterTweet) {
-    class Photo(source: TwitterTweet, val media: List<Entities.Media>) : Tweet(source)
-    class Video(source: TwitterTweet, val info: Entities.Media.VideoInfo) : Tweet(source)
-    class GifAnimation(source: TwitterTweet, val info: Entities.Media.VideoInfo) : Tweet(source)
-    class Poll(source: TwitterTweet, val polls: List<Entities.Poll>) : Tweet(source)
-    class Card(source: TwitterTweet, val card: TwitterCard) : Tweet(source)
-    class Normal(source: TwitterTweet) : Tweet(source)
+public sealed class Tweet(public val source: TwitterTweet) {
+    public class Photo(source: TwitterTweet, public val media: List<Entities.Media>) : Tweet(source)
+    public class Video(source: TwitterTweet, public val info: Entities.Media.VideoInfo) :
+        Tweet(source)
 
-    companion object {
+    public class GifAnimation(source: TwitterTweet, public val info: Entities.Media.VideoInfo) :
+        Tweet(source)
+
+    public class Poll(source: TwitterTweet, public val polls: List<Entities.Poll>) : Tweet(source)
+    public class Card(source: TwitterTweet, public val card: TwitterCard) : Tweet(source)
+    public class Normal(source: TwitterTweet) : Tweet(source)
+
+    public companion object {
         @JvmStatic
-        fun valueOf(tweet: TwitterTweet): Tweet {
+        public fun valueOf(tweet: TwitterTweet): Tweet {
             return when (tweet.extendedEntities?.media?.firstOrNull()?.type) {
                 Entities.Media.MediaType.PHOTO -> Photo(tweet, tweet.extendedEntities.media)
                 Entities.Media.MediaType.VIDEO ->

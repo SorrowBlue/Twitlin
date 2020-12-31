@@ -1,5 +1,10 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.net
 
+import com.sorrowblue.twitlin.utils.hmacSHA1
 import kotlin.test.Test
 
 class HmacSHA1KtTest {

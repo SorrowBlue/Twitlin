@@ -1,12 +1,14 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.Serializable
 
-@Parcelize
 @Serializable
-data class TrendLocation(
+public data class TrendLocation(
     val country: String,
     val countryCode: String?,
     val name: String,
@@ -14,12 +16,8 @@ data class TrendLocation(
     val placeType: PlaceType,
     val url: String,
     val woeid: Int
-) : Parcelable {
+) : JvmSerializable {
 
-    @Parcelize
     @Serializable
-    data class PlaceType(
-        val code: Int,
-        val name: String
-    ) : Parcelable
+    public data class PlaceType(val code: Int, val name: String) : JvmSerializable
 }

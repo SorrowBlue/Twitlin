@@ -1,3 +1,7 @@
+/*
+ * (c) 2020.
+ */
+
 @file:Suppress("UNUSED_VARIABLE")
 
 import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
@@ -8,7 +12,7 @@ plugins {
     `kotlin-parcelize`
     `kotlin-kapt`
     kotlin("plugin.serialization") version KOTLIN_VERSION
-    id("org.jetbrains.dokka") version "1.4.10.2"
+    id("org.jetbrains.dokka") version "1.4.20"
     `maven-publish`
 }
 
@@ -16,6 +20,7 @@ group = "com.sorrowblue.twitlin"
 version = "0.0.1-dev-004"
 
 kotlin {
+    explicitApi()
     android {
         publishLibraryVariants("release")
     }
@@ -42,6 +47,7 @@ kotlin {
             dependencies {
                 api(Libs.kotlinx.datetime)
                 implementation(Libs.kotlinx.serialization)
+                implementation(Libs.kotlinx.`serialization-properties`)
                 implementation(Libs.`ktor-client`.core)
                 implementation(Libs.`ktor-client`.serialization)
                 implementation(kotlin("reflect", KOTLIN_VERSION))
@@ -98,7 +104,7 @@ kotlin {
 
 android {
     compileSdkVersion(30)
-    buildToolsVersion("30.0.2")
+    buildToolsVersion("30.0.3")
 
     defaultConfig {
         minSdkVersion(23)

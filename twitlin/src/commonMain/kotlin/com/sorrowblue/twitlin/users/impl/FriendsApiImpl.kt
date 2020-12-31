@@ -1,0 +1,53 @@
+/*
+ * (c) 2020.
+ */
+
+/*
+ * (c) 2020.
+ */
+
+package com.sorrowblue.twitlin.users.impl
+
+import com.sorrowblue.twitlin.client.Response
+import com.sorrowblue.twitlin.client.TwitlinClient
+import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.users.FriendsApi
+import com.sorrowblue.twitlin.users.PagingIds
+import com.sorrowblue.twitlin.users.PagingUser
+
+private const val FRIENDS = "${Urls.V1}/friends"
+
+internal class FriendsApiImpl(private val client: TwitlinClient) : FriendsApi {
+
+    override suspend fun ids(
+        userId: String?,
+        screenName: String?,
+        cursor: String,
+        count: Int?
+    ): Response<PagingIds> = client.get(
+        "$FRIENDS/ids.json",
+        "user_id" to userId,
+        "screen_name" to screenName,
+        "cursor" to cursor,
+        "stringify_ids" to true,
+        "count" to count
+    )
+
+    override suspend fun list(
+        userId: String?,
+        screenName: String?,
+        cursor: String,
+        count: Int,
+        skipStatus: Boolean,
+        includeUserEntities: Boolean
+    ): Response<PagingUser> = client.get(
+        "$FRIENDS/list.json",
+        "user_id" to userId,
+        "screen_name" to screenName,
+        "cursor" to cursor,
+        "count" to count,
+        "skip_status" to skipStatus,
+        "include_user_entities" to includeUserEntities,
+    )
+
+}

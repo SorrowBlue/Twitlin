@@ -1,13 +1,15 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.Parcelable
-import com.sorrowblue.twitlin.Parcelize
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Parcelize
 @Serializable
-data class ProfileGeo(
+public data class ProfileGeo(
     val country: String,
     val country_code: String,
     val locality: String,
@@ -17,4 +19,4 @@ data class ProfileGeo(
     @SerialName("full_name")
     val full_name: String,
     val geo: Coordinates
-) : Parcelable
+) : JvmSerializable

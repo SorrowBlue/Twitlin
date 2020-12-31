@@ -1,13 +1,18 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.v2
 
 import com.github.aakira.napier.Napier
-import com.sorrowblue.twitlin.basics.oauth.AccessToken
-import com.sorrowblue.twitlin.basics.oauth2.BearerToken
-import com.sorrowblue.twitlin.foundation.authentication.bodyForTwitter
-import com.sorrowblue.twitlin.foundation.authentication.headerForTwitter
-import com.sorrowblue.twitlin.foundation.authentication.notNullParams
-import com.sorrowblue.twitlin.net.clientEngine
-import com.sorrowblue.twitlin.net.combineParams
+import com.sorrowblue.twitlin.authentication.AccessToken
+import com.sorrowblue.twitlin.authentication.BearerToken
+import com.sorrowblue.twitlin.client.ErrorCodes
+import com.sorrowblue.twitlin.client.bodyForTwitter
+import com.sorrowblue.twitlin.client.clientEngineFactory
+import com.sorrowblue.twitlin.client.combineParams
+import com.sorrowblue.twitlin.client.headerForTwitter
+import com.sorrowblue.twitlin.client.notNullParams
 import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
@@ -25,7 +30,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 
-val json: Json = Json {
+private val json: Json = Json {
     isLenient = true
     ignoreUnknownKeys = true
     encodeDefaults = false
@@ -40,7 +45,7 @@ internal open class Client(
 
 
     val httpClient
-        get() = HttpClient(clientEngine) {
+        get() = HttpClient(clientEngineFactory) {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(json)
             }
@@ -51,13 +56,15 @@ internal open class Client(
         vararg params: Pair<String, Any?> = emptyArray(),
         useBearerToken: Boolean = false
     ): Response<T> =
-        httpClient.get<HttpResponse>(url.combineParams(params.notNullParams)) {
-            if (useBearerToken) {
-                headerForTwitter(this@Client.bearerToken)
-            } else {
-                headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+        catchResponse {
+            httpClient.get<HttpResponse>(url.combineParams(params.notNullParams)) {
+                if (useBearerToken) {
+                    headerForTwitter(this@Client.bearerToken)
+                } else {
+                    headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+                }
             }
-        }.toResponse()
+        }
 
     suspend inline fun <reified T : Any, reified V : Any> getCustom(
         url: String,
@@ -153,7 +160,7 @@ internal open class Client(
     }
 }
 
-fun HttpResponse.sendLog(content: String) {
+internal fun HttpResponse.sendLog(content: String) {
     Napier.i(
         """
             status  = $status
@@ -165,21 +172,43 @@ fun HttpResponse.sendLog(content: String) {
     )
 }
 
-suspend inline fun <reified T : Any> HttpResponse.toResponse(): Response<T> = kotlin.runCatching {
-    if (status.isSuccess()) {
-        readText().let {
-            sendLog(it)
-            json.decodeFromString<Response.Success<T>>(it)
+internal suspend inline fun <reified T : Any> catchResponse(function: () -> HttpResponse): Response<T> =
+    runCatching {
+        with(function()) {
+            Napier.d("HttpResponse.toResponse isSuccess = ${status.isSuccess()}", tag = "APPAPP")
+            if (status.isSuccess()) {
+                readText().let {
+                    sendLog(it)
+                    json.decodeFromString<Response.Success<T>>(it)
+                }
+            } else {
+                content.readUTF8Line()!!.let {
+                    sendLog(it)
+                    json.decodeFromString<Response.Failure<T>>(it)
+                }
+            }
         }
-    } else {
-        content.readUTF8Line()!!.let {
-            sendLog(it)
-            json.decodeFromString<Response.Failure<T>>(it)
-        }
+    }.getOrElse {
+        it.toFailure()
     }
-}.getOrElse { it.toFailure() }
 
-suspend inline fun <reified T : Any, V : Any> HttpResponse.toCustomResponse(converter: (T, HttpResponse) -> Response<V>): Response<V> {
+internal suspend inline fun <reified T : Any> HttpResponse.toResponse(): Response<T> =
+    kotlin.runCatching {
+        Napier.d("HttpResponse.toResponse isSuccess = ${status.isSuccess()}", tag = "APPAPP")
+        if (status.isSuccess()) {
+            readText().let {
+                sendLog(it)
+                json.decodeFromString<Response.Success<T>>(it)
+            }
+        } else {
+            content.readUTF8Line()!!.let {
+                sendLog(it)
+                json.decodeFromString<Response.Failure<T>>(it)
+            }
+        }
+    }.getOrElse { it.toFailure() }
+
+internal suspend inline fun <reified T : Any, V : Any> HttpResponse.toCustomResponse(converter: (T, HttpResponse) -> Response<V>): Response<V> {
     return kotlin.runCatching {
         if (status.isSuccess()) {
             readText().let {
@@ -195,11 +224,11 @@ suspend inline fun <reified T : Any, V : Any> HttpResponse.toCustomResponse(conv
     }.getOrElse { it.toFailure() }
 }
 
-fun <T : Any> Throwable.toFailure(): Response.Failure<T> {
+internal fun <T : Any> Throwable.toFailure(): Response.Failure<T> {
     Napier.e(stackTraceToString(), this, TAG)
     return if (toString().contains("java.net.UnknownHostException")) {
         Response.Failure(
-            statusCode = STATUS_CODE_NO_NETWORK,
+            statusCode = ErrorCodes.NO_NETWORK,
             Error(
                 title = "UnknownHostException",
                 detail = stackTraceToString(),
@@ -208,7 +237,7 @@ fun <T : Any> Throwable.toFailure(): Response.Failure<T> {
         )
     } else {
         Response.Failure(
-            statusCode = STATUS_CODE_CLIENT_ERROR,
+            statusCode = ErrorCodes.CLIENT_ERROR,
             Error(
                 title = "unknowns",
                 detail = stackTraceToString(),
@@ -218,6 +247,4 @@ fun <T : Any> Throwable.toFailure(): Response.Failure<T> {
     }
 }
 
-const val TAG = "TwitlinClient"
-const val STATUS_CODE_NO_NETWORK = -400
-const val STATUS_CODE_CLIENT_ERROR = -401
+internal const val TAG = "TwitlinClient"

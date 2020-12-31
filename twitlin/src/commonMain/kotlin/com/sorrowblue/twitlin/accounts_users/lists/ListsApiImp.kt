@@ -1,15 +1,19 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.accounts_users.lists
 
-import com.sorrowblue.twitlin.net.Client
-import com.sorrowblue.twitlin.net.Response
-import com.sorrowblue.twitlin.net.Urls
+import com.sorrowblue.twitlin.client.Response
+import com.sorrowblue.twitlin.client.TwitlinClient
+import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.objects.PagingTwitterUser
 import com.sorrowblue.twitlin.objects.TwitterTweet
 import com.sorrowblue.twitlin.objects.TwitterUser
 
-private const val LISTS = "${Urls._1_1}/lists"
+private const val LISTS = "${Urls.V1}/lists"
 
-internal class ListsApiImp(private val client: Client) : ListsApi {
+internal class ListsApiImp(private val client: TwitlinClient) : ListsApi {
 
     override suspend fun list(
         userId: Int?,

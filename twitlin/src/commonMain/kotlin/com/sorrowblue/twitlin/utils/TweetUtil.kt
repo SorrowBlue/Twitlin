@@ -1,34 +1,39 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.utils
 
-import com.sorrowblue.twitlin.net.clientEngine
+import com.sorrowblue.twitlin.client.clientEngineFactory
 import com.sorrowblue.twitlin.objects.TwitterCard
-import io.ktor.client.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.readText
+import io.ktor.http.isSuccess
 
-object TweetUtil {
+public object TweetUtil {
 
-    suspend fun twitterCard(url: String): TwitterCard? {
-        val response = HttpClient(clientEngine).get<HttpResponse>(url)
+    public suspend fun twitterCard(url: String): TwitterCard? {
+        val response = HttpClient(clientEngineFactory).get<HttpResponse>(url)
         return if (response.status.isSuccess()) kotlin.runCatching {
             resolveCard(response.readText())
         }.getOrNull() else null
     }
 
-    suspend fun tweetCardType(url: String): TwitterCard.Type {
-        val response = HttpClient(clientEngine).get<HttpResponse>(url)
+    public suspend fun tweetCardType(url: String): TwitterCard.Type {
+        val response = HttpClient(clientEngineFactory).get<HttpResponse>(url)
         return if (response.status.isSuccess()) kotlin.runCatching {
             resolveTweetCardType(response.readText())
         }.getOrElse { TwitterCard.Type.SUMMARY } else TwitterCard.Type.SUMMARY
     }
 }
 
-expect fun resolveCard(source: String): TwitterCard
+public expect fun resolveCard(source: String): TwitterCard
 
-expect fun resolveTweetCardType(source: String): TwitterCard.Type
+public expect fun resolveTweetCardType(source: String): TwitterCard.Type
 
-enum class TweetCardType {
+public enum class TweetCardType {
     SUMMARY,
     SUMMARY_LARGE_IMAGE,
     APP,

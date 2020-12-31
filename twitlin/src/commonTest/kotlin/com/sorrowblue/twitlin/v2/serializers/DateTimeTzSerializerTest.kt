@@ -1,3 +1,7 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.v2.serializers
 
 import com.sorrowblue.twitlin.v2.serializer.LocalDateTimeSerializer
@@ -9,7 +13,7 @@ import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class LocalDateTimeSerializerTest {
+internal class LocalDateTimeRFC822SerializerTest {
 
     private val source = LocalDateTime(2010, 6, 1, 22, 19, 44, 475)
     private val strSource = """{"date":"2010-06-01T22:19:44.475Z"}"""

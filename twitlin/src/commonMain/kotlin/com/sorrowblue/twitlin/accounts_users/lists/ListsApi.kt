@@ -1,11 +1,15 @@
+/*
+ * (c) 2020.
+ */
+
 package com.sorrowblue.twitlin.accounts_users.lists
 
-import com.sorrowblue.twitlin.net.Response
+import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.objects.PagingTwitterUser
 import com.sorrowblue.twitlin.objects.TwitterTweet
 import com.sorrowblue.twitlin.objects.TwitterUser
 
-interface ListsApi {
+public interface ListsApi {
 
     /**
      * Returns all lists the authenticating or specified user subscribes to, including their own.
@@ -27,7 +31,7 @@ interface ListsApi {
      * See description above for information on how this parameter works.
      * @return List of Twitter users
      */
-    suspend fun list(
+    public suspend fun list(
         userId: Int? = null,
         screenName: String? = null,
         reverse: Boolean? = null,
@@ -46,7 +50,7 @@ interface ListsApi {
      * @param skipStatus When set to either `true` statuses will not be included in the returned user objects.
      * @return Paged Twitter User
      */
-    suspend fun members(
+    public suspend fun members(
         listId: Long,
         count: Int? = null,
         cursor: Long? = null,
@@ -70,7 +74,7 @@ interface ListsApi {
      * @param skipStatus When set to either `true` statuses will not be included in the returned user objects.
      * @return Paged Twitter User
      */
-    suspend fun members(
+    public suspend fun members(
         slug: String,
         ownerScreenName: String? = null,
         ownerId: Long? = null,
@@ -95,7 +99,7 @@ interface ListsApi {
      * @param skipStatus When set to either `true` statuses will not be included in the returned user objects.
      * @return specified user is a member of the specified list
      */
-    suspend fun membersShow(
+    public suspend fun membersShow(
         listId: Long? = null,
         userId: Long? = null,
         includeEntities: Boolean? = null,
@@ -117,7 +121,7 @@ interface ListsApi {
      * @param skipStatus When set to either `true` statuses will not be included in the returned user objects.
      * @return specified user is a member of the specified list
      */
-    suspend fun membersShow(
+    public suspend fun membersShow(
         slug: String,
         ownerScreenName: String? = null,
         ownerId: String? = null,
@@ -138,7 +142,7 @@ interface ListsApi {
      * @param skipStatus When set to either `true` statuses will not be included in the returned user objects.
      * @return specified user is a member of the specified list
      */
-    suspend fun membersShow(
+    public suspend fun membersShow(
         screenName: String,
         includeEntities: Boolean? = null,
         skipStatus: Boolean? = null,
@@ -162,7 +166,7 @@ interface ListsApi {
      * and the user represented by [userId] or [screenName] is a member of.
      * @return Paged Twitter List
      */
-    suspend fun memberships(
+    public suspend fun memberships(
         userId: String? = null,
         screenName: String? = null,
         count: Long? = null,
@@ -186,7 +190,7 @@ interface ListsApi {
      * It is recommended to always use cursors when the method supports them. See [Cursoring](https://developer.twitter.com/en/docs/basics/cursoring) for more information.
      * @return Paged Twitter List
      */
-    suspend fun ownerships(
+    public suspend fun ownerships(
         userId: String? = null,
         screenName: String? = null,
         count: Long? = null,
@@ -200,7 +204,7 @@ interface ListsApi {
      * @param listId Twitter list corresponding to list_id
      * @return Twitter list corresponding to list_id
      */
-    suspend fun show(listId: Long): Response<TwitterList>
+    public suspend fun show(listId: Long): Response<TwitterList>
 
     /**
      * Returns the specified list.
@@ -212,7 +216,7 @@ interface ListsApi {
      * @param ownerId The user ID of the user who owns the list being requested by a [slug].
      * @return Specified list
      */
-    suspend fun show(
+    public suspend fun show(
         slug: String,
         ownerScreenName: String? = null,
         ownerId: Long? = null,
@@ -242,7 +246,7 @@ interface ListsApi {
      * in [com.sorrowblue.twitlin.tweets.statuses.StatusesApi.homeTimeline].
      * @return A Timeline of tweets authored by members of the specified list
      */
-    suspend fun statuses(
+    public suspend fun statuses(
         listId: Long,
         sinceId: Long? = null,
         maxId: Long? = null,
@@ -278,7 +282,7 @@ interface ListsApi {
      * in [com.sorrowblue.twitlin.tweets.statuses.StatusesApi.homeTimeline].
      * @return A Timeline of tweets authored by members of the specified list
      */
-    suspend fun statuses(
+    public suspend fun statuses(
         slug: String,
         ownerScreenName: String? = null,
         ownerId: Long? = null,
@@ -310,7 +314,7 @@ interface ListsApi {
      * @param skipStatus When set to either `true` statuses will not be included in the returned user objects.
      * @return The subscribers of the specified list
      */
-    suspend fun subscribers(
+    public suspend fun subscribers(
         listId: Long,
         count: Long? = null,
         cursor: Long? = null,
@@ -342,7 +346,7 @@ interface ListsApi {
      * @param skipStatus When set to either `true` statuses will not be included in the returned user objects.
      * @return The subscribers of the specified list
      */
-    suspend fun subscribers(
+    public suspend fun subscribers(
         slug: String,
         ownerScreenName: String? = null,
         ownerId: Long? = null,

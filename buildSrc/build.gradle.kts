@@ -1,3 +1,7 @@
+/*
+ * (c) 2020.
+ */
+
 plugins {
     `kotlin-dsl`
 }
@@ -9,5 +13,5 @@ repositories {
 
 dependencies {
     implementation("com.android.tools.build:gradle:4.0.2")
-    implementation(kotlin("gradle-plugin", "1.4.20"))
+    implementation(kotlin("gradle-plugin", "1.4.21"))
 }
