@@ -7,19 +7,20 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: "checkout"
         uses: actions/checkout@v2
-      - name: set up JDK 1.8
+      - name: "set up JDK 1.8 :dango:"
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Build with Dokka
+      - name: "build with Dokka :hammer:" 
         run: ./gradlew twitlin:dokkaHtml
-      - name: Remove File
-        uses: JesseTG/rm@v1.0.2
+      - name: "copy README.md :open_file_folder:"
+        uses: canastro/copy-file-action@master
         with:
-          path: /docs/.nojekyll
-      - name: Deploy
+          source: "/README.md"
+          target: "/docs/README.md"
+      - name: "Deploy :rocket:"
         uses: peaceiris/actions-gh-pages@v3
         with:
           enable_jekyll: true
