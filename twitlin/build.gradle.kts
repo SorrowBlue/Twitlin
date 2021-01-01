@@ -117,7 +117,7 @@ android {
     }
 }
 
-tasks.dokkaGfm.configure {
+tasks.dokkaHtml.configure {
     outputDirectory.set(rootProject.projectDir.resolve("docs/"))
     dokkaSourceSets {
         named("commonMain") {
