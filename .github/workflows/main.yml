@@ -20,7 +20,7 @@ jobs:
         with:
           source: ./README.md
           target: ./docs/README.md
-      - name: Deploy 🔨
+      - name: Deploy 🚀
         uses: peaceiris/actions-gh-pages@v3
         with:
           enable_jekyll: true
