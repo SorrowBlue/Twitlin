@@ -1,0 +1,11 @@
+//[twitlin](../../../index.md)/[com.sorrowblue.twitlin.media](../../index.md)/[MediaResult](../index.md)/[Image](index.md)/[component2](component2.md)
+
+
+
+# component2  
+[common]  
+Content  
+operator fun [component2](component2.md)(): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)  
+
+
+

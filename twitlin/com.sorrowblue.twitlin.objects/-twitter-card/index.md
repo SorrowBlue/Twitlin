@@ -1,0 +1,42 @@
+//[twitlin](../../index.md)/[com.sorrowblue.twitlin.objects](../index.md)/[TwitterCard](index.md)
+
+
+
+# TwitterCard  
+ [common] data class [TwitterCard](index.md)(**title**: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), **url**: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), **description**: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), **image**: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), **type**: [TwitterCard.Type](-type/index.md), **site**: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)) : [JvmSerializable](../../com.sorrowblue.twitlin.annotation/-jvm-serializable/index.md)   
+
+
+## Types  
+  
+|  Name|  Summary| 
+|---|---|
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard.Type///PointingToDeclaration/"></a>[Type](-type/index.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard.Type///PointingToDeclaration/"></a>[common]  <br>Content  <br>enum [Type](-type/index.md) : [Enum](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html)<[TwitterCard.Type](-type/index.md)>   <br><br><br>
+
+
+## Functions  
+  
+|  Name|  Summary| 
+|---|---|
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component1/#/PointingToDeclaration/"></a>[component1](component1.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component1/#/PointingToDeclaration/"></a>[common]  <br>Content  <br>operator fun [component1](component1.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)  <br><br><br>
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component2/#/PointingToDeclaration/"></a>[component2](component2.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component2/#/PointingToDeclaration/"></a>[common]  <br>Content  <br>operator fun [component2](component2.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)  <br><br><br>
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component3/#/PointingToDeclaration/"></a>[component3](component3.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component3/#/PointingToDeclaration/"></a>[common]  <br>Content  <br>operator fun [component3](component3.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)  <br><br><br>
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component4/#/PointingToDeclaration/"></a>[component4](component4.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component4/#/PointingToDeclaration/"></a>[common]  <br>Content  <br>operator fun [component4](component4.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)  <br><br><br>
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component5/#/PointingToDeclaration/"></a>[component5](component5.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component5/#/PointingToDeclaration/"></a>[common]  <br>Content  <br>operator fun [component5](component5.md)(): [TwitterCard.Type](-type/index.md)  <br><br><br>
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component6/#/PointingToDeclaration/"></a>[component6](component6.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/component6/#/PointingToDeclaration/"></a>[common]  <br>Content  <br>operator fun [component6](component6.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)  <br><br><br>
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/copy/#kotlin.String#kotlin.String#kotlin.String#kotlin.String#com.sorrowblue.twitlin.objects.TwitterCard.Type#kotlin.String/PointingToDeclaration/"></a>[copy](copy.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/copy/#kotlin.String#kotlin.String#kotlin.String#kotlin.String#com.sorrowblue.twitlin.objects.TwitterCard.Type#kotlin.String/PointingToDeclaration/"></a>[common]  <br>Content  <br>fun [copy](copy.md)(title: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), url: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), description: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), image: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), type: [TwitterCard.Type](-type/index.md), site: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [TwitterCard](index.md)  <br><br><br>
+| <a name="kotlin/Any/equals/#kotlin.Any?/PointingToDeclaration/"></a>[equals](../../com.sorrowblue.twitlin.v2.users/-users-api/-expansion/-companion/index.md#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F1930806739)| <a name="kotlin/Any/equals/#kotlin.Any?/PointingToDeclaration/"></a>[common]  <br>Content  <br>open operator override fun [equals](../../com.sorrowblue.twitlin.v2.users/-users-api/-expansion/-companion/index.md#%5Bkotlin%2FAny%2Fequals%2F%23kotlin.Any%3F%2FPointingToDeclaration%2F%5D%2FFunctions%2F1930806739)(other: [Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)  <br><br><br>
+| <a name="kotlin/Any/hashCode/#/PointingToDeclaration/"></a>[hashCode](../../com.sorrowblue.twitlin.v2.users/-users-api/-expansion/-companion/index.md#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F1930806739)| <a name="kotlin/Any/hashCode/#/PointingToDeclaration/"></a>[common]  <br>Content  <br>open override fun [hashCode](../../com.sorrowblue.twitlin.v2.users/-users-api/-expansion/-companion/index.md#%5Bkotlin%2FAny%2FhashCode%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F1930806739)(): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)  <br><br><br>
+| <a name="kotlin/Any/toString/#/PointingToDeclaration/"></a>[toString](../../com.sorrowblue.twitlin.v2.users/-users-api/-expansion/-companion/index.md#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F1930806739)| <a name="kotlin/Any/toString/#/PointingToDeclaration/"></a>[common]  <br>Content  <br>open override fun [toString](../../com.sorrowblue.twitlin.v2.users/-users-api/-expansion/-companion/index.md#%5Bkotlin%2FAny%2FtoString%2F%23%2FPointingToDeclaration%2F%5D%2FFunctions%2F1930806739)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)  <br><br><br>
+
+
+## Properties  
+  
+|  Name|  Summary| 
+|---|---|
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/description/#/PointingToDeclaration/"></a>[description](description.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/description/#/PointingToDeclaration/"></a> [common] val [description](description.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)   <br>
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/image/#/PointingToDeclaration/"></a>[image](image.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/image/#/PointingToDeclaration/"></a> [common] val [image](image.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)   <br>
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/site/#/PointingToDeclaration/"></a>[site](site.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/site/#/PointingToDeclaration/"></a> [common] val [site](site.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)   <br>
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/title/#/PointingToDeclaration/"></a>[title](title.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/title/#/PointingToDeclaration/"></a> [common] val [title](title.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)   <br>
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/type/#/PointingToDeclaration/"></a>[type](type.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/type/#/PointingToDeclaration/"></a> [common] val [type](type.md): [TwitterCard.Type](-type/index.md)   <br>
+| <a name="com.sorrowblue.twitlin.objects/TwitterCard/url/#/PointingToDeclaration/"></a>[url](url.md)| <a name="com.sorrowblue.twitlin.objects/TwitterCard/url/#/PointingToDeclaration/"></a> [common] val [url](url.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)   <br>
+
