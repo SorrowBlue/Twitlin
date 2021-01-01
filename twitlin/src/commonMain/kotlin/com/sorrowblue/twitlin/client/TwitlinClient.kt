@@ -1,13 +1,5 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2020 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.client
@@ -28,7 +20,6 @@ import io.ktor.client.statement.readText
 import io.ktor.client.statement.request
 import io.ktor.http.ContentType
 import io.ktor.http.content.TextContent
-import io.ktor.http.contentType
 import io.ktor.http.formUrlEncode
 import io.ktor.http.isSuccess
 import io.ktor.util.toMap
@@ -120,7 +111,7 @@ internal class TwitlinClient(
     suspend inline fun <reified V : Any, reified T : Any> postJson(
         url: String,
         vararg params: Pair<String, Any?> = emptyArray(),
-        body: V,
+        clazz: V,
         useBearerToken: Boolean = false
     ): Response<T> = catchResponse {
         httpClient.post(url) {
@@ -129,9 +120,10 @@ internal class TwitlinClient(
             } else {
                 headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
             }
-            contentType(ContentType.MultiPart.FormData)
-            this.body =
-                TextContent(json.encodeToString(body), contentType = ContentType.Application.Json)
+            val jsonBody = json.encodeToString(clazz)
+            Napier.d("json = $jsonBody", tag = "TwitlinClient")
+            body =
+                TextContent(jsonBody, contentType = ContentType.Application.Json)
         }
     }
 
@@ -163,7 +155,10 @@ internal class TwitlinClient(
                 if (it.status.isSuccess()) {
                     val body = it.readText()
                     log(Napier.Level.DEBUG, it, body)
-                    Response.Success(json.decodeFromString<T>(body))
+                    val value =
+                        if (T::class == Empty::class) Empty as T
+                        else json.decodeFromString(body)
+                    Response.Success(value, it.status.value)
                 } else {
                     val body = it.content.readUTF8Line()!!
                     log(Napier.Level.ERROR, it, body)

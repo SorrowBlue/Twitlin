@@ -1,5 +1,5 @@
 /*
- * (c) 2020.
+ * (c) 2020 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.utils
@@ -16,11 +16,16 @@ internal fun String.urlEncode() = encodeURLParameter()
  *
  * @return TODO
  */
-internal fun String.toMap(): Map<String, String> =
+internal fun String.toMap(): Map<String, Any> =
     split('&').associate {
         val params = it.split('=')
         if (params.size != 2) {
             throw IllegalStateException("\"$it\" is not parameter format.")
         }
-        params[0] to params[1]
+        val value = params[1]
+        params[0] to if (value == "true" || value == "false") {
+            value.toBoolean()
+        } else {
+            value
+        }
     }

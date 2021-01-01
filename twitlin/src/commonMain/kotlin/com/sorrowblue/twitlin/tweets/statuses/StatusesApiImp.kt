@@ -127,7 +127,7 @@ internal class StatusesApiImp(private val client: TwitlinClient) : StatusesApi {
                 }
             } else value
         }?.let {
-            Response.Success(it)
+            Response.Success(it, 200)
         } ?: this
     }
 }

@@ -1,13 +1,5 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2020 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.utilities.impl
@@ -27,8 +19,7 @@ internal class ApplicationApiImpl(private val client: TwitlinClient) : Applicati
     override suspend fun rateLimitStatus(resourceFamily: List<ResourceFamily>): Response<RateLimitStatus> =
         client.getCustom(
             "$APPLICATION/rate_limit_status.json",
-            "resources" to resourceFamily.joinToString(",") { it.name.toLowerCase() }
-        ) { response: RateLimitStatusResponse, _ ->
-            response.onSuccess()
-        }
+            "resources" to resourceFamily.joinToString(",") { it.name.toLowerCase() },
+            converter = RateLimitStatusResponse.Companion::onSuccess
+        )
 }

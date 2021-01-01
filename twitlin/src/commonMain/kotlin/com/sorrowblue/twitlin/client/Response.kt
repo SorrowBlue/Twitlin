@@ -1,5 +1,5 @@
 /*
- * (c) 2020.
+ * (c) 2020 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.client
@@ -17,7 +17,7 @@ public sealed class Response<T> {
      * @param T TODO
      * @property value TODO
      */
-    public class Success<T>(public val value: T) : Response<T>()
+    public data class Success<T>(val value: T, val statusCode: Int) : Response<T>()
 
     /**
      * TODO
@@ -25,7 +25,7 @@ public sealed class Response<T> {
      * @param T TODO
      * @property errorMessages TODO
      */
-    public class Error<T>(public val errorMessages: ErrorMessages) : Response<T>()
+    public data class Error<T>(val errorMessages: ErrorMessages) : Response<T>()
 
     /**
      * TODO
@@ -35,10 +35,10 @@ public sealed class Response<T> {
      * @param onError TODO
      * @return TODO
      */
-    public inline fun <R> fold(onSuccess: (T) -> R, onError: (ErrorMessages) -> R): R =
+    public inline fun <R> fold(onSuccess: (Success<T>) -> R, onError: (Error<T>) -> R): R =
         when (this) {
-            is Success -> onSuccess(value)
-            is Error -> onError(errorMessages)
+            is Success -> onSuccess(this)
+            is Error -> onError(this)
         }
 
     /**

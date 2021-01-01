@@ -1,7 +1,7 @@
 package com.sorrowblue.twitlin.androidsample
 
 import android.app.Application
-import com.sorrowblue.twitlin.basics.oauth2.BearerToken
+import com.sorrowblue.twitlin.authentication.BearerToken
 import com.sorrowblue.twitlin.initializeTwitlin
 
 //private const val ACCESS_TOKEN = "938122027231150081-edSNSs0q0D9ahF9VW3zAUushpIbhrxz"

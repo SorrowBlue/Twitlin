@@ -11,6 +11,7 @@ import com.sorrowblue.twitlin.authentication.BearerToken
 import kotlin.test.BeforeTest
 
 interface AbstractTest {
+
     @BeforeTest
     fun initializeTwitlin() {
         Napier.base(TestAntilog())

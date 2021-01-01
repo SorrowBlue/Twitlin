@@ -1,13 +1,5 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2020 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.authentication.impl
@@ -32,7 +24,8 @@ internal class OAuthApiImpl(private val client: TwitlinClient) : OAuthApi {
         "$OAUTH/access_token",
         "oauth_verifier" to oauthVerifier,
         oauthToken = oauthToken
-    ).fold({ Response.Success(AccessToken.fromString(it)) }, { Response.Error(it) })
+    ).fold({ Response.Success(AccessToken.fromString(it.value), it.statusCode) },
+        { Response.Error(it.errorMessages) })
 
     override fun authenticate(
         oauthToken: String,
@@ -62,7 +55,8 @@ internal class OAuthApiImpl(private val client: TwitlinClient) : OAuthApi {
             "$OAUTH/request_token",
             "oauth_callback" to oauthCallback,
             "x_auth_access_type" to xAuthAccessType?.name?.toLowerCase()
-        ).fold({ Response.Success(RequestToken.fromString(it)) }, { Response.Error(it) })
+        ).fold({ Response.Success(RequestToken.fromString(it.value), it.statusCode) },
+            { Response.Error(it.errorMessages) })
 
     override suspend fun invalidateToken(): Response<InvalidateToken> =
         client.post("$OAUTH/invalidate_token")

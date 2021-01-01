@@ -1,9 +1,5 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2020 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.media
@@ -19,8 +15,8 @@ import kotlinx.serialization.Serializable
  * @property displayName
  */
 @Serializable
-public data class SubtitleInfo(
-    @SerialName("media_id")
-    val mediaId: String, @SerialName("language_code") val languageCode: String,
+public data class Subtitle(
+    @SerialName("media_id") val mediaId: String,
+    @SerialName("language_code") val languageCode: String,
     @SerialName("display_name") val displayName: String
 )

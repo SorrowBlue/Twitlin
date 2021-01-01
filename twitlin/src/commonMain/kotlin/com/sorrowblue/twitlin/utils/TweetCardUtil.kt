@@ -1,3 +1,7 @@
+/*
+ * (c) 2020 SorrowBlue.
+ */
+
 package com.sorrowblue.twitlin.utils
 
 internal object TweetCardUtil {

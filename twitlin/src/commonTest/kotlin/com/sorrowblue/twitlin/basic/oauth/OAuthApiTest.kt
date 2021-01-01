@@ -17,7 +17,7 @@ class OAuthApiTest : AbstractTest {
 
     @Test
     fun accessTokenTest() = runTest {
-        TwitterAPI.oauth.accessToken(
+        TwitterAPI.oauthApi.accessToken(
             "etQh_QAAAAABEkL_AAABdFc_n68",
             "yyDhGg66AwElV1qUNodd4EaU7LgJ54KK"
         ).testResult()
@@ -26,8 +26,8 @@ class OAuthApiTest : AbstractTest {
     @Test
     fun authenticateTest() = runTest {
         val url =
-            TwitterAPI.oauth.requestToken("https://snsmate.sorrowblue.com").getOrNull()?.let {
-                TwitterAPI.oauth.authenticate(it.oauthToken)
+            TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").getOrNull()?.let {
+                TwitterAPI.oauthApi.authenticate(it.oauthToken)
             }
         assertNotNull(url, "authenticate url is null")
     }
@@ -35,8 +35,8 @@ class OAuthApiTest : AbstractTest {
     @Test
     fun authorize() = runTest {
         val url =
-            TwitterAPI.oauth.requestToken("https://snsmate.sorrowblue.com").getOrNull()?.let {
-                TwitterAPI.oauth.authorize(it.oauthToken)
+            TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").getOrNull()?.let {
+                TwitterAPI.oauthApi.authorize(it.oauthToken)
             }
         Napier.d("authorize = $url")
         assertNotNull(url, "authorize url is null")
@@ -45,7 +45,7 @@ class OAuthApiTest : AbstractTest {
 
     @Test
     fun requestToken() = runTest {
-        val token = TwitterAPI.oauth.requestToken("https://snsmate.sorrowblue.com")
+        val token = TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com")
             .testResult()
         assertNotNull(token, "oauthToken is null")
     }

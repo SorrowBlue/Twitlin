@@ -1,13 +1,5 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2020 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.authentication.impl
@@ -58,7 +50,7 @@ internal class OAuth2ApiImpl(private val client: TwitlinClient) : OAuth2Api {
                     listOf(ErrorMessages.Error("", 100))
                 )
             )
-            if (it.status.isSuccess()) Response.Success(onSuccess(content))
+            if (it.status.isSuccess()) Response.Success(onSuccess(content), it.status.value)
             else Response.Error(Json.decodeFromString(content))
         }
 

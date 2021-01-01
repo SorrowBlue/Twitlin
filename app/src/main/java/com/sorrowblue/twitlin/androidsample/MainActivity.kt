@@ -1,6 +1,7 @@
 package com.sorrowblue.twitlin.androidsample
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,10 +10,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.sorrowblue.twitlin.TwitterAPI
+import com.sorrowblue.twitlin.TwitterV2API
 import com.sorrowblue.twitlin.androidsample.databinding.ActivityMainBinding
-import com.sorrowblue.twitlin.net.ErrorMessages
+import com.sorrowblue.twitlin.client.ErrorMessages
 import com.sorrowblue.twitlin.v2.tweets.UserField
-import com.sorrowblue.twitlin.v2.users.TwitterAPIV2
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         binding.button.text = "ログイン"
         binding.button.setOnClickListener { viewModel.requestAuthUrl() }
         viewModel.url.observe(this) {
+            Log.d("APPAPP", "url = $it")
         }
         binding.recyclerView.adapter = viewModel.adapter
         viewModel.tweet.observe(this) {
@@ -48,16 +50,18 @@ class MainViewModel : ViewModel() {
 
     fun requestAuthUrl() {
         viewModelScope.launch {
-            TwitterAPI.oauth.requestToken("https://snsmate.sorrowblue.com")
+            TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com")
                 .onSuccess {
-                    url.postValue(TwitterAPI.oauth.authenticate(it))
+                    url.postValue(TwitterAPI.oauthApi.authenticate(it.oauthToken))
                 }
-                .onError(errorCodes::postValue)
+                .onError {
+                    errorCodes.postValue(it.errors)
+                    it.errors
+                }
         }
     }
 
-    @OptIn(TwitterAPIV2::class)
     val tweet =
-        TwitterAPI.V2.tweetsApi.sampleStream(userFields = listOf(UserField.PROFILE_IMAGE_URL))
+        TwitterV2API.tweetsApi.sampleStream(userFields = listOf(UserField.PROFILE_IMAGE_URL))
             .asLiveData(viewModelScope.coroutineContext)
 }

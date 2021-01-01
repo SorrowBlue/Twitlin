@@ -1,13 +1,10 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2020 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.media
 
+import com.sorrowblue.twitlin.client.Empty
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 import com.sorrowblue.twitlin.users.AccountApi
@@ -107,13 +104,15 @@ public interface MediaApi {
      * @param additionalOwners A comma-separated list of user IDs to set as additional owners
      * allowed to use the returned [MediaResult.mediaId] in Tweets or Cards. Up to `100` additional
      * owners may be specified.
+     * @param shared TODO
      * @return TODO
      */
     public suspend fun uploadInit(
         totalBytes: Int,
         mediaType: String,
         mediaCategory: MediaCategory? = null,
-        additionalOwners: List<String>? = null
+        additionalOwners: List<String>? = null,
+        shared: Boolean? = null
     ): Response<MediaResult>
 
     /**
@@ -147,7 +146,7 @@ public interface MediaApi {
         media: ByteArray? = null,
         mediaData: String? = null,
         segmentIndex: Int
-    ): Response<Unit>
+    ): Response<Empty>
 
     /**
      * ## Overview
@@ -225,13 +224,13 @@ public interface MediaApi {
      *
      * @param mediaId TODO
      * @param mediaCategory TODO
-     * @param languageCode TODO
+     * @param languageCodes TODO
      * @return TODO
      */
     public suspend fun deleteSubtitles(
         mediaId: String,
         mediaCategory: MediaCategory,
-        languageCode: String
+        languageCodes: List<String>
     ): Response<Unit>
 
     /**
@@ -260,6 +259,6 @@ public interface MediaApi {
     public suspend fun createSubtitles(
         mediaId: String,
         mediaCategory: MediaCategory,
-        subtitles: SubtitleInfo
+        subtitles: List<Subtitle>
     ): Response<Unit>
 }

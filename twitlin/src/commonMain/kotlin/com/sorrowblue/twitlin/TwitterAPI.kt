@@ -1,5 +1,5 @@
 /*
- * (c) 2020.
+ * (c) 2020 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin
@@ -8,6 +8,8 @@ import com.sorrowblue.twitlin.authentication.OAuth2Api
 import com.sorrowblue.twitlin.authentication.OAuthApi
 import com.sorrowblue.twitlin.authentication.impl.OAuth2ApiImpl
 import com.sorrowblue.twitlin.authentication.impl.OAuthApiImpl
+import com.sorrowblue.twitlin.directmessages.DirectMessagesApi
+import com.sorrowblue.twitlin.directmessages.impl.DirectMessagesApiImpl
 import com.sorrowblue.twitlin.geo.GeoApi
 import com.sorrowblue.twitlin.geo.impl.GeoApiImpl
 import com.sorrowblue.twitlin.media.MediaApi
@@ -46,7 +48,7 @@ public object TwitterAPI {
 
     // region authentication
 
-    public val oauth: OAuthApi by lazy { OAuthApiImpl(Twitlin.client) }
+    public val oauthApi: OAuthApi by lazy { OAuthApiImpl(Twitlin.client) }
 
     public val oauth2: OAuth2Api by lazy { OAuth2ApiImpl(Twitlin.client) }
     // endregion
@@ -92,6 +94,13 @@ public object TwitterAPI {
     public val media: MediaApi by lazy { MediaApiImpl(Twitlin.client) }
 
     // endregion
+
+    // region direct messages
+
+    public val directMessagesApi: DirectMessagesApi by lazy { DirectMessagesApiImpl(Twitlin.client) }
+
+    // endregion
+
     public val favorites: FavoritesApi by lazy { FavoritesApiImp(Twitlin.client) }
     public val statuses: StatusesApi by lazy { StatusesApiImp(Twitlin.client) }
 }

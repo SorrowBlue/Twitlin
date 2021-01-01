@@ -54,8 +54,9 @@ internal class FriendshipsApiImpl(private val client: TwitlinClient) : Friendshi
         "source_id" to sourceId,
         "source_screen_name" to sourceScreenName,
         "target_id" to targetId,
-        "target_screen_name" to targetScreenName
-    ) { result: RelationshipDetailResult, _ -> RelationshipDetailResult.onSuccess(result) }
+        "target_screen_name" to targetScreenName,
+        converter = RelationshipDetailResult.Companion::onSuccess
+    )
 
     override suspend fun create(
         screenName: String?,
@@ -81,8 +82,7 @@ internal class FriendshipsApiImpl(private val client: TwitlinClient) : Friendshi
         "screen_name" to screenName,
         "user_id" to userId,
         "device" to device,
-        "retweets" to retweets
-    ) { result: RelationshipDetailResult, _ -> RelationshipDetailResult.onSuccess(result) }
-
+        "retweets" to retweets,
+        converter = RelationshipDetailResult.Companion::onSuccess
+    )
 }
-
