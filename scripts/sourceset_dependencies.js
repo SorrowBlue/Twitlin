@@ -1,0 +1,1 @@
+sourceset_dependencies = '{":twitlin:dokkaHtml/androidDebug": [], ":twitlin:dokkaHtml/androidMain": [], ":twitlin:dokkaHtml/androidRelease": [], ":twitlin:dokkaHtml/commonMain": [], ":twitlin:dokkaHtml/jsMain": [":twitlin:dokkaHtml/commonMain"], ":twitlin:dokkaHtml/jvmMain": [":twitlin:dokkaHtml/commonMain"]}'
