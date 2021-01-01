@@ -117,8 +117,8 @@ android {
     }
 }
 
-tasks.dokkaHtml.configure {
-    outputDirectory.set(rootProject.projectDir.resolve("docs/javadoc"))
+tasks.dokkaGfm.configure {
+    outputDirectory.set(rootProject.projectDir.resolve("docs/"))
     dokkaSourceSets {
         named("commonMain") {
             displayName.set("common")
