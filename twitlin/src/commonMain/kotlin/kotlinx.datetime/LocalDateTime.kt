@@ -1,5 +1,5 @@
 /*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package kotlinx.datetime

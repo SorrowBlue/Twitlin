@@ -1,5 +1,5 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.client
@@ -32,6 +32,5 @@ public object ErrorCodes {
     )
 
     public const val NO_NETWORK: Int = 1001
-    public const val PARSE_ERROR: Int = 1002
-    public const val CLIENT_ERROR: Int = 1003
+    public const val CLIENT_ERROR: Int = 1002
 }

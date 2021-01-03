@@ -4,14 +4,13 @@
 
 package com.sorrowblue.twitlin.v2.objects
 
+
 import com.sorrowblue.twitlin.annotation.JvmSerializable
-
-
-import com.sorrowblue.twitlin.v2.serializer.LocalDateTimeSerializer
 import com.sorrowblue.twitlin.v2.tweets.Expansion
 import com.sorrowblue.twitlin.v2.tweets.TweetField
 import com.sorrowblue.twitlin.v2.tweets.UserField
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDateTimeISOSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -70,7 +69,7 @@ public data class Tweet(
     @SerialName("author_id") val authorId: String? = null,
     @SerialName("context_annotations") val contextAnnotations: List<ContextAnnotation>? = null,
     @SerialName("conversation_id") val conversationId: String? = null,
-    @SerialName("created_at") @Serializable(LocalDateTimeSerializer::class) val createdAt: LocalDateTime? = null,
+    @SerialName("created_at") @Serializable(LocalDateTimeISOSerializer::class) val createdAt: LocalDateTime? = null,
     val entities: Entities? = null,
     val geo: Geo? = null,
     @SerialName("in_reply_to_user_id") val inReplyToUserId: String? = null,

@@ -8,9 +8,9 @@ import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.v2.Error
 import com.sorrowblue.twitlin.v2.Includes
 import com.sorrowblue.twitlin.v2.Response
-import com.sorrowblue.twitlin.v2.serializer.LocalDateTimeSerializer
 import io.ktor.client.statement.HttpResponse
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDateTimeISOSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,7 +22,7 @@ import kotlinx.serialization.Serializable
  */
 public data class SearchStreamRule(
     val rules: List<StreamRule>,
-    @Serializable(LocalDateTimeSerializer::class)
+    @Serializable(LocalDateTimeISOSerializer::class)
     val sent: LocalDateTime
 ) : JvmSerializable {
     @Serializable
@@ -131,7 +131,7 @@ internal class SearchStreamRuleResponse(
 
     @Serializable
     class Meta(
-        @Serializable(LocalDateTimeSerializer::class)
+        @Serializable(LocalDateTimeISOSerializer::class)
         val sent: LocalDateTime
     )
 }
@@ -196,7 +196,7 @@ internal class AddSearchStreamRuleResponse(
 
     @Serializable
     class Meta(
-        @Serializable(LocalDateTimeSerializer::class)
+        @Serializable(LocalDateTimeISOSerializer::class)
         val sent: LocalDateTime,
         val summary: AddSearchStreamRuleResult.Summary
     )
@@ -222,7 +222,7 @@ internal class DeleteSearchStreamRuleResponse(
 
     @Serializable
     class Meta(
-        @Serializable(LocalDateTimeSerializer::class)
+        @Serializable(LocalDateTimeISOSerializer::class)
         val sent: LocalDateTime,
         val summary: DeleteSearchStreamRuleResult.Summary
     )

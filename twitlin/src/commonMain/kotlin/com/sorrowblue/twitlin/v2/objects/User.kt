@@ -4,11 +4,10 @@
 
 package com.sorrowblue.twitlin.v2.objects
 
+
 import com.sorrowblue.twitlin.annotation.JvmSerializable
-
-
-import com.sorrowblue.twitlin.v2.serializer.LocalDateTimeSerializer
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDateTimeISOSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -18,7 +17,7 @@ public data class User(
     val name: String,
     val username: String,
     @SerialName("created_at")
-    @Serializable(LocalDateTimeSerializer::class)
+    @Serializable(LocalDateTimeISOSerializer::class)
     val createdAt: LocalDateTime? = null,
     val description: String? = null,
     val entities: Entities? = null,

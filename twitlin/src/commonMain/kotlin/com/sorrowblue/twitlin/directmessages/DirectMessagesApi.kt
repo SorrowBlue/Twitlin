@@ -1,19 +1,40 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.directmessages
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.objects.Entities
-import com.sorrowblue.twitlin.serializers.LocalDateTimeStrEpochSerializer
-import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.sorrowblue.twitlin.media.MediaResult
 
+/**
+ * ## Sending message events
+ * To send a new Direct Message use [DirectMessagesApi.new] (message_create). Optionally, you may
+ * also attach Quick Replies or media (image, GIF or video).
+ *
+ * ## Receiving messages events
+ * * You can retrieve Direct Messages from up to the past `30` days with [DirectMessagesApi.list].
+ * * Consuming Direct Messages in real-time can be accomplished via webhooks with the
+ * `Account Activity API`.
+ */
 public interface DirectMessagesApi {
 
-    public suspend fun newEvents(request: DirectMessageRequest): Response<DirectMessage>
+    /**
+     * Publishes a new `message_create` event resulting in a Direct Message sent to a specified user
+     * from the authenticating user. Returns an event if successful. Supports publishing Direct
+     * Messages with optional Quick Reply and media attachment.
+     *
+     * @param recipientId The ID of the user who should receive the direct message.
+     * @param text The text of your Direct Message. URL encode as necessary. Max length of `10,000`
+     * characters. Max length of `9,990` characters if used as a
+     * [Welcome Message](https://developer.twitter.com/en/docs/direct-messages/welcome-messages/api-reference/new-welcome-message).
+     * @param quickReply The Quick Reply to present to the user.
+     * @param mediaId A media id to associate with the message. A Direct Message may only reference
+     * a single [MediaResult.mediaId]. See
+     * [Uploading Media](https://developer.twitter.com/en/docs/direct-messages/message-attachments/guides/attaching-media)
+     * for further details on uploading media.
+     * @return TODO
+     */
     public suspend fun new(
         recipientId: String,
         text: String,
@@ -21,115 +42,40 @@ public interface DirectMessagesApi {
         mediaId: String? = null
     ): Response<DirectMessage>
 
+    /**
+     * Returns all Direct Message events (both sent and received) within the last 30 days. Sorted in
+     * reverse-chronological order.
+     *
+     * @param count Max number of events to be returned. 20 default. 50 max.
+     * @param cursor For paging through result sets greater than 1 page, use the
+     * [PagingDirectMessage.nextCursor] property from the previous request.
+     * @return TODO
+     */
     public suspend fun list(
         count: Int? = null,
         cursor: String? = null
     ): Response<PagingDirectMessage>
-}
 
-@Serializable
-public data class DirectMessageRequest(
-    val event: DirectMessageEvent
-)
+    /**
+     * Returns a single Direct Message event by the given id.
+     *
+     * @param id The id of the Direct Message event that should be returned.
+     * @return TODO
+     */
+    public suspend fun show(id: String): Response<DirectMessage>
 
-@Serializable
-public data class DirectMessageEvent(
-    val type: String,
-    @SerialName("message_create") val messageCreate: MessageCreate
-) {
-
-    @Serializable
-    public data class MessageCreate(
-        val target: Target,
-        @SerialName("message_data") val messageData: MessageData
-    ) {
-        @Serializable
-        public data class Target(
-            @SerialName("recipient_id") val recipientId: String
-        )
-
-        @Serializable
-        public data class MessageData(
-            val text: String,
-            @SerialName("quick_reply") val quickReply: QuickReply? = null,
-            val attachment: Attachment? = null
-        ) {
-
-            @Serializable
-            public data class Attachment(
-                val type: String,
-                val media: Media
-            ) {
-
-                @Serializable
-                public enum class Type {
-                    @SerialName("media")
-                    MEDIA
-                }
-
-                @Serializable
-                public data class Media(val id: String)
-            }
-        }
-    }
-}
-
-@Serializable
-public data class DirectMessage(
-    val event: Event
-)
-
-@Serializable
-public data class PagingDirectMessage(
-    val events: List<Event>,
-    val apps: Map<String, App>
-) {
-
-    @Serializable
-    public data class App(val id: String, val name: String, val url: String)
-
-
-}
-
-@Serializable
-public data class Event(
-    val type: String,
-    val id: String,
-    @Serializable(LocalDateTimeStrEpochSerializer::class) val created_timestamp: LocalDateTime,
-    val message_create: MessageCreate
-) {
-
-    @Serializable
-    public data class MessageCreate(
-        val target: Target,
-        val sender_id: String,
-        val source_app_id: String? = null,
-        val message_data: MessageData
-    ) {
-
-        @Serializable
-        public data class Target(val recipient_id: String)
-
-        @Serializable
-        public data class MessageData(
-            val text: String,
-            val entities: Entities,
-            val attachment: Attachment? = null,
-            val quick_reply: QuickReply? = null,
-            val quick_reply_response: QuickReplyResponse? = null
-        ) {
-
-            @Serializable
-            public data class Attachment(
-                val type: String,
-                val media: Entities.Media
-            )
-
-            @Serializable
-            public data class QuickReplyResponse(
-                val type: QuickReply.Type,
-                val metadata: String
-            )
-        }
-    }
+    /**
+     * Deletes the direct message specified in the required ID parameter. The authenticating user
+     * must be the recipient of the specified direct message. Direct Messages are only removed from
+     * the interface of the user context provided. Other members of the conversation can still
+     * access the Direct Messages. A successful delete will return a 204 http response code with no
+     * body content.
+     *
+     * ***Important***: This method requires an access token with RWD (read, write & direct message)
+     * permissions.
+     *
+     * @param id The id of the Direct Message event that should be deleted.
+     * @return TODO
+     */
+    public suspend fun destroy(id: String): Response<DirectMessage>
 }

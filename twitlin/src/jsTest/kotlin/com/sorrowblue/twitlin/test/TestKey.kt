@@ -1,3 +1,7 @@
+/*
+ * (c) 2021 SorrowBlue.
+ */
+
 package com.sorrowblue.twitlin.test
 
 actual object TestKey {
@@ -5,5 +9,4 @@ actual object TestKey {
 	actual val API_SECRET= ""
 	actual val ACCESS_TOKEN= ""
 	actual val ACCESS_TOKEN_SECRET= ""
-
 }

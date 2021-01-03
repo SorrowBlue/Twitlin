@@ -20,7 +20,7 @@ interface AbstractTest {
             TestKey.API_SECRET,
             AccessToken(TestKey.ACCESS_TOKEN, TestKey.ACCESS_TOKEN_SECRET, "", "")
         )
-        Twitlin.client.bearerToken = BearerToken(
+        Twitlin.appClient.bearerToken = BearerToken(
             "Bearer",
             "AAAAAAAAAAAAAAAAAAAAAP9CEgEAAAAAzu06w6WP7gs926FFpIpdvo92MbI%3DcYXjeFyh2YELwQm9iqN0Fy6ojxDG65v8ztOCgTLAmO6QcI16WJ"
         )

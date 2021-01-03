@@ -1,22 +1,18 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.users.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
 import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.users.SavedSearch
 import com.sorrowblue.twitlin.users.SavedSearchesApi
 
 private const val SAVED_SEARCHES = "${Urls.V1}/saved_searches"
 
-internal class SavedSearchesApiImpl(private val client: TwitlinClient) : SavedSearchesApi {
+internal class SavedSearchesApiImpl(private val client: UserClient) : SavedSearchesApi {
 
     override suspend fun list(): Response<List<SavedSearch>> =
         client.get("$SAVED_SEARCHES/list.json")

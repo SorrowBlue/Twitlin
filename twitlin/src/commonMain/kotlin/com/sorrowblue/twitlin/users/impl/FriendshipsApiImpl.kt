@@ -1,16 +1,12 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.users.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
 import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.objects.TwitterUser
 import com.sorrowblue.twitlin.users.FriendshipsApi
 import com.sorrowblue.twitlin.users.PagingIds
@@ -19,7 +15,7 @@ import com.sorrowblue.twitlin.users.RelationshipDetail
 
 private const val FRIENDSHIPS = "${Urls.V1}/friendships"
 
-internal class FriendshipsApiImpl(private val client: TwitlinClient) : FriendshipsApi {
+internal class FriendshipsApiImpl(private val client: UserClient) : FriendshipsApi {
 
     override suspend fun incoming(cursor: String): Response<PagingIds> = client.get(
         "$FRIENDSHIPS/incoming.json",
@@ -49,14 +45,13 @@ internal class FriendshipsApiImpl(private val client: TwitlinClient) : Friendshi
         sourceScreenName: String?,
         targetId: String?,
         targetScreenName: String?
-    ): Response<RelationshipDetail> = client.getCustom(
+    ): Response<RelationshipDetail> = client.get<RelationshipDetailResult>(
         "$FRIENDSHIPS/show.json",
         "source_id" to sourceId,
         "source_screen_name" to sourceScreenName,
         "target_id" to targetId,
-        "target_screen_name" to targetScreenName,
-        converter = RelationshipDetailResult.Companion::onSuccess
-    )
+        "target_screen_name" to targetScreenName
+    ).convertData(RelationshipDetailResult::relationship)
 
     override suspend fun create(
         screenName: String?,
@@ -77,12 +72,11 @@ internal class FriendshipsApiImpl(private val client: TwitlinClient) : Friendshi
         userId: String?,
         device: Boolean?,
         retweets: Boolean?
-    ): Response<RelationshipDetail> = client.postCustom(
+    ): Response<RelationshipDetail> = client.post<RelationshipDetailResult>(
         "$FRIENDSHIPS/update.json",
         "screen_name" to screenName,
         "user_id" to userId,
         "device" to device,
-        "retweets" to retweets,
-        converter = RelationshipDetailResult.Companion::onSuccess
-    )
+        "retweets" to retweets
+    ).convertData(RelationshipDetailResult::relationship)
 }

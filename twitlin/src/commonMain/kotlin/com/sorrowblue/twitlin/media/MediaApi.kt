@@ -1,10 +1,9 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.media
 
-import com.sorrowblue.twitlin.client.Empty
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 import com.sorrowblue.twitlin.users.AccountApi
@@ -146,7 +145,7 @@ public interface MediaApi {
         media: ByteArray? = null,
         mediaData: String? = null,
         segmentIndex: Int
-    ): Response<Empty>
+    ): Response<Unit>
 
     /**
      * ## Overview

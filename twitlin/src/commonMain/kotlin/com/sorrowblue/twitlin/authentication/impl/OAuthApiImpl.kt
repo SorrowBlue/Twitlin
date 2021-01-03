@@ -1,5 +1,5 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.authentication.impl
@@ -10,12 +10,12 @@ import com.sorrowblue.twitlin.authentication.OAuthApi
 import com.sorrowblue.twitlin.authentication.RequestToken
 import com.sorrowblue.twitlin.authentication.XAuthAccessType
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
 import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.client.UserClient
 
 private const val OAUTH = "${Urls.FQDN}/oauth"
 
-internal class OAuthApiImpl(private val client: TwitlinClient) : OAuthApi {
+internal class OAuthApiImpl(private val client: UserClient) : OAuthApi {
 
     override suspend fun accessToken(
         oauthToken: String,
@@ -24,8 +24,7 @@ internal class OAuthApiImpl(private val client: TwitlinClient) : OAuthApi {
         "$OAUTH/access_token",
         "oauth_verifier" to oauthVerifier,
         oauthToken = oauthToken
-    ).fold({ Response.Success(AccessToken.fromString(it.value), it.statusCode) },
-        { Response.Error(it.errorMessages) })
+    ).convertData(AccessToken.Companion::fromString)
 
     override fun authenticate(
         oauthToken: String,
@@ -55,8 +54,7 @@ internal class OAuthApiImpl(private val client: TwitlinClient) : OAuthApi {
             "$OAUTH/request_token",
             "oauth_callback" to oauthCallback,
             "x_auth_access_type" to xAuthAccessType?.name?.toLowerCase()
-        ).fold({ Response.Success(RequestToken.fromString(it.value), it.statusCode) },
-            { Response.Error(it.errorMessages) })
+        ).convertData(RequestToken::fromString)
 
     override suspend fun invalidateToken(): Response<InvalidateToken> =
         client.post("$OAUTH/invalidate_token")

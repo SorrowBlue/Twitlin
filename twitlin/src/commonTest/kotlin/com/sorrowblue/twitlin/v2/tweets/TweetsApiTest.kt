@@ -22,7 +22,7 @@ class TweetsApiTest : AbstractTest {
     fun timeline() = runTest {
 //		val list = TwitterAPI.statuses.userTimeline("sorrowblue_sb",count = 2).getOrNull()?.map(TwitterTweet::idStr) ?: return@runTest
         val list =
-            TwitterAPI.statuses.homeTimeline(count = 40).getOrNull()?.map(TwitterTweet::idStr)
+            TwitterAPI.statuses.homeTimeline(count = 40).dataOrNull()?.map(TwitterTweet::idStr)
                 ?: return@runTest
         TwitterV2API.tweetsApi.tweets(
             list,
@@ -96,7 +96,7 @@ class TweetsApiTest : AbstractTest {
     @Test
     fun tweetsIdsTest() = runTest {
         val ids =
-            TwitterAPI.statuses.homeTimeline(count = 100).getOrNull()?.map(TwitterTweet::idStr)
+            TwitterAPI.statuses.homeTimeline(count = 100).dataOrNull()?.map(TwitterTweet::idStr)
                 ?: return@runTest
         TwitterV2API.tweetsApi.tweets(
             ids,

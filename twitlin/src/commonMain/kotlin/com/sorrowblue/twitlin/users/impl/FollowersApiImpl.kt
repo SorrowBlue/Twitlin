@@ -1,23 +1,19 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.users.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
 import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.users.FollowersApi
 import com.sorrowblue.twitlin.users.PagingIds
 import com.sorrowblue.twitlin.users.PagingUser
 
 private const val FOLLOWERS = "${Urls.V1}/followers"
 
-internal class FollowersApiImpl(private val client: TwitlinClient) : FollowersApi {
+internal class FollowersApiImpl(private val client: UserClient) : FollowersApi {
 
     override suspend fun ids(
         userId: String?,

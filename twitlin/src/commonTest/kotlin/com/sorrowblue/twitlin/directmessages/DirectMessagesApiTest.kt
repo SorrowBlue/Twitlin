@@ -5,9 +5,6 @@
 package com.sorrowblue.twitlin.directmessages
 
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.directmessages.DirectMessageEvent.MessageCreate
-import com.sorrowblue.twitlin.directmessages.DirectMessageEvent.MessageCreate.MessageData
-import com.sorrowblue.twitlin.directmessages.DirectMessageEvent.MessageCreate.Target
 import com.sorrowblue.twitlin.media.MediaCategory
 import com.sorrowblue.twitlin.test.AbstractTest
 import com.sorrowblue.twitlin.test.runTest
@@ -17,29 +14,25 @@ import kotlin.test.Test
 class DirectMessagesApiTest : AbstractTest {
 
     @Test
+    fun newEventsTest() = runTest {
+        TwitterAPI.directMessagesApi.new("1287220831773319168", "Hello!! plane text message.")
+            .testResult()
+    }
+
+    @Test
     fun newEventsOptionsTest() = runTest {
-        val request = DirectMessageRequest(
-            DirectMessageEvent(
-                "message_create",
-                messageCreate = MessageCreate(
-                    target = Target("1287220831773319168"),
-                    messageData = MessageData(
-                        "Hello.",
-                        quickReply = QuickReply(
-                            type = QuickReply.Type.OPTIONS,
-                            options = (1..4).map {
-                                QuickReply.Option(
-                                    "label$it",
-                                    "description$it",
-                                    "metadata$it"
-                                )
-                            }
-                        )
-                    )
+        val quickReply = QuickReply(
+            QuickReply.Type.OPTIONS,
+            (1..4).map {
+                QuickReply.Option(
+                    "label$it",
+                    "description$it",
+                    "metadata$it"
                 )
-            )
+            }
         )
-        TwitterAPI.directMessagesApi.newEvents(request).testResult()
+        TwitterAPI.directMessagesApi.new("1287220831773319168", "Hello.", quickReply)
+            .testResult()
     }
 
     @Test

@@ -51,6 +51,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.webkit:webkit:1.4.0")
     implementation("androidx.recyclerview:recyclerview:1.2.0-beta01")
+//    implementation("com.sorrowblue.twitlin:twitlin-android:0.0.1-dev-004")
     implementation(project(":twitlin"))
     testImplementation("junit:junit:4.13.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")

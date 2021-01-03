@@ -1,31 +1,19 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.users.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
 import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.objects.TwitterUser
 import com.sorrowblue.twitlin.users.AccountApi
 import com.sorrowblue.twitlin.users.Settings
 
 private const val ACCOUNT = "${Urls.V1}/account"
 
-internal class AccountApiImpl(private val client: TwitlinClient) : AccountApi {
+internal class AccountApiImpl(private val client: UserClient) : AccountApi {
 
     override suspend fun settings(): Response<Settings> = client.get("$ACCOUNT/settings.json")
 

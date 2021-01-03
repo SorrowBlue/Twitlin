@@ -171,9 +171,9 @@ afterEvaluate {
                 url = uri("https://maven.pkg.github.com/SorrowBlue/twitlin")
                 credentials {
                     username =
-                        project.findProperty("gpr.user")?.toString() ?: System.getenv("USERNAME")
+                        project.findProperty("gpr.user")?.toString() ?: System.getenv("GITHUB_USERNAME")
                     password =
-                        project.findProperty("gpr.token")?.toString() ?: System.getenv("TOKEN")
+                        project.findProperty("gpr.token")?.toString() ?: System.getenv("GITHUB_PACKAGES_TOKEN")
                 }
             }
         }

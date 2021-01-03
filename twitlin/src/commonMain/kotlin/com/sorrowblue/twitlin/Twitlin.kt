@@ -1,5 +1,5 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin
@@ -7,7 +7,8 @@ package com.sorrowblue.twitlin
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.authentication.AccessToken
 import com.sorrowblue.twitlin.authentication.BearerToken
-import com.sorrowblue.twitlin.client.TwitlinClient
+import com.sorrowblue.twitlin.client.AppClient
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.v2.Client
 
 /**
@@ -15,17 +16,18 @@ import com.sorrowblue.twitlin.v2.Client
  */
 public object Twitlin {
 
-    internal lateinit var client: TwitlinClient private set
+    internal lateinit var userClient: UserClient private set
+    internal lateinit var appClient: AppClient private set
     internal lateinit var v2Client: Client private set
 
     public var accessToken: AccessToken?
-        get() = client.accessToken
+        get() = userClient.accessToken
         set(value) {
-            client.accessToken = value
+            userClient.accessToken = value
             v2Client.accessToken = value
         }
 
-    public val isAuthorizationRequired: Boolean get() = client.accessToken == null
+    public val isAuthorizationRequired: Boolean get() = userClient.accessToken == null
 
     internal fun initialize(
         apiKey: String,
@@ -34,7 +36,8 @@ public object Twitlin {
         bearerToken: BearerToken? = null
     ) {
         Napier.i("Twitlin has been initialized.", tag = "Twitlin")
-        client = TwitlinClient(apiKey, apiSecret, accessToken, bearerToken)
+        userClient = UserClient(apiKey, apiSecret, accessToken)
+        appClient = AppClient(apiKey, apiSecret, bearerToken)
         v2Client = Client(apiKey, apiSecret, accessToken, bearerToken)
     }
 }
@@ -55,3 +58,5 @@ public expect fun initializeTwitlin(
     bearerToken: BearerToken? = null,
     isEnabledDebug: Boolean = false
 )
+
+internal const val DEFAULT_TAG = "Twitlin"

@@ -1,10 +1,9 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.client
 
-import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.authentication.AccessToken
 import com.sorrowblue.twitlin.authentication.BearerToken
 import com.sorrowblue.twitlin.utils.urlEncode
@@ -16,6 +15,8 @@ import io.ktor.http.content.TextContent
 import io.ktor.util.InternalAPI
 import io.ktor.util.encodeBase64
 import kotlinx.datetime.Clock
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import kotlin.random.Random
 
 @OptIn(InternalAPI::class)
@@ -49,7 +50,7 @@ internal fun HttpRequestBuilder.createSignature(
 
 internal val List<Pair<String, String>>.oauthParams get() = takeWhile { it.first.startsWith("oauth_") }
 
-internal fun HttpRequestBuilder.headerForTwitter(
+internal fun HttpRequestBuilder.headerAuthorization(
     consumerKey: String,
     consumerSecret: String,
     params: List<Pair<String, String>>,
@@ -64,15 +65,16 @@ internal fun HttpRequestBuilder.headerForTwitter(
     header(HttpHeaders.Authorization, buildHeaderString(parameters))
 }
 
-internal fun HttpRequestBuilder.headerForTwitter(bearerToken: BearerToken?) =
+internal fun HttpRequestBuilder.headerAuthorization(bearerToken: BearerToken?) =
     header(HttpHeaders.Authorization, "Bearer ${bearerToken?.accessToken}")
 
-internal fun HttpRequestBuilder.bodyForTwitter(params: List<Pair<String, String>>) {
-    body = TextContent(
-        params
-            .mapNotNull { if (it.first.startsWith("oauth_")) null else it }
-            .joinToString("&") { "${it.first.urlEncode()}=${it.second.urlEncode()}" },
-        contentType = ContentType.Application.FormUrlEncoded
-    )
-    Napier.d(body.toString(), tag = "TAG")
-}
+internal fun HttpRequestBuilder.bodyFormUrlEncoded(params: List<Pair<String, String>>): String =
+    params.mapNotNull { if (it.first.startsWith("oauth_")) null else it }
+        .joinToString("&") { "${it.first.urlEncode()}=${it.second.urlEncode()}" }.also {
+            body = TextContent(it, ContentType.Application.FormUrlEncoded)
+        }
+
+internal inline fun <reified V : Any> HttpRequestBuilder.bodyJson(clazz: V): String =
+    Json.encodeToString(clazz).also {
+        body = TextContent(it, ContentType.Application.Json)
+    }

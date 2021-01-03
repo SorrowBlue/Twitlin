@@ -1,19 +1,19 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.trends.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
 import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.trends.TrendPlace
 import com.sorrowblue.twitlin.trends.TrendPlaces
 import com.sorrowblue.twitlin.trends.TrendsApi
 
 private const val TRENDS = "${Urls.V1}/trends"
 
-internal class TrendsApiImpl(private val client: TwitlinClient) : TrendsApi {
+internal class TrendsApiImpl(private val client: UserClient) : TrendsApi {
 
     override suspend fun place(id: Int, exclude: Boolean?): Response<List<TrendPlaces>> =
         client.get("$TRENDS/place.json", "id" to id, "exclude" to exclude)

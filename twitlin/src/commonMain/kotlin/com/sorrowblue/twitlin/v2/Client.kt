@@ -8,10 +8,10 @@ import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.authentication.AccessToken
 import com.sorrowblue.twitlin.authentication.BearerToken
 import com.sorrowblue.twitlin.client.ErrorCodes
-import com.sorrowblue.twitlin.client.bodyForTwitter
+import com.sorrowblue.twitlin.client.bodyFormUrlEncoded
 import com.sorrowblue.twitlin.client.clientEngineFactory
 import com.sorrowblue.twitlin.client.combineParams
-import com.sorrowblue.twitlin.client.headerForTwitter
+import com.sorrowblue.twitlin.client.headerAuthorization
 import com.sorrowblue.twitlin.client.notNullParams
 import io.ktor.client.*
 import io.ktor.client.features.json.*
@@ -57,11 +57,11 @@ internal open class Client(
         useBearerToken: Boolean = false
     ): Response<T> =
         catchResponse {
-            httpClient.get<HttpResponse>(url.combineParams(params.notNullParams)) {
+            httpClient.get(url.combineParams(params)) {
                 if (useBearerToken) {
-                    headerForTwitter(this@Client.bearerToken)
+                    headerAuthorization(this@Client.bearerToken)
                 } else {
-                    headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+                    headerAuthorization(apiKey, secretKey, params.notNullParams, accessToken)
                 }
             }
         }
@@ -72,11 +72,11 @@ internal open class Client(
         useBearerToken: Boolean = false,
         converter: (V, HttpResponse) -> Response<T>
     ): Response<T> =
-        httpClient.get<HttpResponse>(url.combineParams(params.notNullParams)) {
+        httpClient.get<HttpResponse>(url.combineParams(params)) {
             if (useBearerToken) {
-                headerForTwitter(this@Client.bearerToken)
+                headerAuthorization(this@Client.bearerToken)
             } else {
-                headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+                headerAuthorization(apiKey, secretKey, params.notNullParams, accessToken)
             }
         }.toCustomResponse(converter)
 
@@ -88,12 +88,12 @@ internal open class Client(
     ): Response<T> =
         httpClient.post<HttpResponse>(url) {
             if (useBearerToken) {
-                headerForTwitter(this@Client.bearerToken)
+                headerAuthorization(this@Client.bearerToken)
             } else {
                 val accessToken = oauthToken?.let { accessToken?.copy(oauthToken = it) }
-                headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+                headerAuthorization(apiKey, secretKey, params.notNullParams, accessToken)
             }
-            bodyForTwitter(params.notNullParams)
+            bodyFormUrlEncoded(params.notNullParams)
         }.toResponse()
 
     suspend inline fun <reified V : Any, reified T : Any> postJson(
@@ -104,10 +104,10 @@ internal open class Client(
         useBearerToken: Boolean = false
     ): Response<T> = httpClient.post<HttpResponse>(url) {
         if (useBearerToken) {
-            headerForTwitter(this@Client.bearerToken)
+            headerAuthorization(this@Client.bearerToken)
         } else {
             val accessToken = oauthToken?.let { accessToken?.copy(oauthToken = it) }
-            headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+            headerAuthorization(apiKey, secretKey, params.notNullParams, accessToken)
         }
         this.body =
             TextContent(json.encodeToString(body), contentType = ContentType.Application.Json)
@@ -122,10 +122,10 @@ internal open class Client(
         converter: (V, HttpResponse) -> Response<T>
     ): Response<T> = httpClient.post<HttpResponse>(url) {
         if (useBearerToken) {
-            headerForTwitter(this@Client.bearerToken)
+            headerAuthorization(this@Client.bearerToken)
         } else {
             val accessToken = oauthToken?.let { accessToken?.copy(oauthToken = it) }
-            headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+            headerAuthorization(apiKey, secretKey, params.notNullParams, accessToken)
         }
         this.body =
             TextContent(json.encodeToString(body), contentType = ContentType.Application.Json)
@@ -133,7 +133,7 @@ internal open class Client(
 
     suspend inline fun <reified T : Any, reified V : Any> put(url: String, body: V): Response<T> =
         httpClient.put<HttpResponse>(url) {
-            headerForTwitter(apiKey, secretKey, emptyList(), accessToken)
+            headerAuthorization(apiKey, secretKey, emptyList(), accessToken)
             this.body =
                 TextContent(json.encodeToString(body), contentType = ContentType.Application.Json)
         }.toResponse()
@@ -145,11 +145,11 @@ internal open class Client(
         useBearerToken: Boolean = false
     ): Flow<Response<T>> {
         return channelFlow {
-            httpClient.get<HttpStatement>(url.combineParams(params.notNullParams)) {
+            httpClient.get<HttpStatement>(url.combineParams(params)) {
                 if (useBearerToken) {
-                    headerForTwitter(this@Client.bearerToken)
+                    headerAuthorization(this@Client.bearerToken)
                 } else {
-                    headerForTwitter(apiKey, secretKey, params.notNullParams, accessToken)
+                    headerAuthorization(apiKey, secretKey, params.notNullParams, accessToken)
                 }
             }.execute { response ->
                 do {

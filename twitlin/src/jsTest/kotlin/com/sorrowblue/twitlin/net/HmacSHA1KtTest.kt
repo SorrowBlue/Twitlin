@@ -1,5 +1,5 @@
 /*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.net
@@ -17,5 +17,4 @@ class HmacSHA1KtTest {
         println("js hmacSHA1Test() sha1 = $sha1")
         // rCPgm2nXs4jICb4YsmK/j53ox2Q=
     }
-
 }

@@ -25,6 +25,10 @@ public data class QuickReply(
      */
     @Serializable
     public enum class Type {
+
+        /**
+         * TODO
+         */
         @SerialName("options")
         OPTIONS
     }

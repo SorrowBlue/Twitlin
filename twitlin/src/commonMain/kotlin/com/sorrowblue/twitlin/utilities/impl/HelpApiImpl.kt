@@ -1,19 +1,19 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.utilities.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
 import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.utilities.Configuration
 import com.sorrowblue.twitlin.utilities.HelpApi
 import com.sorrowblue.twitlin.utilities.Language
 
 private const val HELP = "${Urls.V1}/help"
 
-internal class HelpApiImpl(private val client: TwitlinClient) : HelpApi {
+internal class HelpApiImpl(private val client: UserClient) : HelpApi {
 
     override suspend fun configuration(): Response<Configuration> =
         client.get("$HELP/configuration.json")

@@ -1,20 +1,12 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.users.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
 import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.objects.TwitterUser
 import com.sorrowblue.twitlin.users.BlocksApi
 import com.sorrowblue.twitlin.users.PagingIds
@@ -22,7 +14,7 @@ import com.sorrowblue.twitlin.users.PagingUser
 
 private const val BLOCKS = "${Urls.V1}/blocks"
 
-internal class BlocksApiImpl(private val client: TwitlinClient) : BlocksApi {
+internal class BlocksApiImpl(private val client: UserClient) : BlocksApi {
 
     override suspend fun ids(cursor: Long): Response<PagingIds> =
         client.get("$BLOCKS/ids.json", "stringify_ids" to true, "cursor" to cursor)

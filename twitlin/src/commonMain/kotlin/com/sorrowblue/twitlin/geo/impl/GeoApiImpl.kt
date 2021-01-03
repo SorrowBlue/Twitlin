@@ -1,12 +1,12 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.geo.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
 import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.geo.GeoApi
 import com.sorrowblue.twitlin.geo.GeoSearch
 import com.sorrowblue.twitlin.geo.ReverseGeocode
@@ -15,7 +15,7 @@ import com.sorrowblue.twitlin.objects.Place
 
 private const val GEO = "${Urls.V1}/geo"
 
-internal class GeoApiImpl(private val client: TwitlinClient) : GeoApi {
+internal class GeoApiImpl(private val client: UserClient) : GeoApi {
 
     override suspend fun id(placeId: String): Response<Place> = client.get("$GEO/id/$placeId.json")
 

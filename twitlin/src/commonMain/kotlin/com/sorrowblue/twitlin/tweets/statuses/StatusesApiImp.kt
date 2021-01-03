@@ -1,19 +1,19 @@
 /*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.tweets.statuses
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
 import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.objects.Tweet
 import com.sorrowblue.twitlin.objects.TwitterTweet
 import com.sorrowblue.twitlin.utils.TweetUtil
 
 private const val ROOT = "${Urls.V1}/statuses"
 
-internal class StatusesApiImp(private val client: TwitlinClient) : StatusesApi {
+internal class StatusesApiImp(private val client: UserClient) : StatusesApi {
 
     override suspend fun update(
         status: String,
@@ -112,7 +112,7 @@ internal class StatusesApiImp(private val client: TwitlinClient) : StatusesApi {
         client.get("$ROOT/lookup.json", "id" to id.joinToString(","))
 
     private suspend fun Response<List<TwitterTweet>>.resolveCard(includeCard: Boolean): Response<List<TwitterTweet>> {
-        return getOrNull()?.map { value ->
+        return dataOrNull()?.map { value ->
             val tweet = Tweet.valueOf(value)
             if (tweet is Tweet.Normal && includeCard) {
                 tweet.source.retweetedStatus?.let { twitterTweet ->
@@ -127,7 +127,7 @@ internal class StatusesApiImp(private val client: TwitlinClient) : StatusesApi {
                 }
             } else value
         }?.let {
-            Response.Success(it, 200)
+            Response.Success(it)
         } ?: this
     }
 }

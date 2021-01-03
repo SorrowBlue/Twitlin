@@ -15,7 +15,7 @@ import kotlin.test.assertNotNull
 
 class OAuthApiTest : AbstractTest {
 
-    @Ignore
+//    @Ignore
     @Test
     fun accessTokenTest() = runTest {
         val accessToken = TwitterAPI.oauthApi.accessToken(
@@ -46,7 +46,6 @@ class OAuthApiTest : AbstractTest {
         assertNotNull(url, "authorize url is null")
     }
 
-    @Ignore
     @Test
     fun requestTokenTest() = runTest {
         val requestToken = TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com")

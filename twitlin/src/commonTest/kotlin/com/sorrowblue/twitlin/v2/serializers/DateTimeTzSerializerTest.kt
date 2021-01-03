@@ -4,8 +4,8 @@
 
 package com.sorrowblue.twitlin.v2.serializers
 
-import com.sorrowblue.twitlin.v2.serializer.LocalDateTimeSerializer
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDateTimeISOSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -33,6 +33,6 @@ internal class LocalDateTimeRFC822SerializerTest {
 
 @Serializable
 private class TestData(
-    @Serializable(LocalDateTimeSerializer::class)
+    @Serializable(LocalDateTimeISOSerializer::class)
     val date: LocalDateTime
 )

@@ -26,6 +26,16 @@ allprojects {
         jcenter()
         mavenCentral()
         mavenLocal()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/SorrowBlue/twitlin")
+            credentials {
+                username =
+                    project.findProperty("gpr.user")?.toString() ?: System.getenv("GITHUB_USERNAME")
+                password =
+                    project.findProperty("gpr.token")?.toString() ?: System.getenv("GITHUB_PACKAGES_TOKEN")
+            }
+        }
         maven(url = "https://kotlin.bintray.com/kotlinx/")
     }
 }

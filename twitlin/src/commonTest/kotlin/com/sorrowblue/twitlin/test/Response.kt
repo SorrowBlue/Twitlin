@@ -13,5 +13,5 @@ internal fun <T> Response<T>.testResult(): T? {
     }.onError {
         Napier.e("onErrors() = $it", tag = "Test")
     }
-    return getOrNull()
+    return dataOrNull()
 }

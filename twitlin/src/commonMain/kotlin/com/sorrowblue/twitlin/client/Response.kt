@@ -1,31 +1,38 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.client
+
+import kotlinx.serialization.Serializable
+import com.sorrowblue.twitlin.client.Error as ClientError
 
 /**
  * TODO
  *
  * @param T TODO
  */
+@Serializable(ResponseSerializer::class)
 public sealed class Response<T> {
 
     /**
      * TODO
      *
      * @param T TODO
-     * @property value TODO
+     * @property data TODO
      */
-    public data class Success<T>(val value: T, val statusCode: Int) : Response<T>()
+    @Serializable
+    public data class Success<T>(val data: T) : Response<T>()
 
     /**
      * TODO
      *
      * @param T TODO
-     * @property errorMessages TODO
+     * @property errors TODO
      */
-    public data class Error<T>(val errorMessages: ErrorMessages) : Response<T>()
+    @Serializable
+    public data class Error<T>(val errors: List<ClientError>) :
+        Response<T>()
 
     /**
      * TODO
@@ -49,7 +56,7 @@ public sealed class Response<T> {
      */
     public inline fun onSuccess(action: (T) -> Unit): Response<T> {
         if (this is Success) {
-            action.invoke(value)
+            action.invoke(data)
         }
         return this
     }
@@ -60,9 +67,9 @@ public sealed class Response<T> {
      * @param action TODO
      * @return TODO
      */
-    public inline fun onError(action: (ErrorMessages) -> Unit): Response<T> {
+    public inline fun onError(action: (List<ClientError>) -> Unit): Response<T> {
         if (this is Error) {
-            action.invoke(errorMessages)
+            action.invoke(errors)
         }
         return this
     }
@@ -72,13 +79,19 @@ public sealed class Response<T> {
      *
      * @return TODO
      */
-    public fun getOrNull(): T? = when (this) {
-        is Success -> value
+    public fun dataOrNull(): T? = when (this) {
+        is Success -> data
         is Error -> null
     }
 
-    internal companion object {
-        fun <T> error(error: ErrorMessages.Error) = Error<T>(ErrorMessages(listOf(error)))
+    public fun <R> convertData(convert: (T) -> R): Response<R> {
+        return when (this) {
+            is Success -> Success(convert.invoke(data))
+            is Error -> Error(errors)
+        }
     }
 
+    internal companion object {
+        fun <T> error(error: ClientError) = Error<T>(listOf(error))
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin
@@ -25,6 +25,6 @@ public actual fun initializeTwitlin(
     bearerToken: BearerToken?,
     isEnabledDebug: Boolean
 ) {
-    if (isEnabledDebug) Napier.base(DebugAntilog())
+    if (isEnabledDebug) Napier.base(DebugAntilog(DEFAULT_TAG))
     Twitlin.initialize(apiKey, apiSecret, accessToken, bearerToken)
 }

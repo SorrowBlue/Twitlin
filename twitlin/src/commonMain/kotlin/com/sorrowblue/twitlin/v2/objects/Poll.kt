@@ -5,8 +5,8 @@
 package com.sorrowblue.twitlin.v2.objects
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
-import com.sorrowblue.twitlin.v2.serializer.LocalDateTimeSerializer
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDateTimeISOSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,7 +17,7 @@ public data class Poll(
     @SerialName("duration_minutes")
     val durationMinutes: Int? = null,
     @SerialName("end_datetime")
-    @Serializable(LocalDateTimeSerializer::class)
+    @Serializable(LocalDateTimeISOSerializer::class)
     val endDatetime: LocalDateTime? = null,
     @SerialName("voting_status")
     val votingStatus: Status? = null,

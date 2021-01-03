@@ -1,12 +1,12 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.trends
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
-import com.sorrowblue.twitlin.v2.serializer.LocalDateTimeSerializer
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDateTimeISOSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,9 +21,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class TrendPlaces(
     val trends: List<Trend>,
-    @SerialName("as_of") @Serializable(LocalDateTimeSerializer::class) val asOf: LocalDateTime,
+    @SerialName("as_of")
+    @Serializable(LocalDateTimeISOSerializer::class)
+    val asOf: LocalDateTime,
     @SerialName("created_at")
-    @Serializable(LocalDateTimeSerializer::class) val createdAt: LocalDateTime,
+    @Serializable(LocalDateTimeISOSerializer::class)
+    val createdAt: LocalDateTime,
     val locations: List<Location>
 ) : JvmSerializable {
 

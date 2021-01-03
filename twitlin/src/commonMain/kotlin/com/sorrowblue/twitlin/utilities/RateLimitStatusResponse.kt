@@ -1,11 +1,9 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.utilities
 
-import com.sorrowblue.twitlin.client.Response
-import io.ktor.client.statement.HttpResponse
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -23,15 +21,10 @@ internal class RateLimitStatusResponse(
     private val resources: JsonObject? = null
 ) {
 
-    companion object {
-        fun onSuccess(response: RateLimitStatusResponse, httpResponse: HttpResponse) =
-            Response.Success(
-                RateLimitStatus(
-                    response.rate_limit_context,
-                    response.resources?.entries?.map(::parseResource).orEmpty()
-                ), httpResponse.status.value
-            )
-    }
+    fun toRateLimitState() = RateLimitStatus(
+        rate_limit_context,
+        resources?.entries?.map(::parseResource).orEmpty()
+    )
 }
 
 private fun parseResource(it: Map.Entry<String, JsonElement>): RateLimitStatus.Resource {

@@ -1,5 +1,5 @@
 /*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.utils
@@ -41,5 +41,4 @@ public actual fun resolveTweetCardType(source: String): TwitterCard.Type {
     val card = document.head().getContentByAttributeValue(TweetCardUtil.Attribute.card)
         ?: document.body().getContentByAttributeValue(TweetCardUtil.Attribute.card).orEmpty()
     return TwitterCard.Type.parse(card)
-
 }

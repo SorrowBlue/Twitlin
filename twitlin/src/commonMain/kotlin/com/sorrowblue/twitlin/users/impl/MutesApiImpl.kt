@@ -1,16 +1,12 @@
 /*
- * (c) 2020.
- */
-
-/*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.users.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
 import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.objects.TwitterUser
 import com.sorrowblue.twitlin.users.MutesApi
 import com.sorrowblue.twitlin.users.PagingIds
@@ -18,7 +14,7 @@ import com.sorrowblue.twitlin.users.PagingUser
 
 private const val MUTES = "${Urls.V1}/mutes/users/"
 
-internal class MutesApiImpl(private val client: TwitlinClient) : MutesApi {
+internal class MutesApiImpl(private val client: UserClient) : MutesApi {
 
     override suspend fun ids(cursor: String): Response<PagingIds> =
         client.get("$MUTES/ids.json", "cursor" to cursor)

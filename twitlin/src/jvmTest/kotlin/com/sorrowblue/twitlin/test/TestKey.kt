@@ -1,7 +1,11 @@
+/*
+ * (c) 2021 SorrowBlue.
+ */
+
 package com.sorrowblue.twitlin.test
 
 import java.io.File
-import java.util.*
+import java.util.Properties
 
 actual object TestKey {
 

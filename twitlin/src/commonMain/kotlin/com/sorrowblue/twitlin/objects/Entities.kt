@@ -1,5 +1,5 @@
 /*
- * (c) 2020.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.objects
@@ -7,8 +7,8 @@ package com.sorrowblue.twitlin.objects
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.objects.Entities.Media.MediaSize.Size.Resize
 import com.sorrowblue.twitlin.objects.Entities.URL.Unwound
-import com.sorrowblue.twitlin.serializers.LocalDateTimeRFC822Serializer
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDateTimeRFC822Serializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

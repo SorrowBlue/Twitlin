@@ -1,12 +1,11 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin.media.impl
 
-import com.sorrowblue.twitlin.client.Empty
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.TwitlinClient
+import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.media.MediaApi
 import com.sorrowblue.twitlin.media.MediaCategory
 import com.sorrowblue.twitlin.media.MediaResult
@@ -16,14 +15,14 @@ import com.sorrowblue.twitlin.media.request.SubtitlesRequest
 
 private const val MEDIA = "https://upload.twitter.com/1.1/media"
 
-internal class MediaApiImpl(private val client: TwitlinClient) : MediaApi {
+internal class MediaApiImpl(private val client: UserClient) : MediaApi {
 
     override suspend fun upload(
         media: ByteArray?,
         mediaData: String?,
         mediaCategory: MediaCategory,
         additionalOwners: List<String>?
-    ): Response<MediaResult> = client.postMultiPartFormData(
+    ): Response<MediaResult> = client.post(
         "$MEDIA/upload.json",
         "media" to media?.decodeToString(),
         "media_data" to mediaData,
@@ -52,7 +51,7 @@ internal class MediaApiImpl(private val client: TwitlinClient) : MediaApi {
         media: ByteArray?,
         mediaData: String?,
         segmentIndex: Int
-    ): Response<Empty> = client.post(
+    ): Response<Unit> = client.post(
         "$MEDIA/upload.json",
         "command" to "APPEND",
         "media_id" to mediaId,

@@ -1,5 +1,5 @@
 /*
- * (c) 2020 SorrowBlue.
+ * (c) 2021 SorrowBlue.
  */
 
 package com.sorrowblue.twitlin
@@ -9,7 +9,9 @@ import com.sorrowblue.twitlin.authentication.OAuthApi
 import com.sorrowblue.twitlin.authentication.impl.OAuth2ApiImpl
 import com.sorrowblue.twitlin.authentication.impl.OAuthApiImpl
 import com.sorrowblue.twitlin.directmessages.DirectMessagesApi
+import com.sorrowblue.twitlin.directmessages.WelcomeMessagesApi
 import com.sorrowblue.twitlin.directmessages.impl.DirectMessagesApiImpl
+import com.sorrowblue.twitlin.directmessages.impl.WelcomeMessagesApiImpl
 import com.sorrowblue.twitlin.geo.GeoApi
 import com.sorrowblue.twitlin.geo.impl.GeoApiImpl
 import com.sorrowblue.twitlin.media.MediaApi
@@ -48,59 +50,61 @@ public object TwitterAPI {
 
     // region authentication
 
-    public val oauthApi: OAuthApi by lazy { OAuthApiImpl(Twitlin.client) }
+    public val oauthApi: OAuthApi by lazy { OAuthApiImpl(Twitlin.userClient) }
 
-    public val oauth2: OAuth2Api by lazy { OAuth2ApiImpl(Twitlin.client) }
+    public val oauth2Api: OAuth2Api by lazy { OAuth2ApiImpl(Twitlin.appClient) }
     // endregion
 
     // region users
 
-    public val account: AccountApi by lazy { AccountApiImpl(Twitlin.client) }
+    public val account: AccountApi by lazy { AccountApiImpl(Twitlin.userClient) }
 
-    public val blocks: BlocksApi by lazy { BlocksApiImpl(Twitlin.client) }
+    public val blocks: BlocksApi by lazy { BlocksApiImpl(Twitlin.userClient) }
 
-    public val mutesApi: MutesApi by lazy { MutesApiImpl(Twitlin.client) }
+    public val mutesApi: MutesApi by lazy { MutesApiImpl(Twitlin.userClient) }
 
-    public val followers: FollowersApi by lazy { FollowersApiImpl(Twitlin.client) }
+    public val followers: FollowersApi by lazy { FollowersApiImpl(Twitlin.userClient) }
 
-    public val friends: FriendsApi by lazy { FriendsApiImpl(Twitlin.client) }
+    public val friends: FriendsApi by lazy { FriendsApiImpl(Twitlin.userClient) }
 
-    public val friendships: FriendshipsApi by lazy { FriendshipsApiImpl(Twitlin.client) }
+    public val friendships: FriendshipsApi by lazy { FriendshipsApiImpl(Twitlin.userClient) }
 
-    public val savedSearches: SavedSearchesApi by lazy { SavedSearchesApiImpl(Twitlin.client) }
+    public val savedSearches: SavedSearchesApi by lazy { SavedSearchesApiImpl(Twitlin.userClient) }
 
-    public val users: UsersApi by lazy { UsersApiImpl(Twitlin.client) }
+    public val users: UsersApi by lazy { UsersApiImpl(Twitlin.userClient) }
     // endregion
 
     // region utilities
 
-    public val application: ApplicationApi by lazy { ApplicationApiImpl(Twitlin.client) }
+    public val application: ApplicationApi by lazy { ApplicationApiImpl(Twitlin.userClient) }
 
-    public val help: HelpApi by lazy { HelpApiImpl(Twitlin.client) }
+    public val help: HelpApi by lazy { HelpApiImpl(Twitlin.userClient) }
     // endregion
 
     // region geo
 
-    public val geo: GeoApi by lazy { GeoApiImpl(Twitlin.client) }
+    public val geo: GeoApi by lazy { GeoApiImpl(Twitlin.userClient) }
     // endregion
 
     // region trends
 
-    public val trends: TrendsApi by lazy { TrendsApiImpl(Twitlin.client) }
+    public val trends: TrendsApi by lazy { TrendsApiImpl(Twitlin.userClient) }
     // endregion
 
     // region media
 
-    public val media: MediaApi by lazy { MediaApiImpl(Twitlin.client) }
+    public val media: MediaApi by lazy { MediaApiImpl(Twitlin.userClient) }
 
     // endregion
 
     // region direct messages
 
-    public val directMessagesApi: DirectMessagesApi by lazy { DirectMessagesApiImpl(Twitlin.client) }
+    public val directMessagesApi: DirectMessagesApi by lazy { DirectMessagesApiImpl(Twitlin.userClient) }
+
+    public val welcomeMessagesApi: WelcomeMessagesApi by lazy { WelcomeMessagesApiImpl(Twitlin.userClient) }
 
     // endregion
 
-    public val favorites: FavoritesApi by lazy { FavoritesApiImp(Twitlin.client) }
-    public val statuses: StatusesApi by lazy { StatusesApiImp(Twitlin.client) }
+    public val favorites: FavoritesApi by lazy { FavoritesApiImp(Twitlin.userClient) }
+    public val statuses: StatusesApi by lazy { StatusesApiImp(Twitlin.userClient) }
 }

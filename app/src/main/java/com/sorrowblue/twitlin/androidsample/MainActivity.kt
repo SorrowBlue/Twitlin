@@ -12,7 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.TwitterV2API
 import com.sorrowblue.twitlin.androidsample.databinding.ActivityMainBinding
-import com.sorrowblue.twitlin.client.ErrorMessages
+import com.sorrowblue.twitlin.client.Error
 import com.sorrowblue.twitlin.v2.tweets.UserField
 import kotlinx.coroutines.launch
 
@@ -45,7 +45,7 @@ class MainViewModel : ViewModel() {
 
     val adapter = MainAdapter()
 
-    val errorCodes: MutableLiveData<List<ErrorMessages.Error>> = MutableLiveData()
+    val errorCodes: MutableLiveData<List<Error>> = MutableLiveData()
     val url: MutableLiveData<String> = MutableLiveData()
 
     fun requestAuthUrl() {
@@ -55,8 +55,7 @@ class MainViewModel : ViewModel() {
                     url.postValue(TwitterAPI.oauthApi.authenticate(it.oauthToken))
                 }
                 .onError {
-                    errorCodes.postValue(it.errors)
-                    it.errors
+                    errorCodes.postValue(it)
                 }
         }
     }
