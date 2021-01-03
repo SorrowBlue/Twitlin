@@ -2,7 +2,6 @@ $dokka.format:html-v1
 $dokka.linkExtension:html
 
 com.sorrowblue.twitlin
-com.sorrowblue.twitlin.accounts_users.lists
 com.sorrowblue.twitlin.annotation
 com.sorrowblue.twitlin.authentication
 com.sorrowblue.twitlin.client
