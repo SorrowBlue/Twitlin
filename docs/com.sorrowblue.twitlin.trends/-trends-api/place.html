@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>place</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+    <link href="../../../styles/style.css" rel="Stylesheet">
+    <link href="../../../styles/logo-styles.css" rel="Stylesheet">
+    <link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+    <link href="../../../styles/main.css" rel="Stylesheet">
+    <script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+    <script type="text/javascript" src="../../../scripts/main.js" async="async"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn">
+        <div id="logo"></div>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+        <script type="text/javascript" src="../../../scripts/pages.js"></script>
+        <script type="text/javascript" src="../../../scripts/main.js"></script>
+        <div class="main-content" id="content" pageIds="com.sorrowblue.twitlin.trends/TrendsApi/place/#kotlin.Int#kotlin.Boolean?/PointingToDeclaration//-1789929437">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../../index.html">docs</a>/<a href="../index.html">com.sorrowblue.twitlin.trends</a>/<a href="index.html">TrendsApi</a>/<a href="place.html">place</a></div>
+            <div class="pull-right d-flex">
+              <div class="filter-section" id="filter-section"><button class="platform-tag platform-selector common-like" data-active="" data-filter=":twitlin:dokkaHtml/commonMain">common</button></div>
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>place</span></h1>
+          </div>
+<div class="divergent-group" data-filterable-current=":twitlin:dokkaHtml/commonMain" data-filterable-set=":twitlin:dokkaHtml/commonMain"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":twitlin:dokkaHtml/commonMain"><div class="symbol monospace">abstract suspend fun <a href="place.html">place</a>(id: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, exclude: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>? = null): <a href="../../com.sorrowblue.twitlin.client/-response/index.html">Response</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a>&lt;<a href="../-trend-places/index.html">TrendPlaces</a>&gt;&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<p class="paragraph">Returns the top 50 trending topics for a specific <span data-unresolved-link="com.sorrowblue.twitlin.trends/TrendsApi/id/#/PointingToCallableParameters(-1)/">id</span>, if trending information is available for it.</p><p class="paragraph">Note: The <span data-unresolved-link="com.sorrowblue.twitlin.trends/TrendsApi/id/#/PointingToCallableParameters(-1)/">id</span> parameter for this endpoint is the &quot;where on earth identifier&quot; or WOEID, which is a legacy identifier created by Yahoo and has been deprecated. Twitter API v1.1 still uses the numeric value to identify town and country trend locations. Reference our legacy <a href="https://blog.twitter.com/engineering/en_us/a/2010/woeids-in-twitters-trends.html">blog post</a> , or <a href="https://archive.org/details/geoplanet_data_7.10.0.zip0">archived data</a>.</p><p class="paragraph">Example WOEID locations include: Worldwide: 1 UK: 23424975 Brazil: 23424768 Germany: 23424829 Mexico: 23424900 Canada: 23424775 United States: 23424977 New York: 2459115</p><p class="paragraph">To identify other ids, please use the <a href="available.html">TrendsApi.available</a> endpoint.</p><p class="paragraph">The response is an array of <a href="../-trend/index.html">Trend</a> that encode the name of the trending topic, the query parameter that can be used to search for the topic on <a href="http://search.twitter.com/">Twitter Search</a>, and the Twitter Search URL.</p><p class="paragraph">The most up to date info available is returned on request. The <a href="../-trend-places/created-at.html">TrendPlaces.createdAt</a> field will show when the oldest trend started trending. The <a href="../-trend-places/as-of.html">TrendPlaces.asOf</a> field contains the timestamp when the list of trends was created.</p><p class="paragraph">The <a href="../-trend/tweet-volume.html">Trend.tweetVolume</a> for the last 24 hours is also returned for many trends if this is available.</p><h4 class="">Return</h4><p class="paragraph">TODO</p><h2 class="">Parameters</h2><div data-togglable="Parameters"><div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="Parameters"><div class="content sourceset-depenent-content" data-active="" data-togglable=":twitlin:dokkaHtml/commonMain"><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":twitlin:dokkaHtml/commonMain" data-filterable-set=":twitlin:dokkaHtml/commonMain"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex">id</span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The numeric value that represents the location from where to return trending information for from. Formerly linked to the Yahoo! Where On Earth ID Global information is available by using 1 as the WOEID.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":twitlin:dokkaHtml/commonMain" data-filterable-set=":twitlin:dokkaHtml/commonMain"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex">exclude</span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">Setting this equal to hashtags will remove all hashtags from the trends list.</p></div></div></div></div></div></div></div></div></div></div></div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2020 Copyright</span><span class="pull-right"><span>Sponsored and developed by dokka</span><a href="https://github.com/Kotlin/dokka"><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+
