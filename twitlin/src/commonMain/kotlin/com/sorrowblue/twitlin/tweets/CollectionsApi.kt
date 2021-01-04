@@ -78,6 +78,22 @@ public interface CollectionsApi {
      */
     public suspend fun show(id: String): Response<Collections<CollectionObjects.Default, CollectionResponse.TimelineId>>
 
+    /**
+     * Create a Collection owned by the currently authenticated user.
+     *
+     * The API endpoint may refuse to complete the request if the authenticated user has exceeded
+     * the total number of allowed collections for their account.
+     *
+     * @param name The title of the collection being created, in 25 characters or less.
+     * @param description A brief description of this collection in 160 characters or fewer.
+     * @param url A fully-qualified URL to associate with this collection.
+     * @param timelineOrder Order Tweets chronologically or in the order they are added to
+     * a Collection.
+     * * [TimelineOrder.CURATION_REVERSE_CHRON] - order added (default)
+     * * [TimelineOrder.TWEET_CHRON] - oldest first
+     * * [TimelineOrder.TWEET_REVERSE_CHRON] - most recent first
+     * @return TODO
+     */
     public suspend fun create(
         name: String,
         description: String? = null,

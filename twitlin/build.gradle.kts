@@ -118,6 +118,7 @@ android {
 }
 
 tasks.dokkaHtml.configure {
+    this.moduleName.set("docs")
     outputDirectory.set(rootProject.projectDir.resolve("docs/"))
     dokkaSourceSets {
         named("commonMain") {

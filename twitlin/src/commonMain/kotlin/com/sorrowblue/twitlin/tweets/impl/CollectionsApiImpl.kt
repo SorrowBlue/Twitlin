@@ -54,7 +54,11 @@ internal class CollectionsApiImpl(private val client: UserClient) : CollectionsA
         description: String?,
         url: String?,
         timelineOrder: TimelineOrder?
-    ): Response<Collections<CollectionObjects.Default, CollectionResponse.TimelineId>> {
-        TODO("Not yet implemented")
-    }
+    ): Response<Collections<CollectionObjects.Default, CollectionResponse.TimelineId>> =
+        client.post(
+            "$COLLECTIONS/create.json",
+            "name" to name,
+            "description" to description,
+            "url" to url, "timeline_order" to timelineOrder?.name?.toLowerCase()
+        )
 }

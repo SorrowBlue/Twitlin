@@ -7,7 +7,6 @@ local.properties
 .gradle/
 build/
 
-/docs/twitlin/
 
 .idea/*
 .idea/codeStyles/*
@@ -19,7 +18,10 @@ build/
 !.idea/kotlinScripting.xml
 !.idea/runConfigurations.xml
 !.idea/vcs.xml
+
+/docs/images/
 /docs/scripts/
 /docs/styles/
-/docs/images/*
-!/docs/images/md/*
+/docs/docs/
+/docs/navigation.html
+!/docs/images/md/*.*
