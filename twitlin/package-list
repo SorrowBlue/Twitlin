@@ -10,6 +10,7 @@ com.sorrowblue.twitlin.geo
 com.sorrowblue.twitlin.media
 com.sorrowblue.twitlin.objects
 com.sorrowblue.twitlin.trends
+com.sorrowblue.twitlin.tweets
 com.sorrowblue.twitlin.tweets.favorites
 com.sorrowblue.twitlin.tweets.statuses
 com.sorrowblue.twitlin.users
