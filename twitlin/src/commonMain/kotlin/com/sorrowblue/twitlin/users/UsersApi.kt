@@ -5,7 +5,7 @@
 package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 
 /**
  * TODO
@@ -49,10 +49,10 @@ public interface UsersApi {
         userId: String? = null,
         screenName: String? = null,
         performBlock: Boolean = true
-    ): Response<TwitterUser>
+    ): Response<User>
 
     /**
-     * Returns fully-hydrated [TwitterUser] for up to 100 users per request, as specified by
+     * Returns fully-hydrated [User] for up to 100 users per request, as specified by
      * comma-separated values passed to the [userId] and/or [screenName] parameters.
      *
      * This method is especially useful when used in conjunction with collections of user IDs
@@ -77,7 +77,7 @@ public interface UsersApi {
      * requests.
      * @param userId A comma separated list of user IDs, up to `100` are allowed in a single
      * request. You are strongly encouraged to use a POST for larger requests.
-     * @param includeEntities The [TwitterUser.entities] node that may appear within embedded
+     * @param includeEntities The [User.entities] node that may appear within embedded
      * statuses will not be included when set to `false`.
      * @param tweetMode Valid request values are compat and extended, which give compatibility mode
      * and extended mode, respectively for Tweets that contain over `140` characters.
@@ -88,7 +88,7 @@ public interface UsersApi {
         userId: List<String>? = null,
         includeEntities: Boolean? = null,
         tweetMode: Boolean? = null
-    ): Response<List<TwitterUser>>
+    ): Response<List<User>>
 
     /**
      * Provides a simple, relevance-based search interface to public user accounts on Twitter.
@@ -109,7 +109,7 @@ public interface UsersApi {
         page: Int? = null,
         count: Int? = null,
         includeEntities: Boolean? = null
-    ): Response<List<TwitterUser>>
+    ): Response<List<User>>
 
     /**
      * Returns a [variety of information](https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/user-object)
@@ -132,7 +132,7 @@ public interface UsersApi {
     public suspend fun show(
         userId: String? = null,
         screenName: String? = null,
-        includeEntities: Boolean? = null
-    ): Response<TwitterUser>
+        includeEntities: Boolean = true
+    ): Response<User>
 
 }

@@ -10,8 +10,8 @@ import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.geo.GeoApi
 import com.sorrowblue.twitlin.geo.GeoSearch
 import com.sorrowblue.twitlin.geo.ReverseGeocode
-import com.sorrowblue.twitlin.objects.Granularity
 import com.sorrowblue.twitlin.objects.Place
+import com.sorrowblue.twitlin.objects.PlaceType
 
 private const val GEO = "${Urls.V1}/geo"
 
@@ -23,7 +23,7 @@ internal class GeoApiImpl(private val client: UserClient) : GeoApi {
         lat: Double,
         long: Double,
         accuracy: String?,
-        granularity: Granularity?,
+        granularity: PlaceType?,
         maxResults: Int?
     ): Response<ReverseGeocode> =
         client.get(
@@ -40,7 +40,7 @@ internal class GeoApiImpl(private val client: UserClient) : GeoApi {
         long: Double?,
         query: String?,
         ip: String?,
-        granularity: Granularity?,
+        granularity: PlaceType?,
         maxResults: Int?
     ): Response<GeoSearch> =
         client.get(

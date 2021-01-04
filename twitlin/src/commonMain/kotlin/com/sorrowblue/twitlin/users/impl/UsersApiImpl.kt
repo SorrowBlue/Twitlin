@@ -7,7 +7,7 @@ package com.sorrowblue.twitlin.users.impl
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 import com.sorrowblue.twitlin.users.ProfileBanner
 import com.sorrowblue.twitlin.users.UsersApi
 
@@ -25,7 +25,7 @@ internal class UsersApiImpl(private val client: UserClient) : UsersApi {
         userId: String?,
         screenName: String?,
         performBlock: Boolean
-    ): Response<TwitterUser> = client.get(
+    ): Response<User> = client.get(
         "$USERS/report_spam.json",
         "user_id" to userId,
         "screen_name" to screenName,
@@ -37,7 +37,7 @@ internal class UsersApiImpl(private val client: UserClient) : UsersApi {
         userId: List<String>?,
         includeEntities: Boolean?,
         tweetMode: Boolean?
-    ): Response<List<TwitterUser>> = client.get(
+    ): Response<List<User>> = client.get(
         "$USERS/lookup.json",
         "screen_name" to screenName?.joinToString(","),
         "user_id" to userId?.joinToString(","),
@@ -50,7 +50,7 @@ internal class UsersApiImpl(private val client: UserClient) : UsersApi {
         page: Int?,
         count: Int?,
         includeEntities: Boolean?
-    ): Response<List<TwitterUser>> = client.get(
+    ): Response<List<User>> = client.get(
         "$USERS/search.json",
         "q" to q,
         "page" to count,
@@ -61,8 +61,8 @@ internal class UsersApiImpl(private val client: UserClient) : UsersApi {
     override suspend fun show(
         userId: String?,
         screenName: String?,
-        includeEntities: Boolean?
-    ): Response<TwitterUser> = client.get(
+        includeEntities: Boolean
+    ): Response<User> = client.get(
         "$USERS/show.json",
         "user_id" to userId,
         "screen_name" to screenName,

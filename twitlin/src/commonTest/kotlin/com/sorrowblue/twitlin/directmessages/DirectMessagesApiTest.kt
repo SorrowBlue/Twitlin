@@ -15,8 +15,20 @@ class DirectMessagesApiTest : AbstractTest {
 
     @Test
     fun newEventsTest() = runTest {
-        TwitterAPI.directMessagesApi.new("1287220831773319168", "Hello!! plane text message.")
+        TwitterAPI.directMessagesApi.new(
+            "1287220831773319168",
+            "Hello!! plane text message.2222222222"
+        )
             .testResult()
+    }
+
+    @Test
+    fun newEventsCtaTest() = runTest {
+        TwitterAPI.directMessagesApi.new(
+            "1287220831773319168",
+            "Hello!! plane cta message.",
+            ctas = listOf(CallToAction("web_url", "Map it", "https://www.myairline.domain/map-it"))
+        ).testResult()
     }
 
     @Test
@@ -61,5 +73,10 @@ class DirectMessagesApiTest : AbstractTest {
     @Test
     fun listTest() = runTest {
         TwitterAPI.directMessagesApi.list(count = 100).testResult()
+    }
+
+    @Test
+    fun indicateTypingTest() = runTest {
+        TwitterAPI.directMessagesApi.indicateTyping("938122027231150081").testResult()
     }
 }

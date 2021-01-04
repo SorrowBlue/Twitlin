@@ -5,7 +5,6 @@
 package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
-import com.sorrowblue.twitlin.objects.TrendLocation
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

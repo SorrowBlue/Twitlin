@@ -16,7 +16,5 @@ import kotlinx.serialization.Serializable
  * This will be “Point” for Tweet coordinates fields.
  */
 @Serializable
-public data class Coordinates(
-    val coordinates: List<Double>,
-    val type: CoordinatesType
-) : JvmSerializable
+public data class Coordinates(val coordinates: List<Double>, val type: CoordinatesType) :
+    JvmSerializable

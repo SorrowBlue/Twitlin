@@ -5,7 +5,7 @@
 package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 
 /**
  * Your app can mute, block and report users for the authenicated user.
@@ -29,7 +29,7 @@ public interface MutesApi {
     public suspend fun ids(cursor: String = "-1"): Response<PagingIds>
 
     /**
-     * Returns an array of [TwitterUser] the authenticating user has muted.
+     * Returns an array of [User] the authenticating user has muted.
      *
      * @param cursor  Causes the list of IDs to be broken into pages of no more than 5000 IDs at a
      * time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered
@@ -38,7 +38,7 @@ public interface MutesApi {
      * and [PagingUser.nextCursor] to allow paging back and forth. See
      * [Using cursors to navigate collections](https://developer.twitter.com/en/docs/basics/cursoring)
      * for more information.
-     * @param includeEntities The [TwitterUser.entities] node will not be included when set to
+     * @param includeEntities The [User.entities] node will not be included when set to
      * `false`.
      * @param skipStatus When set to either `true` statuses will not be included in the returned
      * user objects.
@@ -71,7 +71,7 @@ public interface MutesApi {
     public suspend fun create(
         screenName: String? = null,
         userId: String? = null
-    ): Response<TwitterUser>
+    ): Response<User>
 
     /**
      * Un-mutes the user specified in the ID parameter for the authenticating user.
@@ -90,6 +90,6 @@ public interface MutesApi {
     public suspend fun destroy(
         screenName: String? = null,
         userId: String? = null
-    ): Response<TwitterUser>
+    ): Response<User>
 
 }

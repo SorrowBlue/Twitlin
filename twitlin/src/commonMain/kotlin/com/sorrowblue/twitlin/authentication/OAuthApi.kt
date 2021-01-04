@@ -7,7 +7,7 @@ package com.sorrowblue.twitlin.authentication
 import com.sorrowblue.twitlin.client.Response
 
 /**
- * ## OAuth 1.0a
+ * ### OAuth 1.0a
  *
  * Many endpoints on the Twitter developer platform use the OAuth 1.0a method to act, or make API requests,
  * on behalf of a Twitter account. For example, if you have a Twitter developer app,

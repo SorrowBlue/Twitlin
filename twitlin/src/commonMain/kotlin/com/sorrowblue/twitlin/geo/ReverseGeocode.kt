@@ -7,8 +7,8 @@ package com.sorrowblue.twitlin.geo
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.client.Error
 import com.sorrowblue.twitlin.objects.Coordinates
-import com.sorrowblue.twitlin.objects.Granularity
 import com.sorrowblue.twitlin.objects.Place
+import com.sorrowblue.twitlin.objects.PlaceType
 import kotlinx.serialization.Serializable
 
 /**
@@ -50,7 +50,7 @@ public data class ReverseGeocode(
         public data class Params(
             val accuracy: Int,
             val coordinates: Coordinates,
-            val granularity: Granularity
+            val granularity: PlaceType
         ) : JvmSerializable
 
     }

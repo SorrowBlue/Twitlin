@@ -7,13 +7,13 @@ package com.sorrowblue.twitlin.utilities
 import com.sorrowblue.twitlin.client.Response
 
 /**
- * ## Get Twitter configuration details
+ * ### Get Twitter configuration details
  * A number of Twitter API parameters and defaults are fixed, including twitter.com slugs which are
  * not usernames, maximum photo resolutions, the length of t.co shortened URLs, and more.
  * Applications should request this endpoint when they are loaded, but no more than once a day to
  * check for current defaults.
  *
- * ## Get Twitter supported languages
+ * ### Get Twitter supported languages
  * The standard Twitter API supports a number of different languages. This endpoint the list of
  * languages supported by Twitter, along with the language code(s) supported by Twitter.
  */

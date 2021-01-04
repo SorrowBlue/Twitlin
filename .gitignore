@@ -19,3 +19,7 @@ build/
 !.idea/kotlinScripting.xml
 !.idea/runConfigurations.xml
 !.idea/vcs.xml
+/docs/scripts/
+/docs/styles/
+/docs/images/*
+!/docs/images/md/*

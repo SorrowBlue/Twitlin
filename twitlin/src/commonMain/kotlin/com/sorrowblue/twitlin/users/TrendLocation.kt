@@ -2,7 +2,15 @@
  * (c) 2021 SorrowBlue.
  */
 
-package com.sorrowblue.twitlin.objects
+/*
+ * (c) 2021 SorrowBlue.
+ */
+
+/*
+ * (c) 2021 SorrowBlue.
+ */
+
+package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.Serializable

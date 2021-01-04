@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 public data class PagingTwitterUser(
-    val users: List<TwitterUser>,
+    val users: List<User>,
     @SerialName("next_cursor")
     val nextCursor: Long,
     @SerialName("next_cursor_str")

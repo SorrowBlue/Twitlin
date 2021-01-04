@@ -20,7 +20,7 @@ class StatusesApiTest : AbstractTest {
 
     @Test
     fun timelineTest() = runTest {
-        assertNotNull(TwitterAPI.statuses.homeTimeline(count = 100).testResult())
+        assertNotNull(TwitterAPI.statuses.homeTimeline(count = 50).testResult())
     }
 
     @Test

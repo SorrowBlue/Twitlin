@@ -36,15 +36,20 @@ import kotlinx.serialization.json.JsonObject
 public data class Place(
     val id: String,
     val name: String,
-    @SerialName("full_name") val fullName: String,
+    @SerialName("full_name")
+    val fullName: String,
     val country: String,
-    @SerialName("country_code") val countryCode: String,
+    @SerialName("country_code")
+    val countryCode: String,
     val url: String,
-    @SerialName("place_type") val placeType: Granularity,
+    @SerialName("place_type")
+    val placeType: PlaceType,
     val attributes: Map<String, String>,
-    @SerialName("bounding_box") val boundingBox: BoundingBox,
-    val centroid: List<Double>,
-    @SerialName("contained_within") val containedWithin: List<Place>? = null,
+    @SerialName("bounding_box")
+    val boundingBox: BoundingBox,
+    val centroid: List<Double>? = null,
+    @SerialName("contained_within")
+    val containedWithin: List<Place>? = null,
     val polylines: JsonObject? = null,
     val geometry: JsonObject? = null
 ) : JvmSerializable {
@@ -64,5 +69,4 @@ public data class Place(
         val type: String,
         val coordinates: List<List<List<Float>>>
     ) : JvmSerializable
-
 }

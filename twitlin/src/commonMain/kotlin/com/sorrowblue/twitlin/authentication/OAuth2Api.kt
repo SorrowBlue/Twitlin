@@ -7,7 +7,7 @@ package com.sorrowblue.twitlin.authentication
 import com.sorrowblue.twitlin.client.Response
 
 /**
- * ## OAuth 2.0 Bearer Token
+ * ### OAuth 2.0 Bearer Token
  * OAuth 2.0 Bearer Token authenticates requests on behalf of your
  * [developer App](https://developer.twitter.com/en/docs/apps). As this method is specific to the
  * App, it does not involve any users. This method is typically for developers that need read-only

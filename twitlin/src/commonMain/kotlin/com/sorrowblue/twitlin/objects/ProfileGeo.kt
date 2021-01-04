@@ -11,12 +11,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class ProfileGeo(
     val country: String,
-    val country_code: String,
+    @SerialName("country_code")
+    val countryCode: String,
     val locality: String,
     val region: String,
     @SerialName("sub_region")
     val subRegion: String,
     @SerialName("full_name")
-    val full_name: String,
+    val fullName: String,
     val geo: Coordinates
 ) : JvmSerializable

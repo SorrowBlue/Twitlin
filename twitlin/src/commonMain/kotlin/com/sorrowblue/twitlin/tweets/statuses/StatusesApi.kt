@@ -5,7 +5,7 @@
 package com.sorrowblue.twitlin.tweets.statuses
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.objects.TwitterTweet
+import com.sorrowblue.twitlin.objects.Tweet
 
 public interface StatusesApi {
 
@@ -25,7 +25,7 @@ public interface StatusesApi {
         enableDmcommands: Boolean = false,
         failDmcommands: Boolean = true,
         cardUri: String? = null
-    ): Response<TwitterTweet>
+    ): Response<Tweet>
 
     public suspend fun homeTimeline(
         count: Int = 20,
@@ -35,7 +35,7 @@ public interface StatusesApi {
         excludeReplies: Boolean? = null,
         includeEntities: Boolean? = null,
         includeCard: Boolean? = null
-    ): Response<List<TwitterTweet>>
+    ): Response<List<Tweet>>
 
     public suspend fun userTimeline(
         userId: Long,
@@ -46,7 +46,7 @@ public interface StatusesApi {
         excludeReplies: Boolean? = null,
         includeRetweet: Boolean? = null,
         includeCard: Boolean? = null
-    ): Response<List<TwitterTweet>>
+    ): Response<List<Tweet>>
 
     public suspend fun userTimeline(
         screenName: String,
@@ -57,7 +57,7 @@ public interface StatusesApi {
         excludeReplies: Boolean? = null,
         includeRetweet: Boolean? = null,
         includeCard: Boolean? = null
-    ): Response<List<TwitterTweet>>
+    ): Response<List<Tweet>>
 
-    public suspend fun lookup(id: List<Long>): Response<List<TwitterTweet>>
+    public suspend fun lookup(id: List<Long>): Response<List<Tweet>>
 }

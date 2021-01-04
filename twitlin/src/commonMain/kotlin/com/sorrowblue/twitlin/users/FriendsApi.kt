@@ -5,7 +5,7 @@
 package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 
 /**
  * The following API endpoints can be used to programmatically follow users, search for users,
@@ -42,7 +42,7 @@ public interface FriendsApi {
      * for more information.
      *
      * This method is especially powerful when used in conjunction with [UsersApi.lookup],
-     * a method that allows you to convert user IDs into full [TwitterUser] in bulk.
+     * a method that allows you to convert user IDs into full [User] in bulk.
      *
      * @param userId The ID of the user for whom to return results.
      * @param screenName The screen name of the user for whom to return results.
@@ -88,7 +88,7 @@ public interface FriendsApi {
      * @param count The number of users to return per page, up to a maximum of `200`.
      * @param skipStatus When set to either `true` statuses will not be included in the returned
      * user objects.
-     * @param includeUserEntities The user object [TwitterUser.entities] node will not be included
+     * @param includeUserEntities The user object [User.entities] node will not be included
      * when set to `false`.
      * @return TODO
      */

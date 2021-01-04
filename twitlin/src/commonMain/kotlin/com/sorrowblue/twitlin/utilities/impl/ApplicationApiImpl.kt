@@ -9,8 +9,8 @@ import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.utilities.ApplicationApi
 import com.sorrowblue.twitlin.utilities.RateLimitStatus
-import com.sorrowblue.twitlin.utilities.RateLimitStatusResponse
 import com.sorrowblue.twitlin.utilities.ResourceFamily
+import com.sorrowblue.twitlin.utilities.response.RateLimitStatusResponse
 
 private const val APPLICATION = "${Urls.V1}/application"
 

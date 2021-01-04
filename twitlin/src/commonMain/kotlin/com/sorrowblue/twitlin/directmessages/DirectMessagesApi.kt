@@ -8,11 +8,11 @@ import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.media.MediaResult
 
 /**
- * ## Sending message events
+ * ### Sending message events
  * To send a new Direct Message use [DirectMessagesApi.new] (message_create). Optionally, you may
  * also attach Quick Replies or media (image, GIF or video).
  *
- * ## Receiving messages events
+ * ### Receiving messages events
  * * You can retrieve Direct Messages from up to the past `30` days with [DirectMessagesApi.list].
  * * Consuming Direct Messages in real-time can be accomplished via webhooks with the
  * `Account Activity API`.
@@ -39,6 +39,7 @@ public interface DirectMessagesApi {
         recipientId: String,
         text: String,
         quickReply: QuickReply? = null,
+        ctas: List<CallToAction>? = null,
         mediaId: String? = null
     ): Response<DirectMessage>
 
@@ -78,4 +79,28 @@ public interface DirectMessagesApi {
      * @return TODO
      */
     public suspend fun destroy(id: String): Response<DirectMessage>
+
+    /**
+     * Displays a visual typing indicator in the recipient’s Direct Message conversation view with
+     * the sender. Each request triggers a typing indicator animation with a duration of ~3 seconds.
+     * ### Usage
+     * A rudimentary approach would be to invoke an API request on every keypress or input event,
+     * however the application may quickly hit rate limits. A more sophisticated approach is to
+     * capture input events, but limit API requests to a specified interval based on the behavior
+     * of your users and the rate limit specified below.
+     *
+     * @param receiveId The user ID of the user to receive the typing indicator.
+     * @return TODO
+     */
+    public suspend fun indicateTyping(receiveId: String): Response<Unit>
+
+    /**
+     * Marks a message as read in the recipient’s Direct Message conversation view with the sender.
+     *
+     * @param lastReadEventId The message ID of the most recent message to be marked read.
+     * All messages before it will be marked read as well.
+     * @param recipientId The user ID of the user the message is from.
+     * @return TODO
+     */
+    public suspend fun markRead(lastReadEventId: String, recipientId: String): Response<Unit>
 }

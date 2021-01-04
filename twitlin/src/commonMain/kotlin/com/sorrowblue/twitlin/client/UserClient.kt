@@ -50,12 +50,17 @@ internal class UserClient(
         method: HttpMethod,
         url: String,
         params: Array<out Pair<String, Any?>>,
-        accessToken: AccessToken? = this.accessToken,
+        accessToken: AccessToken? = null,
         noinline block: (HttpRequestBuilder.() -> String)? = null
     ): Response<T> = runCatchingResponse {
         httpClient.request<Response<T>>(url) {
             this.method = method
-            headerAuthorization(apiKey, secretKey, params.notNullParams, accessToken)
+            headerAuthorization(
+                apiKey,
+                secretKey,
+                params.notNullParams,
+                accessToken ?: this@UserClient.accessToken
+            )
             val body = block?.invoke(this)
             Napier.i(
                 "Request Twitter API-> ${method.value}:${this.url.encodedPath}, body=${body}",

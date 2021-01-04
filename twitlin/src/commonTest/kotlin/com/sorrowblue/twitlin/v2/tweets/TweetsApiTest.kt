@@ -6,24 +6,24 @@ package com.sorrowblue.twitlin.v2.tweets
 
 import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.TwitterV2API
-import com.sorrowblue.twitlin.objects.TwitterTweet
 import com.sorrowblue.twitlin.test.AbstractTest
 import com.sorrowblue.twitlin.test.runTest
 import com.sorrowblue.twitlin.v2.objects.AddSearchStreamRule
 import com.sorrowblue.twitlin.v2.objects.ReferenceTweet
 import com.sorrowblue.twitlin.v2.objects.SearchStreamRule
-import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.testResult
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import com.sorrowblue.twitlin.objects.Tweet as V1Tweet
+import com.sorrowblue.twitlin.v2.objects.Tweet as V2Tweet
 
 class TweetsApiTest : AbstractTest {
     @Test
     fun timeline() = runTest {
-//		val list = TwitterAPI.statuses.userTimeline("sorrowblue_sb",count = 2).getOrNull()?.map(TwitterTweet::idStr) ?: return@runTest
         val list =
-            TwitterAPI.statuses.homeTimeline(count = 40).dataOrNull()?.map(TwitterTweet::idStr)
-                ?: return@runTest
+            TwitterAPI.statuses.homeTimeline(count = 40)
+                .dataOrNull()?.map(V1Tweet::idStr)
+                .also { assertNotNull(it) } ?: return@runTest
         TwitterV2API.tweetsApi.tweets(
             list,
             tweetFields = listOf(
@@ -89,14 +89,14 @@ class TweetsApiTest : AbstractTest {
         ).testResult()?.tweets?.filterNot {
             it.referencedTweets?.any { it.type == ReferenceTweet.Type.RETWEETED } ?: false
         }?.also {
-            println("list = ${it.map(Tweet::text)}")
+            println("list = ${it.map(V2Tweet::text)}")
         }
     }
 
     @Test
     fun tweetsIdsTest() = runTest {
         val ids =
-            TwitterAPI.statuses.homeTimeline(count = 100).dataOrNull()?.map(TwitterTweet::idStr)
+            TwitterAPI.statuses.homeTimeline(count = 100).dataOrNull()?.map(V1Tweet::idStr)
                 ?: return@runTest
         TwitterV2API.tweetsApi.tweets(
             ids,

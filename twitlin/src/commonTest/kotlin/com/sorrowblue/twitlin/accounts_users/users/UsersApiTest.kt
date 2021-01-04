@@ -14,7 +14,7 @@ class UsersApiTest : AbstractTest {
 
     @Test
     fun lookupTest() = runTest {
-        TwitterAPI.users.lookup(
+        TwitterAPI.usersApi.lookup(
             listOf("gigazine"),
             includeEntities = true,
             tweetMode = true

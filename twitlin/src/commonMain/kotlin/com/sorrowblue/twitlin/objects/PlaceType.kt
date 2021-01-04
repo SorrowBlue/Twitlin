@@ -7,8 +7,11 @@ package com.sorrowblue.twitlin.objects
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * The type of location represented by this place.
+ */
 @Serializable
-public enum class Granularity {
+public enum class PlaceType {
 
     @SerialName("neighborhood")
     NEIGHBORHOOD,
@@ -22,4 +25,6 @@ public enum class Granularity {
     @SerialName("country")
     COUNTRY,
 
+    @SerialName("poi")
+    POI
 }

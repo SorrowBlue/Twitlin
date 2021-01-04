@@ -24,9 +24,8 @@ internal class WelcomeMessagesApiImpl(private val client: UserClient) : WelcomeM
     override suspend fun destroy(id: String): Response<Unit> =
         client.delete("$WELCOME_MESSAGES/destroy.json", "id" to id)
 
-    override suspend fun destroyRule(id: String): Response<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun destroyRule(id: String): Response<Unit> =
+        client.delete("$WELCOME_MESSAGES/rules/destroy.json", "id" to id)
 
     override suspend fun show(id: String): Response<WelcomeMessageData> =
         client.get("$WELCOME_MESSAGES/show.json", "id" to id)
@@ -59,14 +58,14 @@ internal class WelcomeMessagesApiImpl(private val client: UserClient) : WelcomeM
     }
 
     override suspend fun newRule(welcomeMessageId: String): Response<WelcomeMessageRule> =
-        client.postJson(
+        client.postJson<WelcomeMessageRuleResponse, WelcomeMessageRuleRequest>(
             "$WELCOME_MESSAGES/rules/new.json",
             clazz = WelcomeMessageRuleRequest(
                 WelcomeMessageRuleRequest.WelcomeMessageRuleRequest(
                     welcomeMessageId
                 )
             )
-        )
+        ).convertData(WelcomeMessageRuleResponse::welcome_message_rule)
 
     override suspend fun update(
         id: String,

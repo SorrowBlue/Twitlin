@@ -5,7 +5,7 @@
 package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 
 /**
  * Your app can mute, block and report users for the authenicated user.
@@ -34,7 +34,7 @@ public interface BlocksApi {
     public suspend fun ids(cursor: Long = -1): Response<PagingIds>
 
     /**
-     * Returns a collection of [TwitterUser] that the authenticating user is blocking.
+     * Returns a collection of [User] that the authenticating user is blocking.
      *
      * *Important* This method is cursored, meaning your app must make multiple requests in order to
      * receive all blocks correctly. See
@@ -48,7 +48,7 @@ public interface BlocksApi {
      * and [PagingUser.nextCursor] to allow paging back and forth. See
      * [Using cursors to navigate collections](https://developer.twitter.com/en/docs/basics/cursoring)
      * for more information.
-     * @param includeEntities The [TwitterUser.entities] node will not be included when set to
+     * @param includeEntities The [User.entities] node will not be included when set to
      * `false`.
      * @param skipStatus When set to either `true` statuses will not be included in the returned
      * user objects.
@@ -83,7 +83,7 @@ public interface BlocksApi {
         userId: String? = null,
         includeEntities: Boolean? = null,
         skipStatus: Boolean? = null
-    ): Response<TwitterUser>
+    ): Response<User>
 
     /**
      * Un-blocks the user specified in the ID parameter for the authenticating user. Returns the
@@ -104,6 +104,6 @@ public interface BlocksApi {
         userId: String? = null,
         includeEntities: Boolean? = null,
         skipStatus: Boolean? = null
-    ): Response<TwitterUser>
+    ): Response<User>
 
 }

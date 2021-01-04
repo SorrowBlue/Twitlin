@@ -43,7 +43,6 @@ public abstract class AbstractClient(
         return runCatching(block).getOrElse {
             Napier.d("stackTraceToString: " + it.stackTraceToString(), it, "APPAPP")
             if (it is ClientRequestException) {
-                Napier.d("body: " + it.response.readText(), it, "APPAPP")
                 json.decodeFromString(it.response.readText())
             } else {
                 Response.Error<T>(listOf(Error("${it.message}", ErrorCodes.CLIENT_ERROR))) as R

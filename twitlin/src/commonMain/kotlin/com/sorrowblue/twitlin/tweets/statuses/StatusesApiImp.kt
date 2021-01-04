@@ -8,8 +8,6 @@ import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.objects.Tweet
-import com.sorrowblue.twitlin.objects.TwitterTweet
-import com.sorrowblue.twitlin.utils.TweetUtil
 
 private const val ROOT = "${Urls.V1}/statuses"
 
@@ -31,7 +29,7 @@ internal class StatusesApiImp(private val client: UserClient) : StatusesApi {
         enableDmcommands: Boolean,
         failDmcommands: Boolean,
         cardUri: String?
-    ) = client.post<TwitterTweet>(
+    ) = client.post<Tweet>(
         "$ROOT/update.json",
         "status" to status,
         "in_reply_to_status_id" to inReplyToStatusId,
@@ -58,7 +56,7 @@ internal class StatusesApiImp(private val client: UserClient) : StatusesApi {
         excludeReplies: Boolean?,
         includeEntities: Boolean?,
         includeCard: Boolean?
-    ): Response<List<TwitterTweet>> = client.get<List<TwitterTweet>>(
+    ): Response<List<Tweet>> = client.get<List<Tweet>>(
         "$ROOT/home_timeline.json",
         "count" to count,
         "since_id" to sinceId,
@@ -66,7 +64,7 @@ internal class StatusesApiImp(private val client: UserClient) : StatusesApi {
         "trim_user" to trimUser,
         "exclude_replies" to excludeReplies,
         "include_entities" to includeEntities
-    ).resolveCard(includeCard == true)
+    )
 
     override suspend fun userTimeline(
         userId: Long,
@@ -77,7 +75,7 @@ internal class StatusesApiImp(private val client: UserClient) : StatusesApi {
         excludeReplies: Boolean?,
         includeRetweet: Boolean?,
         includeCard: Boolean?
-    ): Response<List<TwitterTweet>> = client.get<List<TwitterTweet>>(
+    ): Response<List<Tweet>> = client.get<List<Tweet>>(
         "$ROOT/user_timeline.json",
         "user_id" to userId,
         "since_id" to sinceId,
@@ -86,7 +84,7 @@ internal class StatusesApiImp(private val client: UserClient) : StatusesApi {
         "trim_user" to trimUser,
         "exclude_replies" to excludeReplies,
         "include_rts" to includeRetweet
-    ).resolveCard(includeCard == true)
+    )
 
     override suspend fun userTimeline(
         screenName: String,
@@ -97,7 +95,7 @@ internal class StatusesApiImp(private val client: UserClient) : StatusesApi {
         excludeReplies: Boolean?,
         includeRetweet: Boolean?,
         includeCard: Boolean?
-    ): Response<List<TwitterTweet>> = client.get<List<TwitterTweet>>(
+    ): Response<List<Tweet>> = client.get<List<Tweet>>(
         "$ROOT/user_timeline.json",
         "screenName" to screenName,
         "since_id" to sinceId,
@@ -106,28 +104,8 @@ internal class StatusesApiImp(private val client: UserClient) : StatusesApi {
         "trim_user" to trimUser,
         "exclude_replies" to excludeReplies,
         "include_rts" to includeRetweet
-    ).resolveCard(includeCard == true)
+    )
 
-    override suspend fun lookup(id: List<Long>): Response<List<TwitterTweet>> =
+    override suspend fun lookup(id: List<Long>): Response<List<Tweet>> =
         client.get("$ROOT/lookup.json", "id" to id.joinToString(","))
-
-    private suspend fun Response<List<TwitterTweet>>.resolveCard(includeCard: Boolean): Response<List<TwitterTweet>> {
-        return dataOrNull()?.map { value ->
-            val tweet = Tweet.valueOf(value)
-            if (tweet is Tweet.Normal && includeCard) {
-                tweet.source.retweetedStatus?.let { twitterTweet ->
-                    twitterTweet.entities?.urls?.firstOrNull()?.expandedUrl
-                        ?.let { TweetUtil.twitterCard(it) }
-                        ?.let { value.copy(retweetedStatus = value.retweetedStatus?.copy(card = it)) }
-                        ?: value
-                } ?: kotlin.run {
-                    tweet.source.entities?.urls?.firstOrNull()?.expandedUrl
-                        ?.let { TweetUtil.twitterCard(it) }
-                        ?.let { value.copy(card = it) } ?: value
-                }
-            } else value
-        }?.let {
-            Response.Success(it)
-        } ?: this
-    }
 }

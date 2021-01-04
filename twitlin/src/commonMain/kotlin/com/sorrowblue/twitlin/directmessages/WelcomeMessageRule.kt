@@ -24,5 +24,5 @@ public data class PagingWelcomeMessageRule(
     @SerialName("next_cursor")
     val nextCursor: String? = null,
     @SerialName("welcome_message_rules")
-    val welcomeMessageRules: List<WelcomeMessageRule>
+    val welcomeMessageRules: List<WelcomeMessageRule> = emptyList()
 )

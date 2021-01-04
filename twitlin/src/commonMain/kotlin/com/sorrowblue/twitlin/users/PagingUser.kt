@@ -5,7 +5,7 @@
 package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -20,9 +20,15 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class PagingUser(
-    @SerialName("users") val users: List<TwitterUser>,
-    @SerialName("next_cursor") val nextCursor: Long,
-    @SerialName("next_cursor_str") val nextCursorStr: String,
-    @SerialName("previous_cursor") val previousCursor: Long,
-    @SerialName("previous_cursor_str") val previousCursorStr: String
+    val users: List<User>,
+    @SerialName("next_cursor")
+    val nextCursor: Long,
+    @SerialName("next_cursor_str")
+    val nextCursorStr: String,
+    @SerialName("previous_cursor")
+    val previousCursor: Long,
+    @SerialName("previous_cursor_str")
+    val previousCursorStr: String,
+    @SerialName("total_count")
+    val totalCount: Int? = null
 ) : JvmSerializable

@@ -37,17 +37,15 @@ internal class ResponseSerializer<T>(private val dataSerializer: KSerializer<T>)
 //         Decoder -> JsonDecoder
         require(decoder is JsonDecoder) // this class can be decoded only by Json
 //         JsonDecoder -> JsonElement
-        return kotlin.runCatching {
-            val element = decoder.decodeJsonElement()
+        val element = kotlin.runCatching {
+            decoder.decodeJsonElement()
+        }.getOrElse { JsonObject(emptyMap()) }
 //         JsonElement -> value
-            Napier.d("JSON: $element", tag = "DEBUG")
-            if (element is JsonObject && "errors" in element)
-                Response.Error(decoder.json.decodeFromString(element["errors"]!!.toString()))
-            else
-                Response.Success(decoder.json.decodeFromJsonElement(dataSerializer, element))
-        }.getOrElse {
-            Response.Error<T>(listOf(Error("${it.message}", ErrorCodes.CLIENT_ERROR)))
-        }
+        Napier.d("JSON: $element", tag = "DEBUG")
+        return if (element is JsonObject && "errors" in element)
+            Response.Error(decoder.json.decodeFromString(element["errors"]!!.toString()))
+        else
+            Response.Success(decoder.json.decodeFromJsonElement(dataSerializer, element))
     }
 
     override fun serialize(encoder: Encoder, value: Response<T>) {

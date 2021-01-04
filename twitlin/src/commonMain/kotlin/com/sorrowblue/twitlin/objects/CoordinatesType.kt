@@ -8,6 +8,9 @@ import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * TODO
+ */
 @Serializable
 public enum class CoordinatesType : JvmSerializable {
     @SerialName("Polygon")

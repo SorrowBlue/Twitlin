@@ -7,7 +7,7 @@ package com.sorrowblue.twitlin.users.impl
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 import com.sorrowblue.twitlin.users.BlocksApi
 import com.sorrowblue.twitlin.users.PagingIds
 import com.sorrowblue.twitlin.users.PagingUser
@@ -35,7 +35,7 @@ internal class BlocksApiImpl(private val client: UserClient) : BlocksApi {
         userId: String?,
         includeEntities: Boolean?,
         skipStatus: Boolean?
-    ): Response<TwitterUser> = client.post(
+    ): Response<User> = client.post(
         "$BLOCKS/create.json",
         "screen_name" to screenName,
         "user_id" to userId,
@@ -48,7 +48,7 @@ internal class BlocksApiImpl(private val client: UserClient) : BlocksApi {
         userId: String?,
         includeEntities: Boolean?,
         skipStatus: Boolean?
-    ): Response<TwitterUser> = client.post(
+    ): Response<User> = client.post(
         "$BLOCKS/destroy.json",
         "screen_name" to screenName,
         "user_id" to userId,

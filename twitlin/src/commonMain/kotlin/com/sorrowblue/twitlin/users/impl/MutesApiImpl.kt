@@ -7,7 +7,7 @@ package com.sorrowblue.twitlin.users.impl
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 import com.sorrowblue.twitlin.users.MutesApi
 import com.sorrowblue.twitlin.users.PagingIds
 import com.sorrowblue.twitlin.users.PagingUser
@@ -29,14 +29,14 @@ internal class MutesApiImpl(private val client: UserClient) : MutesApi {
         "skip_status" to skipStatus
     )
 
-    override suspend fun create(screenName: String?, userId: String?): Response<TwitterUser> =
+    override suspend fun create(screenName: String?, userId: String?): Response<User> =
         client.post(
             "$MUTES/create.json",
             "screen_name" to screenName,
             "user_id" to userId,
         )
 
-    override suspend fun destroy(screenName: String?, userId: String?): Response<TwitterUser> =
+    override suspend fun destroy(screenName: String?, userId: String?): Response<User> =
         client.post(
             "$MUTES/destroy.json",
             "screen_name" to screenName,

@@ -7,11 +7,11 @@ package com.sorrowblue.twitlin.trends
 import com.sorrowblue.twitlin.client.Response
 
 /**
- * ## Get trends near a location
+ * ### Get trends near a location
  * An API to return the [trending topics](https://support.twitter.com/articles/101125) near
  * a specific latitude, longitude location.
  *
- * ## Get locations with trending topics
+ * ### Get locations with trending topics
  * Retrieve a full or nearby locations list of trending topics by location.
  */
 public interface TrendsApi {

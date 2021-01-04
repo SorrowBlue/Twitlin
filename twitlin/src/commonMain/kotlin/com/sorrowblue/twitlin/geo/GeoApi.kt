@@ -6,8 +6,8 @@ package com.sorrowblue.twitlin.geo
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.objects.Granularity
 import com.sorrowblue.twitlin.objects.Place
+import com.sorrowblue.twitlin.objects.PlaceType
 import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -45,10 +45,10 @@ public interface GeoApi {
      * value is whatever accuracy the device has measuring its location (whether it be coming from a
      * GPS, WiFi triangulation, etc.).
      * @param granularity This is the minimal granularity of place types to return and must be one
-     * of: [Granularity.NEIGHBORHOOD], [Granularity.CITY], [Granularity.ADMIN] or
-     * [Granularity.COUNTRY]. If no granularity is provided for the request neighborhood is assumed.
-     * Setting this to [Granularity.CITY], for example, will find places which have a type of
-     * [Granularity.CITY], [Granularity.ADMIN] or [Granularity.COUNTRY].
+     * of: [PlaceType.NEIGHBORHOOD], [PlaceType.CITY], [PlaceType.ADMIN] or
+     * [PlaceType.COUNTRY]. If no granularity is provided for the request neighborhood is assumed.
+     * Setting this to [PlaceType.CITY], for example, will find places which have a type of
+     * [PlaceType.CITY], [PlaceType.ADMIN] or [PlaceType.COUNTRY].
      * @param maxResults A hint as to the number of results to return. This does not guarantee that
      * the number of results returned will equal max_results, but instead informs how many "nearby"
      * results to return. Ideally, only pass in the number of places you intend to display to the
@@ -59,7 +59,7 @@ public interface GeoApi {
         lat: Double,
         long: Double,
         accuracy: String? = null,
-        granularity: Granularity? = null,
+        granularity: PlaceType? = null,
         maxResults: Int? = null
     ): Response<ReverseGeocode>
 
@@ -93,10 +93,10 @@ public interface GeoApi {
      * @param ip An IP address. Used when attempting to fix geolocation based off of the user's IP
      * address.
      * @param granularity This is the minimal granularity of place types to return and must be one
-     * of: [Granularity.NEIGHBORHOOD], [Granularity.CITY], [Granularity.ADMIN] or
-     * [Granularity.COUNTRY]. If no granularity is provided for the request neighborhood is assumed.
-     * Setting this to [Granularity.CITY], for example, will find places which have a type of
-     * [Granularity.CITY], [Granularity.ADMIN] or [Granularity.COUNTRY].
+     * of: [PlaceType.NEIGHBORHOOD], [PlaceType.CITY], [PlaceType.ADMIN] or
+     * [PlaceType.COUNTRY]. If no granularity is provided for the request neighborhood is assumed.
+     * Setting this to [PlaceType.CITY], for example, will find places which have a type of
+     * [PlaceType.CITY], [PlaceType.ADMIN] or [PlaceType.COUNTRY].
      * @param maxResults A hint as to the number of results to return. This does not guarantee that
      * the number of results returned will equal max_results, but instead informs how many "nearby"
      * results to return. Ideally, only pass in the number of places you intend to display to the
@@ -108,7 +108,7 @@ public interface GeoApi {
         long: Double? = null,
         query: String? = null,
         ip: String? = null,
-        granularity: Granularity? = null,
+        granularity: PlaceType? = null,
         maxResults: Int? = null
     ): Response<GeoSearch>
 
@@ -129,7 +129,7 @@ public data class GeoSearch(
 
         @Serializable
         public data class Params(
-            val granularity: Granularity,
+            val granularity: PlaceType,
             val query: String,
             @SerialName("trim_place") val trimPlace: Boolean
         ) : JvmSerializable

@@ -19,8 +19,6 @@ import kotlinx.serialization.Serializable
  * This will be [CoordinatesType.POLYGON] for bounding boxes and [CoordinatesType.POINT] for Tweets with exact coordinates.
  */
 @Serializable
-public data class BoundingBox(
-    val coordinates: List<List<List<Double>>>,
-    val type: String
-) : JvmSerializable
+public data class BoundingBox(val coordinates: List<List<List<Double>>>, val type: String) :
+    JvmSerializable
 

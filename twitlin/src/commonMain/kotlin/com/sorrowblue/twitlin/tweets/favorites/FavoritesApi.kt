@@ -5,7 +5,7 @@
 package com.sorrowblue.twitlin.tweets.favorites
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.objects.TwitterTweet
+import com.sorrowblue.twitlin.objects.Tweet
 
 public interface FavoritesApi {
 
@@ -15,7 +15,7 @@ public interface FavoritesApi {
         sinceId: Long? = null,
         maxId: Long? = null,
         includeEntities: Boolean = true
-    ): Response<List<TwitterTweet>>
+    ): Response<List<Tweet>>
 
     public suspend fun list(
         screenName: String,
@@ -23,5 +23,5 @@ public interface FavoritesApi {
         sinceId: Long? = null,
         maxId: Long? = null,
         includeEntities: Boolean = true
-    ): Response<List<TwitterTweet>>
+    ): Response<List<Tweet>>
 }

@@ -7,6 +7,7 @@ package com.sorrowblue.twitlin.directmessages.impl
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
+import com.sorrowblue.twitlin.directmessages.CallToAction
 import com.sorrowblue.twitlin.directmessages.DirectMessage
 import com.sorrowblue.twitlin.directmessages.DirectMessagesApi
 import com.sorrowblue.twitlin.directmessages.PagingDirectMessage
@@ -25,11 +26,12 @@ internal class DirectMessagesApiImpl(private val client: UserClient) : DirectMes
         recipientId: String,
         text: String,
         quickReply: QuickReply?,
+        ctas: List<CallToAction>?,
         mediaId: String?
     ): Response<DirectMessage> {
         val attachment = mediaId?.let { MessageDataRequest.Attachment.Media(it) }
             ?.let { MessageDataRequest.Attachment("media", it) }
-        val dmData = MessageDataRequest(text, attachment, quickReply)
+        val dmData = MessageDataRequest(text, attachment, quickReply, ctas)
         val request = DirectMessageRequest(
             Event(
                 "message_create",
@@ -47,4 +49,14 @@ internal class DirectMessagesApiImpl(private val client: UserClient) : DirectMes
 
     override suspend fun destroy(id: String): Response<DirectMessage> =
         client.delete("$DIRECT_MESSAGES/events/destroy.json", "id" to id)
+
+    override suspend fun indicateTyping(receiveId: String): Response<Unit> =
+        client.post("$DIRECT_MESSAGES/indicate_typing.json", "recipient_id" to receiveId)
+
+    override suspend fun markRead(lastReadEventId: String, recipientId: String): Response<Unit> =
+        client.post(
+            "$DIRECT_MESSAGES/mark_read.json",
+            "last_read_event_id" to lastReadEventId,
+            "recipient_id" to recipientId
+        )
 }

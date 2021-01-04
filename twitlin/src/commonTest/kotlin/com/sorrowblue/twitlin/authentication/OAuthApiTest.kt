@@ -19,8 +19,8 @@ class OAuthApiTest : AbstractTest {
     @Test
     fun accessTokenTest() = runTest {
         val accessToken = TwitterAPI.oauthApi.accessToken(
-            "qKMAFwAAAAABEkL_AAABdrjR4EY",
-            "jEKCT3IvmbIFDJAaBzxa9Vicx6UyAwsE"
+            "GoioYgAAAAABEkL_AAABdseGi2g",
+            "h0CwkPakH9P0TQLBQnrZJkrLiQI72p0d"
         ).testResult()
         assertNotNull(accessToken, "accessToken is null")
 

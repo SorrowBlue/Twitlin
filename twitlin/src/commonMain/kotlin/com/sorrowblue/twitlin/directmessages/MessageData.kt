@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class MessageData(
     val text: String,
+    val ctas: List<CallToAction>? = null,
     val entities: Entities = Entities(),
     val attachment: Attachment? = null,
     val quick_reply: QuickReply? = null,
@@ -22,3 +23,10 @@ public data class MessageData(
     @Serializable
     public data class QuickReplyResponse(val type: QuickReply.Type, val metadata: String)
 }
+
+@Serializable
+public data class CallToAction(
+    val type: String,
+    val label: String,
+    val url: String
+)

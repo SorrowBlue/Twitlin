@@ -7,7 +7,7 @@ package com.sorrowblue.twitlin.users.impl
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 import com.sorrowblue.twitlin.users.AccountApi
 import com.sorrowblue.twitlin.users.Settings
 
@@ -21,7 +21,7 @@ internal class AccountApiImpl(private val client: UserClient) : AccountApi {
         includeEntities: Boolean?,
         skipStatus: Boolean?,
         includeEmail: Boolean?
-    ): Response<TwitterUser> = client.get(
+    ): Response<User> = client.get(
         "$ACCOUNT/verify_credentials.json",
         "include_entities" to includeEntities,
         "skip_status" to skipStatus,
@@ -56,7 +56,7 @@ internal class AccountApiImpl(private val client: UserClient) : AccountApi {
         profileLinkColor: String?,
         includeEntities: Boolean?,
         skipStatus: Boolean?
-    ): Response<TwitterUser> = client.post(
+    ): Response<User> = client.post(
         "$ACCOUNT/update_profile.json",
         "name" to name,
         "url" to url,
@@ -86,7 +86,7 @@ internal class AccountApiImpl(private val client: UserClient) : AccountApi {
         image: String,
         includeEntities: Boolean?,
         skipStatus: Boolean?
-    ): Response<TwitterUser> = client.post(
+    ): Response<User> = client.post(
         "$ACCOUNT/update_profile_image.json",
         "image" to image,
         "include_entities" to includeEntities,

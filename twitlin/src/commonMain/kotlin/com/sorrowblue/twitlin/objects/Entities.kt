@@ -13,15 +13,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * The [TwitterTweet.entities] and [TwitterTweet.extendedEntities] sections are both made up of arrays of entity objects.
+ * The [Tweet.entities] and [Tweet.extendedEntities] sections are both made up of arrays of entity objects.
  * Below you will find descriptions for each of these entity objects, including data dictionaries that describe the object attribute names,
  * types, and short description. We’ll also indicate which PowerTrack Operators match these attributes,
  * and include some sample JSON payloads.
  *
  * A collection of common entities found in Tweets, including hashtags, links, and user mentions.
- * This [TwitterTweet.entities] object does include a [media] attribute,
- * but its implementation in the [TwitterTweet.entities] section is only completely accurate for Tweets with a single photo.
- * For all Tweets with more than one photo, a video, or animated GIF, the reader is directed to the [TwitterTweet.extendedEntities] section.
+ * This [Tweet.entities] object does include a [media] attribute,
+ * but its implementation in the [Tweet.entities] section is only completely accurate for Tweets with a single photo.
+ * For all Tweets with more than one photo, a video, or animated GIF, the reader is directed to the [Tweet.extendedEntities] section.
  *
  * @property hashtags Represents hashtags which have been parsed out of the Tweet text.
  * @property media Represents media elements uploaded with the Tweet.
@@ -42,7 +42,7 @@ public data class Entities(
 ) : JvmSerializable {
 
     /**
-     * The [TwitterTweet.entities] section will contain a [Entities.hashtags] array containing an object for every
+     * The [Tweet.entities] section will contain a [Entities.hashtags] array containing an object for every
      * hashtag included in the Tweet body, and include an empty array if no hashtags are present.
      * The PowerTrack `#` Operator is used to match on the [text] attribute. The `has:hashtags` Operator will match
      * if there is at least one item in the array.
@@ -60,13 +60,13 @@ public data class Entities(
     ) : JvmSerializable
 
     /**
-     * The [TwitterTweet.entities] section will contain a [Entities.media] array containing a single media object
+     * The [Tweet.entities] section will contain a [Entities.media] array containing a single media object
      * if any media object has been ‘attached’ to the Tweet. If no native media has been attached, there will be
-     * no [Entities.media] array in the entities. For the following reasons the [TwitterTweet.extendedEntities] section
+     * no [Entities.media] array in the entities. For the following reasons the [Tweet.extendedEntities] section
      * should be used to process Tweet native media:
      * <ul>
      * <li>Media [type] will always indicate ‘photo’ even in cases of a video and GIF being attached to Tweet.</li>
-     * <li>Even though up to four photos can be attached, only the first one will be listed in the [TwitterTweet.entities] section.</li>
+     * <li>Even though up to four photos can be attached, only the first one will be listed in the [Tweet.entities] section.</li>
      * </ul>
      * The `has:media` Operator will match if this array is populated.
      *
@@ -233,7 +233,7 @@ public data class Entities(
     }
 
     /**
-     * The [TwitterTweet.entities] section will contain a [Entities.urls] array containing an object for every link
+     * The [Tweet.entities] section will contain a [Entities.urls] array containing an object for every link
      * included in the Tweet body, and include an empty array if no links are present. The `has:links` Operator will
      * match if there is at least one item in the array. The `url:` Operator is used to match on the [expandedUrl]
      * attribute. If you are using the [Expanded URL enrichment](http://support.gnip.com/enrichments/enhanced_urls.html),
@@ -254,8 +254,10 @@ public data class Entities(
     @Serializable
     public data class URL(
         val url: String,
-        @SerialName("expanded_url") val expandedUrl: String?,
-        @SerialName("display_url") val displayUrl: String? = null,
+        @SerialName("expanded_url")
+        val expandedUrl: String,
+        @SerialName("display_url")
+        val displayUrl: String,
         val indices: List<Int>,
         val unwound: Unwound? = null
     ) : JvmSerializable {
@@ -279,7 +281,7 @@ public data class Entities(
     }
 
     /**
-     * The [TwitterTweet.entities] section will contain a [userMentions] array containing an object for every user
+     * The [Tweet.entities] section will contain a [userMentions] array containing an object for every user
      * mention included in the Tweet body, and include an empty array if no user mention is present.
      * The PowerTrack `@` Operator is used to match on the [screenName] attribute. The `has:mentions` Operator will
      * match if there is at least one item in the array.
@@ -304,7 +306,7 @@ public data class Entities(
     ) : JvmSerializable
 
     /**
-     * The [TwitterTweet.entities] section will contain a [symbols] array containing an object for every $cashtag
+     * The [Tweet.entities] section will contain a [symbols] array containing an object for every $cashtag
      * included in the Tweet body, and include an empty array if no symbol is present. The PowerTrack `$` Operator is
      * used to match on the [text] attribute. The `has:symbols` Operator will match if there is at least one item in the array.
      *
@@ -321,7 +323,7 @@ public data class Entities(
     ) : JvmSerializable
 
     /**
-     * The [TwitterTweet.entities] section will contain a [polls] array containing a single [Poll] object if the Tweet
+     * The [Tweet.entities] section will contain a [polls] array containing a single [Poll] object if the Tweet
      * contains a poll. If no poll is included, there will be no [polls] array in the entities section.
      *
      * Note that these Poll metadata are only available with the following Enterprise APIs:

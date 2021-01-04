@@ -6,7 +6,7 @@ package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.authentication.OAuthApi
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 import com.sorrowblue.twitlin.trends.TrendsApi
 
 /**
@@ -56,7 +56,7 @@ public interface AccountApi {
         includeEntities: Boolean? = null,
         skipStatus: Boolean? = null,
         includeEmail: Boolean? = null
-    ): Response<TwitterUser>
+    ): Response<User>
 
     /**
      * Removes the uploaded profile banner for the authenticating user. Returns HTTP 200 upon
@@ -126,7 +126,7 @@ public interface AccountApi {
         profileLinkColor: String? = null,
         includeEntities: Boolean? = null,
         skipStatus: Boolean? = null,
-    ): Response<TwitterUser>
+    ): Response<User>
 
     /**
      * Uploads a profile banner on behalf of the authenticating user. More information about sizing
@@ -181,6 +181,6 @@ public interface AccountApi {
         image: String,
         includeEntities: Boolean? = null,
         skipStatus: Boolean? = null
-    ): Response<TwitterUser>
+    ): Response<User>
 
 }

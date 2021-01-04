@@ -5,7 +5,7 @@
 package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 
 /**
  * The following API endpoints can be used to programmatically follow users, search for users,
@@ -116,7 +116,7 @@ public interface FriendshipsApi {
         screenName: String? = null,
         userId: String? = null,
         follow: Boolean? = null
-    ): Response<TwitterUser>
+    ): Response<User>
 
     /**
      * Allows the authenticating user to unfollow the user specified in the ID parameter.
@@ -133,7 +133,7 @@ public interface FriendshipsApi {
     public suspend fun destroy(
         screenName: String? = null,
         userId: String? = null
-    ): Response<TwitterUser>
+    ): Response<User>
 
     /**
      * Turn on/off Retweets and device notifications from the specified user.

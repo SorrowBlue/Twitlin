@@ -7,7 +7,7 @@ package com.sorrowblue.twitlin.users.impl
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
-import com.sorrowblue.twitlin.objects.TwitterUser
+import com.sorrowblue.twitlin.objects.User
 import com.sorrowblue.twitlin.users.FriendshipsApi
 import com.sorrowblue.twitlin.users.PagingIds
 import com.sorrowblue.twitlin.users.Relationship
@@ -57,14 +57,14 @@ internal class FriendshipsApiImpl(private val client: UserClient) : FriendshipsA
         screenName: String?,
         userId: String?,
         follow: Boolean?
-    ): Response<TwitterUser> = client.post(
+    ): Response<User> = client.post(
         "$FRIENDSHIPS/create.json",
         "screen_name" to screenName,
         "user_id" to userId,
         "follow" to follow
     )
 
-    override suspend fun destroy(screenName: String?, userId: String?): Response<TwitterUser> =
+    override suspend fun destroy(screenName: String?, userId: String?): Response<User> =
         client.post("$FRIENDSHIPS/destroy.json", "screen_name" to screenName, "user_id" to userId)
 
     override suspend fun update(

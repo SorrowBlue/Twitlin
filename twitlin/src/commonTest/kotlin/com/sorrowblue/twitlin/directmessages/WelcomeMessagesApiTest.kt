@@ -49,6 +49,11 @@ class WelcomeMessagesApiTest : AbstractTest {
     }
 
     @Test
+    fun destroyRuleTest() = runTest {
+        TwitterAPI.welcomeMessagesApi.destroyRule("1345651167691374592").testResult()
+    }
+
+    @Test
     fun showTest() = runTest {
         TwitterAPI.welcomeMessagesApi.show("1345260745752133639").testResult()
     }

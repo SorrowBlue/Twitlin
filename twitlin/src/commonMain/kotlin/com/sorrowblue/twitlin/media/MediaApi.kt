@@ -17,7 +17,7 @@ import com.sorrowblue.twitlin.users.AccountApi
 public interface MediaApi {
 
     /**
-     * ## Overview
+     * ### Overview
      * Use this endpoint to upload images to Twitter.
      *
      * This endpoint returns a [MediaResult.mediaId] by default and can optionally return a
@@ -31,7 +31,7 @@ public interface MediaApi {
      * [MediaResult.mediaKey]. For example, a [MediaResult.mediaKey] value can be used to create a
      * Draft Tweet with a photo using the [AccountApi.draftTweets] endpoint.
      *
-     * ## Usage
+     * ### Usage
      * This is a simple image upload endpoint with a limited set of features. The preferred
      * alternative is the chunked upload endpoint which supports both images and videos, provides
      * better reliability, allows resumption of file uploads, and other important features. In the
@@ -76,7 +76,7 @@ public interface MediaApi {
     ): Response<MediaResult>
 
     /**
-     * ## Overview
+     * ### Overview
      * The [uploadInit] request is used to initiate a file upload session. It returns a
      * [MediaResult.mediaId] which should be used to execute all subsequent requests. The next step
      * after a successful return from [uploadInit] is the [uploadAppend].
@@ -84,7 +84,7 @@ public interface MediaApi {
      * See the [Uploading media guide](https://developer.twitter.com/en/docs/media/upload-media/uploading-media/media-best-practices)
      * for constraints and requirements on media files.
      *
-     * ## Response
+     * ### Response
      * The response provides a media identifier in the [MediaResult.mediaId] (64-bit integer) and
      * [MediaResult.mediaIdString] (string) fields. Use the [MediaResult.mediaIdString] provided in
      * the API response from JavaScript and other languages that cannot accurately represent a long
@@ -115,7 +115,7 @@ public interface MediaApi {
     ): Response<MediaResult>
 
     /**
-     * ## Overview
+     * ### Overview
      * The [uploadAppend] is used to upload a chunk (consecutive byte range) of the media file. For
      * example, a 3 MB file could be split into 3 chunks of size 1 MB, and uploaded using 3
      * [uploadAppend] requests. After the entire file is uploaded, the next step is to call the
@@ -128,7 +128,7 @@ public interface MediaApi {
      * * File chunks can be retried individually
      * * Ability to tune chunk sizes to match changing network conditions e.g on cellular clients
      *
-     * ## Response
+     * ### Response
      * A successful response returns HTTP 2xx.
      *
      * @param mediaId The [mediaId] returned from the [uploadInit].
@@ -148,13 +148,13 @@ public interface MediaApi {
     ): Response<Unit>
 
     /**
-     * ## Overview
+     * ### Overview
      * The [uploadFinalize] should be called after the entire media file is uploaded using
      * [uploadAppend]. If and (only if) the response of the [uploadFinalize] contains a
      * [MediaResult.processingInfo] field, it may also be necessary to use a [uploadStatus] and wait
      * for it to return success before proceeding to Tweet creation.
      *
-     * ## Response
+     * ### Response
      * The response provides a media identifier in the [MediaResult.mediaId] (64-bit integer) and
      * [MediaResult.mediaIdString] (string) fields. Use the [MediaResult.mediaIdString] provided in
      * the API response from JavaScript and other languages that cannot accurately represent a long
@@ -180,12 +180,12 @@ public interface MediaApi {
     public suspend fun uploadFinalize(mediaId: String): Response<MediaResult>
 
     /**
-     * ## Overview
+     * ### Overview
      * The [uploadStatus] is used to periodically poll for updates of media processing operation.
      * After the [uploadStatus] response returns [MediaResult.Info.State.SUCCEEDED], you can move on
      * to the next step which is usually create Tweet with [MediaResult.mediaId].
      *
-     * ## Response
+     * ### Response
      * The response body contains [MediaResult.processingInfo] field which provides information
      * about current state of media processing operation. It contains a [MediaResult.Info.state]
      * field which has transition flow: [MediaResult.Info.State.PENDING] ->
@@ -199,7 +199,7 @@ public interface MediaApi {
     public suspend fun uploadStatus(mediaId: String): Response<MediaResult>
 
     /**
-     * ## Overview
+     * ### Overview
      * This endpoint can be used to provide additional information about the uploaded
      * [MediaResult.mediaId]. This feature is currently only supported for images and GIFs.
      *
@@ -208,7 +208,7 @@ public interface MediaApi {
      * 1. Call this endpoint to attach additional metadata such as image alt text.
      * 1. Create Tweet with [mediaId](s) attached.
      *
-     * ## Response
+     * ### Response
      * A successful response returns HTTP 2xx.
      *
      * @param mediaId The [mediaId] returned from the [upload] or the [uploadInit].
