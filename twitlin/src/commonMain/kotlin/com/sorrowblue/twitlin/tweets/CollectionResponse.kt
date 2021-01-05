@@ -33,19 +33,12 @@ public sealed class CollectionResponse : JvmSerializable {
     @Serializable
     public data class Errors(
         val errors: KList<Error>
-    ) : CollectionResponse(), JvmSerializable
-
-    @Serializable
-    public data class Error(
-        val reason: String,
-        val change: Change
     ) : CollectionResponse(), JvmSerializable {
 
         @Serializable
-        public data class Change(
-            val op: String,
-            @SerialName("tweet_id")
-            val tweetId: String
+        public data class Error(
+            val reason: String,
+            val change: CollectionChange
         ) : JvmSerializable
     }
 

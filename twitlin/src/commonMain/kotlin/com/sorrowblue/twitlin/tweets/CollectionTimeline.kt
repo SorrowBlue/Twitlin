@@ -18,7 +18,7 @@ public data class CollectionTimeline(
     @SerialName("custom_timeline_url")
     val customTimelineUrl: String,
     val description: String,
-    val url: String,
+    val url: String? = null,
     val visibility: String,
     @SerialName("timeline_order")
     val timelineOrder: String,

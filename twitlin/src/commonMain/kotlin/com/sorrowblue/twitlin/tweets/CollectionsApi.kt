@@ -5,8 +5,6 @@
 package com.sorrowblue.twitlin.tweets
 
 import com.sorrowblue.twitlin.client.Response
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
 /**
  * ### Collections
@@ -100,17 +98,72 @@ public interface CollectionsApi {
         url: String? = null,
         timelineOrder: TimelineOrder? = null
     ): Response<Collections<CollectionObjects.Default, CollectionResponse.TimelineId>>
-}
 
-@Serializable
-public enum class TimelineOrder {
+    /**
+     * Permanently delete a Collection owned by the currently authenticated user.
+     *
+     * @param id The identifier of the Collection to destroy.
+     * @return TODO
+     */
+    public suspend fun destroy(id: String): Response<CollectionDestroy>
 
-    @SerialName("curation_reverse_chron")
-    CURATION_REVERSE_CHRON,
+    /**
+     * Update information concerning a Collection owned by the currently authenticated user.
+     *
+     * Partial updates are not currently supported: please provide [name], [description], and [url]
+     * whenever using this method. Omitted [description] or [url] parameters will be treated as
+     * if an empty string was passed, overwriting any previously stored value for the Collection.
+     *
+     * @param id
+     * @param name
+     * @param description
+     * @param url
+     * @return TODO
+     */
+    public suspend fun update(
+        id: String,
+        name: String? = null,
+        description: String? = null,
+        url: String? = null,
+    ): Response<Collections<CollectionObjects.Default, CollectionResponse.TimelineId>>
 
-    @SerialName("tweet_chron")
-    TWEET_CHRON,
+    /**
+     * Add a specified Tweet to a Collection.
+     *
+     * A collection will store up to a few thousand Tweets. Adding a Tweet to a collection beyond
+     * its allowed capacity will remove the oldest Tweet in the collection based on the time
+     * it was added to the collection.
+     *
+     * Use [CollectionsApi.curateEntries] to add Tweets to a Collection in bulk.
+     *
+     * @param id The identifier of the Collection receiving the Tweet.
+     * @param tweetId The identifier of the Tweet to add to the Collection.
+     * @param relativeTo The identifier of the Tweet used for relative positioning in a
+     * [TimelineOrder.CURATION_REVERSE_CHRON] ordered collection.
+     * @param above Set to false to insert the specified [tweetId] below the [relativeTo] Tweet
+     * in the collection. Default: true
+     * @return TODO
+     */
+    public suspend fun addEntries(
+        id: String,
+        tweetId: String,
+        relativeTo: String? = null,
+        above: Boolean = true
+    ): Response<Collections<Unit, CollectionResponse.Errors>>
 
-    @SerialName("tweet_reverse_chron")
-    TWEET_REVERSE_CHRON,
+    /**
+     * Curate a Collection by adding or removing Tweets in bulk.
+     * Updates must be limited to 100 cumulative additions or removals per request.
+     *
+     * Use [CollectionsApi.addEntries] and [CollectionsApi.removeEntries] to add or remove
+     * a single Tweet.
+     *
+     * @param id Set timeline id.
+     * @param changes TODO
+     * @return TODO
+     */
+    public suspend fun curateEntries(
+        id: String,
+        changes: List<CollectionChange>
+    ): Response<Collections<Unit, CollectionResponse.Errors>>
 }

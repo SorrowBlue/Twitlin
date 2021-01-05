@@ -7,11 +7,14 @@ package com.sorrowblue.twitlin.tweets.impl
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
+import com.sorrowblue.twitlin.tweets.CollectionChange
+import com.sorrowblue.twitlin.tweets.CollectionDestroy
 import com.sorrowblue.twitlin.tweets.CollectionObjects
 import com.sorrowblue.twitlin.tweets.CollectionResponse
 import com.sorrowblue.twitlin.tweets.Collections
 import com.sorrowblue.twitlin.tweets.CollectionsApi
 import com.sorrowblue.twitlin.tweets.TimelineOrder
+import com.sorrowblue.twitlin.tweets.request.CurateEntriesRequest
 
 private const val COLLECTIONS = "${Urls.V1}/collections"
 
@@ -59,6 +62,45 @@ internal class CollectionsApiImpl(private val client: UserClient) : CollectionsA
             "$COLLECTIONS/create.json",
             "name" to name,
             "description" to description,
-            "url" to url, "timeline_order" to timelineOrder?.name?.toLowerCase()
+            "url" to url,
+            "timeline_order" to timelineOrder?.name?.toLowerCase()
         )
+
+    override suspend fun destroy(id: String): Response<CollectionDestroy> =
+        client.post("$COLLECTIONS/destroy.json", "id" to id)
+
+    override suspend fun update(
+        id: String,
+        name: String?,
+        description: String?,
+        url: String?
+    ): Response<Collections<CollectionObjects.Default, CollectionResponse.TimelineId>> =
+        client.post(
+            "$COLLECTIONS/update.json",
+            "id" to id,
+            "name" to name,
+            "description" to description,
+            "url" to url
+        )
+
+    override suspend fun addEntries(
+        id: String,
+        tweetId: String,
+        relativeTo: String?,
+        above: Boolean
+    ): Response<Collections<Unit, CollectionResponse.Errors>> = client.post(
+        "$COLLECTIONS/entries/add.json",
+        "id" to id,
+        "tweet_id" to tweetId,
+        "relative_to" to relativeTo,
+        "above" to above
+    )
+
+    override suspend fun curateEntries(
+        id: String,
+        changes: List<CollectionChange>
+    ): Response<Collections<Unit, CollectionResponse.Errors>> = client.postJson(
+        "$COLLECTIONS/entries/curate.json",
+        clazz = CurateEntriesRequest(id, changes)
+    )
 }

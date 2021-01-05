@@ -24,4 +24,10 @@ class CollectionsApiTest : AbstractTest {
         TwitterAPI.collectionsApi.list(screenName = "twittermusic")
             .testResult().let { assertNotNull(it) }
     }
+
+    @Test
+    fun createTest() = runTest {
+        TwitterAPI.collectionsApi.create("twitlintest", "twitlintest description")
+            .testResult().let { assertNotNull(it) }
+    }
 }
