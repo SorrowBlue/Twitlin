@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and Deploy documents
 on:
   push:
     branches:
@@ -26,3 +26,17 @@ jobs:
           enable_jekyll: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
+      - name: Slack Notification on Success
+        if: success()
+        uses: rtCamp/action-slack-notify@v2.0.2
+        env:
+          SLACK_CHANNEL: twitlin-ci
+          SLACK_TITLE: Success Build and Deploy documents
+          SLACK_COLOR: good
+      - name: Slack Notification on Failure
+        uses: rtCamp/action-slack-notify@v2.0.2
+        if: failure()
+        env:
+          SLACK_CHANNEL: twitlin-ci
+          SLACK_TITLE: Failure Build and Deploy documents
+          SLACK_COLOR: danger
