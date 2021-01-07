@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+env:
+  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL_TWITLIN_CI }}
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
