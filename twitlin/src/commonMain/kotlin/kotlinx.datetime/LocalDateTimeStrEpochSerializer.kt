@@ -4,6 +4,7 @@
 
 package kotlinx.datetime
 
+import com.sorrowblue.twitlin.Twitlin
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -19,10 +20,10 @@ internal object LocalDateTimeStrEpochSerializer : KSerializer<LocalDateTime> {
 
     override fun deserialize(decoder: Decoder) =
         Instant.fromEpochMilliseconds(decoder.decodeString().toLong())
-            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .toLocalDateTime(Twitlin.defaultTimeZone)
 
     override fun serialize(encoder: Encoder, value: LocalDateTime) {
-        val s = value.toInstant(TimeZone.UTC).toEpochMilliseconds().toString()
+        val s = value.toInstant(Twitlin.defaultTimeZone).toEpochMilliseconds().toString()
         encoder.encodeString(s)
     }
 }

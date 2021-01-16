@@ -166,4 +166,35 @@ public interface CollectionsApi {
         id: String,
         changes: List<CollectionChange>
     ): Response<Collections<Unit, CollectionResponse.Errors>>
+
+    /**
+     * Move a specified Tweet to a new position in a [TimelineOrder.CURATION_REVERSE_CHRON]
+     * ordered collection.
+     *
+     * @param id The identifier of the Collection receiving the Tweet.
+     * @param tweetId The identifier of the Tweet to add to the Collection.
+     * @param relativeTo The identifier of the Tweet used for relative positioning.
+     * @param above Set to false to insert the specified [tweetId] below the [relativeTo] Tweet
+     * in the collection.
+     * @return TODO
+     */
+    public suspend fun moveEntries(
+        id: String,
+        tweetId: String,
+        relativeTo: String,
+        above: Boolean = true
+    ): Response<Collections<Unit, CollectionResponse.Errors>>
+
+    /**
+     * Remove the specified Tweet from a Collection.
+     * Use [CollectionsApi.curateEntries] to remove Tweets from a Collection in bulk.
+     *
+     * @param id The identifier of the target Collection.
+     * @param tweetId The identifier of the Tweet to remove.
+     * @return TODO
+     */
+    public suspend fun removeEntries(
+        id: String,
+        tweetId: String
+    ): Response<Collections<Unit, CollectionResponse.Errors>>
 }

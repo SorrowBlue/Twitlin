@@ -5,29 +5,28 @@
 package com.sorrowblue.twitlin.tweets
 
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.test.AbstractTest
-import com.sorrowblue.twitlin.test.runTest
-import com.sorrowblue.twitlin.test.testResult
+import test.AbstractTest
+import test.resultLog
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 class CollectionsApiTest : AbstractTest {
 
     @Test
-    fun entriesTest() = runTest {
+    fun entriesTest() = runBlocking {
         TwitterAPI.collectionsApi.entries("custom-539487832448843776")
-            .testResult().let { assertNotNull(it) }
+            .resultLog().let { assertNotNull(it) }
     }
 
     @Test
-    fun listTest() = runTest {
+    fun listTest() = runBlocking {
         TwitterAPI.collectionsApi.list(screenName = "twittermusic")
-            .testResult().let { assertNotNull(it) }
+            .resultLog().let { assertNotNull(it) }
     }
 
     @Test
-    fun createTest() = runTest {
+    fun createTest() = runBlocking {
         TwitterAPI.collectionsApi.create("twitlintest", "twitlintest description")
-            .testResult().let { assertNotNull(it) }
+            .resultLog().let { assertNotNull(it) }
     }
 }

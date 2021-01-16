@@ -7,8 +7,9 @@ package com.sorrowblue.twitlin.objects
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.objects.Tweet.ExtendedEntities
 import com.sorrowblue.twitlin.objects.Tweet.FilterLevel
-import com.sorrowblue.twitlin.tweets.favorites.FavoritesApi
-import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
+import com.sorrowblue.twitlin.tweets.FavoritesApi
+import com.sorrowblue.twitlin.tweets.StatusesApi
+import com.sorrowblue.twitlin.utilities.LanguageCode
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalDateTimeRFC822Serializer
 import kotlinx.serialization.SerialName
@@ -128,7 +129,7 @@ public data class Tweet(
     val idStr: String,
     val text: String,
     val truncated: Boolean,
-    val entities: Entities,
+    val entities: Entities? = null,
     val source: String,
     @SerialName("in_reply_to_status_id")
     val inReplyToStatusId: Long?,
@@ -140,7 +141,7 @@ public data class Tweet(
     val inReplyToUserIdStr: String?,
     @SerialName("in_reply_to_screen_name")
     val inReplyToScreenName: String?,
-    val user: User,
+    val user: User? = null,
     val coordinates: Coordinates?,
     val place: Place? = null,
     @SerialName("quoted_status_id")
@@ -169,7 +170,7 @@ public data class Tweet(
     val possiblySensitive: Boolean? = null,
     @SerialName("filter_level")
     val filterLevel: FilterLevel? = null,
-    val lang: String? = null,
+    val lang: LanguageCode? = null,
     @SerialName("matching_rules")
     val matchingRules: List<Rule>? = null,
     @SerialName("current_user_retweet")

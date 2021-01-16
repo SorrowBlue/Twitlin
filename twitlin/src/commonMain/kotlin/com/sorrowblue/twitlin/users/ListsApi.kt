@@ -8,7 +8,7 @@ import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.objects.Entities
 import com.sorrowblue.twitlin.objects.Tweet
 import com.sorrowblue.twitlin.objects.User
-import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
+import com.sorrowblue.twitlin.tweets.StatusesApi
 
 /**
  * A list is a curated group of Twitter accounts. You can create your own lists or subscribe to

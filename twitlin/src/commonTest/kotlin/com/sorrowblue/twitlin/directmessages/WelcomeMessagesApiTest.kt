@@ -5,61 +5,60 @@
 package com.sorrowblue.twitlin.directmessages
 
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.test.AbstractTest
-import com.sorrowblue.twitlin.test.runTest
-import com.sorrowblue.twitlin.test.testResult
+import test.AbstractTest
+import test.resultLog
 import kotlin.test.Test
 
 class WelcomeMessagesApiTest : AbstractTest {
 
     @Test
-    fun listTest() = runTest {
-        TwitterAPI.welcomeMessagesApi.list().testResult()
+    fun listTest() = runBlocking {
+        TwitterAPI.welcomeMessagesApi.list().resultLog()
     }
 
     @Test
-    fun listRuleTest() = runTest {
-        TwitterAPI.welcomeMessagesApi.listRule().testResult()
+    fun listRuleTest() = runBlocking {
+        TwitterAPI.welcomeMessagesApi.listRule().resultLog()
     }
 
     @Test
-    fun newTest() = runTest {
+    fun newTest() = runBlocking {
         TwitterAPI.welcomeMessagesApi.new(
             "Welcome message name",
             "text",
             quickReply = QuickReply(
                 QuickReply.Type.OPTIONS,
                 (1..4).map { QuickReply.Option("label$it", "description$it", "metadata$it") })
-        ).testResult()
+        ).resultLog()
     }
 
     @Test
-    fun newRuleTest() = runTest {
-        TwitterAPI.welcomeMessagesApi.newRule("1345260745752133639").testResult()
+    fun newRuleTest() = runBlocking {
+        TwitterAPI.welcomeMessagesApi.newRule("1345260745752133639").resultLog()
     }
 
     @Test
-    fun updateTest() = runTest {
-        TwitterAPI.welcomeMessagesApi.update("1345260617335115782", "update text").testResult()
+    fun updateTest() = runBlocking {
+        TwitterAPI.welcomeMessagesApi.update("1345260617335115782", "update text").resultLog()
     }
 
     @Test
-    fun destroyTest() = runTest {
-        TwitterAPI.welcomeMessagesApi.destroy("1345229369879396357").testResult()
+    fun destroyTest() = runBlocking {
+        TwitterAPI.welcomeMessagesApi.destroy("1345229369879396357").resultLog()
     }
 
     @Test
-    fun destroyRuleTest() = runTest {
-        TwitterAPI.welcomeMessagesApi.destroyRule("1345651167691374592").testResult()
+    fun destroyRuleTest() = runBlocking {
+        TwitterAPI.welcomeMessagesApi.destroyRule("1345651167691374592").resultLog()
     }
 
     @Test
-    fun showTest() = runTest {
-        TwitterAPI.welcomeMessagesApi.show("1345260745752133639").testResult()
+    fun showTest() = runBlocking {
+        TwitterAPI.welcomeMessagesApi.show("1345260745752133639").resultLog()
     }
 
     @Test
-    fun showRule() = runTest {
-        TwitterAPI.welcomeMessagesApi.showRule("1345317235041075200").testResult()
+    fun showRule() = runBlocking {
+        TwitterAPI.welcomeMessagesApi.showRule("1345317235041075200").resultLog()
     }
 }

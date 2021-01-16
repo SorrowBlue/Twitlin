@@ -1,17 +1,20 @@
 package com.sorrowblue.twitlin.androidsample
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sorrowblue.twitlin.androidsample.databinding.RecyclerViewItemBinding
-import com.sorrowblue.twitlin.v2.Response
 import com.sorrowblue.twitlin.v2.objects.Tweet
+import com.sorrowblue.twitlin.v2.objects.User
 import kotlin.properties.Delegates
+
+typealias TweetObject = Pair<Tweet, User>
 
 class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
-    var currentItem: List<Response.Success<Tweet>> by Delegates.observable(emptyList()) { _, oldValue, newValue ->
+    var currentItem: List<TweetObject> by Delegates.observable(emptyList()) { _, oldValue, newValue ->
         DiffUtil.calculateDiff(Diff(oldValue, newValue)).dispatchUpdatesTo(this)
     }
 
@@ -32,22 +35,22 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
             )
         )
 
-        fun bind(tweet: Response.Success<Tweet>) {
-            binding.textView.text = tweet.data.text
-//			binding.imageView.setImageURI(Uri.parse(tweet.includes?.users?.firstOrNull()?.profileImageUrl))
+        fun bind(tweetObject: TweetObject) {
+            binding.textView.text = tweetObject.first.text
+            binding.imageView.setImageURI(Uri.parse(tweetObject.second.profileImageUrl))
         }
     }
 
-    class Diff(val old: List<Response.Success<Tweet>>, val new: List<Response.Success<Tweet>>) :
+    class Diff(private val old: List<TweetObject>, private val new: List<TweetObject>) :
         DiffUtil.Callback() {
+
         override fun getOldListSize() = old.size
 
         override fun getNewListSize() = new.size
-
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-            old[oldItemPosition].data.id == new[newItemPosition].data.id
+            old[oldItemPosition].first.id == new[newItemPosition].first.id
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-            old[oldItemPosition].data == new[newItemPosition].data
+            old[oldItemPosition] == new[newItemPosition]
     }
 }

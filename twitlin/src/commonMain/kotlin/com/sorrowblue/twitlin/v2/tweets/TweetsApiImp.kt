@@ -1,60 +1,48 @@
-/*
- * (c) 2020.
- */
-
 package com.sorrowblue.twitlin.v2.tweets
 
 import com.sorrowblue.twitlin.client.Urls
-import com.sorrowblue.twitlin.v2.Client
-import com.sorrowblue.twitlin.v2.Response
-import com.sorrowblue.twitlin.v2.objects.AddSearchStreamRule
-import com.sorrowblue.twitlin.v2.objects.AddSearchStreamRuleRequest
-import com.sorrowblue.twitlin.v2.objects.AddSearchStreamRuleResponse
-import com.sorrowblue.twitlin.v2.objects.AddSearchStreamRuleResult
-import com.sorrowblue.twitlin.v2.objects.DeleteSearchStreamRuleRequest
-import com.sorrowblue.twitlin.v2.objects.DeleteSearchStreamRuleResponse
-import com.sorrowblue.twitlin.v2.objects.DeleteSearchStreamRuleResult
-import com.sorrowblue.twitlin.v2.objects.Hidden
-import com.sorrowblue.twitlin.v2.objects.SearchRecent
-import com.sorrowblue.twitlin.v2.objects.SearchRecentResponse
-import com.sorrowblue.twitlin.v2.objects.SearchStreamRule
-import com.sorrowblue.twitlin.v2.objects.SearchStreamRuleResponse
+import com.sorrowblue.twitlin.v2.client.Response
+import com.sorrowblue.twitlin.v2.client.UserClient
 import com.sorrowblue.twitlin.v2.objects.Tweet
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
+import com.sorrowblue.twitlin.v2.tweets.request.HiddenRequest
+import com.sorrowblue.twitlin.v2.tweets.response.HiddenResponse
 import kotlinx.datetime.LocalDateTime
 
 private const val TWEETS = "${Urls.V2}/tweets"
+private const val USERS = "${Urls.V2}/users"
 
-internal class TweetsApiImp(private val client: Client) : TweetsApi {
+internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
 
-    override suspend fun tweets(
+    override suspend fun tweet(
         id: String,
         expansions: List<Expansion>?,
         mediaFields: List<MediaField>?,
         placeFields: List<PlaceField>?,
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
-        userFields: List<UserField>?,
-    ): Response<Tweet> = client.get(
-        "$TWEETS/$id",
-        "expansions" to expansions?.toParameter(),
-        "media.fields" to mediaFields?.toParameter(),
-        "place.fields" to placeFields?.toParameter(),
-        "poll.fields" to pollFields?.toParameter(),
-        "tweet.fields" to tweetFields?.toParameter(),
-        "user.fields" to userFields?.toParameter(),
-    )
+        userFields: List<UserField>?
+    ): Response<OptionalData<Tweet>> {
+        return userClient.testGet(
+            "$TWEETS/$id",
+            "expansions" to expansions?.toParameter(),
+            "media.fields" to mediaFields?.toParameter(),
+            "place.fields" to placeFields?.toParameter(),
+            "poll.fields" to pollFields?.toParameter(),
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter(),
+            serializer = Response.serializer(OptionalData.serializer(Tweet.serializer()))
+        )
+    }
 
-    override suspend fun tweets(
+    override suspend fun tweet(
         ids: List<String>,
         expansions: List<Expansion>?,
         mediaFields: List<MediaField>?,
         placeFields: List<PlaceField>?,
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
-        userFields: List<UserField>?,
-    ): Response<List<Tweet>> = client.get(
+        userFields: List<UserField>?
+    ): Response<OptionalData<List<Tweet>>> = userClient.get(
         TWEETS,
         "ids" to ids.joinToString(","),
         "expansions" to expansions?.toParameter(),
@@ -65,94 +53,42 @@ internal class TweetsApiImp(private val client: Client) : TweetsApi {
         "user.fields" to userFields?.toParameter(),
     )
 
-    override suspend fun hidden(id: String, isHidden: Boolean): Response<Hidden> =
-        client.put("$TWEETS/$id/hidden", Hidden(isHidden))
+    override suspend fun hidden(id: String, isHidden: Boolean): Response<Boolean> =
+        userClient.putJson<HiddenResponse, HiddenRequest>(
+            "$TWEETS/$id/hidden",
+            HiddenRequest(isHidden)
+        ).convertData { it.data.hidden }
 
-    override suspend fun searchRecent(
-        query: String, maxResults: Int?, nextToken: String?,
-        sinceId: String?, startTime: LocalDateTime?, untilId: String?, endTime: LocalDateTime?,
-        expansions: List<Expansion>?, mediaFields: List<MediaField>?,
-        placeFields: List<PlaceField>?, pollFields: List<PollField>?,
-        tweetFields: List<TweetField>?, userFields: List<UserField>?
-    ): Response<SearchRecent> = client.getCustom(
-        "$TWEETS/search/recent",
-        "query" to query,
-        "max_results" to maxResults,
-        "next_token" to nextToken,
-        "since_id" to sinceId,
-        "until_id" to untilId,
-        "start_time" to startTime,
-        "end_time" to endTime,
-        "expansions" to expansions?.toParameter(),
-        "media.fields" to mediaFields?.toParameter(),
-        "place.fields" to placeFields?.toParameter(),
-        "poll.fields" to pollFields?.toParameter(),
-        "tweet.fields" to tweetFields?.toParameter(),
-        "user.fields" to userFields?.toParameter(),
-        converter = SearchRecentResponse.Companion::onSuccess
-    )
-
-    @ExperimentalCoroutinesApi
-    override fun sampleStream(
+    override suspend fun mentions(
+        id: String,
+        endTime: LocalDateTime,
+        startTime: LocalDateTime,
+        maxResults: Int,
+        paginationToken: String?,
+        sinceId: String?,
+        untilId: String?,
         expansions: List<Expansion>?,
         mediaFields: List<MediaField>?,
         placeFields: List<PlaceField>?,
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Flow<Response<Tweet>> = client.streaming(
-        "$TWEETS/sample/stream",
+    ): Response<PagingTweet> = TODO()
+    /*userClient.get(
+        "$USERS/$id/mentions",
+        "endTime" to endTime.toInstant(TimeZone.UTC),
+        startTime: LocalDateTime,
+        maxResults: Int,
+        paginationToken: String?,
+    sinceId: String?,
+    untilId: String?,
         "expansions" to expansions?.toParameter(),
         "media.fields" to mediaFields?.toParameter(),
         "place.fields" to placeFields?.toParameter(),
         "poll.fields" to pollFields?.toParameter(),
         "tweet.fields" to tweetFields?.toParameter(),
         "user.fields" to userFields?.toParameter(),
-        useBearerToken = true
-    )
-
-    //
-    @ExperimentalCoroutinesApi
-    override fun searchStream(
-        expansions: List<Expansion>?,
-        mediaFields: List<MediaField>?,
-        placeFields: List<PlaceField>?,
-        pollFields: List<PollField>?,
-        tweetFields: List<TweetField>?,
-        userFields: List<UserField>?
-    ): Flow<Response<Tweet>> = client.streaming(
-        "$TWEETS/search/stream",
-        "expansions" to expansions?.toParameter(),
-        "media.fields" to mediaFields?.toParameter(),
-        "place.fields" to placeFields?.toParameter(),
-        "poll.fields" to pollFields?.toParameter(),
-        "tweet.fields" to tweetFields?.toParameter(),
-        "user.fields" to userFields?.toParameter(),
-        useBearerToken = true
-    )
-
-    override suspend fun searchStreamRules(ids: List<String>?): Response<SearchStreamRule> =
-        client.getCustom<SearchStreamRule, SearchStreamRuleResponse>(
-            "$TWEETS/search/stream/rules",
-            "ids" to ids?.joinToString(","),
-            useBearerToken = true
-        ) { res, httpRes -> res.toSuccess(httpRes.status.value) }
-
-    override suspend fun addSearchStreamRules(
-        rules: List<AddSearchStreamRule>, dryRun: Boolean?
-    ): Response<AddSearchStreamRuleResult> = client.postJsonCustom(
-        "$TWEETS/search/stream/rules", "dry_run" to dryRun,
-        body = AddSearchStreamRuleRequest(rules),
-        useBearerToken = true
-    ) { res: AddSearchStreamRuleResponse, httpRes -> res.toSuccess(httpRes.status.value) }
-
-    override suspend fun deleteSearchStreamRules(
-        ids: List<String>, dryRun: Boolean?
-    ): Response<DeleteSearchStreamRuleResult> = client.postJsonCustom(
-        "$TWEETS/search/stream/rules", "dry_run" to dryRun,
-        body = DeleteSearchStreamRuleRequest(ids),
-        useBearerToken = true
-    ) { res: DeleteSearchStreamRuleResponse, httpRes -> res.toSuccess(httpRes.status.value) }
+    )*/
 }
 
 public fun List<Field>.toParameter(): String = joinToString(",") { it.value }

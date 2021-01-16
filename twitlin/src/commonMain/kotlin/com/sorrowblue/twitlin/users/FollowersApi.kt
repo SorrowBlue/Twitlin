@@ -5,6 +5,7 @@
 package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.client.Response
+import com.sorrowblue.twitlin.objects.PagingIds
 import com.sorrowblue.twitlin.objects.User
 
 /**

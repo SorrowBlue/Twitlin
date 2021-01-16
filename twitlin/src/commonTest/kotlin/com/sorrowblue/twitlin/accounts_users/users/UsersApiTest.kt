@@ -5,19 +5,18 @@
 package com.sorrowblue.twitlin.accounts_users.users
 
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.test.AbstractTest
-import com.sorrowblue.twitlin.test.runTest
-import com.sorrowblue.twitlin.test.testResult
+import test.AbstractTest
+import test.resultLog
 import kotlin.test.Test
 
 class UsersApiTest : AbstractTest {
 
     @Test
-    fun lookupTest() = runTest {
+    fun lookupTest() = runBlocking {
         TwitterAPI.usersApi.lookup(
             listOf("gigazine"),
             includeEntities = true,
             tweetMode = true
-        ).testResult()
+        ).resultLog()
     }
 }

@@ -103,4 +103,26 @@ internal class CollectionsApiImpl(private val client: UserClient) : CollectionsA
         "$COLLECTIONS/entries/curate.json",
         clazz = CurateEntriesRequest(id, changes)
     )
+
+    override suspend fun moveEntries(
+        id: String,
+        tweetId: String,
+        relativeTo: String,
+        above: Boolean
+    ): Response<Collections<Unit, CollectionResponse.Errors>> = client.post(
+        "$COLLECTIONS/entries/move.json",
+        "id" to id,
+        "tweet_id" to tweetId,
+        "relative_to" to relativeTo,
+        "above" to above
+    )
+
+    override suspend fun removeEntries(
+        id: String,
+        tweetId: String
+    ): Response<Collections<Unit, CollectionResponse.Errors>> = client.post(
+        "$COLLECTIONS/entries/remove.json",
+        "id" to id,
+        "tweet_id" to tweetId
+    )
 }

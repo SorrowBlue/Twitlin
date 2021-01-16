@@ -7,8 +7,14 @@ package com.sorrowblue.twitlin.client
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.authentication.AccessToken
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.request
+import io.ktor.client.request.post
+import io.ktor.client.statement.HttpStatement
+import io.ktor.client.statement.readText
 import io.ktor.http.HttpMethod
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.serialization.decodeFromString
 
 internal class UserClient(
     apiKey: String,
@@ -24,7 +30,11 @@ internal class UserClient(
         vararg params: UrlParams = emptyArray(),
         oauthToken: String? = null
     ): Response<T> =
-        request(HttpMethod.Post, url, params, oauthToken?.let { AccessToken(it, "", "", "") }) {
+        request(
+            HttpMethod.Post,
+            url,
+            params,
+            accessToken = oauthToken?.let { AccessToken(it, "", "", "") }) {
             bodyFormUrlEncoded(params.notNullParams)
         }
 
@@ -36,41 +46,51 @@ internal class UserClient(
 
     suspend inline fun <reified T : Any, reified V : Any> postJson(
         url: String,
-        vararg params: UrlParams = emptyArray(),
-        clazz: V
-    ): Response<T> = request(HttpMethod.Post, url.combineParams(params), params) { bodyJson(clazz) }
+        clazz: V,
+        vararg params: UrlParams
+    ): Response<T> =
+        request(HttpMethod.Post, url.combineParams(params), params) { bodyJson(clazz) }
 
     suspend inline fun <reified T : Any, reified V : Any> putJson(
         url: String,
         vararg params: UrlParams = emptyArray(),
         clazz: V
-    ): Response<T> = request(HttpMethod.Put, url.combineParams(params), params) { bodyJson(clazz) }
+    ): Response<T> =
+        request(HttpMethod.Put, url.combineParams(params), params) { bodyJson(clazz) }
+
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    inline fun <reified T : Any> streaming(
+        url: String,
+        vararg params: UrlParams
+    ): Flow<Response<T>> = channelFlow {
+        httpClient.post<HttpStatement>(url) {
+            headerAuthorization(apiKey, secretKey, params.notNullParams, accessToken)
+            bodyFormUrlEncoded(params.notNullParams)
+        }.execute { response ->
+            do {
+                val body = response.readText()
+                Napier.i(
+                    "Request Twitter API-> GET:$url, body=${body}",
+                    tag = "Twitlin"
+                )
+                json.decodeFromString<Response<T>>(body).let(channel::offer)
+            } while (isClosedForSend.not())
+        }
+    }
 
     private suspend inline fun <reified T : Any> request(
         method: HttpMethod,
         url: String,
         params: Array<out Pair<String, Any?>>,
         accessToken: AccessToken? = null,
-        noinline block: (HttpRequestBuilder.() -> String)? = null
-    ): Response<T> = runCatchingResponse {
-        httpClient.request<Response<T>>(url) {
-            this.method = method
-            headerAuthorization(
-                apiKey,
-                secretKey,
-                params.notNullParams,
-                accessToken ?: this@UserClient.accessToken
-            )
-            val body = block?.invoke(this)
-            Napier.i(
-                "Request Twitter API-> ${method.value}:${this.url.encodedPath}, body=${body}",
-                tag = "Twitlin"
-            )
-        }.also {
-            Napier.i(
-                "Response Twitter API-> ${method.value}:${url.combineParams(params)}, response=$it",
-                tag = "Twitlin"
-            )
-        }
-    }
+        noinline bodyBlock: (HttpRequestBuilder.() -> String)? = null
+    ): Response<T> = request(method, url, {
+        headerAuthorization(
+            apiKey,
+            secretKey,
+            params.notNullParams,
+            accessToken ?: this@UserClient.accessToken
+        )
+    }, bodyBlock)
 }

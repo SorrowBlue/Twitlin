@@ -4,11 +4,13 @@
 
 package kotlinx.datetime
 
+import kotlinx.serialization.json.Json
+
 private val month =
     listOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
-internal fun Instant.Companion.parseRFC822(rfcString: String): Instant {
-    val splits = rfcString.split(' ')
+internal fun String.toInstantForRFC822(): Instant {
+    val splits = split(' ')
     val year = splits[5]
     val month = month.indexOf(splits[1]).plus(1).toString().padStart(2, '0')
     val day = splits[2]
@@ -16,10 +18,8 @@ internal fun Instant.Companion.parseRFC822(rfcString: String): Instant {
     val hour = time[0]
     val minute = time[1]
     val second = time[2]
-    return parse("$year-$month-${day}T$hour:$minute:${second}.000Z")
+    return Instant.parse("$year-$month-${day}T$hour:$minute:${second}.000Z")
 }
-
-internal fun String.toInstantForRFC822() = Instant.parseRFC822(this)
 
 internal fun Instant.formatRFC822(): String {
     val localDateTime = toLocalDateTime(TimeZone.UTC)
@@ -36,3 +36,6 @@ internal fun Instant.formatRFC822(): String {
     val y = localDateTime.year.toString().padStart(4, '0')
     return "$w $month $d $h:$m:$s +0000 $y"
 }
+
+internal fun LocalDateTime.encodeToISOString() =
+    Json.encodeToString(LocalDateTimeISOSerializer, this)

@@ -7,8 +7,8 @@ package com.sorrowblue.twitlin.users.impl
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
+import com.sorrowblue.twitlin.objects.PagingIds
 import com.sorrowblue.twitlin.users.FriendsApi
-import com.sorrowblue.twitlin.users.PagingIds
 import com.sorrowblue.twitlin.users.PagingUser
 
 private const val FRIENDS = "${Urls.V1}/friends"

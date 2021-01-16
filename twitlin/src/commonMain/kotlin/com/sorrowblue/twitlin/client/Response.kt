@@ -13,7 +13,7 @@ import com.sorrowblue.twitlin.client.Error as ClientError
  * @param T TODO
  */
 @Serializable(ResponseSerializer::class)
-public sealed class Response<T> {
+public sealed class Response<T : Any> {
 
     /**
      * TODO
@@ -22,7 +22,7 @@ public sealed class Response<T> {
      * @property data TODO
      */
     @Serializable
-    public data class Success<T>(val data: T) : Response<T>()
+    public data class Success<T : Any>(val data: T) : Response<T>()
 
     /**
      * TODO
@@ -31,8 +31,7 @@ public sealed class Response<T> {
      * @property errors TODO
      */
     @Serializable
-    public data class Error<T>(val errors: List<ClientError>) :
-        Response<T>()
+    public data class Error<T : Any>(val errors: List<ClientError>) : Response<T>()
 
     /**
      * TODO
@@ -42,7 +41,7 @@ public sealed class Response<T> {
      * @param onError TODO
      * @return TODO
      */
-    public inline fun <R> fold(onSuccess: (Success<T>) -> R, onError: (Error<T>) -> R): R =
+    public inline fun <R : Any> fold(onSuccess: (Success<T>) -> R, onError: (Error<T>) -> R): R =
         when (this) {
             is Success -> onSuccess(this)
             is Error -> onError(this)
@@ -79,12 +78,9 @@ public sealed class Response<T> {
      *
      * @return TODO
      */
-    public fun dataOrNull(): T? = when (this) {
-        is Success -> data
-        is Error -> null
-    }
+    public fun dataOrNull(): T? = if (this is Success) data else null
 
-    public fun <R> convertData(convert: (T) -> R): Response<R> {
+    public fun <R : Any> convertData(convert: (T) -> R): Response<R> {
         return when (this) {
             is Success -> Success(convert.invoke(data))
             is Error -> Error(errors)
@@ -92,6 +88,6 @@ public sealed class Response<T> {
     }
 
     internal companion object {
-        fun <T> error(error: ClientError) = Error<T>(listOf(error))
+        fun <T : Any> error(error: ClientError) = Error<T>(listOf(error))
     }
 }

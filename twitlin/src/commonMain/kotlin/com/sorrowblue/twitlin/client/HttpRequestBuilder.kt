@@ -55,18 +55,22 @@ internal fun HttpRequestBuilder.headerAuthorization(
     consumerSecret: String,
     params: List<Pair<String, String>>,
     accessToken: AccessToken?
-) {
+): String {
     val nc = nextNonce
     val ts = nowTimestamp
     val sign =
         createSignature(consumerKey, consumerSecret, nc, ts, accessToken, params)
     val parameters =
         collectParameters(consumerKey, nc, sign, ts, accessToken?.oauthToken, params.oauthParams)
-    header(HttpHeaders.Authorization, buildHeaderString(parameters))
+    val headerValue = buildHeaderString(parameters)
+    header(HttpHeaders.Authorization, headerValue)
+    return "${HttpHeaders.Authorization}: ${headers[HttpHeaders.Authorization]}"
 }
 
-internal fun HttpRequestBuilder.headerAuthorization(bearerToken: BearerToken?) =
+internal fun HttpRequestBuilder.headerAuthorization(bearerToken: BearerToken?): String {
     header(HttpHeaders.Authorization, "Bearer ${bearerToken?.accessToken}")
+    return "${HttpHeaders.Authorization}: ${headers[HttpHeaders.Authorization]}"
+}
 
 internal fun HttpRequestBuilder.bodyFormUrlEncoded(params: List<Pair<String, String>>): String =
     params.mapNotNull { if (it.first.startsWith("oauth_")) null else it }

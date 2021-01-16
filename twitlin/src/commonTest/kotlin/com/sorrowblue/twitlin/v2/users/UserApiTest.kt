@@ -5,18 +5,17 @@
 package com.sorrowblue.twitlin.v2.users
 
 import com.sorrowblue.twitlin.TwitterV2API
-import com.sorrowblue.twitlin.test.AbstractTest
-import com.sorrowblue.twitlin.test.runTest
 import com.sorrowblue.twitlin.v2.testResult
 import com.sorrowblue.twitlin.v2.tweets.TweetField
 import com.sorrowblue.twitlin.v2.tweets.UserField
+import test.AbstractTest
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 class UserApiTest : AbstractTest {
 
     @Test
-    fun usersIdTest() = runTest {
+    fun usersIdTest() = runBlocking {
         TwitterV2API.usersApi.users(
 //			"2244994945",
             "938122027231150081",
@@ -27,7 +26,7 @@ class UserApiTest : AbstractTest {
     }
 
     @Test
-    fun usersIdsTest() = runTest {
+    fun usersIdsTest() = runBlocking {
         TwitterV2API.usersApi.users(
             listOf("2244994945", "6253282"),
             tweetFields = TweetField.all(),
@@ -39,7 +38,7 @@ class UserApiTest : AbstractTest {
     }
 
     @Test
-    fun byUsernameTest() = runTest {
+    fun byUsernameTest() = runBlocking {
         TwitterV2API.usersApi.byUsername(
             "TwitterDev",
             tweetFields = TweetField.all(),
@@ -48,5 +47,11 @@ class UserApiTest : AbstractTest {
         ).testResult().also {
             assertNotNull(it, "")
         }
+    }
+
+    @Test
+    fun tweetsTest() = runBlocking {
+        TwitterV2API.usersApi.tweets("2244994945", tweetFields = listOf(TweetField.TEXT))
+            .testResult()
     }
 }

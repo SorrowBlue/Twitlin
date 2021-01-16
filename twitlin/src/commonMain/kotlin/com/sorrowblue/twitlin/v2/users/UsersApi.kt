@@ -4,11 +4,16 @@
 
 package com.sorrowblue.twitlin.v2.users
 
-import com.sorrowblue.twitlin.v2.Response
+import com.sorrowblue.twitlin.v2.client.Response
+import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.tweets.Field
+import com.sorrowblue.twitlin.v2.tweets.MediaField
+import com.sorrowblue.twitlin.v2.tweets.PlaceField
+import com.sorrowblue.twitlin.v2.tweets.PollField
 import com.sorrowblue.twitlin.v2.tweets.TweetField
 import com.sorrowblue.twitlin.v2.tweets.UserField
+import kotlinx.datetime.LocalDateTime
 
 public interface UsersApi {
 
@@ -47,4 +52,21 @@ public interface UsersApi {
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null,
     ): Response<List<User>>
+
+    public suspend fun tweets(
+        id: String,
+        endTime: LocalDateTime? = null,
+        start_time: LocalDateTime? = null,
+        exclude: String? = null,
+        max_results: Int = 10,
+        pagination_token: String? = null,
+        since_id: String? = null,
+        until_id: String? = null,
+        expansions: List<Expansion>? = null,
+        mediaFields: List<MediaField>? = null,
+        placeFields: List<PlaceField>? = null,
+        pollFields: List<PollField>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null,
+    ): Response<List<Tweet>>
 }

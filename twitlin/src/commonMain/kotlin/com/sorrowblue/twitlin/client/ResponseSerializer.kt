@@ -23,7 +23,7 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.encodeToJsonElement
 
 @OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
-internal class ResponseSerializer<T>(private val dataSerializer: KSerializer<T>) :
+internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializer<T>) :
     KSerializer<Response<T>> {
     override val descriptor: SerialDescriptor =
         buildSerialDescriptor("Response", PolymorphicKind.SEALED) {

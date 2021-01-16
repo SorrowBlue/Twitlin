@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.objects
 
-import com.sorrowblue.twitlin.test.loadJson
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
@@ -14,7 +13,7 @@ class SerializeTest {
 
     @Test
     fun userListTest() {
-        val json = loadJson("/objects/users.json")
+        val json = test.TestUtils.loadFile("/objects/users.json")
         kotlin.runCatching {
             val value = Json { ignoreUnknownKeys = true }.decodeFromString<List<User>>(json)
             print(value)
@@ -25,7 +24,7 @@ class SerializeTest {
 
     @Test
     fun tweetListTest() {
-        val json = loadJson("/objects/tweets.json")
+        val json = test.TestUtils.loadFile("/objects/tweets.json")
         kotlin.runCatching {
             val value = Json { ignoreUnknownKeys = true }.decodeFromString<List<Tweet>>(json)
             print(value)

@@ -14,6 +14,8 @@ object Libs {
 
     object kotlinx {
         const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1"
+        const val `serialization-json` = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
+        const val `coroutines-test` = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
         const val `serialization-properties` =
             "org.jetbrains.kotlinx:kotlinx-serialization-properties:1.0.1"
         const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
@@ -30,8 +32,6 @@ object Libs {
         const val serialization = "io.ktor:ktor-client-serialization:${VERSION}"
     }
 
-    const val klock = "com.soywiz.korlibs.klock:klock:2.0.3"
-    const val krypto = "com.soywiz.korlibs.krypto:krypto:2.0.1"
     const val jsoup = "org.jsoup:jsoup:1.13.1"
 
     object napier {

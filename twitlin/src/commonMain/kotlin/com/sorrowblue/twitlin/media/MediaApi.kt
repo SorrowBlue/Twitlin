@@ -5,7 +5,7 @@
 package com.sorrowblue.twitlin.media
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
+import com.sorrowblue.twitlin.tweets.StatusesApi
 import com.sorrowblue.twitlin.users.AccountApi
 
 /**

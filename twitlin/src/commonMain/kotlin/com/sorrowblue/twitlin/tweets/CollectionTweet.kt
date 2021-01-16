@@ -11,6 +11,7 @@ package com.sorrowblue.twitlin.tweets
 import com.sorrowblue.twitlin.objects.Coordinates
 import com.sorrowblue.twitlin.objects.Entities
 import com.sorrowblue.twitlin.objects.Place
+import com.sorrowblue.twitlin.utilities.LanguageCode
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalDateTimeRFC822Serializer
 import kotlinx.serialization.SerialName
@@ -55,7 +56,7 @@ public data class CollectionTweet(
     val retweeted: Boolean,
     @SerialName("possibly_sensitive")
     val possiblySensitive: Boolean,
-    val lang: String
+    val lang: LanguageCode
 ) {
 
     @Serializable

@@ -10,6 +10,7 @@ import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.objects.User
 import com.sorrowblue.twitlin.users.AccountApi
 import com.sorrowblue.twitlin.users.Settings
+import com.sorrowblue.twitlin.utilities.LanguageCode
 
 private const val ACCOUNT = "${Urls.V1}/account"
 
@@ -37,7 +38,7 @@ internal class AccountApiImpl(private val client: UserClient) : AccountApi {
         endSleepTime: Int?,
         timeZone: String?,
         trendLocationWoeid: Int?,
-        lang: String?
+        lang: LanguageCode?
     ): Response<Settings> = client.post(
         "$ACCOUNT/settings.json",
         "sleep_time_enabled" to sleepTimeEnabled,
@@ -45,7 +46,7 @@ internal class AccountApiImpl(private val client: UserClient) : AccountApi {
         "end_sleep_time" to endSleepTime,
         "time_zone" to timeZone,
         "trend_location_woeid" to trendLocationWoeid,
-        "lang" to lang
+        "lang" to lang?.value
     )
 
     override suspend fun updateProfile(

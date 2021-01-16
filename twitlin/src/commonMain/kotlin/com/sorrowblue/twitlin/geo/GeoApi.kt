@@ -8,7 +8,7 @@ import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.objects.Place
 import com.sorrowblue.twitlin.objects.PlaceType
-import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
+import com.sorrowblue.twitlin.tweets.StatusesApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

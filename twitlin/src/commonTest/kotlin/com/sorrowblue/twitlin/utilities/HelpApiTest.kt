@@ -1,20 +1,20 @@
 package com.sorrowblue.twitlin.utilities
 
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.test.AbstractTest
-import com.sorrowblue.twitlin.test.runTest
-import com.sorrowblue.twitlin.test.testResult
+import test.AbstractTest
+import test.resultLog
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 class HelpApiTest : AbstractTest {
 
     @Test
-    fun configuration() = runTest { assertNotNull(TwitterAPI.help.configuration().testResult()) }
+    fun configuration() =
+        runBlocking { assertNotNull(TwitterAPI.helpApi.configuration().resultLog()) }
 
     @Test
-    fun languages() = runTest { assertNotNull(TwitterAPI.help.languages().testResult()) }
+    fun languages() = runBlocking { assertNotNull(TwitterAPI.helpApi.languages().resultLog()) }
 
     @Test
-    fun lateLimit() = runTest { TwitterAPI.application.rateLimitStatus().testResult() }
+    fun lateLimit() = runBlocking { TwitterAPI.applicationApi.rateLimitStatus().resultLog() }
 }

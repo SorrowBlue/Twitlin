@@ -5,51 +5,50 @@
 package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.test.AbstractTest
-import com.sorrowblue.twitlin.test.runTest
-import com.sorrowblue.twitlin.test.testResult
+import test.AbstractTest
+import test.resultLog
 import kotlin.test.Test
 
 class FriendshipsApiTest : AbstractTest {
 
     @Test
-    fun showTest() = runTest {
-        TwitterAPI.friendships.show(
+    fun showTest() = runBlocking {
+        TwitterAPI.friendshipsApi.show(
             sourceScreenName = "sorrowblue_sb",
             targetScreenName = "twitter"
         )
-            .testResult()
+            .resultLog()
     }
 
     @Test
-    fun incomingTest() = runTest {
-        TwitterAPI.friendships.incoming().testResult()
+    fun incomingTest() = runBlocking {
+        TwitterAPI.friendshipsApi.incoming().resultLog()
     }
 
     @Test
-    fun lookupUserIdsTest() = runTest {
-        TwitterAPI.friendships.lookup(userId = listOf("1528352858", "2905085521"))
-            .testResult()
+    fun lookupUserIdsTest() = runBlocking {
+        TwitterAPI.friendshipsApi.lookup(userId = listOf("1528352858", "2905085521"))
+            .resultLog()
     }
 
     @Test
-    fun lookupScreenNamesTest() = runTest {
-        TwitterAPI.friendships.lookup(
+    fun lookupScreenNamesTest() = runBlocking {
+        TwitterAPI.friendshipsApi.lookup(
             screenName = listOf(
                 "andypiper",
                 "binary_aaron",
                 "twitterdev"
             )
-        ).testResult()
+        ).resultLog()
     }
 
     @Test
-    fun noRetweetsIdsTest() = runTest {
-        TwitterAPI.friendships.noRetweetsIds().testResult()
+    fun noRetweetsIdsTest() = runBlocking {
+        TwitterAPI.friendshipsApi.noRetweetsIds().resultLog()
     }
 
     @Test
-    fun outgoingStrTest() = runTest {
-        TwitterAPI.friendships.outgoing("-1").testResult()
+    fun outgoingStrTest() = runBlocking {
+        TwitterAPI.friendshipsApi.outgoing("-1").resultLog()
     }
 }

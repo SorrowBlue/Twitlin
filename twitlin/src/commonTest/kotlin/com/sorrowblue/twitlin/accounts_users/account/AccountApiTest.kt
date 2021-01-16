@@ -5,31 +5,30 @@
 package com.sorrowblue.twitlin.accounts_users.account
 
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.test.AbstractTest
-import com.sorrowblue.twitlin.test.runTest
-import com.sorrowblue.twitlin.test.testResult
+import test.AbstractTest
+import test.resultLog
 import kotlin.test.Test
 
 class AccountApiTest : AbstractTest {
 
     @Test
-    fun verifyCredentialsTest() = runTest {
-        TwitterAPI.account.verifyCredentials(
+    fun verifyCredentialsTest() = runBlocking {
+        TwitterAPI.accountApi.verifyCredentials(
             includeEntities = true,
             includeEmail = true,
             skipStatus = false
-        ).testResult()
+        ).resultLog()
     }
 
     @Test
-    fun settingTest() = runTest {
-        TwitterAPI.account.settings().testResult()
+    fun settingTest() = runBlocking {
+        TwitterAPI.accountApi.settings().resultLog()
     }
 
     @Test
-    fun updateProfileLinkColorTest() = runTest {
-        TwitterAPI.account.updateProfile(
+    fun updateProfileLinkColorTest() = runBlocking {
+        TwitterAPI.accountApi.updateProfile(
             profileLinkColor = "FF0000"
-        ).testResult()
+        ).resultLog()
     }
 }

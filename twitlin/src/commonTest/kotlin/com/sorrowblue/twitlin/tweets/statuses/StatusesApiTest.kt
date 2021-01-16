@@ -5,27 +5,35 @@
 package com.sorrowblue.twitlin.tweets.statuses
 
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.test.AbstractTest
-import com.sorrowblue.twitlin.test.runTest
-import com.sorrowblue.twitlin.test.testResult
+import kotlinx.coroutines.flow.collect
+import test.AbstractTest
+import test.resultLog
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 class StatusesApiTest : AbstractTest {
 
     @Test
-    fun lookupTest() = runTest {
-        assertNotNull(TwitterAPI.statuses.lookup(listOf(1340446874583457792)).testResult())
+    fun lookupTest() = runBlocking {
+        assertNotNull(TwitterAPI.statuses.lookup(listOf("1340446874583457792")).resultLog())
     }
 
     @Test
-    fun timelineTest() = runTest {
-        assertNotNull(TwitterAPI.statuses.homeTimeline(count = 50).testResult())
+    fun timelineTest() = runBlocking {
+        assertNotNull(TwitterAPI.statuses.homeTimeline(count = 50).resultLog())
     }
 
     @Test
-    fun updateTest() = runTest {
+    fun updateTest() = runBlocking {
         TwitterAPI.statuses.update("Tweet test from Twitlin.", "")
+    }
+
+    @Test
+    fun filterTest() = runBlocking {
+        var count = 0
+        TwitterAPI.statuses.filter(track = listOf("#シンデレラHNYday1")).collect {
+            println("${count++}")
+        }
     }
 }
 

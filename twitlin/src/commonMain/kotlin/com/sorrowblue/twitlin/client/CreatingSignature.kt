@@ -5,8 +5,10 @@
 package com.sorrowblue.twitlin.client
 
 import com.github.aakira.napier.Napier
-import com.sorrowblue.twitlin.utils.hmacSHA1
+import com.sorrowblue.twitlin.utils.Security
 import com.sorrowblue.twitlin.utils.urlEncode
+import io.ktor.util.InternalAPI
+import io.ktor.util.encodeBase64
 
 /**
  * Collecting parameters
@@ -105,5 +107,6 @@ internal fun creatingSignatureBaseString(method: String, url: String, parameterS
 internal fun getSigningKey(consumerSecret: String, oAuthTokenSecret: String?) =
     "$consumerSecret&${oAuthTokenSecret.orEmpty()}"
 
+@OptIn(InternalAPI::class)
 internal fun calculateSignature(baseString: String, signingKey: String) =
-    hmacSHA1(signingKey.encodeToByteArray(), baseString.encodeToByteArray())
+    Security.hmacSHA1(signingKey.encodeToByteArray(), baseString.encodeToByteArray()).encodeBase64()

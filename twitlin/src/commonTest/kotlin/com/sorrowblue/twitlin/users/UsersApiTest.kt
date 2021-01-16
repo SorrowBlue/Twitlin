@@ -5,16 +5,15 @@
 package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.test.AbstractTest
-import com.sorrowblue.twitlin.test.runTest
-import com.sorrowblue.twitlin.test.testResult
+import test.AbstractTest
+import test.resultLog
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 class UsersApiTest : AbstractTest {
 
     @Test
-    fun showTest() = runTest {
-        TwitterAPI.usersApi.show(screenName = "Twitter").testResult().let { assertNotNull(it) }
+    fun showTest() = runBlocking {
+        TwitterAPI.usersApi.show(screenName = "Twitter").resultLog().let { assertNotNull(it) }
     }
 }

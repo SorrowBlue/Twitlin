@@ -6,30 +6,29 @@ package com.sorrowblue.twitlin.authentication
 
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.test.AbstractTest
-import com.sorrowblue.twitlin.test.runTest
-import com.sorrowblue.twitlin.test.testResult
+import test.AbstractTest
+import test.resultLog
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 class OAuthApiTest : AbstractTest {
 
-//    @Ignore
+    //    @Ignore
     @Test
-    fun accessTokenTest() = runTest {
+    fun accessTokenTest() = runBlocking {
         val accessToken = TwitterAPI.oauthApi.accessToken(
             "GoioYgAAAAABEkL_AAABdseGi2g",
             "h0CwkPakH9P0TQLBQnrZJkrLiQI72p0d"
-        ).testResult()
+        ).resultLog()
         assertNotNull(accessToken, "accessToken is null")
 
     }
 
     @Test
-    fun authenticateTest() = runTest {
+    fun authenticateTest() = runBlocking {
         val url =
-            TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").testResult()?.let {
+            TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").resultLog()?.let {
                 TwitterAPI.oauthApi.authenticate(it.oauthToken)
             }
         Napier.i("authenticate url: $url")
@@ -37,9 +36,9 @@ class OAuthApiTest : AbstractTest {
     }
 
     @Test
-    fun authorizeTest() = runTest {
+    fun authorizeTest() = runBlocking {
         val url =
-            TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").testResult()?.let {
+            TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").resultLog()?.let {
                 TwitterAPI.oauthApi.authorize(it.oauthToken)
             }
         Napier.i("authorize url: $url")
@@ -47,15 +46,15 @@ class OAuthApiTest : AbstractTest {
     }
 
     @Test
-    fun requestTokenTest() = runTest {
+    fun requestTokenTest() = runBlocking {
         val requestToken = TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com")
-            .testResult()
+            .resultLog()
         assertNotNull(requestToken, "requestToken is null")
     }
 
     @Ignore
     @Test
-    fun invalidateToken() = runTest {
-        assertNotNull(TwitterAPI.oauthApi.invalidateToken().testResult(), "invalidateToken is null")
+    fun invalidateToken() = runBlocking {
+        assertNotNull(TwitterAPI.oauthApi.invalidateToken().resultLog(), "invalidateToken is null")
     }
 }

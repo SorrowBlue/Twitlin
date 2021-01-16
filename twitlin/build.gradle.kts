@@ -30,12 +30,13 @@ kotlin {
         }
     }
     js {
+        nodejs()
         browser {
+            webpackTask {
+                output.libraryTarget = "umd"
+            }
             testTask {
-                useKarma {
-                    useChromeHeadless()
-                    webpackConfig.cssSupport.enabled = true
-                }
+                useMocha()
             }
         }
     }
@@ -51,8 +52,6 @@ kotlin {
                 implementation(Libs.`ktor-client`.core)
                 implementation(Libs.`ktor-client`.serialization)
                 implementation(kotlin("reflect", KOTLIN_VERSION))
-                api(Libs.klock)
-
                 implementation(Libs.napier.common)
             }
         }
@@ -65,7 +64,6 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(Libs.`ktor-client`.js)
-
                 implementation("org.webjars.npm:crypto-js:4.0.0")
             }
         }
@@ -172,9 +170,11 @@ afterEvaluate {
                 url = uri("https://maven.pkg.github.com/SorrowBlue/twitlin")
                 credentials {
                     username =
-                        project.findProperty("gpr.user")?.toString() ?: System.getenv("GITHUB_USERNAME")
+                        project.findProperty("gpr.user")?.toString()
+                            ?: System.getenv("GITHUB_USERNAME")
                     password =
-                        project.findProperty("gpr.token")?.toString() ?: System.getenv("GITHUB_PACKAGES_TOKEN")
+                        project.findProperty("gpr.token")?.toString()
+                            ?: System.getenv("GITHUB_PACKAGES_TOKEN")
                 }
             }
         }
