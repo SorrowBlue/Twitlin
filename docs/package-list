@@ -11,13 +11,12 @@ com.sorrowblue.twitlin.media
 com.sorrowblue.twitlin.objects
 com.sorrowblue.twitlin.trends
 com.sorrowblue.twitlin.tweets
-com.sorrowblue.twitlin.tweets.favorites
-com.sorrowblue.twitlin.tweets.statuses
 com.sorrowblue.twitlin.users
 com.sorrowblue.twitlin.utilities
 com.sorrowblue.twitlin.utils
-com.sorrowblue.twitlin.v2
+com.sorrowblue.twitlin.v2.client
 com.sorrowblue.twitlin.v2.objects
 com.sorrowblue.twitlin.v2.tweets
+com.sorrowblue.twitlin.v2.tweets.search
 com.sorrowblue.twitlin.v2.users
 
