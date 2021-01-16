@@ -2,7 +2,7 @@
  * (c) 2021 SorrowBlue.
  */
 
-package com.sorrowblue.twitlin.client
+package com.sorrowblue.twitlin.core
 
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.utils.Security
@@ -39,7 +39,7 @@ import io.ktor.util.encodeBase64
  * @param params
  * @return
  */
-internal fun collectParameters(
+internal fun collectingParameters(
     consumerKey: String,
     nonce: String,
     timestamp: String,
@@ -61,7 +61,7 @@ internal fun collectParameters(
     // 5. Append the encoded value to the output string.
     // 6. If there are more key/value pairs remaining, append a ‘&’ character to the output string.
     .joinToString("&") { "${it.first}=${it.second}" }
-    .also { Napier.i("collectParameters() = $it", tag = "TwitlinClient") }
+    .also { Napier.i("collectingParameters() = $it") }
 
 /**
  * Creating the signature base string
@@ -86,7 +86,7 @@ internal fun creatingSignatureBaseString(method: String, url: String, parameterS
         // 5. Percent encode the parameter string and append it to the output string.
         .append(parameterString.urlEncode())
         .toString()
-        .also { Napier.i("creatingSignatureBaseString() = $it", tag = "TwitlinClient") }
+        .also { Napier.i("creatingSignatureBaseString() = $it") }
 
 /**
  * Getting a signing key
@@ -104,9 +104,32 @@ internal fun creatingSignatureBaseString(method: String, url: String, parameterS
  * This value can be obtained in several ways, all of which are described
  * in [obtaining access tokens](https://developer.twitter.com/en/docs/basics/authentication/oauth-1-0a).
  */
-internal fun getSigningKey(consumerSecret: String, oAuthTokenSecret: String?) =
+internal fun gettingSigningKey(consumerSecret: String, oAuthTokenSecret: String?): String =
     "$consumerSecret&${oAuthTokenSecret.orEmpty()}"
 
+/**
+ * Finally, the signature is calculated by passing the signature base string and signing key to the
+ * HMAC-SHA1 hashing algorithm. The details of the algorithm are explained as hash_hmac function.
+ * The output of the HMAC signing function is a binary string. This needs to be base64 encoded to
+ * produce the signature string.
+ *
+ * @param baseString TODO
+ * @param signingKey TODO
+ * @return TODO
+ */
+internal fun calculateSignature(baseString: String, signingKey: String): ByteArray =
+    Security.hmacSHA1(signingKey.encodeToByteArray(), baseString.encodeToByteArray())
+
+/**
+ * Finally, the signature is calculated by passing the signature base string and signing key to the
+ * HMAC-SHA1 hashing algorithm. The details of the algorithm are explained as hash_hmac function.
+ * The output of the HMAC signing function is a binary string. This needs to be base64 encoded to
+ * produce the signature string.
+ *
+ * @param baseString TODO
+ * @param signingKey TODO
+ * @return TODO
+ */
 @OptIn(InternalAPI::class)
-internal fun calculateSignature(baseString: String, signingKey: String) =
-    Security.hmacSHA1(signingKey.encodeToByteArray(), baseString.encodeToByteArray()).encodeBase64()
+internal fun calculateSignatureBase64(baseString: String, signingKey: String): String =
+    calculateSignature(baseString, signingKey).encodeBase64()

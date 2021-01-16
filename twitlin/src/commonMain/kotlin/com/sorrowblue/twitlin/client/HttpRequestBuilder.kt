@@ -6,6 +6,11 @@ package com.sorrowblue.twitlin.client
 
 import com.sorrowblue.twitlin.authentication.AccessToken
 import com.sorrowblue.twitlin.authentication.BearerToken
+import com.sorrowblue.twitlin.core.buildHeaderString
+import com.sorrowblue.twitlin.core.calculateSignatureBase64
+import com.sorrowblue.twitlin.core.collectingParameters
+import com.sorrowblue.twitlin.core.creatingSignatureBaseString
+import com.sorrowblue.twitlin.core.gettingSigningKey
 import com.sorrowblue.twitlin.utils.urlEncode
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
@@ -19,13 +24,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.random.Random
 
-@OptIn(InternalAPI::class)
-internal val nextNonce
-    get() = Random.nextBytes(32).encodeBase64().trim('=')
-
-internal val nowTimestamp
-    get() = Clock.System.now().epochSeconds.toString()
-
 internal val Array<out Pair<String, Any?>>.notNullParams: List<Pair<String, String>>
     get() = mapNotNull { pair -> pair.second?.let { pair.first to it.toString() } }
 
@@ -38,30 +36,36 @@ internal fun HttpRequestBuilder.createSignature(
     params: List<Pair<String, String>>,
 ): String {
     val parameterString =
-        collectParameters(consumerKey, nonce, timestamp, accessToken?.oauthToken, params)
+        collectingParameters(
+            consumerKey,
+            nonce,
+            timestamp,
+            accessToken?.oauthToken,
+            params
+        )
     val baseString = creatingSignatureBaseString(
         method.value,
         "${url.protocol.name}://${url.host}${url.encodedPath}",
         parameterString
     )
-    val signingKey = getSigningKey(consumerSecret, accessToken?.oauthTokenSecret)
-    return calculateSignature(baseString, signingKey)
+    val signingKey = gettingSigningKey(consumerSecret, accessToken?.oauthTokenSecret)
+    return calculateSignatureBase64(baseString, signingKey)
 }
 
-internal val List<Pair<String, String>>.oauthParams get() = takeWhile { it.first.startsWith("oauth_") }
 
+@OptIn(InternalAPI::class)
 internal fun HttpRequestBuilder.headerAuthorization(
     consumerKey: String,
     consumerSecret: String,
     params: List<Pair<String, String>>,
     accessToken: AccessToken?
 ): String {
-    val nc = nextNonce
-    val ts = nowTimestamp
+    val nc = Random.nextBytes(32).encodeBase64().trim('=')
+    val ts = Clock.System.now().epochSeconds.toString()
     val sign =
         createSignature(consumerKey, consumerSecret, nc, ts, accessToken, params)
     val parameters =
-        collectParameters(consumerKey, nc, sign, ts, accessToken?.oauthToken, params.oauthParams)
+        collectingParameters(consumerKey, nc, sign, ts, accessToken?.oauthToken, params)
     val headerValue = buildHeaderString(parameters)
     header(HttpHeaders.Authorization, headerValue)
     return "${HttpHeaders.Authorization}: ${headers[HttpHeaders.Authorization]}"
