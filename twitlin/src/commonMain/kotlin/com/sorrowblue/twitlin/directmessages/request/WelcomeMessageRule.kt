@@ -7,8 +7,8 @@ package com.sorrowblue.twitlin.directmessages.request
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class WelcomeMessageRuleRequest(val welcome_message_rule: WelcomeMessageRuleRequest) {
+internal class WelcomeMessageRuleRequest(val welcome_message_rule: WelcomeMessageRule) {
 
     @Serializable
-    class WelcomeMessageRuleRequest(val welcome_message_id: String)
+    class WelcomeMessageRule(val welcome_message_id: String)
 }

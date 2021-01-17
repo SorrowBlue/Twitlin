@@ -4,25 +4,26 @@
 
 package com.sorrowblue.twitlin.v2.client
 
-import com.github.aakira.napier.Napier
-import com.sorrowblue.twitlin.client.ErrorCodes
 import com.sorrowblue.twitlin.client.TwitterClient
+import com.sorrowblue.twitlin.core.IResponse
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.http.HttpMethod
+import kotlinx.serialization.KSerializer
 
 public abstract class AbstractClient(apiKey: String, secretKey: String) :
     TwitterClient(apiKey, secretKey) {
+    protected fun clientError(message: String?): List<Error> =
+        listOf(Error("Twitter Client was unable to process the response.", message))
 
-
-    private val errorPair = listOf("java.net.UnknownHostException" to ErrorCodes.NO_NETWORK)
-
-    protected suspend inline fun <reified T : Any, reified R : Response<T>> request(
+    protected suspend inline fun <T : Any, R : IResponse<T>> request(
         method: HttpMethod,
         url: String,
-        noinline headerBlock: HttpRequestBuilder.() -> String,
-        noinline bodyBlock: HttpRequestBuilder.() -> String
-    ): R = baseRequest(method, url, headerBlock, bodyBlock) {
-        Napier.i("baseRequest error ${it.message}")
-        Response.Error<T>(Error("${it.message}")) as R
-    }
+        serializer: KSerializer<R>,
+        noinline headerBlock: HttpRequestBuilder.() -> Unit,
+        noinline bodyBlock: HttpRequestBuilder.() -> Unit
+    ): R = baseRequest(method, url, serializer, headerBlock, bodyBlock)
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : Any, R : IResponse<T>> onError(throwable: Throwable): R =
+        Response.Error<T>(Error("${throwable.message}")) as R
 }

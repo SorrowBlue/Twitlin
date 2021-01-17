@@ -7,9 +7,9 @@ package com.sorrowblue.twitlin.v2.objects
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.utilities.LanguageCode
-import com.sorrowblue.twitlin.v2.tweets.Expansion
-import com.sorrowblue.twitlin.v2.tweets.TweetField
-import com.sorrowblue.twitlin.v2.tweets.UserField
+import com.sorrowblue.twitlin.v2.field.Expansion
+import com.sorrowblue.twitlin.v2.field.TweetField
+import com.sorrowblue.twitlin.v2.field.UserField
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalDateTimeISOSerializer
 import kotlinx.serialization.SerialName

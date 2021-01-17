@@ -16,9 +16,11 @@ private const val APPLICATION = "${Urls.V1}/application"
 
 internal class ApplicationApiImpl(private val client: UserClient) : ApplicationApi {
 
-    override suspend fun rateLimitStatus(resourceFamily: List<ResourceFamily>): Response<RateLimitStatus> =
-        client.get<RateLimitStatusResponse>(
+    override suspend fun rateLimitStatus(resourceFamily: List<ResourceFamily>): Response<RateLimitStatus> {
+        return client.get(
             "$APPLICATION/rate_limit_status.json",
+            Response.serializer(RateLimitStatusResponse.serializer()),
             "resources" to resourceFamily.joinToString(",") { it.name.toLowerCase() }
         ).convertData(RateLimitStatusResponse::toRateLimitState)
+    }
 }

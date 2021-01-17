@@ -14,7 +14,6 @@ import com.sorrowblue.twitlin.users.PagingUser
 private const val FRIENDS = "${Urls.V1}/friends"
 
 internal class FriendsApiImpl(private val client: UserClient) : FriendsApi {
-
     override suspend fun ids(
         userId: String?,
         screenName: String?,
@@ -22,6 +21,7 @@ internal class FriendsApiImpl(private val client: UserClient) : FriendsApi {
         count: Int?
     ): Response<PagingIds> = client.get(
         "$FRIENDS/ids.json",
+        Response.serializer(PagingIds.serializer()),
         "user_id" to userId,
         "screen_name" to screenName,
         "cursor" to cursor,
@@ -38,6 +38,7 @@ internal class FriendsApiImpl(private val client: UserClient) : FriendsApi {
         includeUserEntities: Boolean
     ): Response<PagingUser> = client.get(
         "$FRIENDS/list.json",
+        Response.serializer(PagingUser.serializer()),
         "user_id" to userId,
         "screen_name" to screenName,
         "cursor" to cursor,
@@ -45,5 +46,4 @@ internal class FriendsApiImpl(private val client: UserClient) : FriendsApi {
         "skip_status" to skipStatus,
         "include_user_entities" to includeUserEntities,
     )
-
 }

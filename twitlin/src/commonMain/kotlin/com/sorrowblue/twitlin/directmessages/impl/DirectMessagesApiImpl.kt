@@ -17,6 +17,7 @@ import com.sorrowblue.twitlin.directmessages.request.DirectMessageRequest.Event
 import com.sorrowblue.twitlin.directmessages.request.DirectMessageRequest.Event.MessageCreate
 import com.sorrowblue.twitlin.directmessages.request.DirectMessageRequest.Event.MessageCreate.Target
 import com.sorrowblue.twitlin.directmessages.request.MessageDataRequest
+import kotlinx.serialization.builtins.serializer
 
 private const val DIRECT_MESSAGES = "${Urls.V1}/direct_messages"
 
@@ -38,25 +39,52 @@ internal class DirectMessagesApiImpl(private val client: UserClient) : DirectMes
                 MessageCreate(Target(recipientId), dmData)
             )
         )
-        return client.postJson("$DIRECT_MESSAGES/events/new.json", clazz = request)
+        return client.postJson(
+            "$DIRECT_MESSAGES/events/new.json",
+            Response.serializer(DirectMessage.serializer()),
+            request
+        )
     }
 
-    override suspend fun list(count: Int?, cursor: String?): Response<PagingDirectMessage> =
-        client.get("$DIRECT_MESSAGES/events/list.json", "count" to count, "cursor" to cursor)
+    override suspend fun list(count: Int?, cursor: String?): Response<PagingDirectMessage> {
+        return client.get(
+            "$DIRECT_MESSAGES/events/list.json",
+            Response.serializer(PagingDirectMessage.serializer()),
+            "count" to count,
+            "cursor" to cursor
+        )
+    }
 
-    override suspend fun show(id: String): Response<DirectMessage> =
-        client.get("$DIRECT_MESSAGES/events/show.json", "id" to id)
+    override suspend fun show(id: String): Response<DirectMessage> {
+        return client.get(
+            "$DIRECT_MESSAGES/events/show.json",
+            Response.serializer(DirectMessage.serializer()),
+            "id" to id
+        )
+    }
 
-    override suspend fun destroy(id: String): Response<DirectMessage> =
-        client.delete("$DIRECT_MESSAGES/events/destroy.json", "id" to id)
+    override suspend fun destroy(id: String): Response<DirectMessage> {
+        return client.delete(
+            "$DIRECT_MESSAGES/events/destroy.json",
+            Response.serializer(DirectMessage.serializer()),
+            "id" to id
+        )
+    }
 
-    override suspend fun indicateTyping(receiveId: String): Response<Unit> =
-        client.post("$DIRECT_MESSAGES/indicate_typing.json", "recipient_id" to receiveId)
+    override suspend fun indicateTyping(receiveId: String): Response<Unit> {
+        return client.post(
+            "$DIRECT_MESSAGES/indicate_typing.json",
+            Response.serializer(Unit.serializer()),
+            "recipient_id" to receiveId
+        )
+    }
 
-    override suspend fun markRead(lastReadEventId: String, recipientId: String): Response<Unit> =
-        client.post(
+    override suspend fun markRead(lastReadEventId: String, recipientId: String): Response<Unit> {
+        return client.post(
             "$DIRECT_MESSAGES/mark_read.json",
+            Response.serializer(Unit.serializer()),
             "last_read_event_id" to lastReadEventId,
             "recipient_id" to recipientId
         )
+    }
 }

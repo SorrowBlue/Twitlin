@@ -5,17 +5,19 @@
 package com.sorrowblue.twitlin.client
 
 import com.github.aakira.napier.Napier
+import com.sorrowblue.twitlin.core.IResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.features.ClientRequestException
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.request
+import io.ktor.client.request.get
 import io.ktor.client.statement.readText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.formUrlEncode
-import kotlinx.serialization.decodeFromString
+import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 
 /**
@@ -42,36 +44,69 @@ public abstract class TwitterClient(public val apiKey: String, public val secret
     protected fun String.combineParams(params: Array<out Pair<String, Any?>>): String =
         params.notNullParams.let { if (it.isEmpty()) this else this + "?" + it.formUrlEncode() }
 
-    private val errorPair = listOf("java.net.UnknownHostException" to ErrorCodes.NO_NETWORK)
-
-    protected suspend inline fun <reified R : Any> baseRequest(
+    protected suspend inline fun <T : Any, R : IResponse<T>> baseRequest(
         method: HttpMethod,
         url: String,
-        noinline headerBlock: HttpRequestBuilder.() -> String,
-        noinline bodyBlock: HttpRequestBuilder.() -> String,
-        noinline onError: (Throwable) -> R
-    ): R = runCatchingResponse({
-        lateinit var encodedPath: String
-        httpClient.request<R>(url) {
+        serializer: KSerializer<R>,
+        noinline headerBlock: HttpRequestBuilder.() -> Unit,
+        noinline bodyBlock: HttpRequestBuilder.() -> Unit
+    ): R = runCatchingResponse(serializer) {
+        httpClient.get<String>(url) {
             this.method = method
-            val header = headerBlock.invoke(this)
-            val body = bodyBlock.invoke(this)
-            encodedPath = this.url.encodedPath
-            Napier.i("Request Twitter API-> ${method.value}:$encodedPath, header = $header, body=$body")
-        }.also {
-            Napier.i("Response Twitter API-> ${method.value}:$encodedPath, body=$it")
+            headerBlock.invoke(this)
+            bodyBlock.invoke(this)
+            val header = headers.entries().joinToString(", ") { it.key + ": " + it.value }
+            Napier.i("Request Twitter API-> ${method.value}:$url, header = $header, body =${this.body}")
+        }.let {
+            Napier.i("Response Twitter API-> ${method.value}:$url, body=$it")
+            json.decodeFromString(serializer, it)
         }
-    }, onError)
+    }
 
-    protected suspend inline fun <reified R> runCatchingResponse(
-        requestBlock: () -> R,
-        noinline onError: (Throwable) -> R
+    protected suspend inline fun <T : Any, R : IResponse<T>> runCatchingResponse(
+        serializer: KSerializer<R>,
+        requestBlock: () -> R
     ): R = runCatching(requestBlock).getOrElse {
         Napier.d("stackTraceToString: " + it.stackTraceToString(), it)
         if (it is ClientRequestException) {
-            json.decodeFromString(it.response.readText())
+            json.decodeFromString(serializer, it.response.readText())
         } else {
-            onError.invoke(it)
+            onError(it)
         }
     }
+
+    protected val errorPair: List<Pair<String, Int>> =
+        listOf("java.net.UnknownHostException" to ErrorCodes.NO_NETWORK)
+
+    protected abstract fun <T : Any, R : IResponse<T>> onError(throwable: Throwable): R
+
+    public abstract suspend fun <T : Any, R : IResponse<T>> delete(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): R
+
+    public abstract suspend fun <T : Any, R : IResponse<T>> get(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): R
+
+    public abstract suspend fun <T : Any, R : IResponse<T>> post(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): R
+
+    public abstract suspend fun <T : Any, R : IResponse<T>> put(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): R
+
+    public abstract fun <T : Any, R : IResponse<T>> streaming(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): Flow<R>
 }

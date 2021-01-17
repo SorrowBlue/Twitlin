@@ -10,14 +10,23 @@ import com.sorrowblue.twitlin.client.UserClient
 import com.sorrowblue.twitlin.utilities.Configuration
 import com.sorrowblue.twitlin.utilities.HelpApi
 import com.sorrowblue.twitlin.utilities.Language
+import kotlinx.serialization.builtins.ListSerializer
 
 private const val HELP = "${Urls.V1}/help"
 
 internal class HelpApiImpl(private val client: UserClient) : HelpApi {
 
-    override suspend fun configuration(): Response<Configuration> =
-        client.get("$HELP/configuration.json")
+    override suspend fun configuration(): Response<Configuration> {
+        return client.get(
+            "$HELP/configuration.json",
+            Response.serializer(Configuration.serializer())
+        )
+    }
 
-    override suspend fun languages(): Response<List<Language>> =
-        client.get("$HELP/languages.json")
+    override suspend fun languages(): Response<List<Language>> {
+        return client.get(
+            "$HELP/languages.json",
+            Response.serializer(ListSerializer(Language.serializer()))
+        )
+    }
 }

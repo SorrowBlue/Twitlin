@@ -7,6 +7,12 @@ package com.sorrowblue.twitlin.v2.tweets
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.TwitterV2API
+import com.sorrowblue.twitlin.v2.field.Expansion
+import com.sorrowblue.twitlin.v2.field.MediaField
+import com.sorrowblue.twitlin.v2.field.PlaceField
+import com.sorrowblue.twitlin.v2.field.PollField
+import com.sorrowblue.twitlin.v2.field.TweetField
+import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.testResult
 import kotlinx.coroutines.flow.collect
 import test.AbstractTest
@@ -67,7 +73,7 @@ class TweetsApiTest : AbstractTest {
      * [See tweet](https://twitter.com/sorrowblue_sb/status/1299752429290885127)
      */
     @Test
-    fun hiddenTest() = runBlocking {
+    fun testHidden() = runBlocking {
         TwitterV2API.tweetsApi.hidden("1299752435855036420").testResult()
     }
 
@@ -75,12 +81,12 @@ class TweetsApiTest : AbstractTest {
      * [See tweet](https://twitter.com/sorrowblue_sb/status/1299752429290885127)
      */
     @Test
-    fun unHiddenTest() = runBlocking {
+    fun testHidden_unhidden() = runBlocking {
         TwitterV2API.tweetsApi.hidden("1299752435855036420", isHidden = false).testResult()
     }
 
     @Test
-    fun streamTest() = runBlocking {
+    fun testSampleStream() = runBlocking {
         TwitterV2API.tweetsAppApi.sampleStream(tweetFields = listOf(TweetField.TEXT)).collect {
             Napier.i("streamTest = $it")
         }

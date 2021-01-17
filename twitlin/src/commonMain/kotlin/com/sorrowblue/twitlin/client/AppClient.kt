@@ -4,16 +4,27 @@
 
 package com.sorrowblue.twitlin.client
 
+import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.authentication.BearerToken
+import com.sorrowblue.twitlin.core.IResponse
 import com.sorrowblue.twitlin.utils.urlEncode
+import io.ktor.client.features.ClientRequestException
 import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.statement.HttpStatement
+import io.ktor.client.statement.readText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.content.TextContent
 import io.ktor.util.InternalAPI
 import io.ktor.util.encodeBase64
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.serialization.KSerializer
 
 internal class AppClient(
     apiKey: String,
@@ -21,33 +32,86 @@ internal class AppClient(
     var bearerToken: BearerToken? = null
 ) : AbstractClient(apiKey, secretKey) {
 
-    suspend inline fun <reified T : Any> get(url: String, vararg params: UrlParams): Response<T> =
-        request(HttpMethod.Get, url.combineParams(params))
-
-    suspend inline fun <reified T : Any> post(url: String, vararg params: UrlParams): Response<T> =
-        request(HttpMethod.Post, url) { bodyFormUrlEncoded(params.notNullParams) }
-
-    suspend inline fun <reified T : Any> delete(
+    override suspend fun <T : Any, R : IResponse<T>> delete(
         url: String,
+        serializer: KSerializer<R>,
         vararg params: UrlParams
-    ): Response<T> = request(HttpMethod.Delete, url.combineParams(params))
+    ): R = request(HttpMethod.Delete, url.combineParams(params), serializer)
+
+    override suspend fun <T : Any, R : IResponse<T>> get(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): R = request(HttpMethod.Get, url.combineParams(params), serializer)
+
+    override suspend fun <T : Any, R : IResponse<T>> post(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): R = request(HttpMethod.Post, url, serializer) { bodyFormUrlEncoded(params.notNullParams) }
+
+    override suspend fun <T : Any, R : IResponse<T>> put(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): R = request(HttpMethod.Post, url, serializer) { bodyFormUrlEncoded(params.notNullParams) }
+
+    @Suppress("UNCHECKED_CAST")
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun <T : Any, R : IResponse<T>> streaming(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): Flow<R> = channelFlow {
+        httpClient.get<HttpStatement>(url.combineParams(params)) {
+            headerAuthorization(bearerToken)
+            val header = headers.entries().joinToString(", ") { it.key + ": " + it.value }
+            Napier.i("Request Twitter API-> GET:$url, header = $header, body =${this.body}")
+        }.execute { response ->
+            do {
+                val body = response.readText()
+                Napier.i("Response Twitter API-> GET:$url, body=$body")
+                json.decodeFromString(serializer, body).let(channel::offer)
+            } while (isClosedForSend.not())
+        }
+    }.catch {
+        Napier.d("stackTraceToString: " + it.stackTraceToString(), it)
+        val response: R = if (it is ClientRequestException) {
+            kotlin.runCatching {
+                json.decodeFromString(serializer, it.response.readText())
+            }.getOrElse {
+                Response.Error<T>(clientError) as R
+            }
+        } else {
+            Response.Error<T>(clientError) as R
+        }
+        emit(response)
+    }
+
+    private val clientError =
+        listOf(Error("Twitter Client was unable to process the response.", 400))
 
     @OptIn(InternalAPI::class)
-    suspend inline fun <reified T : Any> postForClientCredentials(url: String): Response<T> =
-        request(HttpMethod.Post, url, {
+    suspend inline fun <T : Any, R : IResponse<T>> postForClientCredentials(
+        url: String,
+        serializer: KSerializer<R>
+    ): R = request(
+        HttpMethod.Post,
+        url,
+        serializer,
+        {
             val token = "${apiKey.urlEncode()}:${secretKey.urlEncode()}".encodeBase64()
             header(HttpHeaders.Authorization, "Basic $token")
-            "${HttpHeaders.Authorization}: ${headers[HttpHeaders.Authorization]}"
-        }, {
-            TextContent(
-                "grant_type=client_credentials",
-                ContentType.Application.FormUrlEncoded
-            ).also { body = it }.toString()
+        },
+        {
+            body =
+                TextContent("grant_type=client_credentials", ContentType.Application.FormUrlEncoded)
         })
 
-    suspend inline fun <reified T : Any> request(
+    suspend inline fun <T : Any, R : IResponse<T>> request(
         method: HttpMethod,
         url: String,
-        noinline block: (HttpRequestBuilder.() -> String)? = null
-    ): Response<T> = request(method, url, { headerAuthorization(bearerToken) }, block)
+        serializer: KSerializer<R>,
+        noinline block: HttpRequestBuilder.() -> Unit = {}
+    ): R = request(method, url, serializer, { headerAuthorization(bearerToken) }, block)
 }

@@ -16,7 +16,6 @@ import kotlinx.datetime.LocalDateTime
 private const val SEARCH = "${Urls.V1}/search"
 
 internal class SearchApiImpl(private val client: UserClient) : SearchApi {
-
     override suspend fun tweets(
         q: String,
         geocode: List<String>?,
@@ -28,17 +27,20 @@ internal class SearchApiImpl(private val client: UserClient) : SearchApi {
         sinceId: String?,
         maxId: String?,
         includeEntities: Boolean
-    ): Response<SearchResults> = client.get(
-        "$SEARCH/tweets.json",
-        "q" to q,
-        "geocode" to geocode?.joinToString(","),
-        "lang" to lang?.value,
-        "local" to local,
-        "result_type" to resultType.name.toLowerCase(),
-        "count" to count,
-        "until" to until,
-        "since_id" to sinceId,
-        "max_id" to maxId,
-        "include_entities" to includeEntities
-    )
+    ): Response<SearchResults> {
+        return client.get(
+            "$SEARCH/tweets.json",
+            Response.serializer(SearchResults.serializer()),
+            "q" to q,
+            "geocode" to geocode?.joinToString(","),
+            "lang" to lang?.value,
+            "local" to local,
+            "result_type" to resultType.name.toLowerCase(),
+            "count" to count,
+            "until" to until,
+            "since_id" to sinceId,
+            "max_id" to maxId,
+            "include_entities" to includeEntities
+        )
+    }
 }

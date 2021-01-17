@@ -1,3 +1,7 @@
+/*
+ * (c) 2021 SorrowBlue.
+ */
+
 package com.sorrowblue.twitlin
 
 import com.sorrowblue.twitlin.v2.client.Error

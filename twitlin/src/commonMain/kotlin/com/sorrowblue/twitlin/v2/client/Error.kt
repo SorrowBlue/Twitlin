@@ -2,10 +2,6 @@
  * (c) 2021 SorrowBlue.
  */
 
-/*
- * (c) 2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.v2.client
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable

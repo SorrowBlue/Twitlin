@@ -12,6 +12,7 @@ import com.sorrowblue.twitlin.authentication.XAuthAccessType
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
+import kotlinx.serialization.builtins.serializer
 
 private const val OAUTH = "${Urls.FQDN}/oauth"
 
@@ -20,8 +21,9 @@ internal class OAuthApiImpl(private val client: UserClient) : OAuthApi {
     override suspend fun accessToken(
         oauthToken: String,
         oauthVerifier: String
-    ): Response<AccessToken> = client.post<String>(
+    ): Response<AccessToken> = client.postForAuthentication(
         "$OAUTH/access_token",
+        Response.serializer(String.serializer()),
         "oauth_verifier" to oauthVerifier,
         oauthToken = oauthToken
     ).convertData(AccessToken.Companion::fromString)
@@ -50,13 +52,14 @@ internal class OAuthApiImpl(private val client: UserClient) : OAuthApi {
         oauthCallback: String,
         xAuthAccessType: XAuthAccessType?
     ): Response<RequestToken> =
-        client.post<String>(
+        client.post(
             "$OAUTH/request_token",
+            Response.serializer(String.serializer()),
             "oauth_callback" to oauthCallback,
             "x_auth_access_type" to xAuthAccessType?.name?.toLowerCase()
         ).convertData(RequestToken::fromString)
 
     override suspend fun invalidateToken(): Response<InvalidateToken> =
-        client.post("$OAUTH/invalidate_token")
+        client.post("$OAUTH/invalidate_token", Response.serializer(InvalidateToken.serializer()))
 
 }

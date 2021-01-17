@@ -15,9 +15,14 @@ private const val OAUTH2 = "${Urls.FQDN}/oauth2"
 
 internal class OAuth2ApiImpl(private val client: AppClient) : OAuth2Api {
 
-    override suspend fun token(): Response<BearerToken> =
-        client.postForClientCredentials("$OAUTH2/token")
+    override suspend fun token(): Response<BearerToken> = client.postForClientCredentials(
+        "$OAUTH2/token",
+        Response.serializer(BearerToken.serializer())
+    )
 
-    override suspend fun invalidateToken(): Response<InvalidateToken> =
-        client.post("$OAUTH2/invalidate_token", "access_token" to client.bearerToken?.accessToken)
+    override suspend fun invalidateToken(): Response<InvalidateToken> = client.post(
+        "$OAUTH2/invalidate_token",
+        Response.serializer(InvalidateToken.serializer()),
+        "access_token" to client.bearerToken?.accessToken
+    )
 }

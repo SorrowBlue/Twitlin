@@ -7,69 +7,81 @@ package com.sorrowblue.twitlin.v2.users
 import com.sorrowblue.twitlin.v2.TWITTER_API_V2
 import com.sorrowblue.twitlin.v2.client.Response
 import com.sorrowblue.twitlin.v2.client.UserClient
+import com.sorrowblue.twitlin.v2.field.MediaField
+import com.sorrowblue.twitlin.v2.field.PlaceField
+import com.sorrowblue.twitlin.v2.field.PollField
+import com.sorrowblue.twitlin.v2.field.TweetField
+import com.sorrowblue.twitlin.v2.field.UserField
+import com.sorrowblue.twitlin.v2.field.toParameter
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
-import com.sorrowblue.twitlin.v2.tweets.MediaField
-import com.sorrowblue.twitlin.v2.tweets.PlaceField
-import com.sorrowblue.twitlin.v2.tweets.PollField
-import com.sorrowblue.twitlin.v2.tweets.TweetField
-import com.sorrowblue.twitlin.v2.tweets.UserField
-import com.sorrowblue.twitlin.v2.tweets.toParameter
 import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.builtins.ListSerializer
 
 private const val USERS_API = "$TWITTER_API_V2/users"
 
 internal class UsersApiImp(private val client: UserClient) : UsersApi {
-
     override suspend fun users(
         id: String,
         expansions: List<UsersApi.Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?,
-    ): Response<User> = client.get(
-        "$USERS_API/$id",
-        "expansions" to expansions?.toParameter(),
-        "tweet.fields" to tweetFields?.toParameter(),
-        "user.fields" to userFields?.toParameter()
-    )
+    ): Response<User> {
+        return client.get(
+            "$USERS_API/$id",
+            Response.serializer(User.serializer()),
+            "expansions" to expansions?.toParameter(),
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter()
+        )
+    }
 
     override suspend fun users(
         ids: List<String>,
         expansions: List<UsersApi.Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?,
-    ): Response<List<User>> = client.get(
-        USERS_API,
-        "ids" to ids.joinToString(","),
-        "expansions" to expansions?.toParameter(),
-        "tweet.fields" to tweetFields?.toParameter(),
-        "user.fields" to userFields?.toParameter()
-    )
+    ): Response<List<User>> {
+        return client.get(
+            USERS_API,
+            Response.serializer(ListSerializer(User.serializer())),
+            "ids" to ids.joinToString(","),
+            "expansions" to expansions?.toParameter(),
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter()
+        )
+    }
 
     override suspend fun byUsername(
         username: String,
         expansions: List<UsersApi.Expansion>?,
         tweetFields: List<TweetField>?,
-        userFields: List<UserField>?,
-    ): Response<User> = client.get(
-        "$USERS_API/by/username/$username",
-        "expansions" to expansions?.toParameter(),
-        "tweet.fields" to tweetFields?.toParameter(),
-        "user.fields" to userFields?.toParameter()
-    )
+        userFields: List<UserField>?
+    ): Response<User> {
+        return client.get(
+            "$USERS_API/by/username/$username",
+            Response.serializer(User.serializer()),
+            "expansions" to expansions?.toParameter(),
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter()
+        )
+    }
 
     override suspend fun byUsername(
         usernames: List<String>,
         expansions: List<UsersApi.Expansion>?,
         tweetFields: List<TweetField>?,
-        userFields: List<UserField>?,
-    ): Response<List<User>> = client.get(
-        "$USERS_API/by",
-        "usernames" to usernames.joinToString(","),
-        "expansions" to expansions?.toParameter(),
-        "tweet.fields" to tweetFields?.toParameter(),
-        "user.fields" to userFields?.toParameter()
-    )
+        userFields: List<UserField>?
+    ): Response<List<User>> {
+        return client.get(
+            "$USERS_API/by",
+            Response.serializer(ListSerializer(User.serializer())),
+            "usernames" to usernames.joinToString(","),
+            "expansions" to expansions?.toParameter(),
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter()
+        )
+    }
 
     override suspend fun tweets(
         id: String,
@@ -86,13 +98,16 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<List<Tweet>> = client.get(
-        "$USERS_API/$id/tweets",
-        "expansions" to expansions?.toParameter(),
-        "media.fields" to mediaFields?.toParameter(),
-        "place.fields" to placeFields?.toParameter(),
-        "poll.fields" to pollFields?.toParameter(),
-        "tweet.fields" to tweetFields?.toParameter(),
-        "user.fields" to userFields?.toParameter()
-    )
+    ): Response<List<Tweet>> {
+        return client.get(
+            "$USERS_API/$id/tweets",
+            Response.serializer(ListSerializer(Tweet.serializer())),
+            "expansions" to expansions?.toParameter(),
+            "media.fields" to mediaFields?.toParameter(),
+            "place.fields" to placeFields?.toParameter(),
+            "poll.fields" to pollFields?.toParameter(),
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter()
+        )
+    }
 }

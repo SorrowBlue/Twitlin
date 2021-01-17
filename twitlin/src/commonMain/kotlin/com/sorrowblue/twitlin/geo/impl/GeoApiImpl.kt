@@ -17,7 +17,9 @@ private const val GEO = "${Urls.V1}/geo"
 
 internal class GeoApiImpl(private val client: UserClient) : GeoApi {
 
-    override suspend fun id(placeId: String): Response<Place> = client.get("$GEO/id/$placeId.json")
+    override suspend fun id(placeId: String): Response<Place> {
+        return client.get("$GEO/id/$placeId.json", Response.serializer(Place.serializer()))
+    }
 
     override suspend fun reverseGeocode(
         lat: Double,
@@ -25,15 +27,17 @@ internal class GeoApiImpl(private val client: UserClient) : GeoApi {
         accuracy: String?,
         granularity: PlaceType?,
         maxResults: Int?
-    ): Response<ReverseGeocode> =
-        client.get(
+    ): Response<ReverseGeocode> {
+        return client.get(
             "$GEO/reverse_geocode.json",
+            Response.serializer(ReverseGeocode.serializer()),
             "lat" to lat,
             "long" to long,
             "accuracy" to accuracy,
             "granularity" to granularity,
             "max_results" to maxResults
         )
+    }
 
     override suspend fun search(
         lat: Double?,
@@ -42,9 +46,10 @@ internal class GeoApiImpl(private val client: UserClient) : GeoApi {
         ip: String?,
         granularity: PlaceType?,
         maxResults: Int?
-    ): Response<GeoSearch> =
-        client.get(
+    ): Response<GeoSearch> {
+        return client.get(
             "$GEO/search.json",
+            Response.serializer(GeoSearch.serializer()),
             "lat" to lat,
             "long" to long,
             "query" to query,
@@ -52,5 +57,5 @@ internal class GeoApiImpl(private val client: UserClient) : GeoApi {
             "granularity" to granularity,
             "max_results" to maxResults
         )
-
+    }
 }

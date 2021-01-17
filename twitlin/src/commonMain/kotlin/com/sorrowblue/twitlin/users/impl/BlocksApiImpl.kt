@@ -15,45 +15,58 @@ import com.sorrowblue.twitlin.users.PagingUser
 private const val BLOCKS = "${Urls.V1}/blocks"
 
 internal class BlocksApiImpl(private val client: UserClient) : BlocksApi {
-
-    override suspend fun ids(cursor: Long): Response<PagingIds> =
-        client.get("$BLOCKS/ids.json", "stringify_ids" to true, "cursor" to cursor)
+    override suspend fun ids(cursor: Long): Response<PagingIds> {
+        return client.get(
+            "$BLOCKS/ids.json",
+            Response.serializer(PagingIds.serializer()),
+            "stringify_ids" to true,
+            "cursor" to cursor
+        )
+    }
 
     override suspend fun list(
         cursor: String,
         includeEntities: Boolean?,
         skipStatus: Boolean?
-    ): Response<PagingUser> = client.get(
-        "$BLOCKS/list.json",
-        "cursor" to cursor,
-        "include_entities" to includeEntities,
-        "skip_status" to skipStatus
-    )
+    ): Response<PagingUser> {
+        return client.get(
+            "$BLOCKS/list.json",
+            Response.serializer(PagingUser.serializer()),
+            "cursor" to cursor,
+            "include_entities" to includeEntities,
+            "skip_status" to skipStatus
+        )
+    }
 
     override suspend fun create(
         screenName: String?,
         userId: String?,
         includeEntities: Boolean?,
         skipStatus: Boolean?
-    ): Response<User> = client.post(
-        "$BLOCKS/create.json",
-        "screen_name" to screenName,
-        "user_id" to userId,
-        "include_entities" to includeEntities,
-        "skip_status" to skipStatus
-    )
+    ): Response<User> {
+        return client.post(
+            "$BLOCKS/create.json",
+            Response.serializer(User.serializer()),
+            "screen_name" to screenName,
+            "user_id" to userId,
+            "include_entities" to includeEntities,
+            "skip_status" to skipStatus
+        )
+    }
 
     override suspend fun destroy(
         screenName: String?,
         userId: String?,
         includeEntities: Boolean?,
         skipStatus: Boolean?
-    ): Response<User> = client.post(
-        "$BLOCKS/destroy.json",
-        "screen_name" to screenName,
-        "user_id" to userId,
-        "include_entities" to includeEntities,
-        "skip_status" to skipStatus
-    )
-
+    ): Response<User> {
+        return client.post(
+            "$BLOCKS/destroy.json",
+            Response.serializer(User.serializer()),
+            "screen_name" to screenName,
+            "user_id" to userId,
+            "include_entities" to includeEntities,
+            "skip_status" to skipStatus
+        )
+    }
 }

@@ -5,19 +5,19 @@
 package com.sorrowblue.twitlin.v2.users
 
 import com.sorrowblue.twitlin.v2.client.Response
+import com.sorrowblue.twitlin.v2.field.MediaField
+import com.sorrowblue.twitlin.v2.field.OptionalField
+import com.sorrowblue.twitlin.v2.field.PlaceField
+import com.sorrowblue.twitlin.v2.field.PollField
+import com.sorrowblue.twitlin.v2.field.TweetField
+import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
-import com.sorrowblue.twitlin.v2.tweets.Field
-import com.sorrowblue.twitlin.v2.tweets.MediaField
-import com.sorrowblue.twitlin.v2.tweets.PlaceField
-import com.sorrowblue.twitlin.v2.tweets.PollField
-import com.sorrowblue.twitlin.v2.tweets.TweetField
-import com.sorrowblue.twitlin.v2.tweets.UserField
 import kotlinx.datetime.LocalDateTime
 
 public interface UsersApi {
 
-    public enum class Expansion(override val value: String) : Field {
+    public enum class Expansion(override val value: String) : OptionalField {
         PINNED_TWEET_ID("pinned_tweet_id");
 
         public companion object {

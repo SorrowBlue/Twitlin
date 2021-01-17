@@ -6,6 +6,7 @@ package com.sorrowblue.twitlin.client
 
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.authentication.AccessToken
+import com.sorrowblue.twitlin.core.IResponse
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpStatement
@@ -14,56 +15,55 @@ import io.ktor.http.HttpMethod
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.KSerializer
 
-internal class UserClient(
-    apiKey: String,
-    secretKey: String,
-    var accessToken: AccessToken? = null
-) : AbstractClient(apiKey, secretKey) {
-
-    suspend inline fun <reified T : Any> get(url: String, vararg params: UrlParams): Response<T> =
-        request(HttpMethod.Get, url.combineParams(params), params)
-
-    suspend inline fun <reified T : Any> post(
+internal class UserClient(apiKey: String, secretKey: String, var accessToken: AccessToken? = null) :
+    AbstractClient(apiKey, secretKey) {
+    override suspend fun <T : Any, R : IResponse<T>> put(
         url: String,
-        vararg params: UrlParams = emptyArray(),
-        oauthToken: String? = null
-    ): Response<T> =
-        request(
-            HttpMethod.Post,
-            url,
-            params,
-            accessToken = oauthToken?.let { AccessToken(it, "", "", "") }) {
-            bodyFormUrlEncoded(params.notNullParams)
-        }
-
-    suspend inline fun <reified T : Any> delete(
-        url: String,
-        vararg params: UrlParams = emptyArray()
-    ): Response<T> =
-        request(HttpMethod.Delete, url.combineParams(params), params)
-
-    suspend inline fun <reified T : Any, reified V : Any> postJson(
-        url: String,
-        clazz: V,
+        serializer: KSerializer<R>,
         vararg params: UrlParams
-    ): Response<T> =
-        request(HttpMethod.Post, url.combineParams(params), params) { bodyJson(clazz) }
+    ): R = request(HttpMethod.Put, url.combineParams(params), params, serializer)
 
-    suspend inline fun <reified T : Any, reified V : Any> putJson(
+    override suspend fun <T : Any, R : IResponse<T>> get(
         url: String,
-        vararg params: UrlParams = emptyArray(),
-        clazz: V
-    ): Response<T> =
-        request(HttpMethod.Put, url.combineParams(params), params) { bodyJson(clazz) }
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): R = request(HttpMethod.Get, url.combineParams(params), params, serializer)
 
+    override suspend fun <T : Any, R : IResponse<T>> post(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): R = request(HttpMethod.Post, url, params, serializer) {
+        bodyFormUrlEncoded(params.notNullParams)
+    }
+
+    suspend fun <T : Any, R : IResponse<T>> postForAuthentication(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams,
+        oauthToken: String
+    ): R = request(
+        HttpMethod.Post,
+        url,
+        params,
+        serializer,
+        AccessToken(oauthToken, "", "", "")
+    ) { bodyFormUrlEncoded(params.notNullParams) }
+
+    override suspend fun <T : Any, R : IResponse<T>> delete(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): R = request(HttpMethod.Delete, url.combineParams(params), params, serializer)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    inline fun <reified T : Any> streaming(
+    override fun <T : Any, R : IResponse<T>> streaming(
         url: String,
+        serializer: KSerializer<R>,
         vararg params: UrlParams
-    ): Flow<Response<T>> = channelFlow {
+    ): Flow<R> = channelFlow {
         httpClient.post<HttpStatement>(url) {
             headerAuthorization(apiKey, secretKey, params.notNullParams, accessToken)
             bodyFormUrlEncoded(params.notNullParams)
@@ -74,23 +74,36 @@ internal class UserClient(
                     "Request Twitter API-> GET:$url, body=${body}",
                     tag = "Twitlin"
                 )
-                json.decodeFromString<Response<T>>(body).let(channel::offer)
+                json.decodeFromString(serializer, body).let(channel::offer)
             } while (isClosedForSend.not())
         }
     }
 
-    private suspend inline fun <reified T : Any> request(
+    suspend inline fun <T : Any, R : IResponse<T>, reified V : Any> postJson(
+        url: String,
+        serializer: KSerializer<R>,
+        clazz: V,
+        vararg params: UrlParams
+    ): R =
+        request(HttpMethod.Post, url.combineParams(params), params, serializer) { bodyJson(clazz) }
+
+    suspend inline fun <T : Any, R : IResponse<T>, reified V : Any> putJson(
+        url: String,
+        serializer: KSerializer<R>,
+        clazz: V,
+        vararg params: UrlParams
+    ): R =
+        request(HttpMethod.Put, url.combineParams(params), params, serializer) { bodyJson(clazz) }
+
+    private suspend inline fun <T : Any, R : IResponse<T>> request(
         method: HttpMethod,
         url: String,
         params: Array<out Pair<String, Any?>>,
+        serializer: KSerializer<R>,
         accessToken: AccessToken? = null,
-        noinline bodyBlock: (HttpRequestBuilder.() -> String)? = null
-    ): Response<T> = request(method, url, {
-        headerAuthorization(
-            apiKey,
-            secretKey,
-            params.notNullParams,
-            accessToken ?: this@UserClient.accessToken
-        )
+        noinline bodyBlock: HttpRequestBuilder.() -> Unit = {}
+    ): R = request(method, url, serializer, {
+        val token = accessToken ?: this@UserClient.accessToken
+        headerAuthorization(apiKey, secretKey, params.notNullParams, token)
     }, bodyBlock)
 }

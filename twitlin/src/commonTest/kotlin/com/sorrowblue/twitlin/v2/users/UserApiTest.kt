@@ -5,9 +5,9 @@
 package com.sorrowblue.twitlin.v2.users
 
 import com.sorrowblue.twitlin.TwitterV2API
+import com.sorrowblue.twitlin.v2.field.TweetField
+import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.testResult
-import com.sorrowblue.twitlin.v2.tweets.TweetField
-import com.sorrowblue.twitlin.v2.tweets.UserField
 import test.AbstractTest
 import kotlin.test.Test
 import kotlin.test.assertNotNull

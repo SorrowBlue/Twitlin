@@ -33,21 +33,12 @@ internal fun HttpRequestBuilder.createSignature(
     nonce: String,
     timestamp: String,
     accessToken: AccessToken?,
-    params: List<Pair<String, String>>,
+    params: List<Pair<String, String>>
 ): String {
     val parameterString =
-        collectingParameters(
-            consumerKey,
-            nonce,
-            timestamp,
-            accessToken?.oauthToken,
-            params
-        )
-    val baseString = creatingSignatureBaseString(
-        method.value,
-        "${url.protocol.name}://${url.host}${url.encodedPath}",
-        parameterString
-    )
+        collectingParameters(consumerKey, nonce, timestamp, accessToken?.oauthToken, params)
+    val noQueryUrl = "${url.protocol.name}://${url.host}${url.encodedPath}"
+    val baseString = creatingSignatureBaseString(method.value, noQueryUrl, parameterString)
     val signingKey = gettingSigningKey(consumerSecret, accessToken?.oauthTokenSecret)
     return calculateSignatureBase64(baseString, signingKey)
 }
@@ -59,7 +50,7 @@ internal fun HttpRequestBuilder.headerAuthorization(
     consumerSecret: String,
     params: List<Pair<String, String>>,
     accessToken: AccessToken?
-): String {
+) {
     val nc = Random.nextBytes(32).encodeBase64().trim('=')
     val ts = Clock.System.now().epochSeconds.toString()
     val sign =
@@ -68,21 +59,18 @@ internal fun HttpRequestBuilder.headerAuthorization(
         collectingParameters(consumerKey, nc, sign, ts, accessToken?.oauthToken, params)
     val headerValue = buildHeaderString(parameters)
     header(HttpHeaders.Authorization, headerValue)
-    return "${HttpHeaders.Authorization}: ${headers[HttpHeaders.Authorization]}"
 }
 
-internal fun HttpRequestBuilder.headerAuthorization(bearerToken: BearerToken?): String {
+internal fun HttpRequestBuilder.headerAuthorization(bearerToken: BearerToken?) =
     header(HttpHeaders.Authorization, "Bearer ${bearerToken?.accessToken}")
-    return "${HttpHeaders.Authorization}: ${headers[HttpHeaders.Authorization]}"
-}
 
-internal fun HttpRequestBuilder.bodyFormUrlEncoded(params: List<Pair<String, String>>): String =
+internal fun HttpRequestBuilder.bodyFormUrlEncoded(params: List<Pair<String, String>>) {
     params.mapNotNull { if (it.first.startsWith("oauth_")) null else it }
         .joinToString("&") { "${it.first.urlEncode()}=${it.second.urlEncode()}" }.also {
             body = TextContent(it, ContentType.Application.FormUrlEncoded)
         }
+}
 
-internal inline fun <reified V : Any> HttpRequestBuilder.bodyJson(clazz: V): String =
-    Json.encodeToString(clazz).also {
-        body = TextContent(it, ContentType.Application.Json)
-    }
+internal inline fun <reified V : Any> HttpRequestBuilder.bodyJson(clazz: V) {
+    body = TextContent(Json.encodeToString(clazz), ContentType.Application.Json)
+}

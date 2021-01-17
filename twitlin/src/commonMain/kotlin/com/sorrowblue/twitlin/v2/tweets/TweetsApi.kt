@@ -5,8 +5,15 @@
 package com.sorrowblue.twitlin.v2.tweets
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
+import com.sorrowblue.twitlin.v2.client.Error
 import com.sorrowblue.twitlin.v2.client.Includes
 import com.sorrowblue.twitlin.v2.client.Response
+import com.sorrowblue.twitlin.v2.field.Expansion
+import com.sorrowblue.twitlin.v2.field.MediaField
+import com.sorrowblue.twitlin.v2.field.PlaceField
+import com.sorrowblue.twitlin.v2.field.PollField
+import com.sorrowblue.twitlin.v2.field.TweetField
+import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
@@ -19,7 +26,8 @@ public data class OptionalData<T>(val data: T, val includes: Includes? = null) :
 public data class PagingTweet(
     val data: List<Tweet>,
     val includes: Includes? = null,
-    val meta: Meta
+    val meta: Meta,
+    val errors: List<Error>
 ) : JvmSerializable {
     @Serializable
     public data class Meta(

@@ -4,6 +4,7 @@
 
 package com.sorrowblue.twitlin.client
 
+import com.sorrowblue.twitlin.core.IResponse
 import kotlinx.serialization.Serializable
 import com.sorrowblue.twitlin.client.Error as ClientError
 
@@ -13,7 +14,7 @@ import com.sorrowblue.twitlin.client.Error as ClientError
  * @param T TODO
  */
 @Serializable(ResponseSerializer::class)
-public sealed class Response<T : Any> {
+public sealed class Response<T : Any> : IResponse<T> {
 
     /**
      * TODO
@@ -31,7 +32,9 @@ public sealed class Response<T : Any> {
      * @property errors TODO
      */
     @Serializable
-    public data class Error<T : Any>(val errors: List<ClientError>) : Response<T>()
+    public data class Error<T : Any>(val errors: List<ClientError>) : Response<T>() {
+        internal constructor(error: ClientError) : this(listOf(error))
+    }
 
     /**
      * TODO

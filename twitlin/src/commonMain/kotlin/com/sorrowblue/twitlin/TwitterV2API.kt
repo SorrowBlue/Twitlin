@@ -5,8 +5,8 @@
 package com.sorrowblue.twitlin
 
 import com.sorrowblue.twitlin.v2.tweets.TweetsApi
-import com.sorrowblue.twitlin.v2.tweets.TweetsApiImp
 import com.sorrowblue.twitlin.v2.tweets.TweetsAppApi
+import com.sorrowblue.twitlin.v2.tweets.impl.TweetsApiImp
 import com.sorrowblue.twitlin.v2.tweets.impl.TweetsAppApiImpl
 import com.sorrowblue.twitlin.v2.tweets.search.TweetsSearchApi
 import com.sorrowblue.twitlin.v2.tweets.search.TweetsSearchAppApi

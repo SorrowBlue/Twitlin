@@ -14,6 +14,7 @@ class CreatingSignatureKtTest {
 
     private val parametersString =
         collectingParameters(CONSUMER_KEY, NONCE, TIMESTAMP, OAUTH_TOKEN, PARAMETERS)
+
     private val baseString = creatingSignatureBaseString(METHOD, URL, parametersString)
 
     private val signingKey = gettingSigningKey(CONSUMER_SECRET, OAUTH_TOKEN_SECRET)

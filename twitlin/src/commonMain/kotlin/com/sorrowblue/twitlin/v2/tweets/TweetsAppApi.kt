@@ -5,6 +5,12 @@
 package com.sorrowblue.twitlin.v2.tweets
 
 import com.sorrowblue.twitlin.v2.client.Response
+import com.sorrowblue.twitlin.v2.field.Expansion
+import com.sorrowblue.twitlin.v2.field.MediaField
+import com.sorrowblue.twitlin.v2.field.PlaceField
+import com.sorrowblue.twitlin.v2.field.PollField
+import com.sorrowblue.twitlin.v2.field.TweetField
+import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import kotlinx.coroutines.flow.Flow
 
@@ -84,5 +90,5 @@ public interface TweetsAppApi {
         pollFields: List<PollField>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
-    ): Flow<Response<Tweet>>
+    ): Flow<Response<OptionalData<Tweet>>>
 }

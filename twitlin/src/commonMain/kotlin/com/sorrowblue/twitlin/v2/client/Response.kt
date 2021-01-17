@@ -5,6 +5,7 @@
 package com.sorrowblue.twitlin.v2.client
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
+import com.sorrowblue.twitlin.core.IResponse
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalDateTimeISOSerializer
 import kotlinx.serialization.SerialName
@@ -17,7 +18,7 @@ import com.sorrowblue.twitlin.v2.client.Error as ClientError
  * @param T
  */
 @Serializable(ResponseSerializer::class)
-public sealed class Response<T : Any> : JvmSerializable {
+public sealed class Response<T : Any> : IResponse<T>, JvmSerializable {
 
     /**
      * TODO
