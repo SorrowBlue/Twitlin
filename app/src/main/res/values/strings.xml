@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TwitlinAndroid</string>
+    <string name="username">\@%s$1</string>
 </resources>
