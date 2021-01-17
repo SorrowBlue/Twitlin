@@ -7,35 +7,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
-import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.TwitterV2API
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.sorrowblue.twitlin.androidsample.databinding.ActivityMainBinding
-import com.sorrowblue.twitlin.client.Error
-import com.sorrowblue.twitlin.v2.tweets.Expansion
-import com.sorrowblue.twitlin.v2.tweets.TweetField
-import com.sorrowblue.twitlin.v2.tweets.UserField
+import com.sorrowblue.twitlin.v2.objects.Tweet
+import com.sorrowblue.twitlin.v2.objects.User
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
-
+internal class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val uri = intent.data
-        val oauth_token: String?
-        val oauth_verifier: String?
-        oauth_token = uri?.getQueryParameter("oauth_token")
-        oauth_verifier = uri?.getQueryParameter("oauth_verifier")
-        if (oauth_token != null && oauth_verifier != null) {
-            viewModel.accessToken(oauth_token, oauth_verifier)
+        val oauthToken: String? = uri?.getQueryParameter("oauth_token")
+        val oauthVerifier: String? = uri?.getQueryParameter("oauth_verifier")
+        if (oauthToken != null && oauthVerifier != null) {
+            viewModel.accessToken(oauthToken, oauthVerifier)
         }
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
@@ -44,57 +34,37 @@ class MainActivity : AppCompatActivity() {
         binding.button.text = "ログイン"
         binding.button.setOnClickListener { viewModel.requestAuthUrl() }
         viewModel.url.observe(this) {
-            val uri = Uri.parse(it)
-            val i = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(i)
-            Log.d("APPAPP", "url = $it")
+            Log.d(this::class.java.simpleName, "url = $it")
+            Intent(Intent.ACTION_VIEW, Uri.parse(it)).also(this::startActivity)
         }
         binding.recyclerView.adapter = viewModel.adapter
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL)
+        )
         lifecycleScope.launchWhenStarted {
             viewModel.tweet.collect {
+                delay(1000)
                 it.onSuccess { success ->
-                    val tweet = success.data
-//                    val user = success.includes?.users?.find { it.id == tweet.authorId }
-//                    if (user != null) {
-//                        viewModel.adapter.currentItem += tweet to user
-//                    }
+                    val tweet = success.data.data
+                    val user = success.data.includes?.users?.find { it.id == tweet.authorId }
+                    if (user != null) {
+                        viewModel.adapter.currentItem =
+                            listOf(tweet to user) + viewModel.adapter.currentItem
+                    }
                     binding.state.text = viewModel.adapter.currentItem.size.toString()
+                    binding.recyclerView.smoothScrollToPosition(0)
                 }
             }
         }
+        viewModel.adapter.currentItem += Tweet(
+            authorId = "4727639925",
+            id = "1350774705633046529",
+            text = "Hambre de ti 😈💫 https://t.co/oRC3WGVO6c"
+        ) to User(
+            username = "lokdeseass",
+            id = "4727639925",
+            profileImageUrl = "https://pbs.twimg.com/profile_images/1302597533592682496/PejMYjSK_normal.jpg",
+            name = "Martha"
+        )
     }
-}
-
-class MainViewModel : ViewModel() {
-
-    val adapter = MainAdapter()
-
-    val errorCodes: MutableLiveData<List<Error>> = MutableLiveData()
-    val url: MutableLiveData<String> = MutableLiveData()
-
-    fun requestAuthUrl() {
-        viewModelScope.launch {
-            TwitterAPI.oauthApi.requestToken("https://twitlinsample.sorrowblue.com")
-                .onSuccess {
-                    url.postValue(TwitterAPI.oauthApi.authenticate(it.oauthToken))
-                }
-                .onError {
-                    errorCodes.postValue(it)
-                }
-        }
-    }
-
-    fun accessToken(oauthToken: String, oauthVerifier: String) {
-        viewModelScope.launch {
-            TwitterAPI.oauthApi.accessToken(oauthToken, oauthVerifier).dataOrNull()?.let {
-                Twitlin.accessToken = it
-            }
-        }
-    }
-
-    val tweet = TwitterV2API.tweetsAppApi.sampleStream(
-        expansions = listOf(Expansion.AUTHOR_ID),
-        userFields = listOf(UserField.PROFILE_IMAGE_URL),
-        tweetFields = listOf(TweetField.TEXT, TweetField.AUTHOR_ID)
-    )
 }

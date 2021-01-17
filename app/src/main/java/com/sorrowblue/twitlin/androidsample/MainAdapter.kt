@@ -1,6 +1,5 @@
 package com.sorrowblue.twitlin.androidsample
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sorrowblue.twitlin.androidsample.databinding.RecyclerViewItemBinding
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
+import io.pixel.android.Pixel
+import io.pixel.android.config.PixelOptions
 import kotlin.properties.Delegates
 
 typealias TweetObject = Pair<Tweet, User>
@@ -26,7 +27,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(parent)
 
-    class ViewHolder private constructor(val binding: RecyclerViewItemBinding) :
+    inner class ViewHolder private constructor(val binding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         constructor(parent: ViewGroup) : this(
@@ -37,9 +38,15 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
         fun bind(tweetObject: TweetObject) {
             binding.textView.text = tweetObject.first.text
-            binding.imageView.setImageURI(Uri.parse(tweetObject.second.profileImageUrl))
+            binding.textView2.text =
+                binding.root.resources.getString(R.string.username, tweetObject.second.username)
+            Pixel.load(tweetObject.second.profileImageUrl, pixelOptions, binding.imageView)
         }
     }
+
+    private val pixelOptions = PixelOptions.Builder().apply {
+        setPlaceholderResource(R.drawable.ic_android_black_24dp)
+    }.build()
 
     class Diff(private val old: List<TweetObject>, private val new: List<TweetObject>) :
         DiffUtil.Callback() {

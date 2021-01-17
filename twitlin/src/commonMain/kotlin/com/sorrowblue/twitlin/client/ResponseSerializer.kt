@@ -43,7 +43,7 @@ internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializ
 //         JsonElement -> value
         Napier.d("JSON: $element", tag = "DEBUG")
         return if (element is JsonObject && "errors" in element)
-            Response.Error(decoder.json.decodeFromString(element["errors"]!!.toString()))
+            Response.Error(decoder.json.decodeFromString<List<Error>>(element["errors"]!!.toString()))
         else
             Response.Success(decoder.json.decodeFromJsonElement(dataSerializer, element))
     }
