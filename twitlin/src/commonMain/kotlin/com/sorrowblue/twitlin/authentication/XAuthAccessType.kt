@@ -5,16 +5,16 @@
 package com.sorrowblue.twitlin.authentication
 
 /**
- * TODO
+ * Defines the level of access that the application requires for user accounts.
  */
 public enum class XAuthAccessType {
     /**
-     * TODO
+     * Request read-only access with [OAuthApi.requestToken].
      */
     READ,
 
     /**
-     * TODO
+     * Request read / write access with [OAuthApi.requestToken].
      */
     WRITE
 }

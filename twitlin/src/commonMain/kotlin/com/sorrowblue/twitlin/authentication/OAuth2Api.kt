@@ -35,7 +35,6 @@ import com.sorrowblue.twitlin.client.Response
  * @see <a href="https://developer.twitter.com/en/docs/authentication/oauth-2-0">OAuth 2.0 Bearer Token</a>
  */
 public interface OAuth2Api {
-
     /**
      * Allows a registered application to obtain an OAuth 2 Bearer Token, which can be used to make
      * API requests on an application's own behalf, without a user context. This is called
@@ -67,5 +66,4 @@ public interface OAuth2Api {
      * @return TODO
      */
     public suspend fun invalidateToken(): Response<InvalidateToken>
-
 }

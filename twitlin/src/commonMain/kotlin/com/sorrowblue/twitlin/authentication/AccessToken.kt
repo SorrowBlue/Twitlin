@@ -4,6 +4,7 @@
 
 package com.sorrowblue.twitlin.authentication
 
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.utils.toMap
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
@@ -29,19 +30,9 @@ public data class AccessToken(
     val userId: String,
     @SerialName("screen_name")
     val screenName: String
-) {
-
+) : JvmSerializable {
     internal companion object {
-        /**
-         * TODO
-         *
-         * @param str TODO
-         * @return TODO
-         */
         @OptIn(ExperimentalSerializationApi::class)
-        fun fromString(str: String): AccessToken =
-            Properties.decodeFromMap(str.toMap())
-
+        fun fromString(str: String): AccessToken = Properties.decodeFromMap(str.toMap())
     }
-
 }

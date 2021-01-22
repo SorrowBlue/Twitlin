@@ -4,6 +4,7 @@
 
 package com.sorrowblue.twitlin.authentication
 
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,7 +14,5 @@ import kotlinx.serialization.Serializable
  * @property accessToken TODO
  */
 @Serializable
-public data class InvalidateToken(
-    @SerialName("access_token")
-    val accessToken: String
-)
+public data class InvalidateToken(@SerialName("access_token") val accessToken: String) :
+    JvmSerializable
