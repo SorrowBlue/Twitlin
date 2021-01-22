@@ -11,11 +11,10 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.buildSerialDescriptor
-import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
 import kotlinx.serialization.json.JsonObject
@@ -30,54 +29,56 @@ internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializ
 
     override val descriptor: SerialDescriptor =
         buildSerialDescriptor("Response", PolymorphicKind.SEALED) {
-            element("Success", buildClassSerialDescriptor("Success") {
-                element<String>("data")
-            })
+            element("Success", dataSerializer.descriptor)
             element("Error", dataSerializer.descriptor)
         }
 
     override fun deserialize(decoder: Decoder): Response<T> {
-        require(decoder is JsonDecoder)
+//        Decoder -> JsonDecoder
+        require(decoder is JsonDecoder) // this class can be decoded only by Json
+//        JsonDecoder -> JsonElement
         val element = runCatching(decoder::decodeJsonElement).getOrElse { JsonObject(emptyMap()) }
+//        JsonElement -> value
         Napier.d("JsonElement: $element", tag = "ResponseSerializer")
-        return kotlin.runCatching {
-/*            if (element.jsonObject.isEmpty()) {
-                Napier.d("empty", tag = "ResponseSerializer")
-                Response.Success(Unit) as Response<T>
-            } else*/ if ("data" in element.jsonObject) {
-            Napier.d("success", tag = "ResponseSerializer")
-            Response.Success(
-                decoder.json.decodeFromJsonElement(
-                    dataSerializer,
-                    element
-                )
-            )
-        } else {
-            Napier.d("errors", tag = "ResponseSerializer")
-            val errors =
-                decoder.json.decodeFromJsonElement(
-                    ListSerializer(Error.serializer()),
-                    element.jsonObject["errors"]?.jsonArray!!
-                )
-            val jsonObject = element.jsonObject
-
-            fun JsonObject.getString(key: String) = get(key)?.jsonPrimitive?.content
-            Response.Error(
-                errors,
-                jsonObject.getString("title"),
-                jsonObject.getString("detail"),
-                jsonObject.getString("type")
-            )
+        if (element !is JsonObject) {
+            return Response.Error(listOf())
         }
+        return kotlin.runCatching {
+            if (("data" in element || "meta" in element)) {
+                Response.Success(decoder.json.decodeFromJsonElement(dataSerializer, element))
+            } else {
+                element.asError(decoder)
+            }
         }.getOrElse {
-            Napier.d("catch error: ${it.message}", tag = "ResponseSerializer")
-            Response.Error(listOf())
+            Response.Error(listOf(), "Decode failed", it.message)
         }
     }
 
     override fun serialize(encoder: Encoder, value: Response<T>) {
+//        Encoder -> JsonEncoder
         require(encoder is JsonEncoder)
+//        value -> JsonElement
         val element = encoder.json.encodeToJsonElement(value)
         encoder.encodeJsonElement(element)
     }
+
+    private fun JsonObject.asError(decoder: JsonDecoder): Response.Error<T> {
+        val errors = jsonObject["errors"]?.jsonArray?.let {
+            decoder.json.decodeFromJsonElement(ListSerializer(Error.serializer()), it)
+        }
+
+        fun JsonObject.getString(key: String) = get(key)?.jsonPrimitive?.content
+        return Response.Error(
+            errors.orEmpty(),
+            jsonObject.getString("title"),
+            jsonObject.getString("detail"),
+            type = jsonObject["type"]?.let {
+                Json.decodeFromJsonElement(
+                    Error.Type.serializer(),
+                    it
+                )
+            }
+        )
+    }
+
 }

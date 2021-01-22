@@ -20,22 +20,21 @@ import com.sorrowblue.twitlin.client.Response
  * @see <a href="https://developer.twitter.com/en/docs/authentication/oauth-1-0a">OAuth 1.0a</a>
  */
 public interface OAuthApi {
-
     /**
      * Allows a Consumer application to exchange the OAuth Request Token for an OAuth Access Token.
      * This method fulfills [Section 6.3](http://oauth.net/core/1.0/#auth_step3) of the
      * [OAuth 1.0 authentication flow](http://oauth.net/core/1.0/#anchor9).
      *
-     * @param oauthToken The oauth_token here must be the same as the oauth_token returned in the
+     * @param token The oauth_token here must be the same as the oauth_token returned in the
      * request_token step.
-     * @param oauthVerifier If using the OAuth web-flow,
+     * @param verifier If using the OAuth web-flow,
      * set this parameter to the value of the oauth_verifier returned in the callback URL. If you
      * are using out-of-band OAuth, set this value to the pin-code. For OAuth 1.0a compliance this
      * parameter is **required**. OAuth 1.0a is strictly enforced and applications not using the
      * oauth_verifier will fail to complete the OAuth flow.
      * @return Authenticated access token
      */
-    public suspend fun accessToken(oauthToken: String, oauthVerifier: String): Response<AccessToken>
+    public suspend fun accessToken(token: String, verifier: String): Response<AccessToken>
 
     /**
      * Allows a Consumer application to use an OAuth request_token to request user authorization.
@@ -51,7 +50,7 @@ public interface OAuthApi {
      * application. To realize this behavior, you must enable the Use Sign in with Twitter setting
      * on your [application record](https://developer.twitter.com/apps).
      *
-     * @param oauthToken TODO
+     * @param token TODO
      * @param forceLogin Forces the user to enter their credentials to ensure the correct users
      * account is authorized.
      * @param screenName Prefills the username input box of the OAuth login screen with the given
@@ -59,7 +58,7 @@ public interface OAuthApi {
      * @return TODO
      */
     public fun authenticate(
-        oauthToken: String,
+        token: String,
         forceLogin: Boolean? = null,
         screenName: String? = null
     ): String
@@ -73,7 +72,7 @@ public interface OAuthApi {
      * ***Usage Note:*** An `oauth_Callback` is never sent to this method, provide it to
      * [OAuthApi.requestToken] instead.
      *
-     * @param oauthToken TODO
+     * @param token TODO
      * @param forceLogin Forces the user to enter their credentials to ensure the correct users
      * account is authorized.
      * @param screenName Prefills the username input box of the OAuth login screen with the given
@@ -81,7 +80,7 @@ public interface OAuthApi {
      * @return TODO
      */
     public fun authorize(
-        oauthToken: String,
+        token: String,
         forceLogin: Boolean? = null,
         screenName: String? = null
     ): String
@@ -95,13 +94,13 @@ public interface OAuthApi {
      *
      * ***Usage Note:*** Only ASCII values are accepted for the `oauth_nonce`
      *
-     * @param oauthCallback TODO
-     * @param xAuthAccessType TODO
+     * @param callback TODO
+     * @param type TODO
      * @return TODO
      */
     public suspend fun requestToken(
-        oauthCallback: String,
-        xAuthAccessType: XAuthAccessType? = null
+        callback: String,
+        type: XAuthAccessType? = null
     ): Response<RequestToken>
 
     /**
@@ -112,5 +111,4 @@ public interface OAuthApi {
      * @return TODO
      */
     public suspend fun invalidateToken(): Response<InvalidateToken>
-
 }

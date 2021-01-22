@@ -1,0 +1,42 @@
+{
+  "data": {
+    "attachments": {
+      "media_keys": [
+        "13_1263145212760805376"
+      ]
+    },
+    "author_id": "783214",
+    "created_at": "2020-05-20T16:31:15.000Z",
+    "entities": {
+      "urls": [
+        {
+          "start": 154,
+          "end": 177,
+          "url": "https://t.co/pV53mvjAVT",
+          "expanded_url": "https://twitter.com/Twitter/status/1263145271946551300/video/1",
+          "display_url": "pic.twitter.com/pV53mvjAVT"
+        }
+      ]
+    },
+    "id": "1263145271946551300",
+    "lang": "en",
+    "possibly_sensitive": false,
+    "source": "Sprinklr",
+    "text": "Testing, testing...\n\nA new way to have a convo with exactly who you want. We’re starting with a small % globally, so keep your 👀 out to see it in action. https://t.co/pV53mvjAVT"
+  },
+  "includes": {
+    "media": [
+      {
+        "duration_ms": 46947,
+        "height": 1080,
+        "media_key": "13_1263145212760805376",
+        "preview_image_url": "https://pbs.twimg.com/media/EYeX7akWsAIP1_1.jpg",
+        "public_metrics": {
+          "view_count": 6891098
+        },
+        "type": "video",
+        "width": 1920
+      }
+    ]
+  }
+}

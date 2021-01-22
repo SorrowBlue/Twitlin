@@ -4,6 +4,7 @@
 
 package com.sorrowblue.twitlin.v2.tweets
 
+import com.sorrowblue.twitlin.objects.Tweet as V1Tweet
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.TwitterV2API
@@ -14,11 +15,10 @@ import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.testResult
-import kotlinx.coroutines.flow.collect
-import test.AbstractTest
 import kotlin.test.Test
 import kotlin.test.assertNotNull
-import com.sorrowblue.twitlin.objects.Tweet as V1Tweet
+import kotlinx.coroutines.flow.collect
+import test.AbstractTest
 
 class TweetsApiTest : AbstractTest {
 
@@ -59,7 +59,7 @@ class TweetsApiTest : AbstractTest {
     @Test
     fun tweetsIdTest() = runBlocking {
         TwitterV2API.tweetsApi.tweet(
-            "1349187270318833664",
+            "13491872703188336640000000000",
             expansions = Expansion.all(),
             mediaFields = mediaField,
             placeFields = PlaceField.all(),

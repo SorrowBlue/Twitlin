@@ -79,7 +79,7 @@ public data class Tweet(
     val nonPublicMetrics: NonPublicMetrics? = null,
     @SerialName("organic_metrics")
     val organicMetrics: Metrics? = null,
-    @SerialName("possiby_sensitive")
+    @SerialName("possibly_sensitive")
     val possibySensitive: Boolean? = null,
     @SerialName("promoted_metrics")
     val promotedMetrics: Metrics? = null,
@@ -118,7 +118,7 @@ public data class Tweet(
             @SerialName("expanded_url") val expandedUrl: String? = null,
             @SerialName("display_url") val displayUrl: String? = null,
             val images: List<Image>? = null,
-            val status: String? = null,
+            val status: Int? = null,
             val title: String? = null,
             val description: String? = null,
             @SerialName("unwound_url") val unwoundUrl: String? = null,

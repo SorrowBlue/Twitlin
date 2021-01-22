@@ -10,10 +10,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 public data class Error(
-    val title: String? = null,
     val detail: String? = null,
+    val title: String? = null,
+    val details: List<String>? = null,
     val type: Type? = null,
-    val id: String? = null,
+//    val id: String? = null,
     @SerialName("resource_type")
     val resourceType: String? = null,
     val field: String? = null,
@@ -22,7 +23,7 @@ public data class Error(
     val section: String? = null,
     val parameters: Map<String, List<String>>? = null,
     val message: String? = null,
-    val status: Int? = null
+//    val status: Int? = null
 ) : JvmSerializable {
 
     @Serializable
@@ -38,7 +39,7 @@ public data class Error(
          * https://api.twitter.com/2/problems/invalid-request
          * A problem that indicates this request is invalid.
          */
-        @SerialName("Invalid Request Problem")
+        @SerialName("https://api.twitter.com/2/problems/invalid-request")
         INVALID_REQUEST_PROBLEM,
 
         /**
@@ -62,7 +63,7 @@ public data class Error(
          * https://api.twitter.com/2/problems/client-forbidden
          * A problem that indicates your client is forbidden from making this request.
          */
-        @SerialName("Client Forbidden Problem")
+        @SerialName("https://api.twitter.com/2/problems/client-forbidden")
         CLIENT_FORBIDDEN_PROBLEM,
 
         /**
@@ -146,6 +147,12 @@ public data class Error(
          * about:blank
          */
         @SerialName("about:blank")
-        ABOUT_BLANK
+        ABOUT_BLANK,
+
+        /**
+         * Invalid rules
+         */
+        @SerialName("https://api.twitter.com/2/problems/invalid-rules")
+        INVALID_RULES
     }
 }

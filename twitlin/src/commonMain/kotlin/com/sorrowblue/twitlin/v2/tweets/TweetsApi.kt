@@ -20,14 +20,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class OptionalData<T>(val data: T, val includes: Includes? = null) : JvmSerializable
+public data class OptionalData<T>(
+    val data: T,
+    val includes: Includes? = null,
+    val errors: List<Error>? = null,
+) : JvmSerializable
 
 @Serializable
 public data class PagingTweet(
     val data: List<Tweet>,
     val includes: Includes? = null,
     val meta: Meta,
-    val errors: List<Error>
+    val errors: List<Error>? = null
 ) : JvmSerializable {
     @Serializable
     public data class Meta(

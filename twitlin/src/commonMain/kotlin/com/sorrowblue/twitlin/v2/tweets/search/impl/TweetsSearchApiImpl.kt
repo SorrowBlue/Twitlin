@@ -15,7 +15,10 @@ import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.field.toParameter
 import com.sorrowblue.twitlin.v2.tweets.PagingTweet
+import com.sorrowblue.twitlin.v2.tweets.search.AddedSearchStreamRules
+import com.sorrowblue.twitlin.v2.tweets.search.SearchStreamRule
 import com.sorrowblue.twitlin.v2.tweets.search.TweetsSearchApi
+import com.sorrowblue.twitlin.v2.tweets.search.request.AddSearchStreamRuleRequest
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.encodeToISOString
 
@@ -53,6 +56,18 @@ internal class TweetsSearchApiImpl(val client: UserClient) : TweetsSearchApi {
             "poll.fields" to pollFields?.toParameter(),
             "tweet.fields" to tweetFields?.toParameter(),
             "user.fields" to userFields?.toParameter()
+        )
+    }
+
+    override suspend fun addStreamRules(
+        rules: List<SearchStreamRule>,
+        dryRun: Boolean?
+    ): Response<AddedSearchStreamRules> {
+        return client.postJson(
+            "$SEARCH/stream/rules",
+            AddSearchStreamRuleRequest(rules),
+            "dry_run" to dryRun,
+            serializer = Response.serializer(AddedSearchStreamRules.serializer())
         )
     }
 }

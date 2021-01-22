@@ -17,49 +17,39 @@ import kotlinx.serialization.builtins.serializer
 private const val OAUTH = "${Urls.FQDN}/oauth"
 
 internal class OAuthApiImpl(private val client: UserClient) : OAuthApi {
-
-    override suspend fun accessToken(
-        oauthToken: String,
-        oauthVerifier: String
-    ): Response<AccessToken> = client.postForAuthentication(
-        "$OAUTH/access_token",
-        Response.serializer(String.serializer()),
-        "oauth_verifier" to oauthVerifier,
-        oauthToken = oauthToken
-    ).convertData(AccessToken.Companion::fromString)
-
-    override fun authenticate(
-        oauthToken: String,
-        forceLogin: Boolean?,
-        screenName: String?
-    ): String {
-        val login = forceLogin?.let { "&force_login=$it" }.orEmpty()
-        val name = screenName?.let { "&screen_name=$it" }.orEmpty()
-        return "$OAUTH/authenticate?oauth_token=$oauthToken$login$name"
+    override suspend fun accessToken(token: String, verifier: String): Response<AccessToken> {
+        return client.postForAuthentication(
+            "$OAUTH/access_token",
+            Response.serializer(String.serializer()),
+            "oauth_verifier" to verifier,
+            oauthToken = token
+        ).convertData(AccessToken.Companion::fromString)
     }
 
-    override fun authorize(
-        oauthToken: String,
-        forceLogin: Boolean?,
-        screenName: String?
-    ): String {
+    override fun authenticate(token: String, forceLogin: Boolean?, screenName: String?): String {
         val login = forceLogin?.let { "&force_login=$it" }.orEmpty()
         val name = screenName?.let { "&screen_name=$it" }.orEmpty()
-        return "$OAUTH/authorize?oauth_token=$oauthToken$login$name"
+        return "$OAUTH/authenticate?oauth_token=$token$login$name"
+    }
+
+    override fun authorize(token: String, forceLogin: Boolean?, screenName: String?): String {
+        val login = forceLogin?.let { "&force_login=$it" }.orEmpty()
+        val name = screenName?.let { "&screen_name=$it" }.orEmpty()
+        return "$OAUTH/authorize?oauth_token=$token$login$name"
     }
 
     override suspend fun requestToken(
-        oauthCallback: String,
-        xAuthAccessType: XAuthAccessType?
-    ): Response<RequestToken> =
-        client.post(
+        callback: String,
+        type: XAuthAccessType?
+    ): Response<RequestToken> {
+        return client.post(
             "$OAUTH/request_token",
             Response.serializer(String.serializer()),
-            "oauth_callback" to oauthCallback,
-            "x_auth_access_type" to xAuthAccessType?.name?.toLowerCase()
+            "oauth_callback" to callback,
+            "x_auth_access_type" to type?.name?.toLowerCase()
         ).convertData(RequestToken::fromString)
+    }
 
     override suspend fun invalidateToken(): Response<InvalidateToken> =
         client.post("$OAUTH/invalidate_token", Response.serializer(InvalidateToken.serializer()))
-
 }

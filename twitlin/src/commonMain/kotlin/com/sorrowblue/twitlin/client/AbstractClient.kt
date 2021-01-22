@@ -27,5 +27,5 @@ public abstract class AbstractClient(apiKey: String, secretKey: String) :
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any, R : IResponse<T>> onError(throwable: Throwable): R =
-        Response.Error<T>(Error("${throwable.message}", ErrorCodes.CLIENT_ERROR)) as R
+        Response.error<T>(Error("${throwable.message}", ErrorCodes.CLIENT_ERROR)) as R
 }

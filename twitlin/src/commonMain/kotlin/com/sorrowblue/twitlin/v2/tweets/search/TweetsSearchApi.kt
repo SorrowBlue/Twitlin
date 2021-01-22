@@ -68,4 +68,9 @@ public interface TweetsSearchApi {
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
     ): Response<PagingTweet>
+
+    public suspend fun addStreamRules(
+        rules: List<SearchStreamRule>,
+        dryRun: Boolean?
+    ): Response<AddedSearchStreamRules>
 }

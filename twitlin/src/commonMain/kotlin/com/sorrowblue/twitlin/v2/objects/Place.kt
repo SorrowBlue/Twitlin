@@ -20,6 +20,21 @@ public data class Place(
     val countryCode: String? = null,
     val geo: Geo? = null,
     val name: String? = null,
-    @SerialName("placeType")
-    val place_type: String? = null,
-) : JvmSerializable
+    @SerialName("place_type")
+    val placeType: String? = null,
+) : JvmSerializable {
+
+    @Serializable
+    public data class Geo(
+        val type: String,
+        val bbox: List<Double>,
+        val properties: Map<String, String>,
+    ) : JvmSerializable {
+
+        @Serializable
+        public data class Coordinates(
+            val type: String,
+            val coordinates: List<Double>,
+        ) : JvmSerializable
+    }
+}

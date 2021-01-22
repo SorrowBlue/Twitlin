@@ -1,0 +1,9 @@
+{
+  "client_id": "16340226",
+  "required_enrollment": "Standard Basic",
+  "registration_url": "https://developer.twitter.com/en/account",
+  "title": "Client Forbidden",
+  "detail": "This request must be made using an approved developer account that is enrolled in the requested endpoint. Learn more by visiting our documentation.",
+  "reason": "client-not-enrolled",
+  "type": "https://api.twitter.com/2/problems/client-forbidden"
+}

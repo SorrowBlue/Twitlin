@@ -1,0 +1,246 @@
+{
+  "data": [
+    {
+      "created_at": "2007-02-20T14:35:54.000Z",
+      "description": "Black queer lives matter.\nBlack trans lives matter.\n#BlackLivesMatter",
+      "entities": {
+        "url": {
+          "urls": [
+            {
+              "start": 0,
+              "end": 23,
+              "url": "https://t.co/TAXQpspyHn",
+              "expanded_url": "https://about.twitter.com/",
+              "display_url": "about.twitter.com"
+            }
+          ]
+        },
+        "description": {
+          "hashtags": [
+            {
+              "start": 52,
+              "end": 69,
+              "tag": "BlackLivesMatter"
+            }
+          ]
+        }
+      },
+      "id": "783214",
+      "location": "Everywhere",
+      "name": "Twitter",
+      "pinned_tweet_id": "1274087687469715457",
+      "profile_image_url": "https://pbs.twimg.com/profile_images/1270500941498912768/W-80pLvu_normal.jpg",
+      "protected": false,
+      "url": "https://t.co/TAXQpspyHn",
+      "username": "Twitter",
+      "verified": true
+    },
+    {
+      "created_at": "2013-12-14T04:35:55.000Z",
+      "description": "The voice of Twitter's #DevRel team, and your official source for updates, news, & events about Twitter's API. \n\n#BlackLivesMatter",
+      "entities": {
+        "url": {
+          "urls": [
+            {
+              "start": 0,
+              "end": 23,
+              "url": "https://t.co/3ZX3TNiZCY",
+              "expanded_url": "https://developer.twitter.com/en/community",
+              "display_url": "developer.twitter.com/en/community"
+            }
+          ]
+        },
+        "description": {
+          "hashtags": [
+            {
+              "start": 23,
+              "end": 30,
+              "tag": "DevRel"
+            },
+            {
+              "start": 113,
+              "end": 130,
+              "tag": "BlackLivesMatter"
+            }
+          ]
+        }
+      },
+      "id": "2244994945",
+      "location": "127.0.0.1",
+      "name": "Twitter Dev",
+      "pinned_tweet_id": "1255542774432063488",
+      "profile_image_url": "https://pbs.twimg.com/profile_images/1267175364003901441/tBZNFAgA_normal.jpg",
+      "protected": false,
+      "url": "https://t.co/3ZX3TNiZCY",
+      "username": "TwitterDev",
+      "verified": true
+    },
+    {
+      "created_at": "2007-05-23T06:01:13.000Z",
+      "description": "The Real Twitter API. Tweets about API changes, service issues and our Developer Platform. Don't get an answer? It's on my website.",
+      "entities": {
+        "url": {
+          "urls": [
+            {
+              "start": 0,
+              "end": 23,
+              "url": "https://t.co/8IkCzCDr19",
+              "expanded_url": "https://developer.twitter.com",
+              "display_url": "developer.twitter.com"
+            }
+          ]
+        }
+      },
+      "id": "6253282",
+      "location": "San Francisco, CA",
+      "name": "Twitter API",
+      "profile_image_url": "https://pbs.twimg.com/profile_images/942858479592554497/BbazLO9L_normal.jpg",
+      "protected": false,
+      "url": "https://t.co/8IkCzCDr19",
+      "username": "TwitterAPI",
+      "verified": true
+    },
+    {
+      "created_at": "2012-02-17T20:40:28.000Z",
+      "description": "#BlackLivesMatter",
+      "entities": {
+        "url": {
+          "urls": [
+            {
+              "start": 0,
+              "end": 23,
+              "url": "https://t.co/UFN8PpMrxw",
+              "expanded_url": "https://careers.twitter.com/content/careers-twitter/en/jobs.html#location=careers-twitter%3Alocation",
+              "display_url": "careers.twitter.com/content/career…"
+            }
+          ]
+        },
+        "description": {
+          "hashtags": [
+            {
+              "start": 0,
+              "end": 17,
+              "tag": "BlackLivesMatter"
+            }
+          ]
+        }
+      },
+      "id": "495309159",
+      "location": "New York, NY",
+      "name": "Twitter New York City",
+      "profile_image_url": "https://pbs.twimg.com/profile_images/1016781101011034115/p0Ie-_Dr_normal.jpg",
+      "protected": false,
+      "url": "https://t.co/UFN8PpMrxw",
+      "username": "TwitterNYC",
+      "verified": true
+    },
+    {
+      "created_at": "2010-07-28T18:40:01.000Z",
+      "description": "#BlackLivesMatter",
+      "entities": {
+        "url": {
+          "urls": [
+            {
+              "start": 0,
+              "end": 23,
+              "url": "https://t.co/MQRffLoRTw",
+              "expanded_url": "https://careers.twitter.com/",
+              "display_url": "careers.twitter.com"
+            }
+          ]
+        },
+        "description": {
+          "hashtags": [
+            {
+              "start": 0,
+              "end": 17,
+              "tag": "BlackLivesMatter"
+            }
+          ]
+        }
+      },
+      "id": "172020392",
+      "location": "San Francisco, CA",
+      "name": "Twitter San Francisco",
+      "profile_image_url": "https://pbs.twimg.com/profile_images/875159529008226305/7jXeHhZC_normal.jpg",
+      "protected": false,
+      "url": "https://t.co/MQRffLoRTw",
+      "username": "TwitterSF",
+      "verified": true
+    }
+  ],
+  "includes": {
+    "tweets": [
+      {
+        "attachments": {
+          "media_keys": [
+            "3_1274086027544498176"
+          ]
+        },
+        "author_id": "783214",
+        "conversation_id": "1274087687469715457",
+        "created_at": "2020-06-19T21:12:30.000Z",
+        "entities": {
+          "mentions": [
+            {
+              "start": 17,
+              "end": 29,
+              "username": "FredTJoseph"
+            }
+          ],
+          "urls": [
+            {
+              "start": 30,
+              "end": 53,
+              "url": "https://t.co/lNTOkyguG1",
+              "expanded_url": "https://twitter.com/Twitter/status/1274087687469715457/photo/1",
+              "display_url": "pic.twitter.com/lNTOkyguG1"
+            }
+          ]
+        },
+        "id": "1274087687469715457",
+        "lang": "et",
+        "possibly_sensitive": false,
+        "source": "Twitter Web App",
+        "text": "📍 Minneapolis\n🗣️ @FredTJoseph https://t.co/lNTOkyguG1"
+      },
+      {
+        "author_id": "2244994945",
+        "conversation_id": "1255542774432063488",
+        "created_at": "2020-04-29T17:01:38.000Z",
+        "entities": {
+          "urls": [
+            {
+              "start": 264,
+              "end": 287,
+              "url": "https://t.co/BPqMcQzhId",
+              "expanded_url": "https://blog.twitter.com/developer/en_us/topics/tools/2020/covid19_public_conversation_data.html",
+              "display_url": "blog.twitter.com/developer/en_u…",
+              "images": [
+                {
+                  "url": "https://pbs.twimg.com/news_img/1274730688919613440/SEsqlE16?format=jpg&name=orig",
+                  "width": 1600,
+                  "height": 600
+                },
+                {
+                  "url": "https://pbs.twimg.com/news_img/1274730688919613440/SEsqlE16?format=jpg&name=150x150",
+                  "width": 150,
+                  "height": 150
+                }
+              ],
+              "status": 200,
+              "title": "Enabling study of the public conversation in a time of crisis",
+              "description": "To further support our company’s ongoing efforts, we want to enable developers and researchers to study the public conversation on COVID-19 in real-time.",
+              "unwound_url": "https://blog.twitter.com/developer/en_us/topics/tools/2020/covid19_public_conversation_data.html"
+            }
+          ]
+        },
+        "id": "1255542774432063488",
+        "lang": "en",
+        "possibly_sensitive": false,
+        "source": "Twitter Web App",
+        "text": "During these unprecedented times, what’s happening on Twitter can help the world better understand &amp; respond to the pandemic. \n\nWe're launching a free COVID-19 stream endpoint so qualified devs &amp; researchers can study the public conversation in real-time. https://t.co/BPqMcQzhId"
+      }
+    ]
+  }
+}

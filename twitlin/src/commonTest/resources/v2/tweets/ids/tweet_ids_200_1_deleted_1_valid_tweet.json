@@ -1,0 +1,18 @@
+{
+  "data": [
+    {
+      "id": "20",
+      "text": "just setting up my twttr"
+    }
+  ],
+  "errors": [
+    {
+      "detail": "Could not find tweet with ids: [1276230436478386177].",
+      "title": "Not Found Error",
+      "resource_type": "tweet",
+      "parameter": "ids",
+      "value": "1276230436478386177",
+      "type": "https://api.twitter.com/2/problems/resource-not-found"
+    }
+  ]
+}
