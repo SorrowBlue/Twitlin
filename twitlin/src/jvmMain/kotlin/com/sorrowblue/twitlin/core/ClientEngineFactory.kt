@@ -2,10 +2,10 @@
  * (c) 2021 SorrowBlue.
  */
 
-package com.sorrowblue.twitlin.client
+package com.sorrowblue.twitlin.core
 
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.HttpClientEngineFactory
 import io.ktor.client.engine.okhttp.OkHttp
 
-public actual val clientEngineFactory: HttpClientEngineFactory<HttpClientEngineConfig> = OkHttp
+internal actual val clientEngineFactory: HttpClientEngineFactory<HttpClientEngineConfig> = OkHttp

@@ -4,7 +4,7 @@
 
 package com.sorrowblue.twitlin.utils
 
-import com.sorrowblue.twitlin.client.clientEngineFactory
+import com.sorrowblue.twitlin.core.clientEngineFactory
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse

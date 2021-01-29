@@ -4,6 +4,7 @@
 
 package com.sorrowblue.twitlin.client
 
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.Serializable
 
 /**
@@ -13,7 +14,4 @@ import kotlinx.serialization.Serializable
  * @property code TODO
  */
 @Serializable
-public data class Error(
-    val message: String,
-    val code: Int,
-)
+public data class Error(val message: String, val code: Int) : JvmSerializable

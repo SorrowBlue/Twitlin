@@ -15,6 +15,14 @@ import test.TestUtils
 
 class UserSerializeTest : AbstractTest {
     @Test
+    fun testUser_sorrowblue() {
+        val json = TestUtils.loadFile("v2/users/sorrowblue.json")
+        val serializer = Response.serializer(User.serializer())
+        val result = Json.decodeFromString(serializer, json)
+        println(result)
+    }
+
+    @Test
     fun testUserId_default() {
         val json = TestUtils.loadFile("v2/users/id/200_default_payload.json")
         val serializer = Response.serializer(OptionalData.serializer(User.serializer()))

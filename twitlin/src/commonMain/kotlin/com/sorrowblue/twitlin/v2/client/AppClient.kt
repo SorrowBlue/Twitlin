@@ -6,12 +6,12 @@ package com.sorrowblue.twitlin.v2.client
 
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.authentication.BearerToken
-import com.sorrowblue.twitlin.client.UrlParams
-import com.sorrowblue.twitlin.client.bodyFormUrlEncoded
-import com.sorrowblue.twitlin.client.bodyJson
-import com.sorrowblue.twitlin.client.headerAuthorization
-import com.sorrowblue.twitlin.client.notNullParams
 import com.sorrowblue.twitlin.core.IResponse
+import com.sorrowblue.twitlin.core.UrlParams
+import com.sorrowblue.twitlin.core.bodyFormUrlEncoded
+import com.sorrowblue.twitlin.core.bodyJson
+import com.sorrowblue.twitlin.core.headerAuthorization
+import com.sorrowblue.twitlin.core.notNullParams
 import io.ktor.client.features.ClientRequestException
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get

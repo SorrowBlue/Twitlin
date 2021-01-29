@@ -45,23 +45,25 @@ internal fun collectingParameters(
     timestamp: String,
     oauthToken: String?,
     params: List<Pair<String, String>>
-): String = listOf(
-    "oauth_consumer_key" to consumerKey,
-    "oauth_nonce" to nonce,
-    "oauth_signature_method" to "HMAC-SHA1",
-    "oauth_timestamp" to timestamp,
-    "oauth_version" to "1.0"
-).plus(params).run { oauthToken?.let { plus("oauth_token" to it) } ?: this }
-    // 1. Percent encode every key and value that will be signed.
-    .map { it.first.urlEncode() to it.second.urlEncode() }
-    // 2. Sort the list of parameters alphabetically [1] by encoded key [2].
-    .sortedBy { it.first }
-    // 3. Append the encoded key to the output string.
-    // 4. Append the ‘=’ character to the output string.
-    // 5. Append the encoded value to the output string.
-    // 6. If there are more key/value pairs remaining, append a ‘&’ character to the output string.
-    .joinToString("&") { "${it.first}=${it.second}" }
-    .also { Napier.i("collectingParameters() = $it") }
+): String {
+    return listOf(
+        "oauth_consumer_key" to consumerKey,
+        "oauth_nonce" to nonce,
+        "oauth_signature_method" to "HMAC-SHA1",
+        "oauth_timestamp" to timestamp,
+        "oauth_version" to "1.0"
+    ).plus(params).run { oauthToken?.let { plus("oauth_token" to it) } ?: this }
+        // 1. Percent encode every key and value that will be signed.
+        .map { it.first.urlEncode() to it.second.urlEncode() }
+        // 2. Sort the list of parameters alphabetically [1] by encoded key [2].
+        .sortedBy { it.first }
+        // 3. Append the encoded key to the output string.
+        // 4. Append the ‘=’ character to the output string.
+        // 5. Append the encoded value to the output string.
+        // 6. If there are more key/value pairs remaining, append a ‘&’ character to the output string.
+        .joinToString("&") { "${it.first}=${it.second}" }
+        .also { Napier.i("collectingParameters() = $it") }
+}
 
 /**
  * Creating the signature base string
@@ -73,8 +75,12 @@ internal fun collectingParameters(
  * @param parameterString
  * @return
  */
-internal fun creatingSignatureBaseString(method: String, url: String, parameterString: String) =
-    StringBuilder()
+internal fun creatingSignatureBaseString(
+    method: String,
+    url: String,
+    parameterString: String
+): String {
+    return StringBuilder()
         // 1. Convert the HTTP Method to uppercase and set the output string equal to this value.
         .append(method)
         // 2. Append the ‘&’ character to the output string.
@@ -87,6 +93,7 @@ internal fun creatingSignatureBaseString(method: String, url: String, parameterS
         .append(parameterString.urlEncode())
         .toString()
         .also { Napier.i("creatingSignatureBaseString() = $it") }
+}
 
 /**
  * Getting a signing key

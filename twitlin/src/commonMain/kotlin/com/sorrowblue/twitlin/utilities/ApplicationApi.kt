@@ -46,5 +46,5 @@ public interface ApplicationApi {
      * for more information.
      * @return TODO
      */
-    public suspend fun rateLimitStatus(resourceFamily: List<ResourceFamily> = emptyList()): Response<RateLimitStatus>
+    public suspend fun rateLimitStatus(resourceFamily: List<ResourceFamily>? = null): Response<RateLimitStatus>
 }

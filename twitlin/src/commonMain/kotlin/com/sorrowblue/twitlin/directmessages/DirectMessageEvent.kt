@@ -15,18 +15,20 @@ public data class DirectMessageEvent(
     val type: String,
     val id: String,
     @Serializable(LocalDateTimeStrEpochSerializer::class)
-    val created_timestamp: LocalDateTime,
+    @SerialName("created_timestamp")
+    val createdTimestamp: LocalDateTime,
     @SerialName("initiated_via")
     val initiatedVia: InitiatedVia? = null,
-    val message_create: MessageCreate
+    @SerialName("message_create")
+    val messageCreate: MessageCreate
 ) : JvmSerializable {
 
     @Serializable
     public data class InitiatedVia(
         @SerialName("tweet_id")
-        val tweetId: String,
+        val tweetId: String? = null,
         @SerialName("welcome_message_id")
-        val welcomeMessageId: String
+        val welcomeMessageId: String? = null
     ) : JvmSerializable
 
     @Serializable

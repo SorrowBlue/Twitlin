@@ -4,7 +4,7 @@
 
 package com.sorrowblue.twitlin.v2.tweets.impl
 
-import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.core.Urls
 import com.sorrowblue.twitlin.v2.client.AppClient
 import com.sorrowblue.twitlin.v2.client.Response
 import com.sorrowblue.twitlin.v2.field.Expansion

@@ -5,8 +5,8 @@
 package com.sorrowblue.twitlin.geo.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
+import com.sorrowblue.twitlin.core.Urls
 import com.sorrowblue.twitlin.geo.GeoApi
 import com.sorrowblue.twitlin.geo.GeoSearch
 import com.sorrowblue.twitlin.geo.ReverseGeocode

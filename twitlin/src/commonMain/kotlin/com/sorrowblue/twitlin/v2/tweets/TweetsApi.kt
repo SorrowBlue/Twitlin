@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.v2.tweets
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.v2.client.Error
 import com.sorrowblue.twitlin.v2.client.Includes
@@ -19,12 +21,13 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@AndroidParcelize
 @Serializable
 public data class OptionalData<T>(
     val data: T,
     val includes: Includes? = null,
     val errors: List<Error>? = null,
-) : JvmSerializable
+) : AndroidParcelable, JvmSerializable
 
 @Serializable
 public data class PagingTweet(

@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "com.sorrowblue.twitlin"
-version = "0.0.1-dev-004"
+version = "1.0.0"
 
 kotlin {
     explicitApi()
@@ -46,6 +46,7 @@ kotlin {
         }
         commonMain {
             dependencies {
+//                api(files("/libs/kotlinx-datetime-0.2.0-USERSBUILD.jar"))
                 api(Libs.kotlinx.datetime)
                 implementation(Libs.kotlinx.serialization)
                 implementation(Libs.kotlinx.`serialization-properties`)
@@ -112,6 +113,9 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
+    }
+    testOptions {
+        unitTests.isReturnDefaultValues = true
     }
 }
 

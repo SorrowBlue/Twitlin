@@ -2,7 +2,7 @@
  * (c) 2021 SorrowBlue.
  */
 
-package com.sorrowblue.twitlin.client
+package com.sorrowblue.twitlin.core
 
 internal object Urls {
     const val FQDN = "https://api.twitter.com"

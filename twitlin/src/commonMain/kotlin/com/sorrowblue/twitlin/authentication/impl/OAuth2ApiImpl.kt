@@ -9,7 +9,7 @@ import com.sorrowblue.twitlin.authentication.InvalidateToken
 import com.sorrowblue.twitlin.authentication.OAuth2Api
 import com.sorrowblue.twitlin.client.AppClient
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.Urls
+import com.sorrowblue.twitlin.core.Urls
 
 private const val OAUTH2 = "${Urls.FQDN}/oauth2"
 

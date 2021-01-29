@@ -4,7 +4,8 @@
 
 package com.sorrowblue.twitlin.v2.objects
 
-
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.utilities.LanguageCode
 import com.sorrowblue.twitlin.v2.field.Expansion
@@ -62,6 +63,7 @@ import kotlinx.serialization.Serializable
  * @property source The name of the app the user Tweeted from.
  * @property withheld When present, contains withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country).
  */
+@AndroidParcelize
 @Serializable
 public data class Tweet(
     val id: String,
@@ -89,7 +91,7 @@ public data class Tweet(
     val referencedTweets: List<ReferenceTweet>? = null,
     val source: String? = null,
     val withheld: Withheld? = null,
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
 
     @Serializable
     public data class Entities(

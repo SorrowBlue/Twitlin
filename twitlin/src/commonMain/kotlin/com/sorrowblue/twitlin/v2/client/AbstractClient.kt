@@ -4,8 +4,8 @@
 
 package com.sorrowblue.twitlin.v2.client
 
-import com.sorrowblue.twitlin.client.TwitterClient
 import com.sorrowblue.twitlin.core.IResponse
+import com.sorrowblue.twitlin.core.TwitterClient
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.http.HttpMethod
 import kotlinx.serialization.KSerializer

@@ -5,8 +5,8 @@
 package com.sorrowblue.twitlin.directmessages.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
+import com.sorrowblue.twitlin.core.Urls
 import com.sorrowblue.twitlin.directmessages.CallToAction
 import com.sorrowblue.twitlin.directmessages.DirectMessage
 import com.sorrowblue.twitlin.directmessages.DirectMessagesApi

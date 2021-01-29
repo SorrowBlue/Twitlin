@@ -31,6 +31,5 @@ public object ErrorCodes {
         407, 415, 416, 417
     )
 
-    public const val NO_NETWORK: Int = 1001
-    public const val CLIENT_ERROR: Int = 1002
+    public const val CLIENT_ERROR: Int = 1000
 }

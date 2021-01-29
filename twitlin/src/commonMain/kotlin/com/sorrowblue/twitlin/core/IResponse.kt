@@ -4,4 +4,11 @@
 
 package com.sorrowblue.twitlin.core
 
-public interface IResponse<T : Any>
+import com.sorrowblue.twitlin.annotation.JvmSerializable
+
+/**
+ * TODO
+ *
+ * @param T
+ */
+public interface IResponse<T : Any> : JvmSerializable

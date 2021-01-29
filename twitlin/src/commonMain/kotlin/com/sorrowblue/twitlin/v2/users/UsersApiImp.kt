@@ -15,6 +15,7 @@ import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.field.toParameter
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
+import com.sorrowblue.twitlin.v2.tweets.OptionalData
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.builtins.ListSerializer
 
@@ -26,10 +27,10 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
         expansions: List<UsersApi.Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?,
-    ): Response<User> {
+    ): Response<OptionalData<User>> {
         return client.get(
             "$USERS_API/$id",
-            Response.serializer(User.serializer()),
+            Response.serializer(OptionalData.serializer(User.serializer())),
             "expansions" to expansions?.toParameter(),
             "tweet.fields" to tweetFields?.toParameter(),
             "user.fields" to userFields?.toParameter()
@@ -41,10 +42,10 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
         expansions: List<UsersApi.Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?,
-    ): Response<List<User>> {
+    ): Response<OptionalData<List<User>>> {
         return client.get(
             USERS_API,
-            Response.serializer(ListSerializer(User.serializer())),
+            Response.serializer(OptionalData.serializer(ListSerializer(User.serializer()))),
             "ids" to ids.joinToString(","),
             "expansions" to expansions?.toParameter(),
             "tweet.fields" to tweetFields?.toParameter(),
@@ -57,10 +58,10 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
         expansions: List<UsersApi.Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<User> {
+    ): Response<OptionalData<User>> {
         return client.get(
             "$USERS_API/by/username/$username",
-            Response.serializer(User.serializer()),
+            Response.serializer(OptionalData.serializer(User.serializer())),
             "expansions" to expansions?.toParameter(),
             "tweet.fields" to tweetFields?.toParameter(),
             "user.fields" to userFields?.toParameter()
@@ -72,10 +73,10 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
         expansions: List<UsersApi.Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<List<User>> {
+    ): Response<OptionalData<List<User>>> {
         return client.get(
             "$USERS_API/by",
-            Response.serializer(ListSerializer(User.serializer())),
+            Response.serializer(OptionalData.serializer(ListSerializer(User.serializer()))),
             "usernames" to usernames.joinToString(","),
             "expansions" to expansions?.toParameter(),
             "tweet.fields" to tweetFields?.toParameter(),
@@ -98,10 +99,10 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<List<Tweet>> {
+    ): Response<OptionalData<List<Tweet>>> {
         return client.get(
             "$USERS_API/$id/tweets",
-            Response.serializer(ListSerializer(Tweet.serializer())),
+            Response.serializer(OptionalData.serializer(ListSerializer(Tweet.serializer()))),
             "expansions" to expansions?.toParameter(),
             "media.fields" to mediaFields?.toParameter(),
             "place.fields" to placeFields?.toParameter(),

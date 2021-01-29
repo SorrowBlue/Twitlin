@@ -5,8 +5,8 @@
 package com.sorrowblue.twitlin.tweets.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
+import com.sorrowblue.twitlin.core.Urls
 import com.sorrowblue.twitlin.tweets.ResultType
 import com.sorrowblue.twitlin.tweets.SearchApi
 import com.sorrowblue.twitlin.tweets.SearchResults

@@ -13,6 +13,7 @@ import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
+import com.sorrowblue.twitlin.v2.tweets.OptionalData
 import kotlinx.datetime.LocalDateTime
 
 public interface UsersApi {
@@ -30,28 +31,28 @@ public interface UsersApi {
         expansions: List<Expansion>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null,
-    ): Response<User>
+    ): Response<OptionalData<User>>
 
     public suspend fun users(
         ids: List<String>,
         expansions: List<Expansion>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null,
-    ): Response<List<User>>
+    ): Response<OptionalData<List<User>>>
 
     public suspend fun byUsername(
         username: String,
         expansions: List<Expansion>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null,
-    ): Response<User>
+    ): Response<OptionalData<User>>
 
     public suspend fun byUsername(
         usernames: List<String>,
         expansions: List<Expansion>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null,
-    ): Response<List<User>>
+    ): Response<OptionalData<List<User>>>
 
     public suspend fun tweets(
         id: String,
@@ -68,5 +69,5 @@ public interface UsersApi {
         pollFields: List<PollField>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null,
-    ): Response<List<Tweet>>
+    ): Response<OptionalData<List<Tweet>>>
 }

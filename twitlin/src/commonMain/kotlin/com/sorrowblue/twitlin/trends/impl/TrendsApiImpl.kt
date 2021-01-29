@@ -5,8 +5,8 @@
 package com.sorrowblue.twitlin.trends.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
+import com.sorrowblue.twitlin.core.Urls
 import com.sorrowblue.twitlin.trends.TrendPlace
 import com.sorrowblue.twitlin.trends.TrendPlaces
 import com.sorrowblue.twitlin.trends.TrendsApi

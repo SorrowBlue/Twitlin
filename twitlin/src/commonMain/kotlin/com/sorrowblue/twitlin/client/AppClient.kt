@@ -7,6 +7,10 @@ package com.sorrowblue.twitlin.client
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.authentication.BearerToken
 import com.sorrowblue.twitlin.core.IResponse
+import com.sorrowblue.twitlin.core.UrlParams
+import com.sorrowblue.twitlin.core.bodyFormUrlEncoded
+import com.sorrowblue.twitlin.core.headerAuthorization
+import com.sorrowblue.twitlin.core.notNullParams
 import com.sorrowblue.twitlin.utils.urlEncode
 import io.ktor.client.features.ClientRequestException
 import io.ktor.client.request.HttpRequestBuilder

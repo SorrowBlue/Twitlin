@@ -4,42 +4,33 @@
 
 package com.sorrowblue.twitlin.utilities.response
 
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.utilities.RateLimitStatus
 import com.sorrowblue.twitlin.utilities.ResourceFamily
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDateTimeIntEpochSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.int
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
-import kotlinx.serialization.json.long
 
 @Serializable
 internal class RateLimitStatusResponse(
     private val rate_limit_context: RateLimitStatus.RateLimitContext,
-    private val resources: JsonObject? = null
+    private val resources: Map<ResourceFamily, Map<String, Info>> = emptyMap()
 ) {
 
-    fun toRateLimitState() = RateLimitStatus(
-        rate_limit_context,
-        resources?.entries?.map(::parseResource).orEmpty()
-    )
+    fun toRateLimitState() =
+        RateLimitStatus(rate_limit_context, resources.entries.map { it.toResource() })
 
-    private fun parseResource(it: Map.Entry<String, JsonElement>): RateLimitStatus.Resource {
-        val family = ResourceFamily.valueOf(it.key.toUpperCase())
-        val info = it.value.jsonObject.entries.map(::parseInfo)
-        return RateLimitStatus.Resource(family, info)
-    }
+    @Serializable
+    data class Info(
+        val limit: Int,
+        val remaining: Int,
+        @Serializable(LocalDateTimeIntEpochSerializer::class)
+        val reset: LocalDateTime,
+    ) : JvmSerializable {
 
-    private fun parseInfo(entry: Map.Entry<String, JsonElement>): RateLimitStatus.Resource.Info {
-        val limit = entry.value.jsonObject.getValue("limit").jsonPrimitive.int
-        val remaining = entry.value.jsonObject.getValue("remaining").jsonPrimitive.int
-        val reset = entry.value.jsonObject.getValue("reset").jsonPrimitive.long
-            .let(Instant.Companion::fromEpochMilliseconds)
-            .toLocalDateTime(TimeZone.currentSystemDefault())
-        return RateLimitStatus.Resource.Info(entry.key, limit, remaining, reset)
+        fun toInfo(path: String) = RateLimitStatus.Resource.Info(path, limit, remaining, reset)
     }
 }
+
+private fun Map.Entry<ResourceFamily, Map<String, RateLimitStatusResponse.Info>>.toResource() =
+    RateLimitStatus.Resource(key, value.entries.map { it.value.toInfo(it.key) })

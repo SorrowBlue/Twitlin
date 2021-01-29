@@ -35,7 +35,7 @@ public data class RateLimitStatus(
      * @property accessToken
      */
     @Serializable
-    public class RateLimitContext(
+    public data class RateLimitContext(
         public val application: String? = null,
         @SerialName("access_token") public val accessToken: String? = null
     ) : JvmSerializable

@@ -55,16 +55,18 @@ internal fun collectingParameters(
     timestamp: String,
     oauthToken: String?,
     params: List<Pair<String, String>>
-): List<Pair<String, String>> = listOf(
-    "oauth_consumer_key" to consumerKey,
-    "oauth_nonce" to nonce,
-    "oauth_signature" to signature,
-    "oauth_signature_method" to "HMAC-SHA1",
-    "oauth_timestamp" to timestamp,
-    "oauth_version" to "1.0"
-).run { oauthToken?.let { plus("oauth_token" to oauthToken) } ?: this }
-    .plus(params.takeWhile { it.first.startsWith("oauth_") })
-    .sortedBy { it.first }
+): List<Pair<String, String>> {
+    return listOf(
+        "oauth_consumer_key" to consumerKey,
+        "oauth_nonce" to nonce,
+        "oauth_signature" to signature,
+        "oauth_signature_method" to "HMAC-SHA1",
+        "oauth_timestamp" to timestamp,
+        "oauth_version" to "1.0"
+    ).run { oauthToken?.let { plus("oauth_token" to oauthToken) } ?: this }
+        .plus(params.takeWhile { it.first.startsWith("oauth_") })
+        .sortedBy { it.first }
+}
 
 /**
  * To build the header string, imagine writing to a string named DST.

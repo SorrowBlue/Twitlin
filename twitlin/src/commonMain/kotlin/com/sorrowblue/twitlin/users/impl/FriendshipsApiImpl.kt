@@ -5,8 +5,8 @@
 package com.sorrowblue.twitlin.users.impl
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.client.Urls
 import com.sorrowblue.twitlin.client.UserClient
+import com.sorrowblue.twitlin.core.Urls
 import com.sorrowblue.twitlin.objects.PagingIds
 import com.sorrowblue.twitlin.objects.User
 import com.sorrowblue.twitlin.users.FriendshipsApi

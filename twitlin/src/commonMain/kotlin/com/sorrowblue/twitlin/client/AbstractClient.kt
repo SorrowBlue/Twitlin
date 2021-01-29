@@ -5,15 +5,10 @@
 package com.sorrowblue.twitlin.client
 
 import com.sorrowblue.twitlin.core.IResponse
-import io.ktor.client.engine.HttpClientEngineConfig
-import io.ktor.client.engine.HttpClientEngineFactory
+import com.sorrowblue.twitlin.core.TwitterClient
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.http.HttpMethod
 import kotlinx.serialization.KSerializer
-
-internal typealias UrlParams = Pair<String, Any?>
-
-internal expect val clientEngineFactory: HttpClientEngineFactory<HttpClientEngineConfig>
 
 public abstract class AbstractClient(apiKey: String, secretKey: String) :
     TwitterClient(apiKey, secretKey) {
