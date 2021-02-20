@@ -1,5 +1,5 @@
 /*
- * (c) 2020.
+ * (c) 2020-2021 SorrowBlue.
  */
 
 @file:Suppress("UNUSED_VARIABLE")
@@ -26,12 +26,12 @@ android {
         val apiSecret = properties.getProperty("API_SECRET")
         val accessTokenA = properties.getProperty("ACCESS_TOKEN")
         val accessTokenSecret = properties.getProperty("ACCESS_TOKEN_SECRET")
-        val BearerToken = properties.getProperty("BEARER_TOKEN")
+        val bearerToken = properties.getProperty("BEARER_TOKEN")
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
         buildConfigField("String", "API_SECRET", "\"$apiSecret\"")
         buildConfigField("String", "ACCESS_TOKEN", "\"$accessTokenA\"")
         buildConfigField("String", "ACCESS_TOKEN_SECRET", "\"$accessTokenSecret\"")
-        buildConfigField("String", "BEARER_TOKEN", "\"$BearerToken\"")
+        buildConfigField("String", "BEARER_TOKEN", "\"$bearerToken\"")
     }
     buildTypes {
         val release by getting {
@@ -57,17 +57,17 @@ android {
 dependencies {
     implementation(kotlin("stdlib", KOTLIN_VERSION))
     implementation("androidx.core:core-ktx:1.5.0-beta01")
-    implementation("androidx.activity:activity-ktx:1.2.0-rc01")
+    implementation("androidx.activity:activity-ktx:1.3.0-alpha02")
     implementation("io.pixel.android:pixel:0.0.3-alpha")
     implementation("androidx.appcompat:appcompat:1.3.0-beta01")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-rc01")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.webkit:webkit:1.4.0")
     implementation("androidx.recyclerview:recyclerview:1.2.0-beta01")
 //    implementation("com.sorrowblue.twitlin:twitlin-android:0.0.1-dev-004")
     implementation(project(":twitlin"))
-    testImplementation("junit:junit:4.13.1")
+    testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 }

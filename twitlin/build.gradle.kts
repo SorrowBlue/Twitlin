@@ -1,5 +1,5 @@
 /*
- * (c) 2020.
+ * (c) 2020-2021 SorrowBlue.
  */
 
 @file:Suppress("UNUSED_VARIABLE")
@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "com.sorrowblue.twitlin"
-version = "1.0.0"
+version = "1.0.0-dev-001"
 
 kotlin {
     explicitApi()
@@ -45,8 +45,8 @@ kotlin {
             languageSettings.useExperimentalAnnotation("kotlin.RequiresOptIn")
         }
         commonMain {
+            kotlin.srcDirs("src/common/main/kotlin")
             dependencies {
-//                api(files("/libs/kotlinx-datetime-0.2.0-USERSBUILD.jar"))
                 api(Libs.kotlinx.datetime)
                 implementation(Libs.kotlinx.serialization)
                 implementation(Libs.kotlinx.`serialization-properties`)
@@ -57,18 +57,22 @@ kotlin {
             }
         }
         commonTest {
+            kotlin.srcDirs("src/common/test/kotlin")
+            resources.srcDirs("src/common/test/resources")
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
         val jsMain by getting {
+            kotlin.srcDirs("src/js/main/kotlin")
             dependencies {
                 implementation(Libs.`ktor-client`.js)
                 implementation("org.webjars.npm:crypto-js:4.0.0")
             }
         }
         val jsTest by getting {
+            kotlin.srcDirs("src/js/test/kotlin")
             dependencies {
                 implementation(kotlin("test-js"))
             }
@@ -76,7 +80,6 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(Libs.`ktor-client`.android)
-
                 implementation(Libs.jsoup)
                 implementation(Libs.andoridx.`security-crypto`)
             }
@@ -87,6 +90,7 @@ kotlin {
             }
         }
         val jvmMain by getting {
+            kotlin.srcDirs("src/jvm/main/kotlin")
             dependencies {
                 implementation(Libs.`ktor-client`.okhttp)
 
@@ -94,6 +98,7 @@ kotlin {
             }
         }
         val jvmTest by getting {
+            kotlin.srcDirs("src/jvm/test/kotlin")
             dependencies {
                 implementation(kotlin("test-junit"))
             }
@@ -116,6 +121,15 @@ android {
     }
     testOptions {
         unitTests.isReturnDefaultValues = true
+    }
+    sourceSets {
+        val main by getting {
+            manifest.srcFile("src/android/main/AndroidManifest.xml")
+            java.srcDirs("src/android/main/kotlin")
+        }
+        val test by getting {
+            java.srcDirs("src/android/test/kotlin")
+        }
     }
 }
 
@@ -171,14 +185,14 @@ afterEvaluate {
         repositories {
             maven {
                 name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/SorrowBlue/twitlin")
+                url = uri("https://maven.pkg.github.com/SorrowBlue/Twitlin")
                 credentials {
                     username =
                         project.findProperty("gpr.user")?.toString()
                             ?: System.getenv("GITHUB_USERNAME")
                     password =
                         project.findProperty("gpr.token")?.toString()
-                            ?: System.getenv("GITHUB_PACKAGES_TOKEN")
+                            ?: System.getenv("GITHUB_TOKEN")
                 }
             }
         }

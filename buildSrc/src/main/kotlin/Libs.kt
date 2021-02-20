@@ -1,28 +1,24 @@
 /*
- * (c) 2020.
+ * (c) 2020-2021 SorrowBlue.
  */
 
-@file:Suppress("ClassName")
+@file:Suppress("ClassName", "ObjectPropertyName")
 
 object Libs {
 
     object andoridx {
-        const val `core-ktx` = "androidx.core:core-ktx:1.3.0"
-        const val `preference-ktx` = "androidx.preference:preference-ktx:1.1.1"
         const val `security-crypto` = "androidx.security:security-crypto:1.1.0-alpha03"
     }
 
     object kotlinx {
-        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1"
-        const val `serialization-json` = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
-        const val `coroutines-test` = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
+        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.1.0"
         const val `serialization-properties` =
-            "org.jetbrains.kotlinx:kotlinx-serialization-properties:1.0.1"
+            "org.jetbrains.kotlinx:kotlinx-serialization-properties:1.1.0"
         const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
     }
 
     object `ktor-client` {
-        private const val VERSION = "1.5.0"
+        private const val VERSION = "1.5.1"
         const val core = "io.ktor:ktor-client-core:${VERSION}"
         const val okhttp = "io.ktor:ktor-client-okhttp:${VERSION}"
         const val android = "io.ktor:ktor-client-android:${VERSION}"

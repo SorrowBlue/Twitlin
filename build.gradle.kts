@@ -1,41 +1,29 @@
 /*
- * (c) 2020.
+ * (c) 2020-2021 SorrowBlue.
  */
-
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id("com.github.ben-manes.versions") version "0.36.0"
+    id("com.github.ben-manes.versions").version("0.36.0")
 }
 
 buildscript {
     repositories {
-        jcenter()
         google()
+        mavenLocal()
+        jcenter()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.0.2")
         classpath(kotlin("gradle-plugin", KOTLIN_VERSION))
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.22.0")
     }
 }
 
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
-        mavenLocal()
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/SorrowBlue/twitlin")
-            credentials {
-                username =
-                    project.findProperty("gpr.user")?.toString() ?: System.getenv("GITHUB_USERNAME")
-                password =
-                    project.findProperty("gpr.token")?.toString() ?: System.getenv("GITHUB_PACKAGES_TOKEN")
-            }
-        }
         maven(url = "https://kotlin.bintray.com/kotlinx/")
+        jcenter()
+        mavenLocal()
     }
 }

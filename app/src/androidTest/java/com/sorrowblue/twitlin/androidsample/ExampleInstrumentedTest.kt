@@ -1,3 +1,7 @@
+/*
+ * (c) 2020-2021 SorrowBlue.
+ */
+
 package com.sorrowblue.twitlin.androidsample
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
