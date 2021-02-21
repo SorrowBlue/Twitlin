@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "com.sorrowblue.twitlin"
-version = "1.0.0-SNAPSHOT-001"
+version = "1.0.0-001-SNAPSHOT"
 
 extra["PUBLISH_GROUP_ID"] = group.toString()
 extra["PUBLISH_VERSION"]  = version.toString()

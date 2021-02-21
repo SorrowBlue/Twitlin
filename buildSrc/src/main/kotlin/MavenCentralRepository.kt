@@ -35,6 +35,10 @@ class MavenCentralRepository : Plugin<Project> {
 
         loadExt()
 
+        ext.properties.forEach { (s, any) ->
+            println("$s: $any")
+        }
+
         nexusStaging {
             packageGroup = ext["PUBLISH_GROUP_ID"].toString()
             stagingProfileId = ext["sonatypeStagingProfileId"].toString()
@@ -79,8 +83,7 @@ class MavenCentralRepository : Plugin<Project> {
                     val snapshotsUrl =
                         "https://oss.sonatype.org/content/repositories/snapshots/"
                     val uploadUri =
-                        if (version.toString().indexOf("SNAPSHOT") != -1) snapshotsUrl
-                        else releasesUrl
+                        if (version.toString().endsWith("SNAPSHOT")) snapshotsUrl else releasesUrl
                     url = uri(uploadUri)
 
                     credentials {
