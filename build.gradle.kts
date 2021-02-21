@@ -8,11 +8,10 @@ plugins {
 buildscript {
     repositories {
         google()
-        mavenLocal()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.0.2")
+        classpath("com.android.tools.build:gradle:7.0.0-alpha07")
         classpath(kotlin("gradle-plugin", KOTLIN_VERSION))
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.22.0")
     }
@@ -24,6 +23,7 @@ allprojects {
         mavenCentral()
         maven(url = "https://kotlin.bintray.com/kotlinx/")
         jcenter()
+        maven(url ="http://oss.sonatype.org/content/repositories/snapshots")
         mavenLocal()
     }
 }

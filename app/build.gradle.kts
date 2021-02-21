@@ -21,17 +21,11 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        val properties = gradleLocalProperties(rootDir)
-        val apiKey = properties.getProperty("API_KEY")
-        val apiSecret = properties.getProperty("API_SECRET")
-        val accessTokenA = properties.getProperty("ACCESS_TOKEN")
-        val accessTokenSecret = properties.getProperty("ACCESS_TOKEN_SECRET")
-        val bearerToken = properties.getProperty("BEARER_TOKEN")
-        buildConfigField("String", "API_KEY", "\"$apiKey\"")
-        buildConfigField("String", "API_SECRET", "\"$apiSecret\"")
-        buildConfigField("String", "ACCESS_TOKEN", "\"$accessTokenA\"")
-        buildConfigField("String", "ACCESS_TOKEN_SECRET", "\"$accessTokenSecret\"")
-        buildConfigField("String", "BEARER_TOKEN", "\"$bearerToken\"")
+        gradleLocalProperties(rootDir).forEach { any, any2 ->
+            if (any.toString().indexOf('.') == -1) {
+                buildConfigField("String", "$any", "\"$any2\"")
+            }
+        }
     }
     buildTypes {
         val release by getting {
@@ -43,7 +37,7 @@ android {
         }
     }
     packagingOptions {
-        excludes.plusAssign("META-INF/**.kotlin_module")
+        resources.excludes += "META-INF/**.kotlin_module"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -55,7 +49,7 @@ android {
 }
 
 dependencies {
-    implementation(kotlin("stdlib", KOTLIN_VERSION))
+    implementation(kotlin("stdlib-jdk8", KOTLIN_VERSION))
     implementation("androidx.core:core-ktx:1.5.0-beta01")
     implementation("androidx.activity:activity-ktx:1.3.0-alpha02")
     implementation("io.pixel.android:pixel:0.0.3-alpha")
@@ -65,8 +59,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.webkit:webkit:1.4.0")
     implementation("androidx.recyclerview:recyclerview:1.2.0-beta01")
-//    implementation("com.sorrowblue.twitlin:twitlin-android:0.0.1-dev-004")
-    implementation(project(":twitlin"))
+    implementation("com.sorrowblue.twitlin:twitlin-android:1.0.0-SNAPSHOT-001")
+//    implementation(project(":twitlin"))
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")

@@ -4,8 +4,6 @@
 
 @file:Suppress("UNUSED_VARIABLE")
 
-import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
-
 plugins {
     `kotlin-multiplatform`
     ComAndroidPluginGroup(this).library
@@ -14,10 +12,26 @@ plugins {
     kotlin("plugin.serialization") version KOTLIN_VERSION
     id("org.jetbrains.dokka") version "1.4.20"
     `maven-publish`
+    id("signing")
+    id("io.codearte.nexus-staging")
 }
 
 group = "com.sorrowblue.twitlin"
-version = "1.0.0-dev-001"
+version = "1.0.0-SNAPSHOT-001"
+
+extra["PUBLISH_GROUP_ID"] = group.toString()
+extra["PUBLISH_VERSION"]  = version.toString()
+
+android {
+    configurations {
+        create("androidTestApi")
+        create("androidTestDebugApi")
+        create("androidTestReleaseApi")
+        create("testApi")
+        create("testDebugApi")
+        create("testReleaseApi")
+    }
+}
 
 kotlin {
     explicitApi()
@@ -134,7 +148,7 @@ android {
 }
 
 tasks.dokkaHtml.configure {
-    this.moduleName.set("docs")
+    moduleName.set("docs")
     outputDirectory.set(rootProject.projectDir.resolve("docs/"))
     dokkaSourceSets {
         named("commonMain") {
@@ -154,52 +168,6 @@ tasks.dokkaHtml.configure {
 }
 
 afterEvaluate {
-    val sourcesJar = task("sourcesJar", Jar::class) {
-        @Suppress("UnstableApiUsage")
-        archiveClassifier.apply {
-            convention("sources")
-            set("sources")
-        }
-        if (project.name == "twitlin") {
-            from(kotlin.sourceSets.commonMain.get().kotlin)
-        } else {
-            from(sourceSets.getAt("main").allSource)
-        }
-    }
-    publishing {
-        val projectName = project.name
-        publications.all<DefaultMavenPublication> {
-            artifactId = when (name) {
-                "kotlinMultiplatform" -> {
-                    artifact(sourcesJar)
-                    "$projectName-ios"
-                }
-                "metadata" -> projectName
-                "androidRelease" -> "$projectName-android"
-                else -> "$projectName-$name"
-            }
-            if (it.name.contains("ios").not() && it.name != "kotlinMultiPlatform") {
-                setModuleDescriptorGenerator(null)
-            }
-        }
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/SorrowBlue/Twitlin")
-                credentials {
-                    username =
-                        project.findProperty("gpr.user")?.toString()
-                            ?: System.getenv("GITHUB_USERNAME")
-                    password =
-                        project.findProperty("gpr.token")?.toString()
-                            ?: System.getenv("GITHUB_TOKEN")
-                }
-            }
-        }
-    }
-}
-
-fun <T> PublicationContainer.all(action: T.(Publication) -> Unit) = all {
-    @Suppress("UNCHECKED_CAST")
-    action(this as T, this)
+    apply<MavenCentralRepository>()
+    apply<GithubPackagesRepository>()
 }
