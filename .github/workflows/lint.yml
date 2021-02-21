@@ -22,77 +22,75 @@ jobs:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_TWITLIN_CI }}
         with:
           blocks: |
-            {
-              "blocks": [
-                {
+            [
+              {
             	  "type": "header",
             	  "text": {
-                    "type": "plain_text",
-                    "text": "${{ github.event.head_commit.message }}",
-            		"emoji": true
-            	  }
+                  "type": "plain_text",
+                  "text": "${{ github.event.head_commit.message }}",
+            		  "emoji": true
+                }
             	},
             	{
             	  "type": "context",
             	  "elements": [
-            		{
-            		  "type": "plain_text",
-            		  "text": ":white_check_mark: ${{ github.forkflow }} #${{ github.run_number }}"
-            		}
+                  {
+            		    "type": "plain_text",
+            		    "text": ":white_check_mark: ${{ github.forkflow }} #${{ github.run_number }}"
+            		  }
             	  ]
             	},
             	{
             	  "type": "context",
             	  "elements": [
-            		{
-            		  "type": "image",
-            		  "image_url": "${{ github.event.sender.avatar_url }}",
-            		  "alt_text": "Avatar url"
-            		},
-            		{
-            		  "type": "mrkdwn",
-            		  "text": "${{ github.event.sender.login }} _${{ github.event_name }}_ :link:${{ steps.short-sha.outputs.sha }} `${BRANCH_NAME}`"
-            		}
+            		  {
+            		    "type": "image",
+            		    "image_url": "${{ github.event.sender.avatar_url }}",
+            		    "alt_text": "Avatar url"
+            		  },
+            		  {
+            		    "type": "mrkdwn",
+            		    "text": "${{ github.event.sender.login }} _${{ github.event_name }}_ :link:${{ steps.short-sha.outputs.sha }} `${{ BRANCH_NAME }}`"
+            		  }
             	  ]
             	},
             	{
-                  "type": "section",
+                "type": "section",
             	  "fields": [
-            	    {
-                      "type": "mrkdwn",
-            		  "text": "*Status*\nSuccess"
-            		}
+                  {
+                    "type": "mrkdwn",
+            		    "text": "*Status*\nSuccess"
+                  }
             	  ]
             	},
             	{
             	  "type": "actions",
             	  "elements": [
-            		{
-            		  "type": "button",
-            		  "text": {
-            			"type": "plain_text",
-            			"text": "Workflow",
-            			"emoji": true
-            		  },
-            		  "value": "workflow",
-            		  "url": "${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}",
-            		  "action_id": "workflow"
-            		},
-            		{
-            		  "type": "button",
-            		  "text": {
-            			"type": "plain_text",
-            			"text": "Commit",
-            			"emoji": true
-            		  },
-            		  "value": "commit",
-            		  "url": "${{ github.event.head_commit.url }}",
-            		  "action_id": "commit"
-            		}
+                  {
+            		    "type": "button",
+            		    "text": {
+            			    "type": "plain_text",
+            			    "text": "Workflow",
+            			    "emoji": true
+            		    },
+            		    "value": "workflow",
+            		    "url": "${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}",
+            		    "action_id": "workflow"
+                  },
+            		  {
+            		    "type": "button",
+            		    "text": {
+            			    "type": "plain_text",
+            			    "text": "Commit",
+            			    "emoji": true
+                    },
+                    "value": "commit",
+                    "url": "${{ github.event.head_commit.url }}",
+                    "action_id": "commit"
+                  }
             	  ]
             	}
-              ]
-            }
+            ]
       - name: Slack Notification on Failure
         if: failure()
         uses: tokorom/action-slack-incoming-webhook@main
@@ -100,74 +98,72 @@ jobs:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_TWITLIN_CI }}
         with:
           blocks: |
-            {
-              "blocks": [
-                {
+            [
+              {
             	  "type": "header",
             	  "text": {
-                    "type": "plain_text",
-                    "text": "${{ github.event.head_commit.message }}",
-            		"emoji": true
-            	  }
+                  "type": "plain_text",
+                  "text": "${{ github.event.head_commit.message }}",
+            		  "emoji": true
+                }
             	},
             	{
             	  "type": "context",
             	  "elements": [
-            		{
-            		  "type": "plain_text",
-            		  "text": ":x: ${{ github.forkflow }} #${{ github.run_number }}"
-            		}
+                  {
+            		    "type": "plain_text",
+            		    "text": ":x: ${{ github.forkflow }} #${{ github.run_number }}"
+            		  }
             	  ]
             	},
             	{
             	  "type": "context",
             	  "elements": [
-            		{
-            		  "type": "image",
-            		  "image_url": "${{ github.event.sender.avatar_url }}",
-            		  "alt_text": "Avatar url"
-            		},
-            		{
-            		  "type": "mrkdwn",
-            		  "text": "${{ github.event.sender.login }} _${{ github.event_name }}_ :link:${{ steps.short-sha.outputs.sha }} `${BRANCH_NAME}`"
-            		}
+            		  {
+            		    "type": "image",
+            		    "image_url": "${{ github.event.sender.avatar_url }}",
+            		    "alt_text": "Avatar url"
+            		  },
+            		  {
+            		    "type": "mrkdwn",
+            		    "text": "${{ github.event.sender.login }} _${{ github.event_name }}_ :link:${{ steps.short-sha.outputs.sha }} `${{ BRANCH_NAME }}`"
+            		  }
             	  ]
             	},
             	{
-                  "type": "section",
+                "type": "section",
             	  "fields": [
-            	    {
-                      "type": "mrkdwn",
-            		  "text": "*Status*\nFailure"
-            		}
+                  {
+                    "type": "mrkdwn",
+            		    "text": "*Status*\nFailure"
+                  }
             	  ]
             	},
             	{
             	  "type": "actions",
             	  "elements": [
-            		{
-            		  "type": "button",
-            		  "text": {
-            			"type": "plain_text",
-            			"text": "Workflow",
-            			"emoji": true
-            		  },
-            		  "value": "workflow",
-            		  "url": "${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}",
-            		  "action_id": "workflow"
-            		},
-            		{
-            		  "type": "button",
-            		  "text": {
-            			"type": "plain_text",
-            			"text": "Commit",
-            			"emoji": true
-            		  },
-            		  "value": "commit",
-            		  "url": "${{ github.event.head_commit.url }}",
-            		  "action_id": "commit"
-            		}
+                  {
+            		    "type": "button",
+            		    "text": {
+            			    "type": "plain_text",
+            			    "text": "Workflow",
+            			    "emoji": true
+            		    },
+            		    "value": "workflow",
+            		    "url": "${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}",
+            		    "action_id": "workflow"
+                  },
+            		  {
+            		    "type": "button",
+            		    "text": {
+            			    "type": "plain_text",
+            			    "text": "Commit",
+            			    "emoji": true
+                    },
+                    "value": "commit",
+                    "url": "${{ github.event.head_commit.url }}",
+                    "action_id": "commit"
+                  }
             	  ]
             	}
-              ]
-            }
+            ]
