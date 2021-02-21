@@ -35,10 +35,6 @@ class MavenCentralRepository : Plugin<Project> {
 
         loadExt()
 
-        ext.properties.forEach { (s, any) ->
-            println("$s: $any")
-        }
-
         nexusStaging {
             packageGroup = ext["PUBLISH_GROUP_ID"].toString()
             stagingProfileId = ext["sonatypeStagingProfileId"].toString()
