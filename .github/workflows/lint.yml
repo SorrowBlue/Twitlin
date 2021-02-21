@@ -2,9 +2,6 @@ name: Lint for release
 
 on: push
 
-env:
-  INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_TWITLIN_CI }}
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -21,6 +18,8 @@ jobs:
       - name: Slack Notification on SUCCESS
         if: success()
         uses: tokorom/action-slack-incoming-webhook@main
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_TWITLIN_CI }}
         with:
           blocks: |
             {
@@ -95,8 +94,10 @@ jobs:
               ]
             }
       - name: Slack Notification on Failure
-        uses: tokorom/action-slack-incoming-webhook@main
         if: failure()
+        uses: tokorom/action-slack-incoming-webhook@main
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_TWITLIN_CI }}
         with:
           blocks: |
             {
