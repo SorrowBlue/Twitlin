@@ -21,4 +21,5 @@ com.sorrowblue.twitlin.v2.objects
 com.sorrowblue.twitlin.v2.tweets
 com.sorrowblue.twitlin.v2.tweets.search
 com.sorrowblue.twitlin.v2.users
+kotlinx.datetime
 
