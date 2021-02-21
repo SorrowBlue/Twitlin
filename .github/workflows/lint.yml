@@ -50,7 +50,7 @@ jobs:
             		  },
             		  {
             		    "type": "mrkdwn",
-            		    "text": "${{ github.event.sender.login }} _${{ github.event_name }}_ :link:${{ steps.short-sha.outputs.sha }} `${{ env.DAY_OF_WEEK }}`"
+            		    "text": "${{ github.event.sender.login }} _${{ github.event_name }}_ :link:${{ steps.short-sha.outputs.sha }} `${{ env.BRANCH_NAME }}`"
             		  }
             	  ]
             	},
