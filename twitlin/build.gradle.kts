@@ -20,7 +20,7 @@ group = "com.sorrowblue.twitlin"
 version = "1.0.0-001-SNAPSHOT"
 
 extra["PUBLISH_GROUP_ID"] = group.toString()
-extra["PUBLISH_VERSION"]  = version.toString()
+extra["PUBLISH_VERSION"] = version.toString()
 
 android {
     configurations {

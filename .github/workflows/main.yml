@@ -1,8 +1,8 @@
 name: Build and Deploy documents
 on:
   push:
-    branches:
-      - master
+    tags:
+      - '*-SNAPSHOT'
 env:
   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL_TWITLIN_CI }}
 jobs:
