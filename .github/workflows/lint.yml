@@ -1,4 +1,4 @@
-name: Run Dokka and Deploy documents
+name: Lint for release
 
 on: push
 
