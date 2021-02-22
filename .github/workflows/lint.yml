@@ -36,7 +36,7 @@ jobs:
             	  "elements": [
                   {
             		    "type": "plain_text",
-            		    "text": ":white_check_mark: ${{ github.forkflow }} #${{ github.run_number }}"
+            		    "text": ":white_check_mark: ${{ github.workflow }} #${{ github.run_number }}"
             		  }
             	  ]
             	},
@@ -50,7 +50,7 @@ jobs:
             		  },
             		  {
             		    "type": "mrkdwn",
-            		    "text": "${{ github.event.sender.login }} _${{ github.event_name }}_ :link:${{ steps.short-sha.outputs.sha }} `${{ env.BRANCH_NAME }}`"
+            		    "text": "${{ github.event.sender.login }} _${{ github.event_name }}_ :link:${{ steps.short-sha.outputs.sha }} *${{ env.BRANCH_NAME }}*"
             		  }
             	  ]
             	},
@@ -112,7 +112,7 @@ jobs:
             	  "elements": [
                   {
             		    "type": "plain_text",
-            		    "text": ":x: ${{ github.forkflow }} #${{ github.run_number }}"
+            		    "text": ":x: ${{ github.workflow }} #${{ github.run_number }}"
             		  }
             	  ]
             	},
@@ -126,7 +126,7 @@ jobs:
             		  },
             		  {
             		    "type": "mrkdwn",
-            		    "text": "${{ github.event.sender.login }} _${{ github.event_name }}_ :link:${{ steps.short-sha.outputs.sha }} `${{ env.BRANCH_NAME }}`"
+            		    "text": "${{ github.event.sender.login }} _${{ github.event_name }}_ :link:${{ steps.short-sha.outputs.sha }} *${{ env.BRANCH_NAME }}*"
             		  }
             	  ]
             	},
