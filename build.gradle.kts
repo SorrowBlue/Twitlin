@@ -9,9 +9,10 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.0.0-alpha07")
+        classpath("com.android.tools.build:gradle:4.0.2")
         classpath(kotlin("gradle-plugin", KOTLIN_VERSION))
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.22.0")
     }
