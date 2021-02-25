@@ -37,7 +37,7 @@ android {
         }
     }
     packagingOptions {
-        resources.excludes += "META-INF/**.kotlin_module"
+        exclude("META-INF/**.kotlin_module")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -59,8 +59,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.webkit:webkit:1.4.0")
     implementation("androidx.recyclerview:recyclerview:1.2.0-beta01")
-    implementation("com.sorrowblue.twitlin:twitlin-android:1.0.0-SNAPSHOT-001")
-//    implementation(project(":twitlin"))
+    implementation(project(":twitlin"))
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
