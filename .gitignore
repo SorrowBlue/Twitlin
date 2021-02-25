@@ -5,17 +5,12 @@ local.properties
 .gradle/
 build/
 
-
-.idea/*
-.idea/codeStyles/*
-!.idea/codeStyles/
-!.idea/codeStyles/codeStyleConfig.xml
-!.idea/codeStyles/Project.xml
-!.idea/encodings.xml
-!.idea/gradle.xml
-!.idea/kotlinScripting.xml
-!.idea/runConfigurations.xml
-!.idea/vcs.xml
+.idea/libraries/*
+.idea/caches/*
+.idea/artifacts/*
+.idea/modules.xml
+.idea/workspace.xml
+.idea/jarRepositories.xml
 
 /docs/images/
 /docs/scripts/
