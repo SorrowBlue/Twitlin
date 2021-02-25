@@ -103,6 +103,9 @@ class MavenCentralRepository : Plugin<Project> {
                 p.load(FileInputStream(secretPropsFile))
             }
             println("No props file, loading env vars")
+
+            ext["PUBLISH_GROUP_ID"] = group.toString()
+            ext["PUBLISH_VERSION"] = version.toString()
             ext["signing.keyId"] =
                 p.getProperty("signing.keyId") ?: System.getenv("SIGNING_KEY_ID")
             ext["signing.password"] =
