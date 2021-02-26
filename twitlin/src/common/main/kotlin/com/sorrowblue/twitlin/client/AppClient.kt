@@ -110,7 +110,8 @@ internal class AppClient(
         {
             body =
                 TextContent("grant_type=client_credentials", ContentType.Application.FormUrlEncoded)
-        })
+        }
+    )
 
     suspend inline fun <T : Any, R : IResponse<T>> request(
         method: HttpMethod,

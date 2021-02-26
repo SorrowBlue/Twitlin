@@ -5,10 +5,10 @@
 package com.sorrowblue.twitlin.v2.tweets.search
 
 import com.sorrowblue.twitlin.v2.client.Response
-import kotlin.test.Test
 import kotlinx.serialization.json.Json
 import test.AbstractTest
 import test.TestUtils
+import kotlin.test.Test
 
 class TweetsSearchSerializeTest : AbstractTest {
 

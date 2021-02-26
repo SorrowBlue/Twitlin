@@ -52,7 +52,6 @@ public data class ReverseGeocode(
             val coordinates: Coordinates,
             val granularity: PlaceType
         ) : JvmSerializable
-
     }
 
     /**
@@ -62,5 +61,4 @@ public data class ReverseGeocode(
      */
     @Serializable
     public data class Result(val places: List<Place>) : JvmSerializable
-
 }

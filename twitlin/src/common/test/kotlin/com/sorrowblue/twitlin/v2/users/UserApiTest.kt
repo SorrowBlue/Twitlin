@@ -17,7 +17,6 @@ class UserApiTest : AbstractTest {
     @Test
     fun usersIdTest() = runBlocking {
         TwitterV2API.usersApi.users(
-//			"2244994945",
             "938122027231150081",
             tweetFields = TweetField.all(),
             userFields = UserField.all(),

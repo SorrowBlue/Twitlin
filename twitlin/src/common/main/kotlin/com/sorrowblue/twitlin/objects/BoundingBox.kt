@@ -21,4 +21,3 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class BoundingBox(val coordinates: List<List<List<Double>>>, val type: String) :
     JvmSerializable
-

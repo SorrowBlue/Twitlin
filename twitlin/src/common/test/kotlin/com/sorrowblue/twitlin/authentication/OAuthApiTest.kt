@@ -22,7 +22,6 @@ class OAuthApiTest : AbstractTest {
             "h0CwkPakH9P0TQLBQnrZJkrLiQI72p0d"
         ).resultLog()
         assertNotNull(accessToken, "accessToken is null")
-
     }
 
     @Test

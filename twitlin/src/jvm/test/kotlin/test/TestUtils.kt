@@ -4,11 +4,11 @@
 
 package test
 
-import kotlinx.coroutines.runBlocking as kotlinRunBlocking
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.Path
+import kotlinx.coroutines.runBlocking as kotlinRunBlocking
 
 internal actual object TestUtils {
 
@@ -19,4 +19,3 @@ internal actual object TestUtils {
         Files.readAllLines(Path("src/commonTest/resources", path), StandardCharsets.UTF_8)
             .plus("").joinToString("\n")
 }
-

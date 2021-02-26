@@ -35,7 +35,8 @@ class SecurityTest {
     fun testHmacSHA1_3() {
         hmacSHA1(
             hexKey = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            data = ByteArray(50) { hexStringToByte("dd") },
+            hexData = "0xdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+//            data = ByteArray(50) { hexStringToByte("dd") },
             hexDigest = "0x125d7342b9ac11cd91a39af48aa17b4f63f175d3"
         )
     }

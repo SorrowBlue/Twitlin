@@ -119,7 +119,6 @@ public data class User(
         val locations: List<ProfileGeo>
     ) : JvmSerializable
 
-
     /**
      * TODO
      *

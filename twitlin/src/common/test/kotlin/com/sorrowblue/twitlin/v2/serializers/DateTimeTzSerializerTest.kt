@@ -18,7 +18,6 @@ internal class LocalDateTimeRFC822SerializerTest {
     private val source = LocalDateTime(2010, 6, 1, 22, 19, 44, 475)
     private val strSource = """{"date":"2010-06-01T22:19:44.475Z"}"""
 
-
     @Test
     fun deserialize() {
         val json = Json.decodeFromString<TestData>(strSource)

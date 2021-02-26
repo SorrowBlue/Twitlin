@@ -23,7 +23,8 @@ class TestUtilsTest {
             Nam commodo ex in dui accumsan, nec porttitor tortor scelerisque.
             Vivamus luctus turpis in lacinia convallis.
             
-        """.trimIndent(), text
+            """.trimIndent(),
+            text
         )
     }
 

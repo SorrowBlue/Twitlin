@@ -39,5 +39,4 @@ class StringKtTest {
         println("$value -> ${value.urlEncode()}")
         assertEquals(expected, value.urlEncode())
     }
-
 }

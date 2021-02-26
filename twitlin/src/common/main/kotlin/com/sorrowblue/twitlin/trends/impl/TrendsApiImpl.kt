@@ -40,5 +40,4 @@ internal class TrendsApiImpl(private val client: UserClient) : TrendsApi {
             "long" to long
         )
     }
-
 }

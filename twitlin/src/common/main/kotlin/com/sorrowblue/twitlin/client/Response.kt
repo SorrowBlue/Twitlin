@@ -4,9 +4,9 @@
 
 package com.sorrowblue.twitlin.client
 
-import com.sorrowblue.twitlin.client.Error as ClientError
 import com.sorrowblue.twitlin.core.IResponse
 import kotlinx.serialization.Serializable
+import com.sorrowblue.twitlin.client.Error as ClientError
 
 /**
  * TODO

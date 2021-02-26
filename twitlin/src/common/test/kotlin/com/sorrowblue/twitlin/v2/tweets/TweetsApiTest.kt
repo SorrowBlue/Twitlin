@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.v2.tweets
 
-import com.sorrowblue.twitlin.objects.Tweet as V1Tweet
 import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.TwitterV2API
@@ -15,10 +14,11 @@ import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.testResult
-import kotlin.test.Test
-import kotlin.test.assertNotNull
 import kotlinx.coroutines.flow.collect
 import test.AbstractTest
+import kotlin.test.Test
+import kotlin.test.assertNotNull
+import com.sorrowblue.twitlin.objects.Tweet as V1Tweet
 
 class TweetsApiTest : AbstractTest {
 

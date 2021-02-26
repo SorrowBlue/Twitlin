@@ -17,7 +17,6 @@ class OAuth2ApiTest : AbstractTest {
     fun tokenTest() = runBlocking {
         val accessToken = TwitterAPI.oauth2Api.token().resultLog()
         assertNotNull(accessToken, "token is null")
-
     }
 
     @Ignore

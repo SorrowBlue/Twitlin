@@ -2,8 +2,6 @@
  * (c) 2020-2021 SorrowBlue.
  */
 
-
-
 package com.sorrowblue.twitlin.accounts_users.account
 
 import com.sorrowblue.twitlin.TwitterAPI

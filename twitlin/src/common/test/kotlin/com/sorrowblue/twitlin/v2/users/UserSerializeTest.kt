@@ -7,11 +7,11 @@ package com.sorrowblue.twitlin.v2.users
 import com.sorrowblue.twitlin.v2.client.Response
 import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.tweets.OptionalData
-import kotlin.test.Test
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import test.AbstractTest
 import test.TestUtils
+import kotlin.test.Test
 
 class UserSerializeTest : AbstractTest {
     @Test

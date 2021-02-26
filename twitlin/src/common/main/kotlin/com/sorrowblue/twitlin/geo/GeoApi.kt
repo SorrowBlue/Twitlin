@@ -111,7 +111,6 @@ public interface GeoApi {
         granularity: PlaceType? = null,
         maxResults: Int? = null
     ): Response<GeoSearch>
-
 }
 
 @Serializable
@@ -133,12 +132,10 @@ public data class GeoSearch(
             val query: String,
             @SerialName("trim_place") val trimPlace: Boolean
         ) : JvmSerializable
-
     }
 
     @Serializable
     public data class Result(
         val places: List<Place>
     ) : JvmSerializable
-
 }

@@ -38,5 +38,4 @@ public data class TrendPlaces(
      */
     @Serializable
     public data class Location(val name: String, val woeid: Int) : JvmSerializable
-
 }

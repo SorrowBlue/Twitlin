@@ -28,7 +28,8 @@ class WelcomeMessagesApiTest : AbstractTest {
             "text",
             quickReply = QuickReply(
                 QuickReply.Type.OPTIONS,
-                (1..4).map { QuickReply.Option("label$it", "description$it", "metadata$it") })
+                (1..4).map { QuickReply.Option("label$it", "description$it", "metadata$it") }
+            )
         ).resultLog()
     }
 

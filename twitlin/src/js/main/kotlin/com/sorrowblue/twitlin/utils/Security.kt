@@ -4,17 +4,39 @@
 
 package com.sorrowblue.twitlin.utils
 
-@JsModule("crypto-js/hmac-sha1")
+import kotlin.experimental.and
+
+@JsModule("jssha")
+@JsName("jsSHA")
 @JsNonModule
-@JsName("HmacSHA1")
-private external fun hmacSHA1(value: String, key: String): Any
+private external class JsSHA1(shaMode: String, shaType: String, options: Options) {
+
+    fun update(value: String)
+    fun setHMACKey(key: String, type: String)
+    fun getHMAC(type: String): String
+}
+
+internal class Options(val encoding: String)
 
 internal actual object Security {
 
     actual fun hmacSHA1(key: ByteArray, value: ByteArray): ByteArray {
-        return hmacSHA1(value.decodeToString(), key.decodeToString()).toString().hexToByteArray()
-
+        println(
+            """
+            key: ${key.toHexString()}
+            value: ${value.toHexString()}
+            """.trimIndent()
+        )
+        val jsSha = JsSHA1("SHA-1", "HEX", Options("UTF8"))
+        jsSha.setHMACKey(key.toHexString(), "HEX")
+        jsSha.update(value.toHexString())
+        return jsSha.getHMAC("HEX").also {
+            println("hex=$it")
+        }.hexToByteArray()
     }
+
+    fun ByteArray.toHexString() =
+        joinToString("") { (0xFF and it.toInt()).toString(16).padStart(2, '0') }
 
     private fun String.hexToByteArray(): ByteArray {
         fun hexStringToByte(hexString: String) = hexString.toInt(16).toByte()
@@ -24,5 +46,16 @@ internal actual object Security {
         }
     }
 
+    private val hexArray = "0123456789ABCDEF".toCharArray()
 
+    fun ByteArray.toHex(): String {
+        val hexChars = CharArray(size * 2)
+        forEachIndexed { index, byte ->
+            val v = (byte and 0xFF.toByte()).toInt()
+
+            hexChars[index * 2] = hexArray[v ushr 4]
+            hexChars[index * 2 + 1] = hexArray[v and 0x0F]
+        }
+        return hexChars.concatToString()
+    }
 }

@@ -6,11 +6,11 @@ package com.sorrowblue.twitlin.v2.tweets.search.stream.rules
 
 import com.sorrowblue.twitlin.v2.client.Response
 import com.sorrowblue.twitlin.v2.tweets.search.AddedSearchStreamRules
-import kotlin.test.Test
-import kotlin.test.assertNotEquals
 import kotlinx.serialization.json.Json
 import test.AbstractTest
 import test.TestUtils
+import kotlin.test.Test
+import kotlin.test.assertNotEquals
 
 class RulesSerializeTest : AbstractTest {
 

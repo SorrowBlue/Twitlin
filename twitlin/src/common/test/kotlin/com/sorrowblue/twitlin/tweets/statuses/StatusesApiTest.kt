@@ -5,11 +5,11 @@
 package com.sorrowblue.twitlin.tweets.statuses
 
 import com.sorrowblue.twitlin.TwitterAPI
-import kotlin.test.Test
-import kotlin.test.assertNotNull
 import kotlinx.coroutines.flow.collect
 import test.AbstractTest
 import test.resultLog
+import kotlin.test.Test
+import kotlin.test.assertNotNull
 
 class StatusesApiTest : AbstractTest {
 
@@ -20,9 +20,10 @@ class StatusesApiTest : AbstractTest {
 
     @Test
     fun timelineTest() = runBlocking {
-        assertNotNull(TwitterAPI.statuses.homeTimeline(count = 100).resultLog()?.map { it.idStr }.also {
-            println("APPAPP: $it")
-        })
+        assertNotNull(
+            TwitterAPI.statuses.homeTimeline(count = 100).resultLog()?.map { it.idStr }
+                .also { println("APPAPP: $it") }
+        )
     }
 
     @Test
@@ -35,7 +36,9 @@ class StatusesApiTest : AbstractTest {
         var count = 0
         TwitterAPI.statuses.filter(track = listOf("#シンデレラHNYday1")).collect {
             println("${count++}")
+            if (10 < count) {
+                return@collect
+            }
         }
     }
 }
-

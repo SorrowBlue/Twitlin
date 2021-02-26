@@ -76,7 +76,7 @@ internal class UserClient(apiKey: String, secretKey: String, var accessToken: Ac
             do {
                 val body = response.readText()
                 Napier.i(
-                    "Request Twitter API-> GET:$url, body=${body}",
+                    "Request Twitter API-> GET:$url, body=$body",
                     tag = "Twitlin"
                 )
                 json.decodeFromString(serializer, body).let(channel::offer)
@@ -107,8 +107,14 @@ internal class UserClient(apiKey: String, secretKey: String, var accessToken: Ac
         serializer: KSerializer<R>,
         accessToken: AccessToken? = null,
         noinline bodyBlock: HttpRequestBuilder.() -> Unit = {}
-    ): R = request(method, url, serializer, {
-        val token = accessToken ?: this@UserClient.accessToken
-        headerAuthorization(apiKey, secretKey, params.notNullParams, token)
-    }, bodyBlock)
+    ): R = request(
+        method,
+        url,
+        serializer,
+        {
+            val token = accessToken ?: this@UserClient.accessToken
+            headerAuthorization(apiKey, secretKey, params.notNullParams, token)
+        },
+        bodyBlock
+    )
 }

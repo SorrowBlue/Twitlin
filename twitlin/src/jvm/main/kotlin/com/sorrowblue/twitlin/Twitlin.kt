@@ -8,4 +8,3 @@ import com.github.aakira.napier.Antilog
 import com.github.aakira.napier.DebugAntilog
 
 internal actual val defaultAntilog: Antilog = DebugAntilog(Twitlin.TAG)
-

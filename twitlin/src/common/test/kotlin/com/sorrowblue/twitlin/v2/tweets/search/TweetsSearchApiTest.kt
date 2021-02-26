@@ -10,9 +10,9 @@ import com.sorrowblue.twitlin.v2.field.MediaField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.testResult
 import com.sorrowblue.twitlin.v2.tweets.PagingTweet
+import test.AbstractTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
-import test.AbstractTest
 
 class TweetsSearchApiTest : AbstractTest {
 
@@ -36,7 +36,8 @@ class TweetsSearchApiTest : AbstractTest {
         TwitterV2API.tweetsSearchApi.addStreamRules(
             listOf(
                 SearchStreamRule("tostones recipe", "")
-            ), dryRun = true
+            ),
+            dryRun = true
         ).testResult()
     }
 

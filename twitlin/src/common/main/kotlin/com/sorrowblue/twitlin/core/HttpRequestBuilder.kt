@@ -14,10 +14,10 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.content.TextContent
 import io.ktor.util.InternalAPI
 import io.ktor.util.encodeBase64
-import kotlin.random.Random
 import kotlinx.datetime.Clock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlin.random.Random
 
 internal val Array<out Pair<String, Any?>>.notNullParams: List<Pair<String, String>>
     get() = mapNotNull { pair -> pair.second?.let { pair.first to it.toString() } }
@@ -37,7 +37,6 @@ internal fun HttpRequestBuilder.createSignature(
     val signingKey = gettingSigningKey(consumerSecret, accessToken?.oauthTokenSecret)
     return calculateSignatureBase64(baseString, signingKey)
 }
-
 
 @OptIn(InternalAPI::class)
 internal fun HttpRequestBuilder.headerAuthorization(

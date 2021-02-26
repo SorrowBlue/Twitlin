@@ -92,5 +92,4 @@ public interface TrendsApi {
      * @return TODO
      */
     public suspend fun closest(lat: Double, long: Double): Response<List<TrendPlace>>
-
 }

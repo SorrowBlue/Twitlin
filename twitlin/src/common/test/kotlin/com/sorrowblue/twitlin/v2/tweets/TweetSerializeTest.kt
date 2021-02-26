@@ -6,12 +6,12 @@ package com.sorrowblue.twitlin.v2.tweets
 
 import com.sorrowblue.twitlin.v2.client.Response
 import com.sorrowblue.twitlin.v2.objects.Tweet
-import kotlin.test.Test
-import kotlin.test.assertNotEquals
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import test.AbstractTest
 import test.TestUtils
+import kotlin.test.Test
+import kotlin.test.assertNotEquals
 
 class TweetSerializeTest : AbstractTest {
 

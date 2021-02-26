@@ -14,4 +14,3 @@ internal actual object TestUtils {
     actual fun loadFile(path: String): String =
         nodeFS.readFileSync(nodePath.join(RESOURCE_ROOT, path), "utf-8") as String
 }
-
