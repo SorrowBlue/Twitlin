@@ -1,6 +1,7 @@
 /*
  * (c) 2020-2021 SorrowBlue.
  */
+
 plugins {
     id("com.github.ben-manes.versions").version("0.36.0")
 }
