@@ -107,4 +107,3 @@ internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
         "user.fields" to userFields?.toParameter(),
     )*/
 }
-

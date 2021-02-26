@@ -12,6 +12,7 @@ public actual object LocalDateTimeParceler : KotlinParceler<LocalDateTime> {
         return Instant.fromEpochMilliseconds(parcel.readLong())
             .toLocalDateTime(TimeZone.UTC)
     }
+
     override fun LocalDateTime.write(parcel: Parcel, flags: Int) {
         parcel.writeLong(toInstant(TimeZone.UTC).toEpochMilliseconds())
     }

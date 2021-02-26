@@ -13,8 +13,8 @@ import kotlin.collections.List as KList
 public sealed class CollectionResponse : JvmSerializable {
 
     @Serializable
-    public data class List(val results: KList<Result>, val cursors: Cursor) : CollectionResponse(),
-        JvmSerializable
+    public data class List(val results: KList<Result>, val cursors: Cursor) :
+        CollectionResponse(), JvmSerializable
 
     @Serializable
     public data class TimelinePosition(

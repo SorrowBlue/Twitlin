@@ -101,5 +101,4 @@ public interface FriendsApi {
         skipStatus: Boolean = false,
         includeUserEntities: Boolean = true
     ): Response<PagingUser>
-
 }

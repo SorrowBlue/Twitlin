@@ -18,7 +18,7 @@ internal fun String.toInstantForRFC822(): Instant {
     val hour = time[0]
     val minute = time[1]
     val second = time[2]
-    return Instant.parse("$year-$month-${day}T$hour:$minute:${second}.000Z")
+    return Instant.parse("$year-$month-${day}T$hour:$minute:$second.000Z")
 }
 
 internal fun Instant.formatRFC822(): String {

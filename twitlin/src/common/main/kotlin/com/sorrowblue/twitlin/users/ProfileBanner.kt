@@ -55,5 +55,4 @@ public data class ProfileBanner(val sizes: Sizes) : JvmSerializable {
         @Serializable
         public data class Device(val h: Int, val w: Int, val url: String) : JvmSerializable
     }
-
 }

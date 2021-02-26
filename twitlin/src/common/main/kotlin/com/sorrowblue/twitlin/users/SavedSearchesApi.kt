@@ -44,6 +44,4 @@ public interface SavedSearchesApi {
      * @return TODO
      */
     public suspend fun destroy(id: String): Response<SavedSearch>
-
 }
-

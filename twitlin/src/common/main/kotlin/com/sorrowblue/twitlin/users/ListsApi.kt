@@ -448,7 +448,6 @@ public interface ListsApi {
         screenName: String? = null
     ): Response<UserList>
 
-
     /**
      * Removes multiple members from a list, by specifying a comma-separated list of member ids or
      * screen names. The authenticated user must own the list to be able to remove members from it.
@@ -540,4 +539,3 @@ public interface ListsApi {
         description: String? = null
     ): Response<UserList>
 }
-

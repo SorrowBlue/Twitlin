@@ -4,10 +4,10 @@
 
 package com.sorrowblue.twitlin.v2.client
 
-import com.sorrowblue.twitlin.v2.client.Error as ClientError
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.core.IResponse
 import kotlinx.serialization.Serializable
+import com.sorrowblue.twitlin.v2.client.Error as ClientError
 
 /**
  * TODO

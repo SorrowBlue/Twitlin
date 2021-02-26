@@ -43,7 +43,7 @@ public interface FriendshipsApi {
      * `100` [screenName] or [userId] provided. Values for [Relationship.connections] can be:
      * [Relationship.Connection.FOLLOWING], [Relationship.Connection.FOLLOWING_REQUESTED],
      * [Relationship.Connection.FOLLOWED_BY], [Relationship.Connection.NONE],
-     * [Relationship.Connection.BLOCKING],[Relationship.Connection.MUTING].
+     * [Relationship.Connection.BLOCKING], [Relationship.Connection.MUTING].
      *
      * @param screenName A comma separated list of screen names,
      * up to `100` are allowed in a single request.
@@ -150,5 +150,4 @@ public interface FriendshipsApi {
         device: Boolean? = null,
         retweets: Boolean? = null,
     ): Response<RelationshipDetail>
-
 }

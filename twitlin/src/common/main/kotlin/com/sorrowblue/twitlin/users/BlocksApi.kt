@@ -106,5 +106,4 @@ public interface BlocksApi {
         includeEntities: Boolean? = null,
         skipStatus: Boolean? = null
     ): Response<User>
-
 }

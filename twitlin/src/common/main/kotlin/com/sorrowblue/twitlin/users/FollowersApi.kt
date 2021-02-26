@@ -100,5 +100,4 @@ public interface FollowersApi {
         skipStatus: Boolean = false,
         includeUserEntities: Boolean = true
     ): Response<PagingUser>
-
 }

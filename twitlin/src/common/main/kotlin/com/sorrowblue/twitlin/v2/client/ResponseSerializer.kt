@@ -80,5 +80,4 @@ internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializ
             }
         )
     }
-
 }

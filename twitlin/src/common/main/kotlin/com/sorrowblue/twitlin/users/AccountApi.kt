@@ -183,5 +183,4 @@ public interface AccountApi {
         includeEntities: Boolean? = null,
         skipStatus: Boolean? = null
     ): Response<User>
-
 }

@@ -18,8 +18,7 @@ public interface UsersApi {
      * used instead of string manipulation on the `profile_banner_url` returned in user objects as
      * described in
      * [Profile Images and Banners](https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners).
-
-    The profile banner data available at each size variant's URL is in PNG format.
+     * The profile banner data available at each size variant's URL is in PNG format.
      *
      * @param userId The ID of the user for whom to return results.
      * Helpful for disambiguating when a valid user ID is also a valid screen name.
@@ -134,5 +133,4 @@ public interface UsersApi {
         screenName: String? = null,
         includeEntities: Boolean = true
     ): Response<User>
-
 }

@@ -27,7 +27,7 @@ public data class Error(
     val parameters: Map<String, List<String>>? = null,
     val message: String? = null,
 //    val status: Int? = null
-) : AndroidParcelable,JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
 
     @Serializable
     public enum class Type {

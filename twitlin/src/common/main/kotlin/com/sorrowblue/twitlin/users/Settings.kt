@@ -67,5 +67,4 @@ public data class Settings(
         @SerialName("tzinfo_name") val tzinfoName: String,
         @SerialName("utc_offset") val utcOffset: Int
     ) : JvmSerializable
-
 }

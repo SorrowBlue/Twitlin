@@ -92,5 +92,4 @@ public interface MutesApi {
         screenName: String? = null,
         userId: String? = null
     ): Response<User>
-
 }

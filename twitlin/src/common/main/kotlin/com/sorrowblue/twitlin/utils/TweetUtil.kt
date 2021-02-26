@@ -34,5 +34,3 @@ public enum class TweetCardType {
             runCatching { valueOf(value.toUpperCase()) }.getOrDefault(SUMMARY)
     }
 }
-
-

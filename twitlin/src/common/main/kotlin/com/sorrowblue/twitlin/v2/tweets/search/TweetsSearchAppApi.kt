@@ -72,7 +72,8 @@ public interface TweetsSearchAppApi {
      * @return
      */
     public suspend fun addStreamRules(
-        rules: List<SearchStreamRule>, dryRun: Boolean? = null
+        rules: List<SearchStreamRule>,
+        dryRun: Boolean? = null
     ): Response<AddedSearchStreamRules>
 
     /**
@@ -85,7 +86,8 @@ public interface TweetsSearchAppApi {
      * @return
      */
     public suspend fun deleteStreamRules(
-        ids: List<String>, dryRun: Boolean? = null
+        ids: List<String>,
+        dryRun: Boolean? = null
     ): Response<DeletedSearchStreamRules>
 
     /**

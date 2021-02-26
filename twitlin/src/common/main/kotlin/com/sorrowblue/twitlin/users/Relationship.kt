@@ -68,5 +68,4 @@ public data class Relationship(
         @SerialName("muting")
         MUTING
     }
-
 }

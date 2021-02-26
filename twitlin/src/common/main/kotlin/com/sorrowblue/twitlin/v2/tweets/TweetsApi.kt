@@ -4,8 +4,6 @@
 
 package com.sorrowblue.twitlin.v2.tweets
 
-import com.sorrowblue.twitlin.annotation.AndroidParcelable
-import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.v2.client.Error
 import com.sorrowblue.twitlin.v2.client.Includes
@@ -46,7 +44,6 @@ public data class PagingTweet(
         @SerialName("next_token")
         val nextToken: String
     ) : JvmSerializable
-
 }
 
 /**
