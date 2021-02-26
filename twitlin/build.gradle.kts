@@ -4,34 +4,23 @@
 
 @file:Suppress("UNUSED_VARIABLE")
 
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.sorrowblue.gradle.mavenCentralPublish
+
 plugins {
     `kotlin-multiplatform`
     ComAndroidPluginGroup(this).library
     `kotlin-parcelize`
-    `kotlin-kapt`
     kotlin("plugin.serialization") version KOTLIN_VERSION
-    id("org.jetbrains.dokka") version "1.4.20"
-    `maven-publish`
-    id("signing")
-    id("io.codearte.nexus-staging")
+    id("org.jetbrains.dokka") version DOKKA_VERSION
+    id("com.sorrowblue.gradle.github-packages-publish") version "1.0.0"
+    id("com.sorrowblue.gradle.maven-central-publish") version "1.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("org.ajoberstar.grgit") version "4.1.0"
 }
 
 group = "com.sorrowblue.twitlin"
 version = "1.0.0-001-SNAPSHOT"
-
-extra["PUBLISH_GROUP_ID"] = group.toString()
-extra["PUBLISH_VERSION"] = version.toString()
-
-android {
-    configurations {
-        create("androidTestApi")
-        create("androidTestDebugApi")
-        create("androidTestReleaseApi")
-        create("testApi")
-        create("testDebugApi")
-        create("testReleaseApi")
-    }
-}
 
 kotlin {
     explicitApi()
@@ -82,7 +71,8 @@ kotlin {
             kotlin.srcDirs("src/js/main/kotlin")
             dependencies {
                 implementation(Libs.`ktor-client`.js)
-                implementation("org.webjars.npm:crypto-js:4.0.0")
+                implementation(npm("jssha", "3.2.0"))
+                implementation(npm("@sinonjs/text-encoding", "0.7.1"))
             }
         }
         val jsTest by getting {
@@ -167,7 +157,51 @@ tasks.dokkaHtml.configure {
     }
 }
 
-afterEvaluate {
-    apply<MavenCentralRepository>()
-    apply<GithubPackagesRepository>()
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
+    }
+}
+
+ext {
+    val tags = grgit.tag.list().map(org.ajoberstar.grgit.Tag::getName)
+    val versionStr = if (tags.any { it.matches("v\\d.*".toRegex()).not() }) {
+        grgit.describe {
+            longDescr = false
+            isTags = true
+            match = listOf("v[0-9]*")
+        }
+    } else {
+        grgit.head().abbreviatedId
+    }
+    version = versionStr + (if (grgit.status().isClean) "" else "+dirty")
+    println("version: $version")
+}
+
+tasks.register("showVersion") {
+    doLast {
+        println(extra["version"])
+    }
+}
+
+githubPackages {
+    username = findProperty("github.username")?.toString() ?: System.getenv("GITHUB_USERNAME")
+    password = findProperty("github.token")?.toString() ?: System.getenv("GITHUB_TOKEN")
+    repo = "$username/Twitlin"
+}
+
+mavenCentralPublish {
+    val p = gradleLocalProperties(rootDir)
+    version = version.toString()
+    signingKeyId = p.getOrElse("signing.keyId") { System.getenv("SIGNING_KEY_ID") }.toString()
+    signingPassword =
+        p.getOrElse("signing.password") { System.getenv("SIGNING_PASSWORD") }.toString()
+    signingSecretKeyRingFile =
+        p.getOrElse("signing.secretKeyRingFile") { System.getenv("SIGNING_SECRET_KEY_RING_FILE") }
+            .toString()
+    username = p.getOrElse("ossrhUsername") { System.getenv("OSSRH_USERNAME") }.toString()
+    password = p.getOrElse("ossrhPassword") { System.getenv("OSSRH_PASSWORD") }.toString()
+    stagingProfileId =
+        p.getOrElse("sonatypeStagingProfileId") { System.getenv("SONATYPE_STAGING_PROFILE_ID") }
+            .toString()
 }
