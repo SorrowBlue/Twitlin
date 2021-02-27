@@ -50,17 +50,17 @@ android {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8", KOTLIN_VERSION))
-    implementation("androidx.core:core-ktx:1.5.0-beta01")
-    implementation("androidx.activity:activity-ktx:1.3.0-alpha02")
+    implementation("androidx.core:core-ktx:1.5.0-beta02")
+    implementation("androidx.activity:activity-ktx:1.3.0-alpha03")
     implementation("io.pixel.android:pixel:0.0.3-alpha")
     implementation("androidx.appcompat:appcompat:1.3.0-beta01")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0-alpha2")
     implementation("androidx.webkit:webkit:1.4.0")
-    implementation("androidx.recyclerview:recyclerview:1.2.0-beta01")
+    implementation("androidx.recyclerview:recyclerview:1.2.0-beta02")
     implementation(project(":twitlin"))
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3-alpha04")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0-alpha04")
 }
