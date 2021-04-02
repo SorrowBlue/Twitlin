@@ -18,7 +18,7 @@ object Libs {
     }
 
     object `ktor-client` {
-        private const val VERSION = "1.5.1"
+        private const val VERSION = "1.5.3"
         const val core = "io.ktor:ktor-client-core:${VERSION}"
         const val okhttp = "io.ktor:ktor-client-okhttp:${VERSION}"
         const val android = "io.ktor:ktor-client-android:${VERSION}"

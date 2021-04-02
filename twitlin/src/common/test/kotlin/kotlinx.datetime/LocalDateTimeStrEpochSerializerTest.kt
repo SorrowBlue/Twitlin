@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 import kotlin.test.Test
 
 @Serializable
-private class StrEpochTestData(
+class StrEpochTestData(
     @Serializable(LocalDateTimeStrEpochSerializer::class)
     override val value: LocalDateTime
 ) : LocalDataTimeTestData

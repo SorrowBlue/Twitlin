@@ -21,8 +21,9 @@ import io.ktor.http.HttpMethod
 import io.ktor.utils.io.readUTF8Line
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.isActive
 import kotlinx.serialization.KSerializer
 
 internal open class AppClient(
@@ -72,7 +73,7 @@ internal open class AppClient(
         url: String,
         serializer: KSerializer<R>,
         vararg params: UrlParams
-    ): Flow<R> = channelFlow {
+    ): Flow<R> = callbackFlow {
         httpClient.get<HttpStatement>(url.combineParams(params)) {
             headerAuthorization(bearerToken)
             val header = headers.entries().joinToString(", ") { it.key + ": " + it.value }
@@ -81,7 +82,11 @@ internal open class AppClient(
             do {
                 val body = response.content.readUTF8Line()!!
                 Napier.i("Response Twitter API-> GET:$url, body=$body")
-                json.decodeFromString(serializer, body).let(channel::offer)
+                json.decodeFromString(serializer, body).let(this::offer)
+                Napier.i("isClosedForSend=$isClosedForSend, isActive=$isActive")
+                if (isClosedForSend || isActive.not()) {
+                    Napier.i("close streaming")
+                }
             } while (isClosedForSend.not())
         }
     }.catch {

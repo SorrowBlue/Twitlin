@@ -76,7 +76,7 @@ internal class UserClient(apiKey: String, secretKey: String, var accessToken: Ac
             do {
                 val body = response.readText()
                 Napier.i(
-                    "Request Twitter API-> GET:$url, body=$body",
+                    "Response Twitter API-> GET:$url, body=$body",
                     tag = "Twitlin"
                 )
                 json.decodeFromString(serializer, body).let(channel::offer)

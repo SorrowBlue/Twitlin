@@ -16,7 +16,7 @@ internal fun String.urlEncode() = encodeURLParameter()
  *
  * @return TODO
  */
-internal fun String.toMap(): Map<String, Any> =
+internal fun String.parameterToMap(): Map<String, Any> =
     split('&').associate {
         val params = it.split('=')
         if (params.size != 2) {

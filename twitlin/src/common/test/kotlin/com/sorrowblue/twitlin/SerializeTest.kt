@@ -27,7 +27,7 @@ class SerializeTest {
     @Test
     fun errorTest() {
         val json = """
-            {"title":"Forbidden","type":"about:blank","status":403,"detail":"Forbidden"}
+            {"title":"Forbidden","type":"about:blank","detail":"Forbidden"}
         """.trimIndent()
         val error = Json.decodeFromString<Error>(json)
         print(error)

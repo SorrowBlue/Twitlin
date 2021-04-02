@@ -5,22 +5,22 @@
 @file:Suppress("UNUSED_VARIABLE")
 
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.sorrowblue.gradle.mavenCentralPublish
+import com.codingfeline.buildkonfig.compiler.FieldSpec
+import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
 
 plugins {
     `kotlin-multiplatform`
     ComAndroidPluginGroup(this).library
     `kotlin-parcelize`
+    `maven-publish`
     kotlin("plugin.serialization") version KOTLIN_VERSION
     id("org.jetbrains.dokka") version DOKKA_VERSION
     id("com.sorrowblue.gradle.github-packages-publish") version "1.0.0"
-    id("com.sorrowblue.gradle.maven-central-publish") version "1.0.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
-    id("org.ajoberstar.grgit") version "4.1.0"
+    id("com.codingfeline.buildkonfig") version "0.7.0"
 }
 
 group = "com.sorrowblue.twitlin"
-version = "1.0.0-001-SNAPSHOT"
 
 kotlin {
     explicitApi()
@@ -137,6 +137,15 @@ android {
     }
 }
 
+buildkonfig {
+    packageName = "com.sorrowblue.twitlin"
+    defaultConfigs {
+        gradleLocalProperties(rootDir).forEach { t, u ->
+            buildConfigField(FieldSpec.Type.STRING, t.toString().replace('.', '_'), u.toString())
+        }
+    }
+}
+
 tasks.dokkaHtml.configure {
     moduleName.set("docs")
     outputDirectory.set(rootProject.projectDir.resolve("docs/"))
@@ -163,45 +172,51 @@ configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     }
 }
 
-ext {
-    val tags = grgit.tag.list().map(org.ajoberstar.grgit.Tag::getName)
-    val versionStr = if (tags.any { it.matches("v\\d.*".toRegex()).not() }) {
-        grgit.describe {
-            longDescr = false
-            isTags = true
-            match = listOf("v[0-9]*")
-        }
-    } else {
-        grgit.head().abbreviatedId
-    }
-    version = versionStr + (if (grgit.status().isClean) "" else "+dirty")
-    println("version: $version")
-}
-
-tasks.register("showVersion") {
-    doLast {
-        println(extra["version"])
-    }
-}
-
 githubPackages {
     username = findProperty("github.username")?.toString() ?: System.getenv("GITHUB_USERNAME")
     password = findProperty("github.token")?.toString() ?: System.getenv("GITHUB_TOKEN")
     repo = "$username/Twitlin"
 }
 
-mavenCentralPublish {
-    val p = gradleLocalProperties(rootDir)
-    version = version.toString()
-    signingKeyId = p.getOrElse("signing.keyId") { System.getenv("SIGNING_KEY_ID") }.toString()
-    signingPassword =
-        p.getOrElse("signing.password") { System.getenv("SIGNING_PASSWORD") }.toString()
-    signingSecretKeyRingFile =
-        p.getOrElse("signing.secretKeyRingFile") { System.getenv("SIGNING_SECRET_KEY_RING_FILE") }
-            .toString()
-    username = p.getOrElse("ossrhUsername") { System.getenv("OSSRH_USERNAME") }.toString()
-    password = p.getOrElse("ossrhPassword") { System.getenv("OSSRH_PASSWORD") }.toString()
-    stagingProfileId =
-        p.getOrElse("sonatypeStagingProfileId") { System.getenv("SONATYPE_STAGING_PROFILE_ID") }
-            .toString()
+ext {
+    val versionStr = grgit.describe {
+        longDescr = false
+        isTags = true
+    }
+    version = versionStr + if (versionStr.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else ""
+    println("version: $version")
+}
+
+afterEvaluate {
+    publishing {
+        publications.withType<DefaultMavenPublication>().all {
+            println("Twitlin artifactId: $artifactId")
+            if (name.contains("ios").not() && name != "kotlinMultiPlatform") {
+                setModuleDescriptorGenerator(null)
+            }
+            pom {
+                name.set(artifactId)
+                description.set("Twitlin for Twitter API")
+                url.set("https://github.com/SorrowBlue/Twitlin")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("sorrowblue_sb")
+                        name.set("Sorrow Blue")
+                        email.set("sorrowblue.sb@gmail.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:github.com/SorrowBlue/Twitlin.git")
+                    developerConnection.set("scm:git:ssh://github.com/SorrowBlue/Twitlin.git")
+                    url.set("https://github.com/SorrowBlue/Twitlin/tree/main")
+                }
+            }
+        }
+    }
 }

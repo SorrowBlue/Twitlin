@@ -14,10 +14,13 @@ import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.testResult
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
 import test.AbstractTest
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 import com.sorrowblue.twitlin.objects.Tweet as V1Tweet
 
 class TweetsApiTest : AbstractTest {
@@ -99,9 +102,22 @@ class TweetsApiTest : AbstractTest {
     }
 
     @Test
-    fun testSampleStream() = runBlocking {
-        TwitterV2API.tweetsAppApi.sampleStream(tweetFields = listOf(TweetField.TEXT)).collect {
-            Napier.i("streamTest = $it")
+    fun testSampleStream() {
+        runCatching {
+            runBlocking {
+                var c = 0
+                TwitterV2API.tweetsAppApi.sampleStream(tweetFields = listOf(TweetField.TEXT))
+                    .collect {
+                        if (100 < c) {
+                            cancel("Manual cancel")
+                        }
+                        Napier.i("testSampleStream: count=$c")
+                        c++
+                    }
+            }
+        }.onFailure {
+            Napier.i("testSampleStream was canceled.")
+            assertTrue(it is CancellationException)
         }
     }
 }

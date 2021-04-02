@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 import kotlin.test.Test
 
 @Serializable
-private class RFC822TestData(
+class RFC822TestData(
     @Serializable(LocalDateTimeRFC822Serializer::class)
     override val value: LocalDateTime
 ) : LocalDataTimeTestData

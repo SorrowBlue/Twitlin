@@ -52,7 +52,7 @@ public object Twitlin {
     internal lateinit var appClient: AppClient private set
     internal lateinit var v2UserClient: V2UserClient private set
     internal lateinit var v2AppClient: V2AppClient private set
-    internal lateinit var defaultTimeZone: TimeZone
+    internal var defaultTimeZone: TimeZone = TimeZone.UTC
 
     public class Builder internal constructor() {
         public var accessToken: AccessToken? = null

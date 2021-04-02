@@ -16,7 +16,7 @@ import kotlin.test.assertEquals
 internal class LocalDateTimeRFC822SerializerTest {
 
     private val source = LocalDateTime(2010, 6, 1, 22, 19, 44, 475)
-    private val strSource = """{"date":"2010-06-01T22:19:44.475Z"}"""
+    private val strSource = """{"date":"2010-06-01T22:19:44.000000475Z"}"""
 
     @Test
     fun deserialize() {
@@ -31,7 +31,7 @@ internal class LocalDateTimeRFC822SerializerTest {
 }
 
 @Serializable
-private class TestData(
+class TestData(
     @Serializable(LocalDateTimeISOSerializer::class)
     val date: LocalDateTime
 )

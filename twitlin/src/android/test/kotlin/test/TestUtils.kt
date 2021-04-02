@@ -4,13 +4,11 @@
 
 package test
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking as kotlinRunBlocking
 
 internal actual object TestUtils {
 
-    actual fun runBlocking(block: suspend () -> Unit) = kotlinRunBlocking { block() }
-
-    actual fun loadFile(path: String): String {
-        TODO()
-    }
+    actual fun runBlocking(block: suspend CoroutineScope.() -> Unit) =
+        kotlinRunBlocking { block(this) }
 }

@@ -8,6 +8,7 @@ import com.sorrowblue.twitlin.TwitterAPI
 import kotlinx.coroutines.flow.collect
 import test.AbstractTest
 import test.resultLog
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
@@ -21,7 +22,7 @@ class StatusesApiTest : AbstractTest {
     @Test
     fun timelineTest() = runBlocking {
         assertNotNull(
-            TwitterAPI.statuses.homeTimeline(count = 100).resultLog()?.map { it.idStr }
+            TwitterAPI.statuses.homeTimeline().resultLog()?.map { it.idStr }
                 .also { println("APPAPP: $it") }
         )
     }
@@ -31,14 +32,11 @@ class StatusesApiTest : AbstractTest {
         TwitterAPI.statuses.update("Tweet test from Twitlin.", "")
     }
 
+    @Ignore
     @Test
     fun filterTest() = runBlocking {
-        var count = 0
         TwitterAPI.statuses.filter(track = listOf("#シンデレラHNYday1")).collect {
-            println("${count++}")
-            if (10 < count) {
-                return@collect
-            }
+            return@collect
         }
     }
 }

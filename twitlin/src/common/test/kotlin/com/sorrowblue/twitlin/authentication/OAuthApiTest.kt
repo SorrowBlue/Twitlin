@@ -14,12 +14,12 @@ import kotlin.test.assertNotNull
 
 class OAuthApiTest : AbstractTest {
 
-    //    @Ignore
+    @Ignore
     @Test
     fun accessTokenTest() = runBlocking {
         val accessToken = TwitterAPI.oauthApi.accessToken(
-            "GoioYgAAAAABEkL_AAABdseGi2g",
-            "h0CwkPakH9P0TQLBQnrZJkrLiQI72p0d"
+            "nGBqmgAAAAABEkL_AAABd-0vegc",
+            "2052728"
         ).resultLog()
         assertNotNull(accessToken, "accessToken is null")
     }
@@ -38,6 +38,16 @@ class OAuthApiTest : AbstractTest {
     fun authorizeTest() = runBlocking {
         val url =
             TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").resultLog()?.let {
+                TwitterAPI.oauthApi.authorize(it.oauthToken)
+            }
+        Napier.i("authorize url: $url")
+        assertNotNull(url, "authorize url is null")
+    }
+
+    @Test
+    fun testAuthorize_oob() = runBlocking {
+        val url =
+            TwitterAPI.oauthApi.requestToken("oob").resultLog()?.let {
                 TwitterAPI.oauthApi.authorize(it.oauthToken)
             }
         Napier.i("authorize url: $url")

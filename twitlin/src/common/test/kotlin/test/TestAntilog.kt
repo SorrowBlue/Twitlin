@@ -14,5 +14,5 @@ internal class TestAntilog : Antilog() {
         tag: String?,
         throwable: Throwable?,
         message: String?
-    ) = println("${priority.name}: [TwitlinTest]: $message")
+    ) = println("${priority.name}: [$tag]: $message")
 }

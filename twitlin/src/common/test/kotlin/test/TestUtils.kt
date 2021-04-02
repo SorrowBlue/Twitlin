@@ -4,9 +4,9 @@
 
 package test
 
+import kotlinx.coroutines.CoroutineScope
+
 internal expect object TestUtils {
 
-    fun runBlocking(block: suspend () -> Unit)
-
-    fun loadFile(path: String): String
+    fun runBlocking(block: suspend CoroutineScope.() -> Unit)
 }

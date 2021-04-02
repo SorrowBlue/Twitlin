@@ -5,7 +5,7 @@
 package com.sorrowblue.twitlin.authentication
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
-import com.sorrowblue.twitlin.utils.toMap
+import com.sorrowblue.twitlin.utils.parameterToMap
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -30,6 +30,6 @@ public data class RequestToken(
 ) : JvmSerializable {
     internal companion object {
         @OptIn(ExperimentalSerializationApi::class)
-        fun fromString(str: String): RequestToken = Properties.decodeFromMap(str.toMap())
+        fun fromString(str: String): RequestToken = Properties.decodeFromMap(str.parameterToMap())
     }
 }

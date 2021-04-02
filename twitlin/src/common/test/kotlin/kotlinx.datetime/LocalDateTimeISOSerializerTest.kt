@@ -9,7 +9,7 @@ import kotlinx.serialization.json.Json
 import kotlin.test.Test
 
 @Serializable
-private class ISOTestData(
+class ISOTestData(
     @Serializable(LocalDateTimeISOSerializer::class)
     override val value: LocalDateTime
 ) : LocalDataTimeTestData

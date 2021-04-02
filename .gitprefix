@@ -1,20 +1,9 @@
-:bug: バグ修正
-:+1: 機能改善
-:sparkles: 部分的な機能追加
-:tada: 大きな機能追加
-:recycle: リファクタリング
-:shower: 不要な機能・使われなくなった機能の削除
-:green_heart: テストやCIの修正・改善
-:shirt: Lintエラーの修正やコードスタイルの修正
-:rocket: パフォーマンス改善
-:up: 依存パッケージなどのアップデート
-:lock: 新機能の公開範囲の制限
-:cop: セキュリティ関連の改善
-
-commit {
-    :bug: BugFix
-    :tada: 大きな機能追加
-    :sparkles: 部分的な機能追加
-    :recycle: リファクタリング
-    :green_heart: テストやCIの修正・改善
-}
+:tada: Begin a project.
+:sparkles: Introduce new features.
+:bug: Fix a bug.
+:recycle: Refactor code.
+:memo: Add or update documentation.
+:construction_worker: Add or update CI build system.
+:heavy_plus_sign: Add a dependency.
+:heavy_minus_sign: Remove a dependency.
+:wrench: Add or update configuration files.

@@ -36,7 +36,6 @@ class SecurityTest {
         hmacSHA1(
             hexKey = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
             hexData = "0xdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
-//            data = ByteArray(50) { hexStringToByte("dd") },
             hexDigest = "0x125d7342b9ac11cd91a39af48aa17b4f63f175d3"
         )
     }

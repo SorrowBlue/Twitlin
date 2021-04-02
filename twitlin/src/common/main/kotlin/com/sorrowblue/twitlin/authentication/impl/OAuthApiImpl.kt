@@ -54,7 +54,7 @@ internal class OAuthApiImpl(private val client: UserClient) : OAuthApi {
             Response.serializer(String.serializer()),
             "oauth_callback" to oauthCallback,
             "x_auth_access_type" to xAuthAccessType?.name?.toLowerCase()
-        ).convertData(RequestToken::fromString)
+        ).convertData { RequestToken.fromString(it) }
     }
 
     override suspend fun invalidateToken(): Response<InvalidateToken> =

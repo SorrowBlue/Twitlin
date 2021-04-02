@@ -39,6 +39,9 @@ public enum class LanguageCode(public val value: String) {
     @SerialName("en")
     ENGLISH("en"),
 
+    @SerialName("eu")
+    EUROPEAN_UNION("eu"),
+
     @SerialName("et")
     ESTONIAN("et"),
 
