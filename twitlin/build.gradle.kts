@@ -15,9 +15,9 @@ plugins {
     `maven-publish`
     kotlin("plugin.serialization") version KOTLIN_VERSION
     id("org.jetbrains.dokka") version DOKKA_VERSION
-    id("com.sorrowblue.gradle.github-packages-publish") version "1.0.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     id("com.codingfeline.buildkonfig") version "0.7.0"
+    signing
 }
 
 group = "com.sorrowblue.twitlin"
@@ -172,18 +172,39 @@ configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     }
 }
 
-githubPackages {
-    username = findProperty("github.username")?.toString() ?: System.getenv("GITHUB_USERNAME")
-    password = findProperty("github.token")?.toString() ?: System.getenv("GITHUB_TOKEN")
-    repo = "$username/Twitlin"
-}
+//afterEvaluate {
+//    configure<PublishingExtension> {
+//        publications.withType<DefaultMavenPublication>().all {
+//            if (name.contains("ios").not() && name != "kotlinMultiPlatform") {
+//                setModuleDescriptorGenerator(null)
+//            }
+//        }
+//        repositories {
+//            maven {
+//                name = "GitHubPackages"
+//                url = uri("https://maven.pkg.github.com/SorrowBlue/Twitlin")
+//                credentials {
+//                    username = gradleLocalProperties(rootDir).getOrElse("github.username") {
+//                        System.getenv("GITHUB_USERNAME")
+//                    }.toString()
+//                    password =
+//                        gradleLocalProperties(rootDir).getOrElse("github.token") {
+//                            System.getenv("GITHUB_TOKEN")
+//                        }.toString()
+//                    println("name: $username, password: $password")
+//                }
+//            }
+//        }
+//    }
+//}
 
 ext {
     val versionStr = grgit.describe {
         longDescr = false
         isTags = true
     }
-    version = versionStr + if (versionStr.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else ""
+    version =
+        versionStr + if (versionStr.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else ""
     println("version: $version")
 }
 
@@ -218,5 +239,9 @@ afterEvaluate {
                 }
             }
         }
+    }
+
+    signing {
+        sign(publishing.publications)
     }
 }
