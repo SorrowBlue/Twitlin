@@ -31,6 +31,7 @@ allprojects {
             includeGroup("org.jetbrains.trove4j")
             includeGroup("com.github.aakira")
         }
+        maven("https://dl.bintray.com/kotlin/kotlinx/")
     }
 }
 
