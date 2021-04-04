@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 /*
  * (c) 2020-2021 SorrowBlue.
  */
@@ -36,24 +34,24 @@ allprojects {
 version = grgit.describe {
     longDescr = false
     isTags = true
-}.let { it + if (it.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else "" }
-
-with(gradleLocalProperties(rootDir)) {
-    fun loadProperty(key: String) {
-        extra[key] = getProperty(key) ?: System.getenv(key)
-    }
-    loadProperty("signing.keyId")
-    loadProperty("signing.password")
-    loadProperty("signing.secretKeyRingFile")
-    loadProperty("sonatypeUsername")
-    loadProperty("sonatypePassword")
-    loadProperty("sonatypeStagingProfileId")
+}.let { it + if (it.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else "" }.also {
+    logger.lifecycle("version: $it")
 }
 
-nexusPublishing {
-    repositories {
-        sonatype {
-            stagingProfileId.set(extra["sonatypeStagingProfileId"] as? String)
+if (listOf(
+        "sonatypeUsername",
+        "sonatypePassword",
+        "sonatypeStagingProfileId",
+        "signing.keyId",
+        "signing.password",
+        "signing.secretKeyRingFile"
+    ).all(::hasProperty)
+) {
+    nexusPublishing {
+        repositories {
+            sonatype {
+                stagingProfileId.set(findProperty("sonatypeStagingProfileId") as? String)
+            }
         }
     }
 }

@@ -186,42 +186,28 @@ configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 }
 
 afterEvaluate {
-    configure<PublishingExtension> {
-        publications.withType<DefaultMavenPublication>().all {
-            artifact(javadocJar)
-            if (name.contains("ios").not() && name != "kotlinMultiPlatform") {
-                setModuleDescriptorGenerator(null)
-            }
-            defaultPom()
-        }
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/SorrowBlue/Twitlin")
-                credentials {
-                    val properties = gradleLocalProperties(rootDir)
-                    username = findProperty("githubPackagesUsername") as? String
-                        ?: System.getenv("githubPackagesUsername")
-                    password = findProperty("githubPackagesPassword") as? String
-                        ?: System.getenv("githubPackagesPassword")
+    publishing {
+        if (listOf("githubPackagesUsername", "githubPackagesPassword").all(this@afterEvaluate::hasProperty)) {
+            repositories {
+                maven {
+                    name = "GitHubPackages"
+                    url = uri("https://maven.pkg.github.com/${findProperty("githubPackagesUsername")}/Twitlin")
+                    credentials {
+                        username = findProperty("githubPackagesUsername") as? String
+                        password = findProperty("githubPackagesPassword") as? String
+                    }
                 }
             }
         }
-    }
-}
-
-afterEvaluate {
-    signing {
-        sign(publishing.publications)
-    }
-    publishing {
         publications.withType<DefaultMavenPublication>().all {
             artifact(javadocJar)
-            println("Twitlin artifactId: $artifactId")
             if (name.contains("ios").not() && name != "kotlinMultiPlatform") {
                 setModuleDescriptorGenerator(null)
             }
             defaultPom()
         }
+    }
+    signing {
+        sign(publishing.publications)
     }
 }
