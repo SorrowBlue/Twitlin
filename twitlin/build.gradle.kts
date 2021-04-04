@@ -24,7 +24,8 @@ group = "com.sorrowblue.twitlin"
 version = grgit.describe {
     longDescr = false
     isTags = true
-}.let { it + if (it.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else "" }
+}?.let { it + if (it.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else "" }
+    ?: "0.0.1-SNAPSHOT"
 
 kotlin {
     explicitApi()
@@ -187,11 +188,16 @@ configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 
 afterEvaluate {
     publishing {
-        if (listOf("githubPackagesUsername", "githubPackagesPassword").all(this@afterEvaluate::hasProperty)) {
+        if (listOf(
+                "githubPackagesUsername",
+                "githubPackagesPassword"
+            ).all(this@afterEvaluate::hasProperty)
+        ) {
             repositories {
                 maven {
                     name = "GitHubPackages"
-                    url = uri("https://maven.pkg.github.com/${findProperty("githubPackagesUsername")}/Twitlin")
+                    url =
+                        uri("https://maven.pkg.github.com/${findProperty("githubPackagesUsername")}/Twitlin")
                     credentials {
                         username = findProperty("githubPackagesUsername") as? String
                         password = findProperty("githubPackagesPassword") as? String

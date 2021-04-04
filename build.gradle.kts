@@ -34,9 +34,9 @@ allprojects {
 version = grgit.describe {
     longDescr = false
     isTags = true
-}.let { it + if (it.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else "" }.also {
+}?.let { it + if (it.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else "" }.also {
     logger.lifecycle("version: $it")
-}
+} ?: "0.0.1-SNAPSHOT"
 
 if (listOf(
         "sonatypeUsername",
