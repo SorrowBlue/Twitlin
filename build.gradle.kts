@@ -59,11 +59,14 @@ if (listOf(
         "sonatypeUsername",
         "sonatypePassword",
         "sonatypeStagingProfileId",
-        "signing.keyId",
-        "signing.password",
-        "signing.secretKeyRingFile"
+        "signing_keyId",
+        "signing_password",
+        "signing_secretKeyRingFile"
     ).all(::hasProperty)
 ) {
+    extra["signing.keyId"] = findProperty("signing_keyId")
+    extra["signing.password"] = findProperty("signing_password")
+    extra["signing.secretKeyRingFile"] = findProperty("signing_secretKeyRingFile")
     nexusPublishing {
         repositories {
             sonatype {
