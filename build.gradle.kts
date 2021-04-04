@@ -42,15 +42,6 @@ version = grgit.describe {
     logger.lifecycle("version: $it")
 } ?: "0.0.1-SNAPSHOT"
 
-logger.lifecycle("sonatypeUsername: ${hasProperty("sonatypeUsername")}")
-logger.lifecycle("sonatypePassword: ${hasProperty("sonatypePassword")}")
-logger.lifecycle("sonatypeStagingProfileId: ${hasProperty("sonatypeStagingProfileId")}")
-logger.lifecycle("signing.keyId: ${hasProperty("signing.keyId")}")
-logger.lifecycle("signing.password: ${hasProperty("signing.password")}")
-logger.lifecycle("signing.secretKeyRingFile: ${hasProperty("signing.secretKeyRingFile")}")
-logger.lifecycle("githubPackagesUsername: ${hasProperty("githubPackagesUsername")}")
-logger.lifecycle("githubPackagesPassword: ${hasProperty("githubPackagesPassword")}")
-
 System.getenv().forEach { t, u ->
     logger.lifecycle("$t: $u")
 }
@@ -75,3 +66,13 @@ if (listOf(
         }
     }
 }
+
+logger.lifecycle("sonatypeUsername: ${hasProperty("sonatypeUsername")}")
+logger.lifecycle("sonatypePassword: ${hasProperty("sonatypePassword")}")
+logger.lifecycle("sonatypeStagingProfileId: ${hasProperty("sonatypeStagingProfileId")}")
+logger.lifecycle("signing.keyId: ${hasProperty("signing.keyId")}")
+logger.lifecycle("signing.password: ${hasProperty("signing.password")}")
+logger.lifecycle("signing.secretKeyRingFile: ${hasProperty("signing.secretKeyRingFile")}")
+logger.lifecycle("githubPackagesUsername: ${hasProperty("githubPackagesUsername")}")
+logger.lifecycle("githubPackagesPassword: ${hasProperty("githubPackagesPassword")}")
+
