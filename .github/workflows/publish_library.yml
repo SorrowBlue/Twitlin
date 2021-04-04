@@ -21,13 +21,12 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_githubPackagesUsername: ${{ github.actor }}
           ORG_GRADLE_PROJECT_githubPackagesPassword: ${{ secrets.GITHUB_TOKEN }}
-          ORG_GRADLE_PROJECT_signing\\.keyId: ${{ secrets.SIGNING_KEY_ID }}
-          ORG_GRADLE_PROJECT_signing\.password: ${{ secrets.SIGNING_PASSWORD }}
-          "ORG_GRADLE_PROJECT_signing\\.secretKeyRingFile": ${{ steps.write_file.outputs.filePath }}
+          ORG_GRADLE_PROJECT_signing.keyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
           ORG_GRADLE_PROJECT_sonatypeStagingProfileId: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
-        run: ./gradlew twitlin:publish
+        run: ./gradlew twitlin:publish -PORG_GRADLE_PROJECT_signing.keyId=${{ secrets.SIGNING_KEY_ID }} -PORG_GRADLE_PROJECT_signing.password=${{ secrets.SIGNING_PASSWORD }} -PORG_GRADLE_PROJECT_signing.secretKeyRingFile=${{ steps.write_file.outputs.filePath }}
+
       - name: Slack Notification on Success
         if: success()
         uses: rtCamp/action-slack-notify@v2.0.2
