@@ -25,7 +25,10 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // TODO Remove the AndroidGradlePlugin when it no longer depends on jcenter.
+        //  Correctly trove4j and aakira.
         jcenter().mavenContent {
+            includeGroup("org.jetbrains.trove4j")
             includeGroup("com.github.aakira")
         }
     }
