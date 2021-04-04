@@ -51,6 +51,10 @@ logger.lifecycle("signing.secretKeyRingFile: ${hasProperty("signing.secretKeyRin
 logger.lifecycle("githubPackagesUsername: ${hasProperty("githubPackagesUsername")}")
 logger.lifecycle("githubPackagesPassword: ${hasProperty("githubPackagesPassword")}")
 
+System.getenv().forEach { t, u ->
+    logger.lifecycle("$t: $u")
+}
+
 if (listOf(
         "sonatypeUsername",
         "sonatypePassword",
