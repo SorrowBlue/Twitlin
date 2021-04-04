@@ -42,22 +42,19 @@ version = grgit.describe {
     logger.lifecycle("version: $it")
 } ?: "0.0.1-SNAPSHOT"
 
-System.getenv().forEach { t, u ->
-    logger.lifecycle("$t: $u")
-}
+replaceProperty("signing_keyId", "signing.keyId")
+replaceProperty("signing_password", "signing.password")
+replaceProperty("signing_secretKeyRingFile", "signing.secretKeyRingFile")
 
 if (listOf(
         "sonatypeUsername",
         "sonatypePassword",
         "sonatypeStagingProfileId",
-        "signing_keyId",
-        "signing_password",
-        "signing_secretKeyRingFile"
+        "signing.keyId",
+        "signing.password",
+        "signing.secretKeyRingFile"
     ).all(::hasProperty)
 ) {
-    extra["signing.keyId"] = findProperty("signing_keyId")
-    extra["signing.password"] = findProperty("signing_password")
-    extra["signing.secretKeyRingFile"] = findProperty("signing_secretKeyRingFile")
     nexusPublishing {
         repositories {
             sonatype {
@@ -67,12 +64,6 @@ if (listOf(
     }
 }
 
-logger.lifecycle("sonatypeUsername: ${hasProperty("sonatypeUsername")}")
-logger.lifecycle("sonatypePassword: ${hasProperty("sonatypePassword")}")
-logger.lifecycle("sonatypeStagingProfileId: ${hasProperty("sonatypeStagingProfileId")}")
-logger.lifecycle("signing.keyId: ${hasProperty("signing.keyId")}")
-logger.lifecycle("signing.password: ${hasProperty("signing.password")}")
-logger.lifecycle("signing.secretKeyRingFile: ${hasProperty("signing.secretKeyRingFile")}")
-logger.lifecycle("githubPackagesUsername: ${hasProperty("githubPackagesUsername")}")
-logger.lifecycle("githubPackagesPassword: ${hasProperty("githubPackagesPassword")}")
-
+fun replaceProperty(s: String, s1: String) {
+    findProperty(s)?.let { setProperty(s1, it) }
+}
