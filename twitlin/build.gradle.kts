@@ -213,6 +213,18 @@ afterEvaluate {
             defaultPom()
         }
     }
+}
+
+afterEvaluate {
+    publishing {
+        publications.withType<DefaultMavenPublication>().all {
+            artifact(javadocJar)
+            if (name.contains("ios").not() && name != "kotlinMultiPlatform") {
+                setModuleDescriptorGenerator(null)
+            }
+            defaultPom()
+        }
+    }
     signing {
         sign(publishing.publications)
     }
