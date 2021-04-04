@@ -1,10 +1,10 @@
-name: Lint for release
+name: Lint
 
 on: push
 
 jobs:
-
-  Test without API:
+  lint:
+    name: Test without API
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
