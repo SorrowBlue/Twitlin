@@ -45,7 +45,16 @@ version = grgit.describe {
 replaceProperty("signing_keyId", "signing.keyId")
 replaceProperty("signing_password", "signing.password")
 replaceProperty("signing_secretKeyRingFile", "signing.secretKeyRingFile")
-
+listOf(
+    "sonatypeUsername",
+    "sonatypePassword",
+    "sonatypeStagingProfileId",
+    "signing.keyId",
+    "signing.password",
+    "signing.secretKeyRingFile"
+).forEach {
+    println("$it: ${findProperty(it)}")
+}
 if (listOf(
         "sonatypeUsername",
         "sonatypePassword",
@@ -65,5 +74,9 @@ if (listOf(
 }
 
 fun replaceProperty(s: String, s1: String) {
-    findProperty(s)?.let { setProperty(s1, it) }
+    println("s $s: ${findProperty(s)}")
+    println("s1 $s1: ${findProperty(s1)}")
+    findProperty(s)?.let {
+        ext[s1] = it
+    }
 }
