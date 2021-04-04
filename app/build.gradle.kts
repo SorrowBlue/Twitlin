@@ -52,7 +52,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8", KOTLIN_VERSION))
     implementation("androidx.core:core-ktx:1.6.0-alpha01")
     implementation("androidx.activity:activity-ktx:1.3.0-alpha05")
-    implementation("io.pixel.android:pixel:0.0.3-alpha")
+    implementation("io.coil-kt:coil:1.1.1")
     implementation("androidx.appcompat:appcompat:1.3.0-rc01")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0-alpha01")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-alpha01")

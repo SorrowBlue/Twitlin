@@ -13,14 +13,18 @@ plugins {
     ComAndroidPluginGroup(this).library
     `kotlin-parcelize`
     `maven-publish`
+    signing
     kotlin("plugin.serialization") version KOTLIN_VERSION
     id("org.jetbrains.dokka") version DOKKA_VERSION
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     id("com.codingfeline.buildkonfig") version "0.7.0"
-    signing
 }
 
 group = "com.sorrowblue.twitlin"
+version = grgit.describe {
+    longDescr = false
+    isTags = true
+}.let { it + if (it.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else "" }
 
 kotlin {
     explicitApi()
@@ -29,7 +33,9 @@ kotlin {
     }
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
         }
     }
     js {
@@ -138,10 +144,10 @@ android {
 }
 
 buildkonfig {
-    packageName = "com.sorrowblue.twitlin"
+    packageName = group.toString()
     defaultConfigs {
-        gradleLocalProperties(rootDir).forEach { t, u ->
-            buildConfigField(FieldSpec.Type.STRING, t.toString().replace('.', '_'), u.toString())
+        gradleLocalProperties(rootDir).forEach { key, value ->
+            buildConfigField(FieldSpec.Type.STRING, key.toString(), value.toString())
         }
     }
 }
@@ -166,82 +172,56 @@ tasks.dokkaHtml.configure {
     }
 }
 
+val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
+    val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
+    dependsOn(dokkaHtml)
+    archiveClassifier.set("javadoc")
+    from(dokkaHtml.outputDirectory)
+}
+
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     reporters {
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
     }
 }
 
-//afterEvaluate {
-//    configure<PublishingExtension> {
-//        publications.withType<DefaultMavenPublication>().all {
-//            if (name.contains("ios").not() && name != "kotlinMultiPlatform") {
-//                setModuleDescriptorGenerator(null)
-//            }
-//        }
-//        repositories {
-//            maven {
-//                name = "GitHubPackages"
-//                url = uri("https://maven.pkg.github.com/SorrowBlue/Twitlin")
-//                credentials {
-//                    username = gradleLocalProperties(rootDir).getOrElse("github.username") {
-//                        System.getenv("GITHUB_USERNAME")
-//                    }.toString()
-//                    password =
-//                        gradleLocalProperties(rootDir).getOrElse("github.token") {
-//                            System.getenv("GITHUB_TOKEN")
-//                        }.toString()
-//                    println("name: $username, password: $password")
-//                }
-//            }
-//        }
-//    }
-//}
-
-ext {
-    val versionStr = grgit.describe {
-        longDescr = false
-        isTags = true
-    }
-    version =
-        versionStr + if (versionStr.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else ""
-    println("version: $version")
-}
-
 afterEvaluate {
-    publishing {
+    configure<PublishingExtension> {
         publications.withType<DefaultMavenPublication>().all {
-            println("Twitlin artifactId: $artifactId")
+            artifact(javadocJar)
             if (name.contains("ios").not() && name != "kotlinMultiPlatform") {
                 setModuleDescriptorGenerator(null)
             }
-            pom {
-                name.set(artifactId)
-                description.set("Twitlin for Twitter API")
-                url.set("https://github.com/SorrowBlue/Twitlin")
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("sorrowblue_sb")
-                        name.set("Sorrow Blue")
-                        email.set("sorrowblue.sb@gmail.com")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:github.com/SorrowBlue/Twitlin.git")
-                    developerConnection.set("scm:git:ssh://github.com/SorrowBlue/Twitlin.git")
-                    url.set("https://github.com/SorrowBlue/Twitlin/tree/main")
+            defaultPom()
+        }
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/SorrowBlue/Twitlin")
+                credentials {
+                    val properties = gradleLocalProperties(rootDir)
+                    username = findProperty("githubPackagesUsername") as? String
+                        ?: System.getenv("githubPackagesUsername")
+                    password = findProperty("githubPackagesPassword") as? String
+                        ?: System.getenv("githubPackagesPassword")
                 }
             }
         }
     }
+}
 
+afterEvaluate {
     signing {
         sign(publishing.publications)
+    }
+    publishing {
+        publications.withType<DefaultMavenPublication>().all {
+            artifact(javadocJar)
+            println("Twitlin artifactId: $artifactId")
+            if (name.contains("ios").not() && name != "kotlinMultiPlatform") {
+                setModuleDescriptorGenerator(null)
+            }
+            defaultPom()
+        }
     }
 }

@@ -16,5 +16,6 @@ build/
 /docs/scripts/
 /docs/styles/
 /docs/docs/
+/docs/index.html
 /docs/navigation.html
 !/docs/images/md/*.*

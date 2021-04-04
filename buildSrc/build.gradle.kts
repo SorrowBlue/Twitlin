@@ -9,11 +9,13 @@ plugins {
 repositories {
     google()
     mavenCentral()
-    jcenter()
+    // TODO Remove the AndroidGradlePlugin when it no longer depends on jcenter. Correctly trove4j.
+    jcenter().mavenContent {
+        includeGroup("org.jetbrains.trove4j")
+    }
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:4.0.2")
-    implementation(kotlin("gradle-plugin", "1.4.31"))
-    implementation("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.22.0")
+    implementation("com.android.tools.build:gradle:4.1.3")
+    implementation(kotlin("gradle-plugin", "1.4.32"))
 }

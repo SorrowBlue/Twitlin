@@ -14,13 +14,10 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal()
-        jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.0.2")
+        classpath("com.android.tools.build:gradle:4.1.3")
         classpath(kotlin("gradle-plugin", KOTLIN_VERSION))
-        classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
     }
 }
 
@@ -30,30 +27,33 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal()
-        maven(url = "https://kotlin.bintray.com/kotlinx/")
-        jcenter()
-        maven(url ="https://oss.sonatype.org/content/repositories/snapshots")
-        mavenLocal()
+        jcenter().mavenContent {
+            includeGroup("com.github.aakira")
+        }
     }
 }
 
-ext {
-    val versionStr = grgit.describe {
-        longDescr = false
-        isTags = true
+version = grgit.describe {
+    longDescr = false
+    isTags = true
+}.let { it + if (it.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else "" }
+
+with(gradleLocalProperties(rootDir)) {
+    fun loadProperty(key: String) {
+        extra[key] = getProperty(key) ?: System.getenv(key)
     }
-    version = versionStr + if (versionStr.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else ""
-    println("version: $version")
+    loadProperty("signing.keyId")
+    loadProperty("signing.password")
+    loadProperty("signing.secretKeyRingFile")
+    loadProperty("sonatypeUsername")
+    loadProperty("sonatypePassword")
+    loadProperty("sonatypeStagingProfileId")
 }
 
 nexusPublishing {
-    val p = gradleLocalProperties(rootDir)
     repositories {
         sonatype {
-            stagingProfileId.set(p.getOrElse("sonatypeStagingProfileId") { System.getenv("sonatypeStagingProfileId") }.toString())
-            username.set(p.getOrElse("ossrhUsername") { System.getenv("OSSRH_USERNAME") }.toString())
-            password.set(p.getOrElse("ossrhPassword") { System.getenv("OSSRH_PASSWORD") }.toString())
+            stagingProfileId.set(extra["sonatypeStagingProfileId"] as? String)
         }
     }
 }
