@@ -155,7 +155,7 @@ buildkonfig {
 
 tasks.dokkaHtml.configure {
     moduleName.set("docs")
-    outputDirectory.set(rootProject.projectDir.resolve("docs/"))
+    outputDirectory.set(rootProject.projectDir.resolve("docs/dokka/"))
     dokkaSourceSets {
         named("commonMain") {
             displayName.set("common")
