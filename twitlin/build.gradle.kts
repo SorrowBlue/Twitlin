@@ -209,9 +209,10 @@ afterEvaluate {
         }
     }
     signing {
-        ext["signing.keyId"] = findProperty("signing_keyId")
-        ext["signing.password"] = findProperty("signing_password")
-        ext["signing.secretKeyRingFile"] = findProperty("signing_secretKeyRingFile")
+        val signingKeyId: String? by project
+        val signingKey: String? by project
+        val signingPassword: String? by project
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
         sign(publishing.publications)
     }
 }
