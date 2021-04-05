@@ -29,7 +29,11 @@ fun DefaultMavenPublication.defaultPom() {
 }
 
 fun Project.replaceProperty(s: String, s1: String) {
-    findProperty(s)?.let { extra[s1] = it }
+    findProperty(s)?.let {
+        subprojects {
+            extra[s1] = it
+        }
+    }
 }
 
 fun String.toVersion() = this + if (matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else ""
