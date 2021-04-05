@@ -40,10 +40,6 @@ version = grgit.describe {
     isTags = true
 }?.toVersion().also { logger.lifecycle("version: $it") } ?: "0.0.1-SNAPSHOT"
 
-replaceProperty("signing_keyId", "signing.keyId")
-replaceProperty("signing_password", "signing.password")
-replaceProperty("signing_secretKeyRingFile", "signing.secretKeyRingFile")
-
 nexusPublishing {
     repositories {
         sonatype {
