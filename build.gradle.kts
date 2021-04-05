@@ -14,7 +14,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.1.3")
+        classpath("com.android.tools.build:gradle:4.0.2")
         classpath(kotlin("gradle-plugin", KOTLIN_VERSION))
     }
 }
@@ -38,45 +38,16 @@ allprojects {
 version = grgit.describe {
     longDescr = false
     isTags = true
-}?.let { it + if (it.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else "" }.also {
-    logger.lifecycle("version: $it")
-} ?: "0.0.1-SNAPSHOT"
+}?.toVersion().also { logger.lifecycle("version: $it") } ?: "0.0.1-SNAPSHOT"
 
 replaceProperty("signing_keyId", "signing.keyId")
 replaceProperty("signing_password", "signing.password")
 replaceProperty("signing_secretKeyRingFile", "signing.secretKeyRingFile")
-listOf(
-    "sonatypeUsername",
-    "sonatypePassword",
-    "sonatypeStagingProfileId",
-    "signing.keyId",
-    "signing.password",
-    "signing.secretKeyRingFile"
-).forEach {
-    println("$it: ${findProperty(it)}")
-}
-if (listOf(
-        "sonatypeUsername",
-        "sonatypePassword",
-        "sonatypeStagingProfileId",
-        "signing.keyId",
-        "signing.password",
-        "signing.secretKeyRingFile"
-    ).all(::hasProperty)
-) {
-    nexusPublishing {
-        repositories {
-            sonatype {
-                stagingProfileId.set(findProperty("sonatypeStagingProfileId") as? String)
-            }
-        }
-    }
-}
 
-fun replaceProperty(s: String, s1: String) {
-    println("s $s: ${findProperty(s)}")
-    println("s1 $s1: ${findProperty(s1)}")
-    findProperty(s)?.let {
-        ext[s1] = it
+nexusPublishing {
+    repositories {
+        sonatype {
+            stagingProfileId.set(findProperty("sonatypeStagingProfileId") as? String)
+        }
     }
 }

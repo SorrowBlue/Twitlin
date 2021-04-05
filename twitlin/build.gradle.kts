@@ -24,8 +24,7 @@ group = "com.sorrowblue.twitlin"
 version = grgit.describe {
     longDescr = false
     isTags = true
-}?.let { it + if (it.matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else "" }
-    ?: "0.0.1-SNAPSHOT"
+}?.toVersion() ?: "0.0.1-SNAPSHOT"
 
 kotlin {
     explicitApi()
@@ -147,9 +146,10 @@ android {
 buildkonfig {
     packageName = group.toString()
     defaultConfigs {
-        gradleLocalProperties(rootDir).forEach { key, value ->
-            buildConfigField(FieldSpec.Type.STRING, key.toString(), value.toString())
-        }
+        gradleLocalProperties(rootDir).toList()
+            .takeWhile { it.first.toString().startsWith("QIITA_API_") }.forEach {
+                buildConfigField(FieldSpec.Type.STRING, it.first.toString(), it.second.toString())
+            }
     }
 }
 
@@ -188,36 +188,19 @@ configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 
 afterEvaluate {
     publishing {
-        if (listOf(
-                "githubPackagesUsername",
-                "githubPackagesPassword"
-            ).all(this@afterEvaluate::hasProperty)
-        ) {
-            repositories {
-                maven {
-                    name = "GitHubPackages"
-                    url =
-                        uri("https://maven.pkg.github.com/${findProperty("githubPackagesUsername")}/Twitlin")
-                    credentials {
-                        username = findProperty("githubPackagesUsername") as? String
-                        password = findProperty("githubPackagesPassword") as? String
-                    }
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url =
+                    uri("https://maven.pkg.github.com/${findProperty("githubPackagesUsername")}/Twitlin")
+                credentials {
+                    username = findProperty("githubPackagesUsername") as? String
+                    password = findProperty("githubPackagesPassword") as? String
                 }
             }
         }
         publications.withType<DefaultMavenPublication>().all {
-            artifact(javadocJar)
-            if (name.contains("ios").not() && name != "kotlinMultiPlatform") {
-                setModuleDescriptorGenerator(null)
-            }
-            defaultPom()
-        }
-    }
-}
-
-afterEvaluate {
-    publishing {
-        publications.withType<DefaultMavenPublication>().all {
+            logger.lifecycle("artifactId: ${this.artifactId}")
             artifact(javadocJar)
             if (name.contains("ios").not() && name != "kotlinMultiPlatform") {
                 setModuleDescriptorGenerator(null)

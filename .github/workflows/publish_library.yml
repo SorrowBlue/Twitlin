@@ -1,6 +1,9 @@
 name: Publish library to GitHub Packages
 
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -28,7 +31,7 @@ jobs:
           ORG_GRADLE_PROJECT_signing_keyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signing_password: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_signing.secretKeyRingFile: ${{ steps.write_file.outputs.filePath }}
-        run: ./gradlew twitlin:publish
+        run: ./gradlew :twitlin:publish
 
       - name: Slack Notification on Success
         if: success()
@@ -37,6 +40,7 @@ jobs:
           SLACK_CHANNEL: twitlin-ci
           SLACK_TITLE: Success publish release
           SLACK_COLOR: good
+
       - name: Slack Notification on Failure
         uses: rtCamp/action-slack-notify@v2.0.2
         if: failure()

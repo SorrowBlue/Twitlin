@@ -16,10 +16,10 @@ interface AbstractTest {
 
     @BeforeTest
     fun initializeTwitlin() {
-        Twitlin.initialize(BuildKonfig.API_KEY, BuildKonfig.API_SECRET) {
+        Twitlin.initialize(BuildKonfig.QIITA_API_KEY, BuildKonfig.QIITA_API_SECRET) {
             accessToken =
-                AccessToken(BuildKonfig.ACCESS_TOKEN, BuildKonfig.ACCESS_TOKEN_SECRET, "", "")
-            bearerToken = BearerToken("Bearer", BuildKonfig.BEARER_TOKEN)
+                AccessToken(BuildKonfig.QIITA_API_ACCESS_TOKEN, BuildKonfig.QIITA_API_ACCESS_TOKEN_SECRET, "", "")
+            bearerToken = BearerToken("Bearer", BuildKonfig.QIITA_API_BEARER_TOKEN)
             timeZone = TimeZone.UTC
             antilog = TestAntilog()
         }

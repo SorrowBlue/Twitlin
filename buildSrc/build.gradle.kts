@@ -16,6 +16,6 @@ repositories {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:4.1.3")
+    implementation("com.android.tools.build:gradle:4.0.2")
     implementation(kotlin("gradle-plugin", "1.4.32"))
 }

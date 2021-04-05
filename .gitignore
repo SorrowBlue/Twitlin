@@ -18,9 +18,4 @@ local.properties
 .gradle/
 build/
 
-docs/*
-!docs/_config.yml
-!docs/CNAME
-!docs/README_ja.md
-!docs/USAGE_ja.md
-!docs/public_images
+docs/dokka

@@ -1,4 +1,6 @@
+import org.gradle.api.Project
 import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
+import org.gradle.kotlin.dsl.extra
 
 fun DefaultMavenPublication.defaultPom() {
     pom {
@@ -25,3 +27,9 @@ fun DefaultMavenPublication.defaultPom() {
         }
     }
 }
+
+fun Project.replaceProperty(s: String, s1: String) {
+    findProperty(s)?.let { extra[s1] = it }
+}
+
+fun String.toVersion() = this + if (matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else ""
