@@ -209,9 +209,9 @@ afterEvaluate {
         }
     }
     signing {
-        ext["signing.keyId"] = findProject("signing_keyId")
-        ext["signing.password"] = findProject("signing_password")
-        ext["signing.secretKeyRingFile"] = findProject("signing_secretKeyRingFile")
+        ext["signing.keyId"] = findProperty("signing_keyId")
+        ext["signing.password"] = findProperty("signing_password")
+        ext["signing.secretKeyRingFile"] = findProperty("signing_secretKeyRingFile")
         sign(publishing.publications)
     }
 }
