@@ -9,11 +9,11 @@ import com.sorrowblue.twitlin.Twitlin
 import com.sorrowblue.twitlin.authentication.AccessToken
 import com.sorrowblue.twitlin.authentication.BearerToken
 import com.sorrowblue.twitlin.logLevel
-import kotlin.test.BeforeTest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.datetime.TimeZone
 import mu.KLogger
 import mu.KotlinLogging
+import kotlin.test.BeforeTest
 
 internal val logger: KLogger
     get() = logLevel(KotlinLogging.logger("TEST"))

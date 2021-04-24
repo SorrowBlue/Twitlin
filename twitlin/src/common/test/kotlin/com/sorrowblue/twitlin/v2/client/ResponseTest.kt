@@ -4,8 +4,6 @@
 
 package com.sorrowblue.twitlin.v2.client
 
-import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -24,6 +22,8 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 import test.logger
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class ResponseTest {
 

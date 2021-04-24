@@ -6,8 +6,8 @@ package com.sorrowblue.twitlin.v2
 
 import com.sorrowblue.twitlin.v2.client.Response
 import com.sorrowblue.twitlin.v2.tweets.PagingTweet
-import kotlin.test.Test
 import kotlinx.serialization.json.Json
+import kotlin.test.Test
 
 class ResponseSelialiseTest {
 
