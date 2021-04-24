@@ -41,11 +41,10 @@ kotlin {
     js {
         nodejs()
         browser {
-            webpackTask {
-                output.libraryTarget = "umd"
-            }
             testTask {
-                useMocha()
+                useKarma {
+                    useChromeHeadless()
+                }
             }
         }
     }
@@ -183,6 +182,12 @@ configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     reporters {
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
     }
+}
+
+tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.GenerateReportsTask> {
+    reportsOutputDirectory.set(
+        project.layout.buildDirectory.dir("$rootDir/docs/reports")
+    )
 }
 
 afterEvaluate {

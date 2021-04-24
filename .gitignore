@@ -19,3 +19,4 @@ local.properties
 build/
 
 docs/dokka
+docs/reports
