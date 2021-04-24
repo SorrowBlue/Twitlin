@@ -21,8 +21,8 @@ import kotlinx.serialization.Serializable
  */
 @AndroidParcelize
 @Serializable
-public data class DeletedSearchStreamRules(val meta: Meta, val errors: List<Error>? = null) : AndroidParcelable,
-    JvmSerializable {
+public data class DeletedSearchStreamRules(val meta: Meta, val errors: List<Error>? = null) :
+    AndroidParcelable, JvmSerializable {
 
     /**
      * TODO
@@ -44,7 +44,7 @@ public data class DeletedSearchStreamRules(val meta: Meta, val errors: List<Erro
          */
         @AndroidParcelize
         @Serializable
-        public data class Summary(val deleted: Int, @SerialName("not_deleted") val notDeleted: Int) : AndroidParcelable,
-            JvmSerializable
+        public data class Summary(val deleted: Int, @SerialName("not_deleted") val notDeleted: Int) :
+            AndroidParcelable, JvmSerializable
     }
 }

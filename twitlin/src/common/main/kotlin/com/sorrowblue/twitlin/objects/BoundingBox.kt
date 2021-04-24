@@ -22,5 +22,5 @@ import kotlinx.serialization.Serializable
  */
 @AndroidParcelize
 @Serializable
-public data class BoundingBox(val coordinates: List<List<List<Double>>>, val type: String) : AndroidParcelable,
-    JvmSerializable
+public data class BoundingBox(val coordinates: List<List<List<Double>>>, val type: String) :
+    AndroidParcelable, JvmSerializable

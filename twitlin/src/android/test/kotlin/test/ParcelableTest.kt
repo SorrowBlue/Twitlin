@@ -12,7 +12,6 @@ import kotlinx.datetime.encodeToISOString
 import kotlinx.datetime.toLocalDateTime
 import org.junit.Test
 
-
 internal class ParcelableTest {
 
     @Test

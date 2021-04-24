@@ -19,8 +19,8 @@ import kotlinx.serialization.Serializable
  */
 @AndroidParcelize
 @Serializable
-public data class SearchStreamRules(val data: List<SearchStreamRule> = emptyList(), val meta: Meta) : AndroidParcelable,
-    JvmSerializable {
+public data class SearchStreamRules(val data: List<SearchStreamRule> = emptyList(), val meta: Meta) :
+    AndroidParcelable, JvmSerializable {
 
     /**
      * TODO

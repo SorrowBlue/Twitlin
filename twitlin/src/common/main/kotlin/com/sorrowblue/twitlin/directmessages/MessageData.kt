@@ -27,8 +27,8 @@ public data class MessageData(
 
     @AndroidParcelize
     @Serializable
-    public data class QuickReplyResponse(val type: QuickReply.Type, val metadata: String) : AndroidParcelable,
-        JvmSerializable
+    public data class QuickReplyResponse(val type: QuickReply.Type, val metadata: String) :
+        AndroidParcelable, JvmSerializable
 }
 
 @AndroidParcelize

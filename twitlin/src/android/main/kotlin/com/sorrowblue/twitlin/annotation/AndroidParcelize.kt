@@ -6,9 +6,7 @@ package com.sorrowblue.twitlin.annotation
 
 import android.os.Parcelable
 import kotlinx.parcelize.IgnoredOnParcel
-import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.WriteWith
 
 public actual typealias AndroidParcelize = Parcelize
 

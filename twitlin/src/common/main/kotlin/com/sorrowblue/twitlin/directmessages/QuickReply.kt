@@ -46,6 +46,6 @@ public data class QuickReply(
      */
     @AndroidParcelize
     @Serializable
-    public data class Option(val label: String, val description: String, val metadata: String) : AndroidParcelable,
-        JvmSerializable
+    public data class Option(val label: String, val description: String, val metadata: String) :
+        AndroidParcelable, JvmSerializable
 }

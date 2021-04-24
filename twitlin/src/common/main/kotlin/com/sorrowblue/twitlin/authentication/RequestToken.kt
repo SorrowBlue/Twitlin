@@ -30,7 +30,9 @@ public data class RequestToken(
     val oauthTokenSecret: String,
     @SerialName("oauth_callback_confirmed")
     val oauthCallbackConfirmed: Boolean
-) : AndroidParcelable, JvmSerializable {
+) : AndroidParcelable,
+    JvmSerializable {
+
     internal companion object {
         @OptIn(ExperimentalSerializationApi::class)
         fun fromString(str: String): RequestToken = Properties.decodeFromMap(str.parameterToMap())

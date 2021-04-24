@@ -34,7 +34,6 @@ public data class TrendPlaces(
     val asOf: LocalDateTime get() = _asOf.isoToLocalDateTime()
     val createdAt: LocalDateTime get() = _createdAt.isoToLocalDateTime()
 
-
     /**
      * TODO
      *

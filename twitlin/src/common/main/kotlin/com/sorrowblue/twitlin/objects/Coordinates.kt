@@ -19,5 +19,5 @@ import kotlinx.serialization.Serializable
  */
 @AndroidParcelize
 @Serializable
-public data class Coordinates(val coordinates: List<Double>, val type: CoordinatesType) : AndroidParcelable,
-    JvmSerializable
+public data class Coordinates(val coordinates: List<Double>, val type: CoordinatesType) :
+    AndroidParcelable, JvmSerializable

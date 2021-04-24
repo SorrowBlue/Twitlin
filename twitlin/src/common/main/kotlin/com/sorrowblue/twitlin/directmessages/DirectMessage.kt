@@ -11,4 +11,4 @@ import kotlinx.serialization.Serializable
 
 @AndroidParcelize
 @Serializable
-public data class DirectMessage(val event: DirectMessageEvent): AndroidParcelable, JvmSerializable
+public data class DirectMessage(val event: DirectMessageEvent) : AndroidParcelable, JvmSerializable
