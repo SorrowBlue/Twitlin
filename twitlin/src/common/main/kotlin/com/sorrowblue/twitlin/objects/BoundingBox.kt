@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.objects
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.Serializable
 
@@ -18,6 +20,7 @@ import kotlinx.serialization.Serializable
  * @property type The type of data encoded in the coordinates property.
  * This will be [CoordinatesType.POLYGON] for bounding boxes and [CoordinatesType.POINT] for Tweets with exact coordinates.
  */
+@AndroidParcelize
 @Serializable
-public data class BoundingBox(val coordinates: List<List<List<Double>>>, val type: String) :
+public data class BoundingBox(val coordinates: List<List<List<Double>>>, val type: String) : AndroidParcelable,
     JvmSerializable

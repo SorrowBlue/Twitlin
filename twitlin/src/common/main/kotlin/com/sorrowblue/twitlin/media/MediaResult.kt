@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.media
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -20,6 +22,7 @@ import kotlinx.serialization.Serializable
  * @property image
  * @property processingInfo
  */
+@AndroidParcelize
 @Serializable
 public data class MediaResult(
     @SerialName("media_id") val mediaId: Long,
@@ -30,17 +33,18 @@ public data class MediaResult(
     val video: Video? = null,
     val image: Image? = null,
     val processingInfo: Info? = null
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
 
     /**
      * TODO
      *
      * @property videoType
      */
+    @AndroidParcelize
     @Serializable
     public data class Video(
         @SerialName("video_type") val videoType: String
-    ) : JvmSerializable
+    ) : AndroidParcelable, JvmSerializable
 
     /**
      * TODO
@@ -49,12 +53,13 @@ public data class MediaResult(
      * @property w
      * @property h
      */
+    @AndroidParcelize
     @Serializable
     public data class Image(
         @SerialName("image_type") val imageType: String,
         val w: Int,
         val h: Int
-    ) : JvmSerializable
+    ) : AndroidParcelable, JvmSerializable
 
     /**
      * TODO
@@ -64,13 +69,14 @@ public data class MediaResult(
      * @property checkAfterSecs
      * @property error
      */
+    @AndroidParcelize
     @Serializable
     public data class Info(
         val state: State,
         @SerialName("progress_percent") val progressPercent: Int? = null,
         @SerialName("check_after_secs") val checkAfterSecs: Int? = null,
         val error: Error? = null
-    ) {
+    ) : AndroidParcelable, JvmSerializable {
 
         /**
          * TODO
@@ -99,11 +105,12 @@ public data class MediaResult(
          * @property name
          * @property message
          */
+        @AndroidParcelize
         @Serializable
         public data class Error(
             val code: Int,
             val name: String,
             val message: String
-        )
+        ) : AndroidParcelable, JvmSerializable
     }
 }

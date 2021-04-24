@@ -4,20 +4,23 @@
 
 package com.sorrowblue.twitlin.tweets
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.objects.Coordinates
 import com.sorrowblue.twitlin.objects.Entities
 import com.sorrowblue.twitlin.objects.Place
 import com.sorrowblue.twitlin.utilities.LanguageCode
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalDateTimeRFC822Serializer
+import kotlinx.datetime.rfc822ToLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@AndroidParcelize
 @Serializable
 public data class CollectionTweet(
-    @Serializable(LocalDateTimeRFC822Serializer::class)
     @SerialName("created_at")
-    val createdAt: LocalDateTime,
+    val _createdAt: String,
     val id: Long,
     @SerialName("id_str")
     val idStr: String,
@@ -53,12 +56,15 @@ public data class CollectionTweet(
     @SerialName("possibly_sensitive")
     val possiblySensitive: Boolean,
     val lang: LanguageCode
-) {
+) : AndroidParcelable, JvmSerializable {
 
+    val createdAt: LocalDateTime get() = _createdAt.rfc822ToLocalDateTime()
+
+    @AndroidParcelize
     @Serializable
     public data class User(
         val id: Long,
         @SerialName("id_str")
         val idStr: String
-    )
+    ) : AndroidParcelable, JvmSerializable
 }

@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.client
 
-import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.authentication.AccessToken
 import com.sorrowblue.twitlin.core.IResponse
 import com.sorrowblue.twitlin.core.UrlParams
@@ -21,9 +20,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.serialization.KSerializer
+import mu.KotlinLogging
 
 internal class UserClient(apiKey: String, secretKey: String, var accessToken: AccessToken? = null) :
     AbstractClient(apiKey, secretKey) {
+
+    override val logger = KotlinLogging.logger("UserClient")
+
     override suspend fun <T : Any, R : IResponse<T>> put(
         url: String,
         serializer: KSerializer<R>,
@@ -75,10 +78,7 @@ internal class UserClient(apiKey: String, secretKey: String, var accessToken: Ac
         }.execute { response ->
             do {
                 val body = response.readText()
-                Napier.i(
-                    "Response Twitter API-> GET:$url, body=$body",
-                    tag = "Twitlin"
-                )
+                logger.info { "Response Twitter API-> GET:$url, body=$body" }
                 json.decodeFromString(serializer, body).let(channel::offer)
             } while (isClosedForSend.not())
         }

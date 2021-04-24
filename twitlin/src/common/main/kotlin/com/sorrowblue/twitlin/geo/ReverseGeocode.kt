@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.geo
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.client.Error
 import com.sorrowblue.twitlin.objects.Coordinates
@@ -18,12 +20,13 @@ import kotlinx.serialization.Serializable
  * @property result
  * @property errors
  */
+@AndroidParcelize
 @Serializable
 public data class ReverseGeocode(
     val query: Query,
     val result: Result? = null,
     val errors: List<Error>? = null
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
 
     /**
      * TODO
@@ -32,12 +35,13 @@ public data class ReverseGeocode(
      * @property type
      * @property params
      */
+    @AndroidParcelize
     @Serializable
     public data class Query(
         val url: String,
         val type: String,
         val params: Params
-    ) : JvmSerializable {
+    ) : AndroidParcelable, JvmSerializable {
 
         /**
          * TODO
@@ -46,12 +50,13 @@ public data class ReverseGeocode(
          * @property coordinates
          * @property granularity
          */
+        @AndroidParcelize
         @Serializable
         public data class Params(
             val accuracy: Int,
             val coordinates: Coordinates,
             val granularity: PlaceType
-        ) : JvmSerializable
+        ) : AndroidParcelable, JvmSerializable
     }
 
     /**
@@ -59,6 +64,7 @@ public data class ReverseGeocode(
      *
      * @property places
      */
+    @AndroidParcelize
     @Serializable
-    public data class Result(val places: List<Place>) : JvmSerializable
+    public data class Result(val places: List<Place>) : AndroidParcelable, JvmSerializable
 }

@@ -6,11 +6,10 @@ package com.sorrowblue.twitlin.v2.objects
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
 import com.sorrowblue.twitlin.annotation.AndroidParcelize
-import com.sorrowblue.twitlin.annotation.AndroidWriteWith
 import com.sorrowblue.twitlin.annotation.JvmSerializable
+import com.sorrowblue.twitlin.annotation.KotlinIgnoredOnParcel
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalDateTimeISOSerializer
-import kotlinx.datetime.LocalDateTimeParceler
+import kotlinx.datetime.isoToLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,8 +20,7 @@ public data class User(
     val name: String,
     val username: String,
     @SerialName("created_at")
-    @Serializable(LocalDateTimeISOSerializer::class)
-    val createdAt: @AndroidWriteWith<LocalDateTimeParceler>() LocalDateTime? = null,
+    val _createdAt: String? = null,
     val description: String? = null,
     val entities: Entities? = null,
     val location: String? = null,
@@ -37,6 +35,10 @@ public data class User(
     val verified: Boolean? = null,
     val withheld: Withheld? = null
 ) : AndroidParcelable, JvmSerializable {
+
+    @KotlinIgnoredOnParcel
+    val createdAt: LocalDateTime?
+        get() = _createdAt?.isoToLocalDateTime()
 
     @AndroidParcelize
     @Serializable

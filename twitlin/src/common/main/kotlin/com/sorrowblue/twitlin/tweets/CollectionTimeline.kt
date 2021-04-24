@@ -4,10 +4,13 @@
 
 package com.sorrowblue.twitlin.tweets
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@AndroidParcelize
 @Serializable
 public data class CollectionTimeline(
     val name: String,
@@ -26,4 +29,4 @@ public data class CollectionTimeline(
     val collectionType: String,
     @SerialName("custom_timeline_type")
     val customTimelineType: String
-) : JvmSerializable
+) : AndroidParcelable, JvmSerializable

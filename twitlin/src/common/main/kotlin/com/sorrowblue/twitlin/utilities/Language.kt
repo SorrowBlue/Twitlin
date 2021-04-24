@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.utilities
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -17,6 +19,7 @@ import kotlinx.serialization.Serializable
  * @property status
  * @property debug
  */
+@AndroidParcelize
 @Serializable
 public data class Language(
     val code: String,
@@ -24,15 +27,13 @@ public data class Language(
     @SerialName("local_name") val localName: String,
     val status: String,
     val debug: Boolean
-) : JvmSerializable
+) : AndroidParcelable, JvmSerializable
 
 /**
- * TODO
+ * Language code
  *
- * @constructor
- * TODO
- *
- * @param value
+ * @property value
+ * @constructor Create empty Language code
  */
 @Serializable
 public enum class LanguageCode(public val value: String) {

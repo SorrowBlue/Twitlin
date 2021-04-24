@@ -6,15 +6,13 @@ package com.sorrowblue.twitlin.v2.objects
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
 import com.sorrowblue.twitlin.annotation.AndroidParcelize
-import com.sorrowblue.twitlin.annotation.AndroidWriteWith
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.utilities.LanguageCode
 import com.sorrowblue.twitlin.v2.field.Expansion
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalDateTimeISOSerializer
-import kotlinx.datetime.LocalDateTimeParceler
+import kotlinx.datetime.isoToLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -75,8 +73,7 @@ public data class Tweet(
     @SerialName("context_annotations") val contextAnnotations: List<ContextAnnotation>? = null,
     @SerialName("conversation_id") val conversationId: String? = null,
     @SerialName("created_at")
-    @Serializable(LocalDateTimeISOSerializer::class)
-    val createdAt: @AndroidWriteWith<LocalDateTimeParceler>() LocalDateTime? = null,
+    val _createdAt: String? = null,
     val entities: Entities? = null,
     val geo: Geo? = null,
     @SerialName("in_reply_to_user_id") val inReplyToUserId: String? = null,
@@ -96,6 +93,8 @@ public data class Tweet(
     val source: String? = null,
     val withheld: Withheld? = null,
 ) : AndroidParcelable, JvmSerializable {
+
+    val createdAt: LocalDateTime? get() = _createdAt?.isoToLocalDateTime()
 
     @AndroidParcelize
     @Serializable

@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.v2.client
 
-import com.github.aakira.napier.Napier
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -39,7 +38,6 @@ internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializ
 //        JsonDecoder -> JsonElement
         val element = runCatching(decoder::decodeJsonElement).getOrElse { JsonObject(emptyMap()) }
 //        JsonElement -> value
-        Napier.d("JsonElement: $element", tag = "ResponseSerializer")
         if (element !is JsonObject) {
             return Response.Error(listOf())
         }

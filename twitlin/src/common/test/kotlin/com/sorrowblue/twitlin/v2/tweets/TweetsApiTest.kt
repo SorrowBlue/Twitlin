@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.v2.tweets
 
-import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.TwitterV2API
 import com.sorrowblue.twitlin.v2.field.Expansion
@@ -111,12 +110,10 @@ class TweetsApiTest : AbstractTest {
                         if (100 < c) {
                             cancel("Manual cancel")
                         }
-                        Napier.i("testSampleStream: count=$c")
                         c++
                     }
             }
         }.onFailure {
-            Napier.i("testSampleStream was canceled.")
             assertTrue(it is CancellationException)
         }
     }

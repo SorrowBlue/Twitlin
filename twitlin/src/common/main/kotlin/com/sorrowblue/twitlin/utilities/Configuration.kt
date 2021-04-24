@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.utilities
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.objects.Entities
 import kotlinx.serialization.SerialName
@@ -21,6 +23,7 @@ import kotlinx.serialization.Serializable
  * @property shortUrlLengthHttps
  * @property nonUsernamePaths
  */
+@AndroidParcelize
 @Serializable
 public data class Configuration(
     @SerialName("characters_reserved_per_media")
@@ -39,4 +42,4 @@ public data class Configuration(
     val shortUrlLengthHttps: Int,
     @SerialName("non_username_paths")
     val nonUsernamePaths: List<String>
-) : JvmSerializable
+) : AndroidParcelable, JvmSerializable

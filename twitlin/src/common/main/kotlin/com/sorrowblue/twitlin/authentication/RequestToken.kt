@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.authentication
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.utils.parameterToMap
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -19,6 +21,7 @@ import kotlinx.serialization.properties.decodeFromMap
  * @property oauthTokenSecret TODO
  * @property oauthCallbackConfirmed TODO
  */
+@AndroidParcelize
 @Serializable
 public data class RequestToken(
     @SerialName("oauth_token")
@@ -27,7 +30,7 @@ public data class RequestToken(
     val oauthTokenSecret: String,
     @SerialName("oauth_callback_confirmed")
     val oauthCallbackConfirmed: Boolean
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
     internal companion object {
         @OptIn(ExperimentalSerializationApi::class)
         fun fromString(str: String): RequestToken = Properties.decodeFromMap(str.parameterToMap())

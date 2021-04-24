@@ -4,10 +4,13 @@
 
 package com.sorrowblue.twitlin.objects
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@AndroidParcelize
 @Serializable
 public data class PagingTwitterUser(
     val users: List<User>,
@@ -21,4 +24,4 @@ public data class PagingTwitterUser(
     val previousCursorStr: String,
     @SerialName("total_count")
     val totalCount: Int? = null
-) : JvmSerializable
+) : AndroidParcelable, JvmSerializable

@@ -14,7 +14,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.0.2")
+        classpath("com.android.tools.build:gradle:4.1.3")
         classpath(kotlin("gradle-plugin", KOTLIN_VERSION))
     }
 }
@@ -25,13 +25,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        // TODO Remove the AndroidGradlePlugin when it no longer depends on jcenter.
-        //  Correctly trove4j and aakira.
-        jcenter().mavenContent {
-            includeGroup("org.jetbrains.trove4j")
-            includeGroup("com.github.aakira")
-        }
-        maven("https://dl.bintray.com/kotlin/kotlinx/")
     }
 }
 

@@ -25,6 +25,15 @@ internal object LocalDateTimeIntEpochSerializer : KSerializer<LocalDateTime> {
     override fun serialize(encoder: Encoder, value: LocalDateTime) {
         val s = value.toInstant(Twitlin.defaultTimeZone).toEpochMilliseconds().toString()
             .substring(0..9)
-        encoder.encodeString(s)
+        encoder.encodeInt(s.toInt())
     }
+}
+
+public fun Int.epochToLocalDateTime(): LocalDateTime = Instant.fromEpochMilliseconds(toString().padEnd(13, '0').toLong())
+    .toLocalDateTime(Twitlin.defaultTimeZone)
+
+public fun LocalDateTime.toIntEpoch(): Int {
+    val s = toInstant(Twitlin.defaultTimeZone).toEpochMilliseconds().toString()
+        .substring(0..9)
+    return s.toInt()
 }

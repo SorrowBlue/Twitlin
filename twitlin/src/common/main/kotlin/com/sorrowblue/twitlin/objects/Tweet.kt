@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.objects
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.objects.Tweet.ExtendedEntities
 import com.sorrowblue.twitlin.objects.Tweet.FilterLevel
@@ -11,7 +13,7 @@ import com.sorrowblue.twitlin.tweets.FavoritesApi
 import com.sorrowblue.twitlin.tweets.StatusesApi
 import com.sorrowblue.twitlin.utilities.LanguageCode
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalDateTimeRFC822Serializer
+import kotlinx.datetime.rfc822ToLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -119,11 +121,11 @@ import kotlinx.serialization.Serializable
  * @property withheldScope When present, indicates whether the content being withheld is the
  * “status” or a “user”.
  */
+@AndroidParcelize
 @Serializable
 public data class Tweet(
-    @Serializable(LocalDateTimeRFC822Serializer::class)
     @SerialName("created_at")
-    val createdAt: LocalDateTime,
+    val _createdAt: String,
     val id: Long,
     @SerialName("id_str")
     val idStr: String,
@@ -182,15 +184,18 @@ public data class Tweet(
     val withheldInCountries: List<String>? = null,
     @SerialName("withheld_scope")
     val withheldScope: WithheldScope? = null
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
+
+    val createdAt: LocalDateTime get() = _createdAt.rfc822ToLocalDateTime()
 
     /**
      * TODO
      *
      * @property media
      */
+    @AndroidParcelize
     @Serializable
-    public data class ExtendedEntities(val media: List<Entities.Media>) : JvmSerializable
+    public data class ExtendedEntities(val media: List<Entities.Media>) : AndroidParcelable, JvmSerializable
 
     /**
      * Details the Tweet ID of the user’s own retweet (if existent) of this Tweet.
@@ -198,12 +203,13 @@ public data class Tweet(
      * @property id TODO
      * @property idStr TODO
      */
+    @AndroidParcelize
     @Serializable
     public data class CurrentUserRetweet(
         val id: Long,
         @SerialName("id_str")
         val idStr: String
-    ) : JvmSerializable
+    ) : AndroidParcelable, JvmSerializable
 
     /**
      * Indicates the maximum value of the [filter_level](https://developer.twitter.com/streaming/overview/request-parameters#filter_level)
@@ -242,19 +248,21 @@ public data class Tweet(
      * @property id TODO
      * @property idStr TODO
      */
+    @AndroidParcelize
     @Serializable
     public data class Rule(
         val tag: String,
         val id: Long,
         @SerialName("id_str")
         val idStr: String
-    ) : JvmSerializable
+    ) : AndroidParcelable, JvmSerializable
 
     /**
      * Currently used by Twitter’s Promoted Products.
      *
      * @property followers TODO
      */
+    @AndroidParcelize
     @Serializable
-    public data class Scopes(val followers: Boolean) : JvmSerializable
+    public data class Scopes(val followers: Boolean) : AndroidParcelable, JvmSerializable
 }

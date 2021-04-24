@@ -8,11 +8,20 @@ import com.sorrowblue.twitlin.BuildKonfig
 import com.sorrowblue.twitlin.Twitlin
 import com.sorrowblue.twitlin.authentication.AccessToken
 import com.sorrowblue.twitlin.authentication.BearerToken
+import com.sorrowblue.twitlin.logLevel
+import kotlin.test.BeforeTest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.datetime.TimeZone
-import kotlin.test.BeforeTest
+import mu.KLogger
+import mu.KotlinLogging
+
+internal val logger: KLogger
+    get() = logLevel(KotlinLogging.logger("TEST"))
 
 interface AbstractTest {
+
+    val logger: KLogger
+        get() = logLevel(KotlinLogging.logger("TEST"))
 
     @BeforeTest
     fun initializeTwitlin() {
@@ -21,7 +30,6 @@ interface AbstractTest {
                 AccessToken(BuildKonfig.QIITA_API_ACCESS_TOKEN, BuildKonfig.QIITA_API_ACCESS_TOKEN_SECRET, "", "")
             bearerToken = BearerToken("Bearer", BuildKonfig.QIITA_API_BEARER_TOKEN)
             timeZone = TimeZone.UTC
-            antilog = TestAntilog()
         }
     }
 

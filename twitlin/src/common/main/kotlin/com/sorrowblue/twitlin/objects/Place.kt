@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.objects
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -32,6 +34,7 @@ import kotlinx.serialization.json.JsonObject
  * @property polylines TODO
  * @property geometry TODO
  */
+@AndroidParcelize
 @Serializable
 public data class Place(
     val id: String,
@@ -50,9 +53,9 @@ public data class Place(
     val centroid: List<Double>? = null,
     @SerialName("contained_within")
     val containedWithin: List<Place>? = null,
-    val polylines: JsonObject? = null,
-    val geometry: JsonObject? = null
-) : JvmSerializable {
+//    val polylines: JsonObject? = null,
+//    val geometry: JsonObject? = null
+) : AndroidParcelable, JvmSerializable {
 
     /**
      * A bounding box of coordinates which encloses this place.
@@ -64,9 +67,10 @@ public data class Place(
      * of [longitude, latitude]. Points are grouped into an array per bounding box. Bounding box
      * arrays are wrapped in one additional array to be compatible with the polygon notation.
      */
+    @AndroidParcelize
     @Serializable
     public data class BoundingBox(
         val type: String,
         val coordinates: List<List<List<Float>>>
-    ) : JvmSerializable
+    ) : AndroidParcelable, JvmSerializable
 }

@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.users
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -14,8 +16,9 @@ import kotlinx.serialization.Serializable
  * @property source
  * @property target
  */
+@AndroidParcelize
 @Serializable
-public data class RelationshipDetail(val source: Detail, val target: Detail) : JvmSerializable {
+public data class RelationshipDetail(val source: Detail, val target: Detail) : AndroidParcelable, JvmSerializable {
 
     /**
      * TODO
@@ -37,6 +40,7 @@ public data class RelationshipDetail(val source: Detail, val target: Detail) : J
      * @property allReplies
      * @property markedSpam
      */
+    @AndroidParcelize
     @Serializable
     public data class Detail(
         val id: Long,
@@ -55,5 +59,5 @@ public data class RelationshipDetail(val source: Detail, val target: Detail) : J
         @SerialName("want_retweets") val wantRetweets: Boolean? = null,
         @SerialName("all_replies") val allReplies: Boolean? = null,
         @SerialName("marked_spam") val markedSpam: Boolean? = null
-    ) : JvmSerializable
+    ) : AndroidParcelable, JvmSerializable
 }

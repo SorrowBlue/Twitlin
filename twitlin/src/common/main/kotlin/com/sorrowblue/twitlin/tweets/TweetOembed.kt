@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.tweets
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -23,6 +25,7 @@ import kotlinx.serialization.Serializable
  * @property providerUrl The URL of the content provider.
  * @property version oEmbed version
  */
+@AndroidParcelize
 @Serializable
 public data class TweetOembed(
     val url: String,
@@ -41,7 +44,7 @@ public data class TweetOembed(
     @SerialName("provider_url")
     val providerUrl: String,
     val version: String
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
 
     /**
      * The type of embedded content.

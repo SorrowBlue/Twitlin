@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.users
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -17,6 +19,7 @@ import kotlinx.serialization.Serializable
  * @property idStr
  * @property connections
  */
+@AndroidParcelize
 @Serializable
 public data class Relationship(
     val name: String,
@@ -24,7 +27,7 @@ public data class Relationship(
     val id: Long,
     @SerialName("id_str") val idStr: String,
     val connections: List<Connection>
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
 
     /**
      * TODO

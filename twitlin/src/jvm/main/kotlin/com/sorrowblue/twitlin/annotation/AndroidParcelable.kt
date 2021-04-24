@@ -4,6 +4,4 @@
 
 package com.sorrowblue.twitlin.annotation
 
-public actual interface KotlinParceler<T>
-
 public actual interface AndroidParcelable

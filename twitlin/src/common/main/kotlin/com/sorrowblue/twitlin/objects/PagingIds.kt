@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.objects
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -17,6 +19,7 @@ import kotlinx.serialization.Serializable
  * @property previousCursor
  * @property previousCursorStr
  */
+@AndroidParcelize
 @Serializable
 public data class PagingIds(
     val ids: List<String>,
@@ -24,4 +27,4 @@ public data class PagingIds(
     @SerialName("next_cursor_str") val nextCursorStr: String,
     @SerialName("previous_cursor") val previousCursor: Long,
     @SerialName("previous_cursor_str") val previousCursorStr: String
-) : JvmSerializable
+) : AndroidParcelable, JvmSerializable

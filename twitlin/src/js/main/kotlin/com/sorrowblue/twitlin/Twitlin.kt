@@ -4,7 +4,11 @@
 
 package com.sorrowblue.twitlin
 
-import com.github.aakira.napier.Antilog
-import com.github.aakira.napier.DebugAntilog
+import mu.KLogger
+import mu.KotlinLoggingConfiguration
+import mu.KotlinLoggingLevel
 
-internal actual val defaultAntilog: Antilog = DebugAntilog(Twitlin.TAG)
+internal actual fun logLevel(logger: KLogger): KLogger {
+    KotlinLoggingConfiguration.LOG_LEVEL = KotlinLoggingLevel.TRACE
+    return logger
+}

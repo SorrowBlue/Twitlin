@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.core
 
-import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.utils.urlEncode
 
 /**
@@ -101,5 +100,5 @@ internal fun buildHeaderString(params: List<Pair<String, String>>): String {
             dst.append(", ")
         }
     }
-    return dst.toString().also { Napier.i("buildHeaderString() = $it") }
+    return dst.toString()
 }

@@ -26,3 +26,6 @@ internal object LocalDateTimeRFC822Serializer : KSerializer<LocalDateTime> {
         encoder.encodeString(s)
     }
 }
+
+public fun String.rfc822ToLocalDateTime(): LocalDateTime = toInstantForRFC822().toLocalDateTime(Twitlin.defaultTimeZone)
+

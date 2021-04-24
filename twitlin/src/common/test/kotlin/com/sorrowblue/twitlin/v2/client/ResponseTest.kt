@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.v2.client
 
-import com.github.aakira.napier.Napier
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -24,6 +23,7 @@ import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import test.logger
 
 class ResponseTest {
 
@@ -58,7 +58,7 @@ internal class TestResponseSerializer<T : Any>(private val dataSerializer: KSeri
             decoder.decodeJsonElement()
         }.getOrElse { JsonObject(emptyMap()) }
 //         JsonElement -> value
-        Napier.d("JSON: $element", tag = "DEBUG")
+        logger.debug { "JSON: $element" }
         return TestResponse(
             decoder.json.decodeFromJsonElement(
                 dataSerializer,

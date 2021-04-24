@@ -4,7 +4,14 @@
 
 package com.sorrowblue.twitlin
 
-import com.github.aakira.napier.Antilog
-import com.github.aakira.napier.DebugAntilog
+import mu.KLogger
+import org.slf4j.impl.SimpleLogger
+import org.slf4j.spi.LocationAwareLogger
 
-internal actual val defaultAntilog: Antilog = DebugAntilog(Twitlin.TAG)
+internal actual fun logLevel(logger: KLogger): KLogger {
+    SimpleLogger::class.java.getDeclaredField("currentLogLevel").apply {
+        isAccessible = true
+        set(logger.underlyingLogger, LocationAwareLogger.TRACE_INT)
+    }
+    return logger
+}

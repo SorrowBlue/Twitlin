@@ -4,7 +4,8 @@
 
 package com.sorrowblue.twitlin
 
-import com.github.aakira.napier.Antilog
-import com.github.aakira.napier.DebugAntilog
+import mu.KLogger
 
-internal actual val defaultAntilog: Antilog = DebugAntilog(Twitlin.TAG)
+internal actual fun logLevel(logger: KLogger): KLogger {
+    return logger
+}

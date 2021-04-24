@@ -4,10 +4,12 @@
 
 package com.sorrowblue.twitlin.users
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.objects.User
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalDateTimeRFC822Serializer
+import kotlinx.datetime.rfc822ToLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -28,6 +30,7 @@ import kotlinx.serialization.Serializable
  * @property following
  * @property user
  */
+@AndroidParcelize
 @Serializable
 public data class UserList(
     val id: Long,
@@ -45,11 +48,12 @@ public data class UserList(
     @SerialName("full_name")
     val fullName: String,
     @SerialName("created_at")
-    @Serializable(LocalDateTimeRFC822Serializer::class)
-    val createdAt: LocalDateTime,
+    val _createdAt: String,
     val following: Boolean,
     val user: User
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
+
+    val createdAt: LocalDateTime get() = _createdAt.rfc822ToLocalDateTime()
 
     /**
      * TODO

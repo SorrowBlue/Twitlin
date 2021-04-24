@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.core
 
-import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.utils.Security
 import com.sorrowblue.twitlin.utils.urlEncode
 import io.ktor.util.InternalAPI
@@ -62,7 +61,6 @@ internal fun collectingParameters(
         // 5. Append the encoded value to the output string.
         // 6. If there are more key/value pairs remaining, append a ‘&’ character to the output string.
         .joinToString("&") { "${it.first}=${it.second}" }
-        .also { Napier.i("collectingParameters() = $it") }
 }
 
 /**
@@ -92,7 +90,6 @@ internal fun creatingSignatureBaseString(
         // 5. Percent encode the parameter string and append it to the output string.
         .append(parameterString.urlEncode())
         .toString()
-        .also { Napier.i("creatingSignatureBaseString() = $it") }
 }
 
 /**

@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.v2.client
 
-import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.authentication.AccessToken
 import com.sorrowblue.twitlin.core.IResponse
 import com.sorrowblue.twitlin.core.UrlParams
@@ -23,12 +22,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.serialization.KSerializer
+import mu.KLogger
+import mu.KotlinLogging
 
 internal open class UserClient(
     apiKey: String,
     secretKey: String,
     var accessToken: AccessToken? = null
 ) : AbstractClient(apiKey, secretKey) {
+
+    override val logger: KLogger = KotlinLogging.logger("com.sorrowblue.twitlin.v2.client.UserClient")
 
     override suspend fun <T : Any, R : IResponse<T>> get(
         url: String,
@@ -86,16 +89,16 @@ internal open class UserClient(
         httpClient.get<HttpStatement>(url.combineParams(params)) {
             headerAuthorization(apiKey, secretKey, params.notNullParams, accessToken)
             val header = headers.entries().joinToString(", ") { it.key + ": " + it.value }
-            Napier.i("Request Twitter API-> GET:$url, header = $header, body =${this.body}")
+            logger.info { "Request Twitter API-> GET:$url, header = $header, body =${this.body}" }
         }.execute { response ->
             do {
                 val body = response.readText()
-                Napier.i("Response Twitter API-> GET:$url, body=$body")
+                logger.info { "Response Twitter API-> GET:$url, body=$body" }
                 json.decodeFromString(serializer, body).let(channel::offer)
             } while (isClosedForSend.not())
         }
     }.catch {
-        Napier.d("stackTraceToString: " + it.stackTraceToString(), it)
+        logger.error(it) { "streaming error" }
         val response: R = if (it is ClientRequestException) {
             kotlin.runCatching {
                 json.decodeFromString(serializer, it.response.readText())

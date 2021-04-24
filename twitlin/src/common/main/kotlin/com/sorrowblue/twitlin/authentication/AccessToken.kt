@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.authentication
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.utils.parameterToMap
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -20,6 +22,7 @@ import kotlinx.serialization.properties.decodeFromMap
  * @property userId TODO
  * @property screenName TODO
  */
+@AndroidParcelize
 @Serializable
 public data class AccessToken(
     @SerialName("oauth_token")
@@ -30,7 +33,7 @@ public data class AccessToken(
     val userId: String,
     @SerialName("screen_name")
     val screenName: String
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
     internal companion object {
         @OptIn(ExperimentalSerializationApi::class)
         fun fromString(str: String): AccessToken = Properties.decodeFromMap(str.parameterToMap())

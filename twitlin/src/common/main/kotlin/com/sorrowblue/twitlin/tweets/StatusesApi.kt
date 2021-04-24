@@ -85,7 +85,7 @@ public interface StatusesApi {
      * @param includeEntities The entities node will not be included when set to false.
      * @param includeExtAltText If alt text has been added to any attached media entities, this
      * parameter will return an ext_alt_text value in the top-level key for the media entity.
-     * If no value has been set, this will be returned as [null].
+     * If no value has been set, this will be returned as `null`.
      * @param includeCardUri When set to either `true` , the retrieved Tweet will include a
      * card_uri attribute when there is an ads card attached to the Tweet and when that card
      * was attached using the card_uri value.
@@ -323,7 +323,7 @@ public interface StatusesApi {
     ): Response<PagingIds>
 
     /**
-     * Returns a collection of the most recent [Tweets] and Retweets posted by the authenticating
+     * Returns a collection of the most recent [Tweet] and Retweets posted by the authenticating
      * user and the users they follow. The home timeline is central to how most users interact with
      * the Twitter service.
      *

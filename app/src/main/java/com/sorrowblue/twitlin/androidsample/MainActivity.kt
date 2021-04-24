@@ -24,6 +24,12 @@ internal class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(javaClass.simpleName, "Log test")
+        Log.e(javaClass.simpleName, "Log test")
+        Log.w(javaClass.simpleName, "Log test")
+        Log.i(javaClass.simpleName, "Log test")
+        Log.v(javaClass.simpleName, "Log test")
+        Log.wtf(javaClass.simpleName, "Log test")
         super.onCreate(savedInstanceState)
         val uri = intent.data
         val oauthToken: String? = uri?.getQueryParameter("oauth_token")

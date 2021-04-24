@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.client
 
-import com.github.aakira.napier.Napier
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -21,8 +20,8 @@ import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonArray
 
 @OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
-internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializer<T>) :
-    KSerializer<Response<T>> {
+internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializer<T>) : KSerializer<Response<T>> {
+
     override val descriptor: SerialDescriptor =
         buildSerialDescriptor("Response", PolymorphicKind.SEALED) {
             element("Success", dataSerializer.descriptor)
@@ -35,7 +34,6 @@ internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializ
 //        JsonDecoder -> JsonElement
         val element = runCatching(decoder::decodeJsonElement).getOrElse { JsonObject(emptyMap()) }
 //        JsonElement -> value
-        Napier.d("JSON: $element", tag = "DEBUG")
         return kotlin.runCatching {
             if (element is JsonObject && "errors" in element) {
                 val errors = element.getValue("errors").jsonArray

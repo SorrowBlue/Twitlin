@@ -4,9 +4,11 @@
 
 package com.sorrowblue.twitlin.trends
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalDateTimeISOSerializer
+import kotlinx.datetime.isoToLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -18,17 +20,20 @@ import kotlinx.serialization.Serializable
  * @property createdAt
  * @property locations
  */
+@AndroidParcelize
 @Serializable
 public data class TrendPlaces(
     val trends: List<Trend>,
     @SerialName("as_of")
-    @Serializable(LocalDateTimeISOSerializer::class)
-    val asOf: LocalDateTime,
+    val _asOf: String,
     @SerialName("created_at")
-    @Serializable(LocalDateTimeISOSerializer::class)
-    val createdAt: LocalDateTime,
+    val _createdAt: String,
     val locations: List<Location>
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
+
+    val asOf: LocalDateTime get() = _asOf.isoToLocalDateTime()
+    val createdAt: LocalDateTime get() = _createdAt.isoToLocalDateTime()
+
 
     /**
      * TODO
@@ -36,6 +41,7 @@ public data class TrendPlaces(
      * @property name
      * @property woeid
      */
+    @AndroidParcelize
     @Serializable
-    public data class Location(val name: String, val woeid: Int) : JvmSerializable
+    public data class Location(val name: String, val woeid: Int) : AndroidParcelable, JvmSerializable
 }

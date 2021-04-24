@@ -4,14 +4,13 @@
 
 package test
 
-import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.client.Response
 
 internal fun <T : Any> Response<T>.resultLog(): T? {
     onSuccess {
-        Napier.d("onSuccess() = $it")
+        logger.debug { "onSuccess() = $it" }
     }.onError {
-        Napier.e("onErrors() = $it")
+        logger.error { "onErrors() = $it" }
     }
     return dataOrNull()
 }

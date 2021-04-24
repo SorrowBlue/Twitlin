@@ -8,8 +8,10 @@ import android.os.Bundle
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.encodeToISOString
 import kotlinx.datetime.toLocalDateTime
 import org.junit.Test
+
 
 internal class ParcelableTest {
 
@@ -17,7 +19,7 @@ internal class ParcelableTest {
     fun testDateTime() {
         val data = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         val bundle = Bundle()
-        val tweet = Tweet("", "", createdAt = data)
+        val tweet = Tweet("", "", _createdAt = data.encodeToISOString())
         bundle.putParcelable("key", tweet)
         bundle.getParcelable<Tweet>("key")
     }

@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.trends
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.Serializable
 
@@ -18,6 +20,7 @@ import kotlinx.serialization.Serializable
  * @property woeid
  * @property countryCode
  */
+@AndroidParcelize
 @Serializable
 public data class TrendPlace(
     val name: String,
@@ -27,7 +30,7 @@ public data class TrendPlace(
     val country: String,
     val woeid: Int,
     val countryCode: String
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
 
     /**
      * TODO
@@ -35,6 +38,7 @@ public data class TrendPlace(
      * @property code
      * @property name
      */
+    @AndroidParcelize
     @Serializable
-    public data class Type(val code: Int, val name: String) : JvmSerializable
+    public data class Type(val code: Int, val name: String) : AndroidParcelable, JvmSerializable
 }

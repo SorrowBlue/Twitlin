@@ -2,14 +2,12 @@
  * (c) 2020-2021 SorrowBlue.
  */
 
-package v2
+package com.sorrowblue.twitlin.v2
 
-import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.v2.client.Response
 import com.sorrowblue.twitlin.v2.tweets.PagingTweet
-import kotlinx.serialization.json.Json
-import test.TestAntilog
 import kotlin.test.Test
+import kotlinx.serialization.json.Json
 
 class ResponseSelialiseTest {
 
@@ -41,7 +39,6 @@ class ResponseSelialiseTest {
               ]
             }
         """.trimIndent()
-        Napier.base(TestAntilog())
         val result = Json.decodeFromString(Response.serializer(PagingTweet.serializer()), body)
         print(result)
     }

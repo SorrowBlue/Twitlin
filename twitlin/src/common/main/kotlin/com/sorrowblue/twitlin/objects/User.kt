@@ -4,9 +4,11 @@
 
 package com.sorrowblue.twitlin.objects
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalDateTimeRFC822Serializer
+import kotlinx.datetime.rfc822ToLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -66,6 +68,7 @@ import kotlinx.serialization.Serializable
  * “XX” - Content is withheld in all countries “XY” - Content is withheld due to a DMCA request.
  * @property withheldScope When present, indicates that the content being withheld is a "user".
  */
+@AndroidParcelize
 @Serializable
 public data class User(
     val id: Long,
@@ -86,9 +89,8 @@ public data class User(
     val friendsCount: Int,
     @SerialName("listed_count")
     val listedCount: Int,
-    @Serializable(LocalDateTimeRFC822Serializer::class)
     @SerialName("created_at")
-    val createdAt: LocalDateTime,
+    val _createdAt: String,
     @SerialName("favourites_count")
     val favouritesCount: Int,
     val verified: Boolean,
@@ -107,17 +109,20 @@ public data class User(
     val withheldInCountries: List<String>? = null,
     @SerialName("withheld_scope")
     val withheldScope: String? = null,
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
+
+    val createdAt: LocalDateTime get() = _createdAt.rfc822ToLocalDateTime()
 
     /**
      * TODO
      *
      * @property locations
      */
+    @AndroidParcelize
     @Serializable
     public data class Derived(
         val locations: List<ProfileGeo>
-    ) : JvmSerializable
+    ) : AndroidParcelable, JvmSerializable
 
     /**
      * TODO
@@ -125,20 +130,22 @@ public data class User(
      * @property url
      * @property description
      */
+    @AndroidParcelize
     @Serializable
     public data class UserEntities(
         val url: Url? = null,
         val description: Url
-    ) : JvmSerializable {
+    ) : AndroidParcelable, JvmSerializable {
 
         /**
          * TODO
          *
          * @property urls
          */
+        @AndroidParcelize
         @Serializable
         public data class Url(
             val urls: List<Entities.URL>
-        ) : JvmSerializable
+        ) : AndroidParcelable, JvmSerializable
     }
 }

@@ -6,12 +6,10 @@ package com.sorrowblue.twitlin.v2.objects
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
 import com.sorrowblue.twitlin.annotation.AndroidParcelize
-import com.sorrowblue.twitlin.annotation.AndroidWriteWith
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.annotation.KotlinIgnoredOnParcel
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalDateTimeISOSerializer
-import kotlinx.datetime.LocalDateTimeParceler
+import kotlinx.datetime.isoToLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -23,11 +21,12 @@ public data class Poll(
     @SerialName("duration_minutes")
     val durationMinutes: Int? = null,
     @SerialName("end_datetime")
-    @Serializable(LocalDateTimeISOSerializer::class)
-    val endDatetime: @AndroidWriteWith<LocalDateTimeParceler>() LocalDateTime? = null,
+    val _endDatetime: String? = null,
     @SerialName("voting_status")
     val votingStatus: Status? = null,
 ) : AndroidParcelable, JvmSerializable {
+
+    val endDatetime: LocalDateTime? get() = _endDatetime?.isoToLocalDateTime()
 
     @AndroidParcelize
     @Serializable

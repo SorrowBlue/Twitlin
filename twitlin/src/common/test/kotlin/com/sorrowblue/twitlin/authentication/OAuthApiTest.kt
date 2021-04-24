@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.authentication
 
-import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.TwitterAPI
 import test.AbstractTest
 import test.resultLog
@@ -30,7 +29,6 @@ class OAuthApiTest : AbstractTest {
             TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").resultLog()?.let {
                 TwitterAPI.oauthApi.authenticate(it.oauthToken)
             }
-        Napier.i("authenticate url: $url")
         assertNotNull(url, "authenticate url is null")
     }
 
@@ -40,7 +38,6 @@ class OAuthApiTest : AbstractTest {
             TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").resultLog()?.let {
                 TwitterAPI.oauthApi.authorize(it.oauthToken)
             }
-        Napier.i("authorize url: $url")
         assertNotNull(url, "authorize url is null")
     }
 
@@ -50,7 +47,6 @@ class OAuthApiTest : AbstractTest {
             TwitterAPI.oauthApi.requestToken("oob").resultLog()?.let {
                 TwitterAPI.oauthApi.authorize(it.oauthToken)
             }
-        Napier.i("authorize url: $url")
         assertNotNull(url, "authorize url is null")
     }
 

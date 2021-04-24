@@ -9,6 +9,7 @@ import com.sorrowblue.twitlin.utilities.RateLimitStatus
 import com.sorrowblue.twitlin.utilities.ResourceFamily
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalDateTimeIntEpochSerializer
+import kotlinx.datetime.toIntEpoch
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -28,7 +29,7 @@ internal class RateLimitStatusResponse(
         val reset: LocalDateTime,
     ) : JvmSerializable {
 
-        fun toInfo(path: String) = RateLimitStatus.Resource.Info(path, limit, remaining, reset)
+        fun toInfo(path: String) = RateLimitStatus.Resource.Info(path, limit, remaining, reset.toIntEpoch())
     }
 }
 

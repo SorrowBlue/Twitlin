@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.users
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -24,6 +26,7 @@ import kotlinx.serialization.Serializable
  * @property useCookiePersonalization
  * @property allowContributorRequest
  */
+@AndroidParcelize
 @Serializable
 public data class Settings(
     @SerialName("always_use_https") val alwaysUseHttps: Boolean,
@@ -38,7 +41,7 @@ public data class Settings(
     @SerialName("trend_location") val trendLocation: List<TrendLocation>,
     @SerialName("use_cookie_personalization") val useCookiePersonalization: Boolean,
     @SerialName("allow_contributor_request") val allowContributorRequest: String
-) : JvmSerializable {
+) : AndroidParcelable, JvmSerializable {
 
     /**
      * TODO
@@ -47,12 +50,13 @@ public data class Settings(
      * @property endTime
      * @property startTime
      */
+    @AndroidParcelize
     @Serializable
     public data class SleepTime(
         val enabled: Boolean,
         @SerialName("end_time") val endTime: Int? = null,
         @SerialName("start_time") val startTime: Int? = null
-    ) : JvmSerializable
+    ) : AndroidParcelable, JvmSerializable
 
     /**
      * TODO
@@ -61,10 +65,11 @@ public data class Settings(
      * @property tzinfoName
      * @property utcOffset
      */
+    @AndroidParcelize
     @Serializable
     public data class TimeZone(
         val name: String,
         @SerialName("tzinfo_name") val tzinfoName: String,
         @SerialName("utc_offset") val utcOffset: Int
-    ) : JvmSerializable
+    ) : AndroidParcelable, JvmSerializable
 }

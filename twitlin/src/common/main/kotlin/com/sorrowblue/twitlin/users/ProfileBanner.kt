@@ -4,6 +4,8 @@
 
 package com.sorrowblue.twitlin.users
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -13,8 +15,9 @@ import kotlinx.serialization.Serializable
  *
  * @property sizes
  */
+@AndroidParcelize
 @Serializable
-public data class ProfileBanner(val sizes: Sizes) : JvmSerializable {
+public data class ProfileBanner(val sizes: Sizes) : AndroidParcelable, JvmSerializable {
 
     /**
      * TODO
@@ -29,6 +32,7 @@ public data class ProfileBanner(val sizes: Sizes) : JvmSerializable {
      * @property _600x200
      * @property _1500x500
      */
+    @AndroidParcelize
     @Serializable
     public data class Sizes(
         val ipad: Device,
@@ -43,7 +47,7 @@ public data class ProfileBanner(val sizes: Sizes) : JvmSerializable {
         val _600x200: Device,
         @SerialName("1500x500")
         val _1500x500: Device
-    ) : JvmSerializable {
+    ) : AndroidParcelable, JvmSerializable {
 
         /**
          * TODO
@@ -52,7 +56,8 @@ public data class ProfileBanner(val sizes: Sizes) : JvmSerializable {
          * @property w
          * @property url
          */
+        @AndroidParcelize
         @Serializable
-        public data class Device(val h: Int, val w: Int, val url: String) : JvmSerializable
+        public data class Device(val h: Int, val w: Int, val url: String) : AndroidParcelable, JvmSerializable
     }
 }

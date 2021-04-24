@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.v2.client
 
-import com.github.aakira.napier.Napier
 import com.sorrowblue.twitlin.authentication.BearerToken
 import com.sorrowblue.twitlin.core.IResponse
 import com.sorrowblue.twitlin.core.UrlParams
@@ -25,12 +24,16 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.isActive
 import kotlinx.serialization.KSerializer
+import mu.KLogger
+import mu.KotlinLogging
 
 internal open class AppClient(
     apiKey: String,
     secretKey: String,
     var bearerToken: BearerToken? = null
 ) : AbstractClient(apiKey, secretKey) {
+
+    override val logger: KLogger = KotlinLogging.logger("com.sorrowblue.twitlin.v2.client.AppClient")
 
     override suspend fun <T : Any, R : IResponse<T>> delete(
         url: String,
@@ -77,20 +80,16 @@ internal open class AppClient(
         httpClient.get<HttpStatement>(url.combineParams(params)) {
             headerAuthorization(bearerToken)
             val header = headers.entries().joinToString(", ") { it.key + ": " + it.value }
-            Napier.i("Request Twitter API-> GET:$url, header = $header, body =${this.body}")
+            logger.info { "Request Twitter API-> GET:$url, header = $header, body =${this.body}" }
         }.execute { response ->
             do {
                 val body = response.content.readUTF8Line()!!
-                Napier.i("Response Twitter API-> GET:$url, body=$body")
+                logger.info { "Response Twitter API-> GET:$url, body=$body" }
                 json.decodeFromString(serializer, body).let(this::offer)
-                Napier.i("isClosedForSend=$isClosedForSend, isActive=$isActive")
-                if (isClosedForSend || isActive.not()) {
-                    Napier.i("close streaming")
-                }
             } while (isClosedForSend.not())
         }
     }.catch {
-        Napier.d("stackTraceToString: " + it.stackTraceToString(), it)
+        logger.error(it) { "streaming error" }
         val response: R = if (it is ClientRequestException) {
             kotlin.runCatching {
                 json.decodeFromString(serializer, it.response.readText())

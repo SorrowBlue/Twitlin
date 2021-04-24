@@ -4,6 +4,9 @@
 
 package com.sorrowblue.twitlin.directmessages
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
+import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,11 +16,12 @@ import kotlinx.serialization.Serializable
  * @property type
  * @property options
  */
+@AndroidParcelize
 @Serializable
 public data class QuickReply(
     val type: Type,
     val options: List<Option>? = null
-) {
+) : AndroidParcelable, JvmSerializable {
 
     /**
      * TODO
@@ -40,10 +44,8 @@ public data class QuickReply(
      * @property description
      * @property metadata
      */
+    @AndroidParcelize
     @Serializable
-    public data class Option(
-        val label: String,
-        val description: String,
-        val metadata: String
-    )
+    public data class Option(val label: String, val description: String, val metadata: String) : AndroidParcelable,
+        JvmSerializable
 }

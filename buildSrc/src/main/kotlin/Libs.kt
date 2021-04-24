@@ -30,6 +30,10 @@ object Libs {
 
     const val jsoup = "org.jsoup:jsoup:1.13.1"
 
+    const val `kotlin-logging` = "io.github.microutils:kotlin-logging:2.0.6"
+    const val `slf4j-simple` = "org.slf4j:slf4j-simple:1.7.30"
+    const val `slf4j-android` = "org.slf4j:slf4j-android:1.7.30"
+
     object napier {
         private const val version = "1.4.1"
         const val common = "com.github.aakira:napier:$version"

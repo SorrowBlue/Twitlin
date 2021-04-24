@@ -4,9 +4,11 @@
 
 package com.sorrowblue.twitlin.v2.tweets.search
 
+import com.sorrowblue.twitlin.annotation.AndroidParcelable
+import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalDateTimeISOSerializer
+import kotlinx.datetime.isoToLocalDateTime
 import kotlinx.serialization.Serializable
 
 /**
@@ -14,22 +16,21 @@ import kotlinx.serialization.Serializable
  *
  * @property data
  * @property meta
- * @property errors
  */
+@AndroidParcelize
 @Serializable
-public data class SearchStreamRules(
-    val data: List<SearchStreamRule> = emptyList(),
-    val meta: Meta
-) : JvmSerializable {
+public data class SearchStreamRules(val data: List<SearchStreamRule> = emptyList(), val meta: Meta) : AndroidParcelable,
+    JvmSerializable {
 
     /**
      * TODO
      *
      * @property sent
      */
+    @AndroidParcelize
     @Serializable
-    public data class Meta(
-        @Serializable(LocalDateTimeISOSerializer::class)
-        val sent: LocalDateTime
-    ) : JvmSerializable
+    public data class Meta(val _sent: String) : AndroidParcelable, JvmSerializable {
+
+        val sent: LocalDateTime get() = _sent.isoToLocalDateTime()
+    }
 }

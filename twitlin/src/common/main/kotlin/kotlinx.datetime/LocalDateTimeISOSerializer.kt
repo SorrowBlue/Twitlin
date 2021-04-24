@@ -26,3 +26,5 @@ internal object LocalDateTimeISOSerializer : KSerializer<LocalDateTime> {
         encoder.encodeString(s)
     }
 }
+
+public fun String.isoToLocalDateTime(): LocalDateTime = toInstant().toLocalDateTime(Twitlin.defaultTimeZone)

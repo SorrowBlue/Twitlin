@@ -62,7 +62,7 @@ kotlin {
                 implementation(Libs.`ktor-client`.core)
                 implementation(Libs.`ktor-client`.serialization)
                 implementation(kotlin("reflect", KOTLIN_VERSION))
-                implementation(Libs.napier.common)
+                implementation(Libs.`kotlin-logging`)
             }
         }
         commonTest {
@@ -88,23 +88,27 @@ kotlin {
             }
         }
         val androidMain by getting {
+            kotlin.srcDir("src/android/main/kotlin")
             dependencies {
                 implementation(Libs.`ktor-client`.android)
                 implementation(Libs.jsoup)
                 implementation(Libs.andoridx.`security-crypto`)
+                implementation(Libs.`slf4j-android`)
             }
         }
         val androidTest by getting {
+            kotlin.srcDir("src/android/test/kotlin")
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
         val jvmMain by getting {
             kotlin.srcDirs("src/jvm/main/kotlin")
+            resources.srcDirs("src/jvm/main/resources")
             dependencies {
                 implementation(Libs.`ktor-client`.okhttp)
-
                 implementation(Libs.jsoup)
+                implementation(Libs.`slf4j-simple`)
             }
         }
         val jvmTest by getting {
@@ -135,10 +139,6 @@ android {
     sourceSets {
         val main by getting {
             manifest.srcFile("src/android/main/AndroidManifest.xml")
-            java.srcDirs("src/android/main/kotlin")
-        }
-        val test by getting {
-            java.srcDirs("src/android/test/kotlin")
         }
     }
 }
@@ -146,10 +146,9 @@ android {
 buildkonfig {
     packageName = group.toString()
     defaultConfigs {
-        gradleLocalProperties(rootDir).toList()
-            .takeWhile { it.first.toString().startsWith("QIITA_API_") }.forEach {
-                buildConfigField(FieldSpec.Type.STRING, it.first.toString(), it.second.toString())
-            }
+        gradleLocalProperties(rootDir).toList().filter { it.first.toString().startsWith("QIITA_API_") }.forEach {
+            buildConfigField(FieldSpec.Type.STRING, it.first.toString(), it.second.toString())
+        }
     }
 }
 
@@ -209,10 +208,12 @@ afterEvaluate {
         }
     }
     signing {
-        val signingKeyId: String? by project
-        val signingKey: String? by project
-        val signingPassword: String? by project
-        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+        if (!hasProperty("signing.secretKeyRingFile")) {
+            val signingKeyId: String? by project
+            val signingKey: String? by project
+            val signingPassword: String? by project
+            useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+        }
         sign(publishing.publications)
     }
 }

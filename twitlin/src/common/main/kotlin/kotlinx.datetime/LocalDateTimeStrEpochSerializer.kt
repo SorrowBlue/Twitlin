@@ -27,3 +27,6 @@ internal object LocalDateTimeStrEpochSerializer : KSerializer<LocalDateTime> {
         encoder.encodeString(s)
     }
 }
+
+public fun String.epochToLocalDateTime(): LocalDateTime = Instant.fromEpochMilliseconds(padEnd(13, '0').toLong())
+    .toLocalDateTime(Twitlin.defaultTimeZone)

@@ -12,10 +12,6 @@ import kotlinx.parcelize.WriteWith
 
 public actual typealias AndroidParcelize = Parcelize
 
-public typealias AndroidWriteWith<T> = WriteWith<KotlinParceler<T>>
-
 public actual typealias KotlinIgnoredOnParcel = IgnoredOnParcel
-
-public actual interface KotlinParceler<T> : Parceler<T>
 
 public actual interface AndroidParcelable : Parcelable

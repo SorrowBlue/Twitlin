@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.core
 
-import com.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.features.ClientRequestException
 import io.ktor.client.features.json.JsonFeature
@@ -18,6 +17,8 @@ import io.ktor.http.formUrlEncode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
+import mu.KLogger
+import mu.KotlinLogging
 
 /**
  * TODO
@@ -26,6 +27,8 @@ import kotlinx.serialization.json.Json
  * @property secretKey
  */
 public abstract class TwitterClient(public val apiKey: String, public val secretKey: String) {
+
+    protected open val logger: KLogger = KotlinLogging.logger("com.sorrowblue.twitlin.core.TwitterClient")
 
     protected val json: Json = Json {
         isLenient = true
@@ -87,9 +90,9 @@ public abstract class TwitterClient(public val apiKey: String, public val secret
             headerBlock.invoke(this)
             bodyBlock.invoke(this)
             val header = headers.entries().joinToString(", ") { it.key + ": " + it.value }
-            Napier.i("Request Twitter API-> ${method.value}:$url, header = $header, body =${this.body}")
+            logger.info { "Request Twitter API-> ${method.value}:$url, header = $header, body =${this.body}" }
         }.let {
-            Napier.i("Response Twitter API-> ${method.value}:$url, body=$it")
+            logger.info { "Response Twitter API-> ${method.value}:$url, body=$it" }
             json.decodeFromString(serializer, it)
         }
     }
@@ -99,7 +102,7 @@ public abstract class TwitterClient(public val apiKey: String, public val secret
         requestBlock: () -> R
     ): R {
         return runCatching(requestBlock).getOrElse {
-            Napier.d("stackTraceToString: " + it.stackTraceToString(), it)
+            logger.error(it) { "response error" }
             if (it is ClientRequestException) {
                 json.decodeFromString(serializer, it.response.readText())
             } else {
