@@ -149,5 +149,8 @@ public enum class LanguageCode(public val value: String) {
     UNDETERMINED("und"),
 
     @SerialName("in")
-    IN("in")
+    IN("in"),
+
+    @SerialName("tl")
+    TL("tl")
 }

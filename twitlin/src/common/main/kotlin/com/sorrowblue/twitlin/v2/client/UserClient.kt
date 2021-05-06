@@ -51,9 +51,7 @@ internal open class UserClient(
         url: String,
         serializer: KSerializer<R>,
         vararg params: UrlParams
-    ): R {
-        TODO("Not yet implemented")
-    }
+    ): R = request(HttpMethod.Delete, url.combineParams(params), params, serializer)
 
     override suspend fun <T : Any, R : IResponse<T>> put(
         url: String,

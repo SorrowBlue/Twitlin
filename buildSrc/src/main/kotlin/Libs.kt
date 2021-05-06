@@ -11,14 +11,14 @@ object Libs {
     }
 
     object kotlinx {
-        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.1.0"
+        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.0"
         const val `serialization-properties` =
-            "org.jetbrains.kotlinx:kotlinx-serialization-properties:1.1.0"
-        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
+            "org.jetbrains.kotlinx:kotlinx-serialization-properties:1.2.0"
+        const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.0"
     }
 
     object `ktor-client` {
-        private const val VERSION = "1.5.3"
+        private const val VERSION = "1.5.4"
         const val core = "io.ktor:ktor-client-core:${VERSION}"
         const val okhttp = "io.ktor:ktor-client-okhttp:${VERSION}"
         const val android = "io.ktor:ktor-client-android:${VERSION}"

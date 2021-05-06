@@ -5,6 +5,7 @@
 package com.sorrowblue.twitlin.v2.tweets
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
+import com.sorrowblue.twitlin.authentication.OAuthApi
 import com.sorrowblue.twitlin.v2.client.Error
 import com.sorrowblue.twitlin.v2.client.Includes
 import com.sorrowblue.twitlin.v2.client.Response
@@ -15,6 +16,7 @@ import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.objects.Tweet
+import com.sorrowblue.twitlin.v2.tweets.impl.TweetLikeResponse
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -130,4 +132,17 @@ public interface TweetsApi {
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
     ): Response<PagingTweet>
+
+    /**
+     * Causes the user ID identified in the path parameter to Like the target Tweet.
+     *
+     * @param userId The user ID who you are liking a Tweet on behalf of. It must match your own user ID or that of an
+     * authenticating user, meaning that you must pass the [OAuthApi.accessToken] associated with the user ID when
+     * authenticating your request.
+     * @param tweetId The ID of the Tweet that you would like the user `id` to Like.
+     * @return
+     */
+    public suspend fun likes(userId: String, tweetId: String): Response<Boolean>
+
+    public suspend fun unLike(userId: String, tweetId: String): Response<Boolean>
 }

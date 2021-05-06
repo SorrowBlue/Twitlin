@@ -117,6 +117,16 @@ class TweetsApiTest : AbstractTest {
             assertTrue(it is CancellationException)
         }
     }
+
+    @Test
+    fun testLikes() = runBlocking {
+        TwitterV2API.tweetsApi.likes("938122027231150081", "1390361333284020227").testResult()
+    }
+
+    @Test
+    fun testUnLikes() = runBlocking {
+        TwitterV2API.tweetsApi.unLike("938122027231150081", "1390361333284020227").testResult()
+    }
 }
 
 private val idList_100 = listOf(

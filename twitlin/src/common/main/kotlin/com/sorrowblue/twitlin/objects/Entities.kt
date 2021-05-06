@@ -268,7 +268,7 @@ public data class Entities(
         @SerialName("expanded_url")
         val expandedUrl: String,
         @SerialName("display_url")
-        val displayUrl: String,
+        val displayUrl: String? = null,
         val indices: List<Int>,
         val unwound: Unwound? = null
     ) : AndroidParcelable, JvmSerializable {

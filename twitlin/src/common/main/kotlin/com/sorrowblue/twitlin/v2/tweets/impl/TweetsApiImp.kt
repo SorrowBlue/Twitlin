@@ -21,6 +21,7 @@ import com.sorrowblue.twitlin.v2.tweets.TweetsApi
 import com.sorrowblue.twitlin.v2.tweets.request.HiddenRequest
 import com.sorrowblue.twitlin.v2.tweets.response.HiddenResponse
 import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 
 private const val TWEETS = "${Urls.V2}/tweets"
@@ -106,4 +107,24 @@ internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
         "tweet.fields" to tweetFields?.toParameter(),
         "user.fields" to userFields?.toParameter(),
     )*/
+
+    override suspend fun likes(userId: String, tweetId: String) = userClient.postJson(
+        "$USERS/$userId/likes",
+        Like(tweetId),
+        serializer = Response.serializer(TweetLikeResponse.serializer())
+    ).convertData { it.data.liked }
+
+    override suspend fun unLike(userId: String, tweetId: String) =
+        userClient.delete("$USERS/$userId/likes/$tweetId", Response.serializer(TweetLikeResponse.serializer()))
+            .convertData { it.data.liked }
 }
+
+@Serializable
+internal class TweetLikeResponse(val data: Data) {
+
+    @Serializable
+    class Data(val liked: Boolean)
+}
+
+@Serializable
+internal class Like(val tweet_id: String)
