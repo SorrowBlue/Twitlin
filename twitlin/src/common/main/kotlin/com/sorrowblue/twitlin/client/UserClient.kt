@@ -11,6 +11,7 @@ import com.sorrowblue.twitlin.core.bodyFormUrlEncoded
 import com.sorrowblue.twitlin.core.bodyJson
 import com.sorrowblue.twitlin.core.headerAuthorization
 import com.sorrowblue.twitlin.core.notNullParams
+import io.ktor.client.features.ClientRequestException
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpStatement
@@ -46,19 +47,6 @@ internal class UserClient(apiKey: String, secretKey: String, var accessToken: Ac
     ): R = request(HttpMethod.Post, url, params, serializer) {
         bodyFormUrlEncoded(params.notNullParams)
     }
-
-    suspend fun <T : Any, R : IResponse<T>> postForAuthentication(
-        url: String,
-        serializer: KSerializer<R>,
-        vararg params: UrlParams,
-        oauthToken: String
-    ): R = request(
-        HttpMethod.Post,
-        url,
-        params,
-        serializer,
-        AccessToken(oauthToken, "", "", "")
-    ) { bodyFormUrlEncoded(params.notNullParams) }
 
     override suspend fun <T : Any, R : IResponse<T>> delete(
         url: String,
@@ -117,4 +105,32 @@ internal class UserClient(apiKey: String, secretKey: String, var accessToken: Ac
         },
         bodyBlock
     )
+
+    suspend inline fun postForAuthentication(
+        url: String,
+        vararg params: UrlParams,
+        oauthToken: String? = null
+    ): Response<String> = runCatchingResponse2 {
+        httpClient.post<String>(url) {
+            val token = oauthToken?.let { AccessToken(it, "", "", "") }
+            headerAuthorization(apiKey, secretKey, params.notNullParams, token)
+            bodyFormUrlEncoded(params.notNullParams)
+            val header = headers.entries().joinToString(", ") { it.key + ": " + it.value }
+            logger.info { "Request Twitter API-> POST:$url, header = $header, body =${this.body}" }
+        }.let {
+            logger.info { "Response Twitter API-> POST:$url, body=$it" }
+            Response.Success(it)
+        }
+    }
+
+    private suspend inline fun runCatchingResponse2(requestBlock: () -> Response<String>): Response<String> {
+        return runCatching(requestBlock).getOrElse {
+            logger.error(it) { "response error" }
+            if (it is ClientRequestException) {
+                Response.error(Error(it.response.readText(), it.response.status.value))
+            } else {
+                onError(it)
+            }
+        }
+    }
 }
