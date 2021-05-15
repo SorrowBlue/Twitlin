@@ -20,7 +20,7 @@ public object ErrorCodes {
     /**
      * If [code] is defined by the Twitter API, `true` returns.
      *
-     * @param code For example, [ErrorMessages.Error.code].
+     * @param code For example, [Error.code].
      * @return Whether it is defined by the Twitter API
      */
     public fun isOfficial(code: Int): Boolean = code in setOf(

@@ -1,72 +1,68 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.geo
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
 import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
-import com.sorrowblue.twitlin.client.Error
 import com.sorrowblue.twitlin.objects.Coordinates
+import com.sorrowblue.twitlin.objects.CoordinatesType
 import com.sorrowblue.twitlin.objects.Place
 import com.sorrowblue.twitlin.objects.PlaceType
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * TODO
+ * Geo search
  *
  * @property query
  * @property result
- * @property errors
+ * @constructor Create empty Geo search
  */
 @AndroidParcelize
 @Serializable
-public data class ReverseGeocode(
+public data class GeoSearch(
     val query: Query,
-    val result: Result? = null,
-    val errors: List<Error>? = null
+    val result: Result
 ) : AndroidParcelable, JvmSerializable {
 
     /**
-     * TODO
+     * Query
      *
-     * @property url
-     * @property type
      * @property params
+     * @property type
+     * @property url
+     * @constructor Create empty Query
      */
     @AndroidParcelize
     @Serializable
     public data class Query(
-        val url: String,
+        val params: Params,
         val type: String,
-        val params: Params
+        val url: String
     ) : AndroidParcelable, JvmSerializable {
 
         /**
-         * TODO
+         * Params
          *
-         * @property accuracy
-         * @property coordinates
          * @property granularity
+         * @property query
+         * @property trimPlace
+         * @property coordinates
+         * @property type
+         * @constructor Create empty Params
          */
         @AndroidParcelize
         @Serializable
         public data class Params(
-            val accuracy: Float,
+            val granularity: PlaceType,
+            val query: String,
+            @SerialName("trim_place") val trimPlace: Boolean,
             val coordinates: Coordinates,
-            val granularity: PlaceType
+            val type: CoordinatesType
         ) : AndroidParcelable, JvmSerializable
     }
 
-    /**
-     * TODO
-     *
-     * @property places
-     */
-    @AndroidParcelize
     @Serializable
     public data class Result(
         val places: List<Place>
-        ) : AndroidParcelable, JvmSerializable
+    ) : JvmSerializable
 }

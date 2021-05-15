@@ -4,13 +4,10 @@
 
 package com.sorrowblue.twitlin.geo
 
-import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.objects.Place
 import com.sorrowblue.twitlin.objects.PlaceType
 import com.sorrowblue.twitlin.tweets.StatusesApi
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
 /**
  * Returns all the information about a known "place". Please see the Geo objects data dictionary
@@ -113,29 +110,3 @@ public interface GeoApi {
     ): Response<GeoSearch>
 }
 
-@Serializable
-public data class GeoSearch(
-    val query: Query,
-    val result: Result
-) : JvmSerializable {
-
-    @Serializable
-    public data class Query(
-        val params: Params,
-        val type: String,
-        val url: String
-    ) : JvmSerializable {
-
-        @Serializable
-        public data class Params(
-            val granularity: PlaceType,
-            val query: String,
-            @SerialName("trim_place") val trimPlace: Boolean
-        ) : JvmSerializable
-    }
-
-    @Serializable
-    public data class Result(
-        val places: List<Place>
-    ) : JvmSerializable
-}

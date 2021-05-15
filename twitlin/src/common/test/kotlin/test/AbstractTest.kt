@@ -25,10 +25,10 @@ interface AbstractTest {
 
     @BeforeTest
     fun initializeTwitlin() {
-        Twitlin.initialize(BuildKonfig.QIITA_API_KEY, BuildKonfig.QIITA_API_SECRET) {
+        Twitlin.initialize(BuildKonfig.TWITTER_API_KEY, BuildKonfig.TWITTER_API_SECRET) {
             accessToken =
-                AccessToken(BuildKonfig.QIITA_API_ACCESS_TOKEN, BuildKonfig.QIITA_API_ACCESS_TOKEN_SECRET, "", "")
-            bearerToken = BearerToken("Bearer", BuildKonfig.QIITA_API_BEARER_TOKEN)
+                AccessToken(BuildKonfig.TWITTER_API_ACCESS_TOKEN, BuildKonfig.TWITTER_API_ACCESS_TOKEN_SECRET, "", "")
+            bearerToken = BearerToken("Bearer", BuildKonfig.TWITTER_API_BEARER_TOKEN)
             timeZone = TimeZone.UTC
         }
     }
