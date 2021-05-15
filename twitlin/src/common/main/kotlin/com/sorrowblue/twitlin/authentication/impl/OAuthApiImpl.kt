@@ -47,7 +47,7 @@ internal class OAuthApiImpl(private val client: UserClient) : OAuthApi {
         return client.postForAuthentication(
             "$OAUTH/request_token",
             "oauth_callback" to oauthCallback,
-            "x_auth_access_type" to xAuthAccessType?.name?.toLowerCase(),
+            "x_auth_access_type" to xAuthAccessType?.name?.lowercase(),
         ).convertData { RequestToken.fromString(it) }
     }
 

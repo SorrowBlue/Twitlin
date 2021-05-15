@@ -67,7 +67,7 @@ internal class UserClient(apiKey: String, secretKey: String, var accessToken: Ac
             do {
                 val body = response.readText()
                 logger.info { "Response Twitter API-> GET:$url, body=$body" }
-                json.decodeFromString(serializer, body).let(channel::offer)
+                json.decodeFromString(serializer, body).let { channel.offer(it) }
             } while (isClosedForSend.not())
         }
     }

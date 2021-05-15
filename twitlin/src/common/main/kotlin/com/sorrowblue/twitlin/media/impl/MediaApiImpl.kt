@@ -29,7 +29,7 @@ internal class MediaApiImpl(private val client: UserClient) : MediaApi {
             Response.serializer(MediaResult.serializer()),
             "media" to media?.decodeToString(),
             "media_data" to mediaData,
-            "media_category" to mediaCategory.name.toLowerCase(),
+            "media_category" to mediaCategory.name.lowercase(),
             "additional_owners" to additionalOwners?.joinToString(",")
         )
     }
@@ -47,7 +47,7 @@ internal class MediaApiImpl(private val client: UserClient) : MediaApi {
             "command" to "INIT",
             "total_bytes" to totalBytes,
             "media_type" to mediaType,
-            "media_category" to mediaCategory?.name?.toLowerCase(),
+            "media_category" to mediaCategory?.name?.lowercase(),
             "additional_owners" to additionalOwners?.joinToString(","),
             "shared" to shared
         )
@@ -106,7 +106,7 @@ internal class MediaApiImpl(private val client: UserClient) : MediaApi {
             Response.serializer(Unit.serializer()),
             SubtitlesRequest.forDelete(
                 mediaId,
-                mediaCategory.name.toLowerCase(),
+                mediaCategory.name.lowercase(),
                 languageCodes
             )
         )
@@ -120,7 +120,7 @@ internal class MediaApiImpl(private val client: UserClient) : MediaApi {
         return client.postJson(
             "$MEDIA/subtitles/create.json",
             Response.serializer(Unit.serializer()),
-            SubtitlesRequest.forCreate(mediaId, mediaCategory.name.toLowerCase(), subtitles)
+            SubtitlesRequest.forCreate(mediaId, mediaCategory.name.lowercase(), subtitles)
         )
     }
 }

@@ -24,10 +24,10 @@ internal fun String.toInstantForRFC822(): Instant {
 internal fun Instant.formatRFC822(): String {
     val localDateTime = toLocalDateTime(TimeZone.UTC)
     val w = localDateTime.dayOfWeek.name.run {
-        substring(0..0) + substring(1..2).toLowerCase()
+        substring(0..0) + substring(1..2).lowercase()
     }
     val month = localDateTime.month.name.run {
-        substring(0..0) + substring(1..2).toLowerCase()
+        substring(0..0) + substring(1..2).lowercase()
     }
     val d = localDateTime.dayOfMonth
     val h = localDateTime.hour.toString().padStart(2, '0')

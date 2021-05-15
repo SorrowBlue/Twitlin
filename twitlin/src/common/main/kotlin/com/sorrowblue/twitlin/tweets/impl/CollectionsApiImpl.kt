@@ -86,7 +86,7 @@ internal class CollectionsApiImpl(private val client: UserClient) : CollectionsA
             "name" to name,
             "description" to description,
             "url" to url,
-            "timeline_order" to timelineOrder?.name?.toLowerCase()
+            "timeline_order" to timelineOrder?.name?.lowercase()
         )
     }
 

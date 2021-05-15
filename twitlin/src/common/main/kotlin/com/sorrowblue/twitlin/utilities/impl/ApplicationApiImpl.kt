@@ -20,7 +20,7 @@ internal class ApplicationApiImpl(private val client: UserClient) : ApplicationA
         return client.get(
             "$APPLICATION/rate_limit_status.json",
             Response.serializer(RateLimitStatusResponse.serializer()),
-            "resources" to resourceFamily?.joinToString(",") { it.name.toLowerCase() }
+            "resources" to resourceFamily?.joinToString(",") { it.name.lowercase() }
         ).convertData(RateLimitStatusResponse::toRateLimitState)
     }
 }

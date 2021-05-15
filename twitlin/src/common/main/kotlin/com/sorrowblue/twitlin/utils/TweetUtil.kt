@@ -31,6 +31,6 @@ public enum class TweetCardType {
 
     public companion object {
         public fun parse(value: String): TweetCardType =
-            runCatching { valueOf(value.toUpperCase()) }.getOrDefault(SUMMARY)
+            runCatching { valueOf(value.uppercase()) }.getOrDefault(SUMMARY)
     }
 }

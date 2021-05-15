@@ -229,7 +229,7 @@ internal class ListsApiImpl(private val client: UserClient) : ListsApi {
             "$LISTS/create.json",
             Response.serializer(UserList.serializer()),
             "name" to name,
-            "mode" to mode.name.toLowerCase(),
+            "mode" to mode.name.lowercase(),
             "description" to description
         )
     }
@@ -379,7 +379,7 @@ internal class ListsApiImpl(private val client: UserClient) : ListsApi {
             "owner_screen_name" to ownerScreenName,
             "owner_id" to ownerId,
             "name" to name,
-            "mode" to mode?.name?.toLowerCase(),
+            "mode" to mode?.name?.lowercase(),
             "description" to description
         )
     }

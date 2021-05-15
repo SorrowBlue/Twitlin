@@ -110,12 +110,12 @@ internal class StatusesApiImp(private val client: UserClient) : StatusesApi {
             "hide_media" to hideMedia,
             "hide_thread" to hideThread,
             "omit_script" to omitScript,
-            "align" to align.name.toLowerCase(),
+            "align" to align.name.lowercase(),
             "related" to related,
             "lang" to lang.value,
-            "theme" to theme.name.toLowerCase(),
+            "theme" to theme.name.lowercase(),
             "link_color" to linkColor,
-            "widget_type" to widgetType?.name?.toLowerCase(),
+            "widget_type" to widgetType?.name?.lowercase(),
             "dnt" to dnt
         )
     }

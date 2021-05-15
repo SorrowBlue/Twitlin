@@ -83,7 +83,7 @@ internal open class UserClient(
         url: String,
         serializer: KSerializer<R>,
         vararg params: UrlParams
-    ): Flow<R> = channelFlow {
+    ): Flow<R> = channelFlow<R> {
         httpClient.get<HttpStatement>(url.combineParams(params)) {
             headerAuthorization(apiKey, secretKey, params.notNullParams, accessToken)
             val header = headers.entries().joinToString(", ") { it.key + ": " + it.value }
@@ -92,7 +92,7 @@ internal open class UserClient(
             do {
                 val body = response.readText()
                 logger.info { "Response Twitter API-> GET:$url, body=$body" }
-                json.decodeFromString(serializer, body).let(channel::offer)
+                json.decodeFromString(serializer, body).let { channel.offer(it) }
             } while (isClosedForSend.not())
         }
     }.catch {

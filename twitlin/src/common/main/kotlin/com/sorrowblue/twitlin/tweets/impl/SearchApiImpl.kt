@@ -35,7 +35,7 @@ internal class SearchApiImpl(private val client: UserClient) : SearchApi {
             "geocode" to geocode?.joinToString(","),
             "lang" to lang?.value,
             "local" to local,
-            "result_type" to resultType.name.toLowerCase(),
+            "result_type" to resultType.name.lowercase(),
             "count" to count,
             "until" to until,
             "since_id" to sinceId,

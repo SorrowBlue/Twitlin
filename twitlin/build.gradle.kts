@@ -38,7 +38,7 @@ kotlin {
             }
         }
     }
-    js {
+    js(IR) {
         nodejs()
         browser {
             testTask {
@@ -135,11 +135,7 @@ android {
     testOptions {
         unitTests.isReturnDefaultValues = true
     }
-    sourceSets {
-        val main by getting {
-            manifest.srcFile("src/android/main/AndroidManifest.xml")
-        }
-    }
+    sourceSets["main"].manifest.srcFile("src/android/main/AndroidManifest.xml")
 }
 
 buildkonfig {
