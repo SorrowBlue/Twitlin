@@ -141,7 +141,7 @@ android {
 buildkonfig {
     packageName = group.toString()
     defaultConfigs {
-        gradleLocalProperties(rootDir).toList().filter { it.first.toString().startsWith("QIITA_API_") }.forEach {
+        gradleLocalProperties(rootDir).toList().filter { it.first.toString().startsWith("TWITTER_API_") }.forEach {
             buildConfigField(FieldSpec.Type.STRING, it.first.toString(), it.second.toString())
         }
     }
