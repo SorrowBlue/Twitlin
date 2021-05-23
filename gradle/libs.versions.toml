@@ -1,0 +1,28 @@
+[versions]
+kotlin = "1.5.0"
+ktor = "1.5.4"
+android-buildToolsVersion = "30.0.3"
+android-minSdkVersion = "23"
+android-targetSdkVersion = "30"
+[libraries]
+
+androidx-security-crypto = "androidx.security:security-crypto:1.1.0-alpha03"
+
+kotlinx-serialization-core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1"
+kotlinx-serialization-properties = "org.jetbrains.kotlinx:kotlinx-serialization-properties:1.2.1"
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.0"
+
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+
+jsoup = "org.jsoup:jsoup:1.13.1"
+
+kotlin-logging = "io.github.microutils:kotlin-logging:2.0.6"
+slf4j-simple = "org.slf4j:slf4j-simple:1.7.30"
+slf4j-android = "org.slf4j:slf4j-android:1.7.30"
+
+[bundles]
+kotlinx-serialization = ["kotlinx-serialization-core", "kotlinx-serialization-properties"]

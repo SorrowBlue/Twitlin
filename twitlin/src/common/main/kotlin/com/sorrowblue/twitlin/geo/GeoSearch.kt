@@ -57,7 +57,7 @@ public data class GeoSearch(
             val query: String,
             @SerialName("trim_place") val trimPlace: Boolean,
             val coordinates: Coordinates,
-            val type: CoordinatesType
+            val type: CoordinatesType? = null
         ) : AndroidParcelable, JvmSerializable
     }
 

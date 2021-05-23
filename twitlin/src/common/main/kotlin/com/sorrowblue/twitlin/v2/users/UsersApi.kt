@@ -14,6 +14,7 @@ import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.tweets.OptionalData
+import com.sorrowblue.twitlin.v2.tweets.PagingData
 import kotlinx.datetime.LocalDateTime
 
 public interface UsersApi {
@@ -70,4 +71,15 @@ public interface UsersApi {
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null,
     ): Response<OptionalData<List<Tweet>>>
+
+    public suspend fun blocking(
+        id: String,
+        expansions: List<Expansion>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null
+    ): Response<PagingData<User>>
+
+    public suspend fun blocking(id: String, targetUserId: String): Response<Boolean>
+
+    public suspend fun unBlocking(sourceUserId: String, targetUserId: String): Response<Boolean>
 }

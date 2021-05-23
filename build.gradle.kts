@@ -15,7 +15,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.1.3")
-        classpath(kotlin("gradle-plugin", KOTLIN_VERSION))
+        classpath(kotlin("gradle-plugin", "1.5.0"))
     }
 }
 
@@ -40,3 +40,5 @@ nexusPublishing {
         }
     }
 }
+
+fun String.toVersion() = this + if (matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else ""

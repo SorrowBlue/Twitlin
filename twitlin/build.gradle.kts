@@ -9,13 +9,13 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
 
 plugins {
-    `kotlin-multiplatform`
-    ComAndroidPluginGroup(this).library
-    `kotlin-parcelize`
+    id("kotlin-multiplatform")
+    id("com.android.library")
+    id("kotlin-parcelize")
     `maven-publish`
     signing
-    kotlin("plugin.serialization") version KOTLIN_VERSION
-    id("org.jetbrains.dokka") version DOKKA_VERSION
+    kotlin("plugin.serialization") version "1.5.0"
+    id("org.jetbrains.dokka") version "1.4.32"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     id("com.codingfeline.buildkonfig") version "0.7.0"
 }
@@ -26,18 +26,14 @@ version = grgit.describe {
     isTags = true
 }?.toVersion() ?: "0.0.1-SNAPSHOT"
 
+fun String.toVersion() = this + if (matches(".*-[0-9]+-g[0-9a-f]{7}".toRegex())) "-SNAPSHOT" else ""
+
 kotlin {
     explicitApi()
     android {
         publishLibraryVariants("release")
     }
-    jvm {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
-    }
+    jvm()
     js(IR) {
         nodejs()
         browser {
@@ -55,77 +51,65 @@ kotlin {
         commonMain {
             kotlin.srcDirs("src/common/main/kotlin")
             dependencies {
-                api(Libs.kotlinx.datetime)
-                implementation(Libs.kotlinx.serialization)
-                implementation(Libs.kotlinx.`serialization-properties`)
-                implementation(Libs.`ktor-client`.core)
-                implementation(Libs.`ktor-client`.serialization)
-                implementation(kotlin("reflect", KOTLIN_VERSION))
-                implementation(Libs.`kotlin-logging`)
+                api(libs.kotlinx.datetime)
+                implementation(libs.bundles.kotlinx.serialization)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.serialization)
+                implementation(kotlin("reflect", "1.5.0"))
+                implementation(libs.kotlin.logging)
             }
         }
         commonTest {
             kotlin.srcDirs("src/common/test/kotlin")
             resources.srcDirs("src/common/test/resources")
             dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(kotlin("test"))
             }
         }
         val jsMain by getting {
             kotlin.srcDirs("src/js/main/kotlin")
             dependencies {
-                implementation(Libs.`ktor-client`.js)
+                implementation(libs.ktor.client.js)
                 implementation(npm("jssha", "3.2.0"))
                 implementation(npm("@sinonjs/text-encoding", "0.7.1"))
             }
         }
         val jsTest by getting {
             kotlin.srcDirs("src/js/test/kotlin")
-            dependencies {
-                implementation(kotlin("test-js"))
-            }
         }
         val androidMain by getting {
             kotlin.srcDir("src/android/main/kotlin")
             dependencies {
-                implementation(Libs.`ktor-client`.android)
-                implementation(Libs.jsoup)
-                implementation(Libs.andoridx.`security-crypto`)
-                implementation(Libs.`slf4j-android`)
+                implementation(libs.ktor.client.android)
+                implementation(libs.jsoup)
+                implementation(libs.slf4j.android)
             }
         }
         val androidTest by getting {
             kotlin.srcDir("src/android/test/kotlin")
-            dependencies {
-                implementation(kotlin("test-junit"))
-            }
         }
         val jvmMain by getting {
             kotlin.srcDirs("src/jvm/main/kotlin")
             resources.srcDirs("src/jvm/main/resources")
             dependencies {
-                implementation(Libs.`ktor-client`.okhttp)
-                implementation(Libs.jsoup)
-                implementation(Libs.`slf4j-simple`)
+                implementation(libs.ktor.client.okhttp)
+                implementation(libs.jsoup)
+                implementation(libs.slf4j.simple)
             }
         }
         val jvmTest by getting {
             kotlin.srcDirs("src/jvm/test/kotlin")
-            dependencies {
-                implementation(kotlin("test-junit"))
-            }
         }
     }
 }
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion("30.0.3")
+    compileSdkVersion = libs.versions.android.targetSdkVersion.get()
+    buildToolsVersion = (libs.versions.android.buildToolsVersion.get())
 
     defaultConfig {
-        minSdkVersion(23)
-        targetSdkVersion(30)
+        minSdkVersion(libs.versions.android.minSdkVersion.get())
+        targetSdkVersion(libs.versions.android.targetSdkVersion.get())
     }
     buildTypes {
         getByName("release") {
@@ -218,3 +202,36 @@ afterEvaluate {
         sign(publishing.publications)
     }
 }
+
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile>().configureEach {
+    kotlinOptions.freeCompilerArgs += listOf(
+         "-Xir-property-lazy-initialization"
+    )
+}
+
+fun org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication.defaultPom() {
+    pom {
+        name.set(artifactId)
+        description.set("Twitlin for Twitter API")
+        url.set("https://github.com/SorrowBlue/Twitlin")
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+        developers {
+            developer {
+                id.set("sorrowblue_sb")
+                name.set("Sorrow Blue")
+                email.set("sorrowblue.sb@gmail.com")
+            }
+        }
+        scm {
+            connection.set("scm:git:github.com/SorrowBlue/Twitlin.git")
+            developerConnection.set("scm:git:ssh://github.com/SorrowBlue/Twitlin.git")
+            url.set("https://github.com/SorrowBlue/Twitlin/tree/main")
+        }
+    }
+}
+

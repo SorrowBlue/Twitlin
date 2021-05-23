@@ -7,8 +7,8 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
-    ComAndroidPluginGroup(this).application
-    `kotlin-android`
+    id("com.android.application")
+    id("kotlin-android")
 }
 
 android {
@@ -49,11 +49,11 @@ android {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8", KOTLIN_VERSION))
-    implementation("androidx.core:core-ktx:1.6.0-alpha03")
-    implementation("androidx.activity:activity-ktx:1.3.0-alpha07")
+    implementation(kotlin("stdlib-jdk8", "1.5.0"))
+    implementation("androidx.core:core-ktx:1.6.0-beta01")
+    implementation("androidx.activity:activity-ktx:1.3.0-alpha08")
     implementation("io.coil-kt:coil:1.2.1")
-    implementation("androidx.appcompat:appcompat:1.3.0-rc01")
+    implementation("androidx.appcompat:appcompat:1.4.0-alpha01")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0-alpha01")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-alpha01")
     implementation("androidx.constraintlayout:constraintlayout:2.1.0-beta02")
@@ -62,6 +62,6 @@ dependencies {
     implementation(project(":twitlin"))
     testImplementation("org.seleniumhq.selenium:selenium-java:4.0.0-beta-2")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3-alpha06")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0-alpha06")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3-beta01")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0-beta01")
 }

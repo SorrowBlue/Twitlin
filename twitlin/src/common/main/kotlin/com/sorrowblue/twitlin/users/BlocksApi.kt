@@ -32,6 +32,7 @@ public interface BlocksApi {
      * for more information.
      * @return TODO
      */
+    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.UsersApi\$blocking.")
     public suspend fun ids(cursor: Long = -1): Response<PagingIds>
 
     /**

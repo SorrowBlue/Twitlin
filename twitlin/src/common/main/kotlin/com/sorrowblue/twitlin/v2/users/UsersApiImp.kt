@@ -16,7 +16,10 @@ import com.sorrowblue.twitlin.v2.field.toParameter
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.tweets.OptionalData
+import com.sorrowblue.twitlin.v2.tweets.PagingData
+import com.sorrowblue.twitlin.v2.tweets.PagingTweet
 import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 
 private const val USERS_API = "$TWITTER_API_V2/users"
@@ -111,4 +114,34 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
             "user.fields" to userFields?.toParameter()
         )
     }
+
+    override suspend fun blocking(
+        id: String,
+        expansions: List<UsersApi.Expansion>?,
+        tweetFields: List<TweetField>?,
+        userFields: List<UserField>?,
+    ) = client.get(
+        "$USERS_API/$id/blocking",
+        serializer = Response.serializer(PagingData.serializer(User.serializer())),
+        "expansions" to expansions?.toParameter(),
+        "tweet.fields" to tweetFields?.toParameter(),
+        "user.fields" to userFields?.toParameter()
+    )
+
+    override suspend fun blocking(id: String, targetUserId: String) = client.postJson(
+        "$USERS_API/$id/blocking",
+        serializer = Response.serializer(BlockingResponse.serializer()),
+        clazz = BlockingRequest(targetUserId)
+    ).convertData(BlockingResponse::blovking)
+
+    override suspend fun unBlocking(sourceUserId: String, targetUserId: String) = client.delete(
+        "$USERS_API/$sourceUserId/blocking/$targetUserId",
+        serializer = Response.serializer(BlockingResponse.serializer())
+    ).convertData(BlockingResponse::blovking)
 }
+
+@Serializable
+internal class BlockingResponse(val blovking: Boolean)
+
+@Serializable
+internal class BlockingRequest(val target_user_id: String)

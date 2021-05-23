@@ -47,6 +47,26 @@ public data class PagingTweet(
     ) : JvmSerializable
 }
 
+@Serializable
+public data class PagingData<T>(
+    val data: List<T>,
+    val includes: Includes? = null,
+    val meta: Meta,
+    val errors: List<Error>? = null
+) : JvmSerializable {
+    @Serializable
+    public data class Meta(
+        @SerialName("oldest_id")
+        val oldestId: String,
+        @SerialName("newest_id")
+        val newestId: String,
+        @SerialName("result_count")
+        val resultCount: Int,
+        @SerialName("next_token")
+        val nextToken: String
+    ) : JvmSerializable
+}
+
 /**
  * TODO
  *
