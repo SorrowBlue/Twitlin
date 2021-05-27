@@ -12,12 +12,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion = "30.0.3"
+    compileSdkVersion(libs.versions.android.targetSdkVersion.get().toInt())
+    buildToolsVersion = libs.versions.android.buildToolsVersion.get()
     defaultConfig {
         applicationId = "com.sorrowblue.twitlin.androidsample"
-        minSdkVersion(26)
-        targetSdkVersion(30)
+        minSdkVersion(libs.versions.android.minSdkVersion.get().toInt())
+        targetSdkVersion(libs.versions.android.targetSdkVersion.get().toInt())
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
