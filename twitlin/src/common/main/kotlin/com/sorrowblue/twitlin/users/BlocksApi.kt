@@ -32,7 +32,7 @@ public interface BlocksApi {
      * for more information.
      * @return TODO
      */
-    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.UsersApi\$blocking.")
+    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.UsersApi#blocking.")
     public suspend fun ids(cursor: Long = -1): Response<PagingIds>
 
     /**
@@ -56,6 +56,7 @@ public interface BlocksApi {
      * user objects.
      * @return TODO
      */
+    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.UsersApi#blocking.")
     public suspend fun list(
         cursor: String = "-1",
         includeEntities: Boolean? = null,
@@ -80,6 +81,7 @@ public interface BlocksApi {
      * user objects.
      * @return TODO
      */
+    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.UsersApi#blocking.")
     public suspend fun create(
         screenName: String? = null,
         userId: String? = null,
@@ -101,6 +103,7 @@ public interface BlocksApi {
      * user objects.
      * @return TODO
      */
+    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.UsersApi#blocking.")
     public suspend fun destroy(
         screenName: String? = null,
         userId: String? = null,

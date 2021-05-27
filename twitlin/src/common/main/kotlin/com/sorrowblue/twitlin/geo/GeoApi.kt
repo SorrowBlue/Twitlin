@@ -109,4 +109,3 @@ public interface GeoApi {
         maxResults: Int? = null
     ): Response<GeoSearch>
 }
-

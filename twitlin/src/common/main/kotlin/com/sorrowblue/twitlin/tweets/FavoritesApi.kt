@@ -26,6 +26,7 @@ public interface FavoritesApi {
      * @param includeEntities The entities node will be omitted when set to `false`.
      * @return TODO
      */
+    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.UsersApi#likes.")
     public suspend fun create(id: String, includeEntities: Boolean = true): Response<Tweet>
 
     /**
@@ -42,6 +43,7 @@ public interface FavoritesApi {
      * @param includeEntities The entities node will be omitted when set to `false`.
      * @return TODO
      */
+    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.UsersApi#likes.")
     public suspend fun destroy(id: String, includeEntities: Boolean = true): Response<Tweet>
 
     /**
@@ -63,6 +65,7 @@ public interface FavoritesApi {
      * @param includeEntities The entities node will be omitted when set to `false`.
      * @return TODO
      */
+    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.UsersApi#liked_tweets.")
     public suspend fun list(
         userId: String? = null,
         screenName: String? = null,

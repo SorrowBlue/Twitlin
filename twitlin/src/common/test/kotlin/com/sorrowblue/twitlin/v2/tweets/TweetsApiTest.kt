@@ -84,6 +84,11 @@ class TweetsApiTest : AbstractTest {
         )
     }
 
+    @Test
+    fun testMentions() = runBlocking {
+        TwitterV2API.tweetsApi.mentions("986174595660005377").testResult()
+    }
+
     /**
      * [See tweet](https://twitter.com/sorrowblue_sb/status/1299752429290885127)
      */
@@ -119,13 +124,8 @@ class TweetsApiTest : AbstractTest {
     }
 
     @Test
-    fun testLikes() = runBlocking {
-        TwitterV2API.tweetsApi.likes("938122027231150081", "1390361333284020227").testResult()
-    }
-
-    @Test
-    fun testUnLikes() = runBlocking {
-        TwitterV2API.tweetsApi.unLike("938122027231150081", "1390361333284020227").testResult()
+    fun testLikingUsers() = runBlocking {
+        TwitterV2API.tweetsApi.likingUsers("1394925800470814720").testResult()
     }
 }
 

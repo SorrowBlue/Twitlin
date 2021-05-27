@@ -15,7 +15,7 @@ import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.field.toParameter
 import com.sorrowblue.twitlin.v2.objects.Tweet
-import com.sorrowblue.twitlin.v2.tweets.PagingTweet
+import com.sorrowblue.twitlin.v2.tweets.PagingData
 import com.sorrowblue.twitlin.v2.tweets.search.AddedSearchStreamRules
 import com.sorrowblue.twitlin.v2.tweets.search.DeletedSearchStreamRules
 import com.sorrowblue.twitlin.v2.tweets.search.SearchStreamRule
@@ -96,10 +96,10 @@ internal class TweetsSearchAppApiImpl(private val appClient: AppClient) : Tweets
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<PagingTweet> {
+    ): Response<PagingData<Tweet>> {
         return appClient.post(
             "$SEARCH/all",
-            Response.serializer(PagingTweet.serializer()),
+            Response.serializer(PagingData.serializer(Tweet.serializer())),
             "query" to query,
             "max_results" to maxResults,
             "next_token" to nextToken,
@@ -130,10 +130,10 @@ internal class TweetsSearchAppApiImpl(private val appClient: AppClient) : Tweets
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<PagingTweet> {
+    ): Response<PagingData<Tweet>> {
         return appClient.get(
             "$SEARCH/recent",
-            Response.serializer(PagingTweet.serializer()),
+            Response.serializer(PagingData.serializer(Tweet.serializer())),
             "query" to query,
             "max_results" to maxResults,
             "next_token" to nextToken,

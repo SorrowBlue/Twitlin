@@ -8,8 +8,9 @@ import com.sorrowblue.twitlin.TwitterV2API
 import com.sorrowblue.twitlin.v2.field.Expansion
 import com.sorrowblue.twitlin.v2.field.MediaField
 import com.sorrowblue.twitlin.v2.field.TweetField
+import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.testResult
-import com.sorrowblue.twitlin.v2.tweets.PagingTweet
+import com.sorrowblue.twitlin.v2.tweets.PagingData
 import test.AbstractTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -18,7 +19,7 @@ class TweetsSearchApiTest : AbstractTest {
 
     @Test
     fun testSearchRecent() = runBlocking {
-        val result = mutableListOf<PagingTweet>()
+        val result = mutableListOf<PagingData<Tweet>>()
         searchRecent()?.let {
             result.add(it)
 //            searchRecent(it.meta.nextToken)?.let {
@@ -41,7 +42,7 @@ class TweetsSearchApiTest : AbstractTest {
         ).testResult()
     }
 
-    private suspend fun searchRecent(nextToken: String? = null): PagingTweet? =
+    private suspend fun searchRecent(nextToken: String? = null): PagingData<Tweet>? =
         TwitterV2API.tweetsSearchApi.searchRecent(query = "python", nextToken = nextToken)
             .testResult()
 

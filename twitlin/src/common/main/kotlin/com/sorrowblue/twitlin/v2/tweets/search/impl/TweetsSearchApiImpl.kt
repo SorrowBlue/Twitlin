@@ -14,7 +14,8 @@ import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.field.toParameter
-import com.sorrowblue.twitlin.v2.tweets.PagingTweet
+import com.sorrowblue.twitlin.v2.objects.Tweet
+import com.sorrowblue.twitlin.v2.tweets.PagingData
 import com.sorrowblue.twitlin.v2.tweets.search.AddedSearchStreamRules
 import com.sorrowblue.twitlin.v2.tweets.search.SearchStreamRule
 import com.sorrowblue.twitlin.v2.tweets.search.TweetsSearchApi
@@ -39,10 +40,10 @@ internal class TweetsSearchApiImpl(val client: UserClient) : TweetsSearchApi {
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<PagingTweet> {
+    ): Response<PagingData<Tweet>> {
         return client.get(
             "$SEARCH/recent",
-            Response.serializer(PagingTweet.serializer()),
+            Response.serializer(PagingData.serializer(Tweet.serializer())),
             "query" to query,
             "max_results" to maxResults,
             "next_token" to nextToken,

@@ -5,7 +5,8 @@
 package com.sorrowblue.twitlin.v2
 
 import com.sorrowblue.twitlin.v2.client.Response
-import com.sorrowblue.twitlin.v2.tweets.PagingTweet
+import com.sorrowblue.twitlin.v2.objects.Tweet
+import com.sorrowblue.twitlin.v2.tweets.PagingData
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 
@@ -39,7 +40,7 @@ class ResponseSelialiseTest {
               ]
             }
         """.trimIndent()
-        val result = Json.decodeFromString(Response.serializer(PagingTweet.serializer()), body)
+        val result = Json.decodeFromString(Response.serializer(PagingData.serializer(Tweet.serializer())), body)
         print(result)
     }
 }

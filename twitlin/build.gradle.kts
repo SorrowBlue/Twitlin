@@ -9,7 +9,7 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
 
 plugins {
-    id("kotlin-multiplatform")
+    kotlin("multiplatform")
     id("com.android.library")
     id("kotlin-parcelize")
     `maven-publish`
@@ -85,8 +85,10 @@ kotlin {
                 implementation(libs.slf4j.android)
             }
         }
+        val androidAndroidTestRelease by getting
         val androidTest by getting {
             kotlin.srcDir("src/android/test/kotlin")
+            dependsOn(androidAndroidTestRelease)
         }
         val jvmMain by getting {
             kotlin.srcDirs("src/jvm/main/kotlin")
@@ -104,12 +106,12 @@ kotlin {
 }
 
 android {
-    compileSdkVersion = libs.versions.android.targetSdkVersion.get()
+    compileSdkVersion(libs.versions.android.targetSdkVersion.get().toInt())
     buildToolsVersion = (libs.versions.android.buildToolsVersion.get())
 
     defaultConfig {
-        minSdkVersion(libs.versions.android.minSdkVersion.get())
-        targetSdkVersion(libs.versions.android.targetSdkVersion.get())
+        minSdkVersion(libs.versions.android.minSdkVersion.get().toInt())
+        targetSdkVersion(libs.versions.android.targetSdkVersion.get().toInt())
     }
     buildTypes {
         getByName("release") {
@@ -160,14 +162,11 @@ val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     reporters {
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+        filter {
+            exclude("**/BuildKonfig.kt")
+        }
     }
-}
-
-tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.GenerateReportsTask> {
-    reportsOutputDirectory.set(
-        project.layout.buildDirectory.dir("$rootDir/docs/reports")
-    )
 }
 
 afterEvaluate {
@@ -189,7 +188,29 @@ afterEvaluate {
             if (name.contains("ios").not() && name != "kotlinMultiPlatform") {
                 setModuleDescriptorGenerator(null)
             }
-            defaultPom()
+            pom {
+                name.set(artifactId)
+                description.set("Twitlin for Twitter API")
+                url.set("https://github.com/SorrowBlue/Twitlin")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("sorrowblue_sb")
+                        name.set("Sorrow Blue")
+                        email.set("sorrowblue.sb@gmail.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:github.com/SorrowBlue/Twitlin.git")
+                    developerConnection.set("scm:git:ssh://github.com/SorrowBlue/Twitlin.git")
+                    url.set("https://github.com/SorrowBlue/Twitlin/tree/main")
+                }
+            }
         }
     }
     signing {
@@ -205,33 +226,6 @@ afterEvaluate {
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile>().configureEach {
     kotlinOptions.freeCompilerArgs += listOf(
-         "-Xir-property-lazy-initialization"
+        "-Xir-property-lazy-initialization"
     )
 }
-
-fun org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication.defaultPom() {
-    pom {
-        name.set(artifactId)
-        description.set("Twitlin for Twitter API")
-        url.set("https://github.com/SorrowBlue/Twitlin")
-        licenses {
-            license {
-                name.set("The Apache License, Version 2.0")
-                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-            }
-        }
-        developers {
-            developer {
-                id.set("sorrowblue_sb")
-                name.set("Sorrow Blue")
-                email.set("sorrowblue.sb@gmail.com")
-            }
-        }
-        scm {
-            connection.set("scm:git:github.com/SorrowBlue/Twitlin.git")
-            developerConnection.set("scm:git:ssh://github.com/SorrowBlue/Twitlin.git")
-            url.set("https://github.com/SorrowBlue/Twitlin/tree/main")
-        }
-    }
-}
-

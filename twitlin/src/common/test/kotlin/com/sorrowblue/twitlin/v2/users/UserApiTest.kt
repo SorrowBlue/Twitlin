@@ -4,7 +4,6 @@
 
 package com.sorrowblue.twitlin.v2.users
 
-import com.sorrowblue.twitlin.TwitterAPI
 import com.sorrowblue.twitlin.TwitterV2API
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
@@ -12,7 +11,6 @@ import com.sorrowblue.twitlin.v2.testResult
 import test.AbstractTest
 import kotlin.test.Test
 import kotlin.test.assertNotNull
-import test.resultLog
 
 class UserApiTest : AbstractTest {
 
@@ -22,7 +20,7 @@ class UserApiTest : AbstractTest {
             "938122027231150081",
             tweetFields = TweetField.all(),
             userFields = UserField.all(),
-            expansions = UsersApi.Expansion.all()
+            expansions = Expansion.all()
         ).testResult().also(::assertNotNull)
     }
 
@@ -32,7 +30,7 @@ class UserApiTest : AbstractTest {
             listOf("2244994945", "6253282"),
             tweetFields = TweetField.all(),
             userFields = UserField.all(),
-            expansions = UsersApi.Expansion.all()
+            expansions = Expansion.all()
         ).testResult().also {
             assertNotNull(it, "")
         }
@@ -44,7 +42,7 @@ class UserApiTest : AbstractTest {
             "TwitterDev",
             tweetFields = TweetField.all(),
             userFields = UserField.all(),
-            expansions = UsersApi.Expansion.all()
+            expansions = Expansion.all()
         ).testResult().also {
             assertNotNull(it, "")
         }
@@ -57,10 +55,32 @@ class UserApiTest : AbstractTest {
     }
 
     @Test
+    fun testBlockingList() = runBlocking {
+        TwitterV2API.usersApi.blocking("938122027231150081").testResult()
+    }
+
+    @Test
     fun testBlocking() = runBlocking {
-        val userId = TwitterV2API.usersApi.byUsername("sorrowblue_sb").dataOrNull()?.data?.id!!
-        TwitterAPI.blocksApi.ids().resultLog()
-        TwitterV2API.usersApi.blocking(userId, UsersApi.Expansion.all(), TweetField.all(), UserField.all())
-            .testResult()
+        TwitterV2API.usersApi.blocking("938122027231150081", "783214").testResult()
+    }
+
+    @Test
+    fun testUnBlocking() = runBlocking {
+        TwitterV2API.usersApi.unBlocking("938122027231150081", "783214").testResult()
+    }
+
+    @Test
+    fun testLikedTweets() = runBlocking {
+        TwitterV2API.usersApi.likedTweets("938122027231150081").testResult()
+    }
+
+    @Test
+    fun testLikes() = runBlocking {
+        TwitterV2API.usersApi.likes("938122027231150081", "1394925800470814720").testResult()
+    }
+
+    @Test
+    fun testUnLikes() = runBlocking {
+        TwitterV2API.usersApi.unLikes("938122027231150081", "1394925800470814720").testResult()
     }
 }

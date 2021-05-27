@@ -5,7 +5,6 @@
 package com.sorrowblue.twitlin.v2.tweets
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
-import com.sorrowblue.twitlin.authentication.OAuthApi
 import com.sorrowblue.twitlin.v2.client.Error
 import com.sorrowblue.twitlin.v2.client.Includes
 import com.sorrowblue.twitlin.v2.client.Response
@@ -16,9 +15,10 @@ import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.objects.Tweet
+import com.sorrowblue.twitlin.v2.objects.User
 import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import com.sorrowblue.twitlin.v2.users.Expansion as UsersExpansion
 
 @Serializable
 public data class OptionalData<T>(
@@ -26,46 +26,6 @@ public data class OptionalData<T>(
     val includes: Includes? = null,
     val errors: List<Error>? = null,
 ) : JvmSerializable
-
-@Serializable
-public data class PagingTweet(
-    val data: List<Tweet>,
-    val includes: Includes? = null,
-    val meta: Meta,
-    val errors: List<Error>? = null
-) : JvmSerializable {
-    @Serializable
-    public data class Meta(
-        @SerialName("oldest_id")
-        val oldestId: String,
-        @SerialName("newest_id")
-        val newestId: String,
-        @SerialName("result_count")
-        val resultCount: Int,
-        @SerialName("next_token")
-        val nextToken: String
-    ) : JvmSerializable
-}
-
-@Serializable
-public data class PagingData<T>(
-    val data: List<T>,
-    val includes: Includes? = null,
-    val meta: Meta,
-    val errors: List<Error>? = null
-) : JvmSerializable {
-    @Serializable
-    public data class Meta(
-        @SerialName("oldest_id")
-        val oldestId: String,
-        @SerialName("newest_id")
-        val newestId: String,
-        @SerialName("result_count")
-        val resultCount: Int,
-        @SerialName("next_token")
-        val nextToken: String
-    ) : JvmSerializable
-}
 
 /**
  * TODO
@@ -138,8 +98,8 @@ public interface TweetsApi {
 
     public suspend fun mentions(
         id: String,
-        endTime: LocalDateTime,
-        startTime: LocalDateTime,
+        endTime: LocalDateTime? = null,
+        startTime: LocalDateTime? = null,
         maxResults: Int = 10,
         paginationToken: String? = null,
         sinceId: String? = null,
@@ -150,18 +110,12 @@ public interface TweetsApi {
         pollFields: List<PollField>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
-    ): Response<PagingTweet>
+    ): Response<PagingData<Tweet>>
 
-    /**
-     * Causes the user ID identified in the path parameter to Like the target Tweet.
-     *
-     * @param userId The user ID who you are liking a Tweet on behalf of. It must match your own user ID or that of an
-     * authenticating user, meaning that you must pass the [OAuthApi.accessToken] associated with the user ID when
-     * authenticating your request.
-     * @param tweetId The ID of the Tweet that you would like the user `id` to Like.
-     * @return
-     */
-    public suspend fun likes(userId: String, tweetId: String): Response<Boolean>
-
-    public suspend fun unLike(userId: String, tweetId: String): Response<Boolean>
+    public suspend fun likingUsers(
+        id: String,
+        expansions: List<UsersExpansion>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null
+    ): Response<PagingData<User>>
 }

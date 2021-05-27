@@ -68,5 +68,5 @@ public data class ReverseGeocode(
     @Serializable
     public data class Result(
         val places: List<Place>
-        ) : AndroidParcelable, JvmSerializable
+    ) : AndroidParcelable, JvmSerializable
 }

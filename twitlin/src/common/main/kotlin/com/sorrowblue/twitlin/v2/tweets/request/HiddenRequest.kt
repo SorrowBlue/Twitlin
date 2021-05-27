@@ -7,4 +7,4 @@ package com.sorrowblue.twitlin.v2.tweets.request
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class HiddenRequest(val hidden: Boolean)
+internal class HiddenRequest(@Suppress("unused") val hidden: Boolean)

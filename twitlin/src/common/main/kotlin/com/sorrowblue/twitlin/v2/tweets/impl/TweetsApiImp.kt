@@ -15,14 +15,16 @@ import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.field.toParameter
 import com.sorrowblue.twitlin.v2.objects.Tweet
+import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.tweets.OptionalData
-import com.sorrowblue.twitlin.v2.tweets.PagingTweet
+import com.sorrowblue.twitlin.v2.tweets.PagingData
 import com.sorrowblue.twitlin.v2.tweets.TweetsApi
 import com.sorrowblue.twitlin.v2.tweets.request.HiddenRequest
 import com.sorrowblue.twitlin.v2.tweets.response.HiddenResponse
 import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.Serializable
+import kotlinx.datetime.encodeToISOString
 import kotlinx.serialization.builtins.ListSerializer
+import com.sorrowblue.twitlin.v2.users.Expansion as UsersExpansion
 
 private const val TWEETS = "${Urls.V2}/tweets"
 private const val USERS = "${Urls.V2}/users"
@@ -79,8 +81,8 @@ internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
 
     override suspend fun mentions(
         id: String,
-        endTime: LocalDateTime,
-        startTime: LocalDateTime,
+        endTime: LocalDateTime?,
+        startTime: LocalDateTime?,
         maxResults: Int,
         paginationToken: String?,
         sinceId: String?,
@@ -91,40 +93,37 @@ internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<PagingTweet> = TODO()
-    /*userClient.get(
-        "$USERS/$id/mentions",
-        "endTime" to endTime.toInstant(TimeZone.UTC),
-        startTime: LocalDateTime,
-        maxResults: Int,
-        paginationToken: String?,
-    sinceId: String?,
-    untilId: String?,
-        "expansions" to expansions?.toParameter(),
-        "media.fields" to mediaFields?.toParameter(),
-        "place.fields" to placeFields?.toParameter(),
-        "poll.fields" to pollFields?.toParameter(),
-        "tweet.fields" to tweetFields?.toParameter(),
-        "user.fields" to userFields?.toParameter(),
-    )*/
+    ): Response<PagingData<Tweet>> {
+        return userClient.get(
+            "$USERS/$id/mentions",
+            serializer = Response.serializer(PagingData.serializer(Tweet.serializer())),
+            "end_time" to endTime?.encodeToISOString(),
+            "start_time" to startTime?.encodeToISOString(),
+            "max_results" to maxResults,
+            "expansions" to expansions?.toParameter(),
+            "pagination_token" to paginationToken,
+            "media.fields" to mediaFields?.toParameter(),
+            "place.fields" to placeFields?.toParameter(),
+            "poll.fields" to pollFields?.toParameter(),
+            "since_id" to sinceId,
+            "until_id" to untilId,
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter(),
+        )
+    }
 
-    override suspend fun likes(userId: String, tweetId: String) = userClient.postJson(
-        "$USERS/$userId/likes",
-        Like(tweetId),
-        serializer = Response.serializer(TweetLikeResponse.serializer())
-    ).convertData { it.data.liked }
-
-    override suspend fun unLike(userId: String, tweetId: String) =
-        userClient.delete("$USERS/$userId/likes/$tweetId", Response.serializer(TweetLikeResponse.serializer()))
-            .convertData { it.data.liked }
+    override suspend fun likingUsers(
+        id: String,
+        expansions: List<UsersExpansion>?,
+        tweetFields: List<TweetField>?,
+        userFields: List<UserField>?
+    ): Response<PagingData<User>> {
+        return userClient.get(
+            "$TWEETS/$id/liking_users",
+            serializer = Response.serializer(PagingData.serializer(User.serializer())),
+            "expansions" to expansions?.toParameter(),
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter()
+        )
+    }
 }
-
-@Serializable
-internal class TweetLikeResponse(val data: Data) {
-
-    @Serializable
-    class Data(val liked: Boolean)
-}
-
-@Serializable
-internal class Like(val tweet_id: String)

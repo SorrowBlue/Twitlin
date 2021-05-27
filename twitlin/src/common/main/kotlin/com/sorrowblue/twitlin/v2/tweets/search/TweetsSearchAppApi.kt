@@ -17,7 +17,7 @@ import com.sorrowblue.twitlin.v2.objects.Place
 import com.sorrowblue.twitlin.v2.objects.Poll
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
-import com.sorrowblue.twitlin.v2.tweets.PagingTweet
+import com.sorrowblue.twitlin.v2.tweets.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 
@@ -153,7 +153,7 @@ public interface TweetsSearchAppApi {
         pollFields: List<PollField>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
-    ): Response<PagingTweet>
+    ): Response<PagingData<Tweet>>
 
     /**
      * The recent search endpoint returns Tweets from the last 7 days that match a search query.
@@ -200,5 +200,5 @@ public interface TweetsSearchAppApi {
         pollFields: List<PollField>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
-    ): Response<PagingTweet>
+    ): Response<PagingData<Tweet>>
 }

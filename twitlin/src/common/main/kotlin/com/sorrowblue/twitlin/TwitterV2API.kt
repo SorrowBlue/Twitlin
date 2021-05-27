@@ -13,7 +13,7 @@ import com.sorrowblue.twitlin.v2.tweets.search.TweetsSearchAppApi
 import com.sorrowblue.twitlin.v2.tweets.search.impl.TweetsSearchApiImpl
 import com.sorrowblue.twitlin.v2.tweets.search.impl.TweetsSearchAppApiImpl
 import com.sorrowblue.twitlin.v2.users.UsersApi
-import com.sorrowblue.twitlin.v2.users.UsersApiImp
+import com.sorrowblue.twitlin.v2.users.impl.UsersApiImp
 
 public object TwitterV2API {
     public val tweetsApi: TweetsApi by lazy { TweetsApiImp(Twitlin.v2UserClient) }

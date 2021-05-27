@@ -12,7 +12,7 @@ import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.objects.Tweet
-import com.sorrowblue.twitlin.v2.tweets.PagingTweet
+import com.sorrowblue.twitlin.v2.tweets.PagingData
 import kotlinx.datetime.LocalDateTime
 
 /**
@@ -67,7 +67,7 @@ public interface TweetsSearchApi {
         pollFields: List<PollField>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
-    ): Response<PagingTweet>
+    ): Response<PagingData<Tweet>>
 
     public suspend fun addStreamRules(
         rules: List<SearchStreamRule>,
