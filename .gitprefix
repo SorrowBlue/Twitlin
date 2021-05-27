@@ -7,3 +7,5 @@
 :heavy_plus_sign: Add a dependency.
 :heavy_minus_sign: Remove a dependency.
 :wrench: Add or update configuration files.
+:arrow_up: Upgrade dependencies.
+:arrow_down: Downgrade dependencies.
