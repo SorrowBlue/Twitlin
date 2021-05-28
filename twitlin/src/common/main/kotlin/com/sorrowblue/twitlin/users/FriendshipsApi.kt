@@ -113,6 +113,7 @@ public interface FriendshipsApi {
      * @param follow
      * @return TODO
      */
+    @Deprecated("UsersApi.following")
     public suspend fun create(
         screenName: String? = null,
         userId: String? = null,
@@ -131,6 +132,7 @@ public interface FriendshipsApi {
      * @param userId The ID of the user to unfollow.
      * @return TODO
      */
+    @Deprecated("UsersApi.unFollowing")
     public suspend fun destroy(
         screenName: String? = null,
         userId: String? = null

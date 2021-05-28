@@ -83,4 +83,24 @@ class UserApiTest : AbstractTest {
     fun testUnLikes() = runBlocking {
         TwitterV2API.usersApi.unLikes("938122027231150081", "1394925800470814720").testResult()
     }
+
+    @Test
+    fun testFollowingList() = runBlocking {
+        TwitterV2API.usersApi.following("938122027231150081").testResult()
+    }
+
+    @Test
+    fun testFollowing() = runBlocking {
+        TwitterV2API.usersApi.following("938122027231150081", "1613102274").testResult()
+    }
+
+    @Test
+    fun testUnFollowing() = runBlocking {
+        TwitterV2API.usersApi.unFollowing("938122027231150081", "1613102274").testResult()
+    }
+
+    @Test
+    fun testFollowers() = runBlocking {
+        TwitterV2API.usersApi.followers("938122027231150081").testResult()
+    }
 }

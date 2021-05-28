@@ -101,4 +101,26 @@ public interface UsersApi {
         maxResults: Int = 100,
         paginationToken: String? = null
     ): Response<PagingData<Tweet>>
+
+    public suspend fun following(
+        id: String,
+        expansions: List<Expansion>? = null,
+        maxResults: Int = 100,
+        paginationToken: String? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null
+    ): Response<PagingData<User>>
+
+    public suspend fun following(id: String, targetUserId: String): Response<Following>
+
+    public suspend fun unFollowing(sourceUserId: String, targetUserId: String): Response<Boolean>
+
+    public suspend fun followers(
+        id: String,
+        expansions: List<Expansion>? = null,
+        maxResults: Int = 100,
+        paginationToken: String? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null
+    ): Response<PagingData<User>>
 }

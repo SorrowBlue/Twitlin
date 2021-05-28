@@ -7,7 +7,6 @@ package com.sorrowblue.twitlin.v2.users.impl
 import com.sorrowblue.twitlin.v2.TWITTER_API_V2
 import com.sorrowblue.twitlin.v2.client.Response
 import com.sorrowblue.twitlin.v2.client.UserClient
-import com.sorrowblue.twitlin.v2.field.Expansion
 import com.sorrowblue.twitlin.v2.field.MediaField
 import com.sorrowblue.twitlin.v2.field.PlaceField
 import com.sorrowblue.twitlin.v2.field.PollField
@@ -18,20 +17,26 @@ import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.tweets.OptionalData
 import com.sorrowblue.twitlin.v2.tweets.PagingData
+import com.sorrowblue.twitlin.v2.users.Expansion
+import com.sorrowblue.twitlin.v2.users.Following
+import com.sorrowblue.twitlin.v2.users.response.FollowingResponse
+import com.sorrowblue.twitlin.v2.users.response.UnFollowingResponse
 import com.sorrowblue.twitlin.v2.users.request.LikesRequest
 import com.sorrowblue.twitlin.v2.users.response.LikesResponse
 import com.sorrowblue.twitlin.v2.users.UsersApi
 import com.sorrowblue.twitlin.v2.users.request.BlockingRequest
+import com.sorrowblue.twitlin.v2.users.request.FollowingRequest
 import com.sorrowblue.twitlin.v2.users.response.BlockingResponse
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.builtins.ListSerializer
+import com.sorrowblue.twitlin.v2.field.Expansion as FieldExpansion
 
 private const val USERS_API = "$TWITTER_API_V2/users"
 
 internal class UsersApiImp(private val client: UserClient) : UsersApi {
     override suspend fun users(
         id: String,
-        expansions: List<com.sorrowblue.twitlin.v2.users.Expansion>?,
+        expansions: List<Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?,
     ): Response<OptionalData<User>> {
@@ -46,7 +51,7 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
 
     override suspend fun users(
         ids: List<String>,
-        expansions: List<com.sorrowblue.twitlin.v2.users.Expansion>?,
+        expansions: List<Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?,
     ): Response<OptionalData<List<User>>> {
@@ -62,7 +67,7 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
 
     override suspend fun byUsername(
         username: String,
-        expansions: List<com.sorrowblue.twitlin.v2.users.Expansion>?,
+        expansions: List<Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
     ): Response<OptionalData<User>> {
@@ -77,7 +82,7 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
 
     override suspend fun byUsername(
         usernames: List<String>,
-        expansions: List<com.sorrowblue.twitlin.v2.users.Expansion>?,
+        expansions: List<Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
     ): Response<OptionalData<List<User>>> {
@@ -100,7 +105,7 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
         pagination_token: String?,
         since_id: String?,
         until_id: String?,
-        expansions: List<com.sorrowblue.twitlin.v2.users.Expansion>?,
+        expansions: List<Expansion>?,
         mediaFields: List<MediaField>?,
         placeFields: List<PlaceField>?,
         pollFields: List<PollField>?,
@@ -121,7 +126,7 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
 
     override suspend fun blocking(
         id: String,
-        expansions: List<com.sorrowblue.twitlin.v2.users.Expansion>?,
+        expansions: List<Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?,
         maxResults: Int,
@@ -170,7 +175,7 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
 
     override suspend fun likedTweets(
         id: String,
-        expansions: List<Expansion>?,
+        expansions: List<FieldExpansion>?,
         mediaFields: List<MediaField>?,
         placeFields: List<PlaceField>?,
         userFields: List<UserField>?,
@@ -190,6 +195,59 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
             "user.fields" to userFields?.toParameter(),
             "max_results" to maxResults,
             "pagination_token" to paginationToken
+        )
+    }
+
+    override suspend fun following(
+        id: String,
+        expansions: List<Expansion>?,
+        maxResults: Int,
+        paginationToken: String?,
+        tweetFields: List<TweetField>?,
+        userFields: List<UserField>?
+    ): Response<PagingData<User>> {
+        return client.get(
+            "$USERS_API/$id/following",
+            serializer = Response.serializer(PagingData.serializer(User.serializer())),
+            "expansions" to expansions?.toParameter(),
+            "max_results" to maxResults,
+            "pagination_token" to paginationToken,
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter()
+        )
+    }
+
+    override suspend fun following(id: String, targetUserId: String): Response<Following> {
+        return client.postJson(
+            "$USERS_API/$id/following",
+            FollowingRequest(targetUserId),
+            serializer = Response.serializer(FollowingResponse.serializer())
+        ).convertData { it.data }
+    }
+
+    override suspend fun unFollowing(sourceUserId: String, targetUserId: String): Response<Boolean> {
+        return client.delete(
+            "$USERS_API/$sourceUserId/following/$targetUserId",
+            serializer = Response.serializer(UnFollowingResponse.serializer())
+        ).convertData { it.data.following }
+    }
+
+    override suspend fun followers(
+        id: String,
+        expansions: List<Expansion>?,
+        maxResults: Int,
+        paginationToken: String?,
+        tweetFields: List<TweetField>?,
+        userFields: List<UserField>?
+    ): Response<PagingData<User>> {
+        return client.get(
+            "$USERS_API/$id/followers",
+            serializer = Response.serializer(PagingData.serializer(User.serializer())),
+            "expansions" to expansions?.toParameter(),
+            "max_results" to maxResults,
+            "pagination_token" to paginationToken,
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter()
         )
     }
 }

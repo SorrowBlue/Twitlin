@@ -61,6 +61,7 @@ public interface FriendsApi {
      * encouraged in environments where all 5,000 IDs constitutes too large of a response.
      * @return TODO
      */
+    @Deprecated("UsersApi.following")
     public suspend fun ids(
         userId: String? = null,
         screenName: String? = null,
@@ -93,6 +94,7 @@ public interface FriendsApi {
      * when set to `false`.
      * @return TODO
      */
+    @Deprecated("UsersApi.following")
     public suspend fun list(
         userId: String? = null,
         screenName: String? = null,
