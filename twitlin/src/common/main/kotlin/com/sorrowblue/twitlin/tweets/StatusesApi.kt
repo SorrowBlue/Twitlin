@@ -8,7 +8,6 @@ import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.objects.PagingIds
 import com.sorrowblue.twitlin.objects.Tweet
 import com.sorrowblue.twitlin.objects.User
-import com.sorrowblue.twitlin.utilities.LanguageCode
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -160,7 +159,7 @@ public interface StatusesApi {
         omitScript: Boolean = false,
         align: Align = Align.NONE,
         related: String? = null,
-        lang: LanguageCode = LanguageCode.ENGLISH,
+        lang: String = "en",
         theme: Theme = Theme.LIGHT,
         linkColor: String? = null,
         widgetType: WidgetType? = null,

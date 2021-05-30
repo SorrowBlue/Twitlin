@@ -10,7 +10,6 @@ import com.sorrowblue.twitlin.core.Urls
 import com.sorrowblue.twitlin.objects.User
 import com.sorrowblue.twitlin.users.AccountApi
 import com.sorrowblue.twitlin.users.Settings
-import com.sorrowblue.twitlin.utilities.LanguageCode
 import kotlinx.serialization.builtins.serializer
 
 private const val ACCOUNT = "${Urls.V1}/account"
@@ -47,7 +46,7 @@ internal class AccountApiImpl(private val client: UserClient) : AccountApi {
         endSleepTime: Int?,
         timeZone: String?,
         trendLocationWoeid: Int?,
-        lang: LanguageCode?
+        lang: String?
     ): Response<Settings> {
         return client.post(
             "$ACCOUNT/settings.json",
@@ -57,7 +56,7 @@ internal class AccountApiImpl(private val client: UserClient) : AccountApi {
             "end_sleep_time" to endSleepTime,
             "time_zone" to timeZone,
             "trend_location_woeid" to trendLocationWoeid,
-            "lang" to lang?.value
+            "lang" to lang
         )
     }
 

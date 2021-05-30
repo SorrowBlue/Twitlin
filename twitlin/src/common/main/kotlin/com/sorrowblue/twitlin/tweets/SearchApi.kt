@@ -6,7 +6,6 @@ package com.sorrowblue.twitlin.tweets
 
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.objects.Tweet
-import com.sorrowblue.twitlin.utilities.LanguageCode
 import kotlinx.datetime.LocalDateTime
 
 /**
@@ -58,7 +57,7 @@ public interface SearchApi {
     public suspend fun tweets(
         q: String,
         geocode: List<String>? = null,
-        lang: LanguageCode? = null,
+        lang: String? = null,
         local: String? = null,
         resultType: ResultType = ResultType.MIXED,
         count: Int = 15,

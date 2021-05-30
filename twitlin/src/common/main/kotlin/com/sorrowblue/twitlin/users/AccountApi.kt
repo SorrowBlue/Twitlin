@@ -8,7 +8,6 @@ import com.sorrowblue.twitlin.authentication.OAuthApi
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.objects.User
 import com.sorrowblue.twitlin.trends.TrendsApi
-import com.sorrowblue.twitlin.utilities.LanguageCode
 
 /**
  * With proper authorization your application can read and update a user's account and profile
@@ -98,7 +97,7 @@ public interface AccountApi {
         endSleepTime: Int? = null,
         timeZone: String? = null,
         trendLocationWoeid: Int? = null,
-        lang: LanguageCode? = null
+        lang: String? = null
     ): Response<Settings>
 
     /**

@@ -10,7 +10,6 @@ import com.sorrowblue.twitlin.core.Urls
 import com.sorrowblue.twitlin.tweets.ResultType
 import com.sorrowblue.twitlin.tweets.SearchApi
 import com.sorrowblue.twitlin.tweets.SearchResults
-import com.sorrowblue.twitlin.utilities.LanguageCode
 import kotlinx.datetime.LocalDateTime
 
 private const val SEARCH = "${Urls.V1}/search"
@@ -19,7 +18,7 @@ internal class SearchApiImpl(private val client: UserClient) : SearchApi {
     override suspend fun tweets(
         q: String,
         geocode: List<String>?,
-        lang: LanguageCode?,
+        lang: String?,
         local: String?,
         resultType: ResultType,
         count: Int,
@@ -33,7 +32,7 @@ internal class SearchApiImpl(private val client: UserClient) : SearchApi {
             Response.serializer(SearchResults.serializer()),
             "q" to q,
             "geocode" to geocode?.joinToString(","),
-            "lang" to lang?.value,
+            "lang" to lang,
             "local" to local,
             "result_type" to resultType.name.lowercase(),
             "count" to count,

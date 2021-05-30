@@ -11,7 +11,6 @@ import com.sorrowblue.twitlin.objects.Tweet.ExtendedEntities
 import com.sorrowblue.twitlin.objects.Tweet.FilterLevel
 import com.sorrowblue.twitlin.tweets.FavoritesApi
 import com.sorrowblue.twitlin.tweets.StatusesApi
-import com.sorrowblue.twitlin.utilities.LanguageCode
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.rfc822ToLocalDateTime
 import kotlinx.serialization.SerialName
@@ -172,7 +171,7 @@ public data class Tweet(
     val possiblySensitive: Boolean? = null,
     @SerialName("filter_level")
     val filterLevel: FilterLevel? = null,
-    val lang: LanguageCode? = null,
+    val lang: String? = null,
     @SerialName("matching_rules")
     val matchingRules: List<Rule>? = null,
     @SerialName("current_user_retweet")

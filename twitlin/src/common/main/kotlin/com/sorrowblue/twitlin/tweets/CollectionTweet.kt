@@ -10,7 +10,6 @@ import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.objects.Coordinates
 import com.sorrowblue.twitlin.objects.Entities
 import com.sorrowblue.twitlin.objects.Place
-import com.sorrowblue.twitlin.utilities.LanguageCode
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.rfc822ToLocalDateTime
 import kotlinx.serialization.SerialName
@@ -55,7 +54,7 @@ public data class CollectionTweet(
     val retweeted: Boolean,
     @SerialName("possibly_sensitive")
     val possiblySensitive: Boolean,
-    val lang: LanguageCode
+    val lang: String
 ) : AndroidParcelable, JvmSerializable {
 
     val createdAt: LocalDateTime get() = _createdAt.rfc822ToLocalDateTime()

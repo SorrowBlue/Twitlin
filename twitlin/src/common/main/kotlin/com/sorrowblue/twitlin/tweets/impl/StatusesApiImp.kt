@@ -14,7 +14,6 @@ import com.sorrowblue.twitlin.tweets.StatusesApi
 import com.sorrowblue.twitlin.tweets.Theme
 import com.sorrowblue.twitlin.tweets.TweetOembed
 import com.sorrowblue.twitlin.tweets.WidgetType
-import com.sorrowblue.twitlin.utilities.LanguageCode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -96,7 +95,7 @@ internal class StatusesApiImp(private val client: UserClient) : StatusesApi {
         omitScript: Boolean,
         align: Align,
         related: String?,
-        lang: LanguageCode,
+        lang: String,
         theme: Theme,
         linkColor: String?,
         widgetType: WidgetType?,
@@ -112,7 +111,7 @@ internal class StatusesApiImp(private val client: UserClient) : StatusesApi {
             "omit_script" to omitScript,
             "align" to align.name.lowercase(),
             "related" to related,
-            "lang" to lang.value,
+            "lang" to lang,
             "theme" to theme.name.lowercase(),
             "link_color" to linkColor,
             "widget_type" to widgetType?.name?.lowercase(),

@@ -7,7 +7,6 @@ package com.sorrowblue.twitlin.v2.objects
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
 import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
-import com.sorrowblue.twitlin.utilities.LanguageCode
 import com.sorrowblue.twitlin.v2.field.Expansion
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
@@ -77,7 +76,7 @@ public data class Tweet(
     val entities: Entities? = null,
     val geo: Geo? = null,
     @SerialName("in_reply_to_user_id") val inReplyToUserId: String? = null,
-    val lang: LanguageCode? = null,
+    val lang: String? = null,
     @SerialName("non_public_metrics")
     val nonPublicMetrics: NonPublicMetrics? = null,
     @SerialName("organic_metrics")
