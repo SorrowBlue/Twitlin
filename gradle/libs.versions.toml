@@ -1,6 +1,6 @@
 [versions]
-kotlin = "1.5.0"
-ktor = "1.5.4"
+kotlin = "1.5.10"
+ktor = "1.6.0"
 android-buildToolsVersion = "30.0.3"
 android-minSdkVersion = "23"
 android-targetSdkVersion = "30"
@@ -10,7 +10,7 @@ androidx-security-crypto = "androidx.security:security-crypto:1.1.0-alpha03"
 
 kotlinx-serialization-core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1"
 kotlinx-serialization-properties = "org.jetbrains.kotlinx:kotlinx-serialization-properties:1.2.1"
-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.0"
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.1"
 
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }

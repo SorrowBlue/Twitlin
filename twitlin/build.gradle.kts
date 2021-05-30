@@ -14,7 +14,7 @@ plugins {
     id("kotlin-parcelize")
     `maven-publish`
     signing
-    kotlin("plugin.serialization") version "1.5.0"
+    kotlin("plugin.serialization") version "1.5.10"
     id("org.jetbrains.dokka") version "1.4.32"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     id("com.codingfeline.buildkonfig") version "0.7.0"
@@ -55,7 +55,7 @@ kotlin {
                 implementation(libs.bundles.kotlinx.serialization)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.serialization)
-                implementation(kotlin("reflect", "1.5.0"))
+                implementation(kotlin("reflect", "1.5.10"))
                 implementation(libs.kotlin.logging)
             }
         }
