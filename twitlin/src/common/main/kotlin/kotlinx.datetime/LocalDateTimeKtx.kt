@@ -4,8 +4,6 @@
 
 package kotlinx.datetime
 
-import kotlinx.serialization.json.Json
-
 private val month =
     listOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
@@ -37,5 +35,16 @@ internal fun Instant.formatRFC822(): String {
     return "$w $month $d $h:$m:$s +0000 $y"
 }
 
+internal fun Instant.formatISO8601(): String {
+    val localDateTime = toLocalDateTime(TimeZone.UTC)
+    val month = localDateTime.month.number.toString().padStart(2, '0')
+    val d = localDateTime.dayOfMonth
+    val h = localDateTime.hour.toString().padStart(2, '0')
+    val m = localDateTime.minute.toString().padStart(2, '0')
+    val s = localDateTime.second.toString().padStart(2, '0')
+    val y = localDateTime.year.toString().padStart(4, '0')
+    return "$y-$month-${d}T$h:$m:${s}Z"
+}
+
 internal fun LocalDateTime.encodeToISOString() =
-    Json.encodeToString(LocalDateTimeISOSerializer, this)
+    toInstant(TimeZone.UTC).formatISO8601()
