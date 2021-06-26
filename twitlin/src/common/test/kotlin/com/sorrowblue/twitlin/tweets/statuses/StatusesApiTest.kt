@@ -5,12 +5,12 @@
 package com.sorrowblue.twitlin.tweets.statuses
 
 import com.sorrowblue.twitlin.TwitterAPI
-import kotlinx.coroutines.flow.collect
-import test.AbstractTest
-import test.resultLog
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import kotlinx.coroutines.flow.collect
+import test.AbstractTest
+import test.resultLog
 
 class StatusesApiTest : AbstractTest {
 

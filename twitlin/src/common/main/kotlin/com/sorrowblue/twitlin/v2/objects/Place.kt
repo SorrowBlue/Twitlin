@@ -33,13 +33,5 @@ public data class Place(
         val type: String,
         val bbox: List<Double>,
         val properties: Map<String, String>,
-    ) : AndroidParcelable, JvmSerializable {
-
-        @AndroidParcelize
-        @Serializable
-        public data class Coordinates(
-            val type: String,
-            val coordinates: List<Double>,
-        ) : AndroidParcelable, JvmSerializable
-    }
+    ) : AndroidParcelable, JvmSerializable
 }

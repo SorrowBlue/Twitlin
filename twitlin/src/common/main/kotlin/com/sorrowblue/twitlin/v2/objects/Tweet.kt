@@ -89,6 +89,8 @@ public data class Tweet(
     val publicMetrics: PublicMetrics? = null,
     @SerialName("referenced_tweets")
     val referencedTweets: List<ReferenceTweet>? = null,
+    @SerialName("reply_settings")
+    val reply_settings: ReplySettings? = null,
     val source: String? = null,
     val withheld: Withheld? = null,
 ) : AndroidParcelable, JvmSerializable {
@@ -149,6 +151,18 @@ public data class Tweet(
         @SerialName("retweet_count") val retweetCount: Int,
         @SerialName("quote_count") val quoteCount: Int,
     ) : AndroidParcelable, JvmSerializable
+
+    @Serializable
+    public enum class ReplySettings {
+        @SerialName("everyone")
+        EVERYONE,
+
+        @SerialName("mentioned_users")
+        MENTIONED_USERS,
+
+        @SerialName("followers")
+        FOLLOWERS
+    }
 }
 
 @AndroidParcelize

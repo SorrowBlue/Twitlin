@@ -13,35 +13,16 @@ import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.testResult
+import kotlin.test.Test
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
 import test.AbstractTest
-import kotlin.test.Test
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 import com.sorrowblue.twitlin.objects.Tweet as V1Tweet
 
 class TweetsApiTest : AbstractTest {
-
-    private val tweetField = listOf(
-        TweetField.CREATED_AT,
-        TweetField.TEXT,
-        TweetField.ENTITIES,
-        TweetField.ATTACHMENTS,
-        TweetField.CONVERSATION_ID,
-        TweetField.PUBLIC_METRICS
-    )
-
-    private val mediaField = listOf(
-        MediaField.PREVIEW_IMAGE_URL,
-        MediaField.URL,
-        MediaField.TYPE,
-        MediaField.MEDIA_KEY,
-        MediaField.DURATION_MS
-    )
-
-    private val userField = listOf(UserField.PROFILE_IMAGE_URL, UserField.NAME, UserField.USERNAME)
 
     @Test
     fun tweetTest() = runBlocking {
@@ -51,11 +32,11 @@ class TweetsApiTest : AbstractTest {
         TwitterV2API.tweetsApi.tweet(
             list,
             expansions = Expansion.all(),
-            mediaFields = mediaField,
+            mediaFields = MediaField.public(),
             placeFields = PlaceField.all(),
             pollFields = PollField.all(),
-            tweetFields = tweetField,
-            userFields = userField
+            tweetFields = TweetField.public(),
+            userFields = UserField.all()
         ).testResult().also(::assertNotNull)
     }
 
@@ -64,11 +45,11 @@ class TweetsApiTest : AbstractTest {
         TwitterV2API.tweetsApi.tweet(
             "1353899268780695552",
             expansions = Expansion.all(),
-            mediaFields = mediaField,
+            mediaFields = MediaField.public(),
             placeFields = PlaceField.all(),
             pollFields = PollField.all(),
-            tweetFields = tweetField,
-            userFields = userField
+            tweetFields = TweetField.public(),
+            userFields = UserField.all()
         ).testResult().also(::assertNotNull)
     }
 
@@ -76,10 +57,11 @@ class TweetsApiTest : AbstractTest {
     fun testIds() = runBlocking {
         TwitterV2API.tweetsApi.tweet(
             idList_100,
-            tweetFields = tweetField,
             expansions = Expansion.all(),
-            mediaFields = mediaField,
+            mediaFields = MediaField.public(),
+            placeFields = PlaceField.all(),
             pollFields = PollField.all(),
+            tweetFields = TweetField.public(),
             userFields = UserField.all()
         )
     }
