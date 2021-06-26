@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.5.10"
+kotlin = "1.5.20"
 ktor = "1.6.0"
 android-buildToolsVersion = "30.0.3"
 android-minSdkVersion = "23"
@@ -20,9 +20,9 @@ ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", vers
 
 jsoup = "org.jsoup:jsoup:1.13.1"
 
-kotlin-logging = "io.github.microutils:kotlin-logging:2.0.6"
+kotlin-logging = "io.github.microutils:kotlin-logging:2.0.8"
 slf4j-simple = "org.slf4j:slf4j-simple:1.7.30"
-slf4j-android = "org.slf4j:slf4j-android:1.7.30"
+slf4j-android = "org.slf4j:slf4j-android:1.7.31"
 
 [bundles]
 kotlinx-serialization = ["kotlinx-serialization-core", "kotlinx-serialization-properties"]
