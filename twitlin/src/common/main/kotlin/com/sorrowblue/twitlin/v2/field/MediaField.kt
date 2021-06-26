@@ -30,5 +30,14 @@ public enum class MediaField(override val value: String) : OptionalField {
             ORGANIC_METRICS,
             PROMOTED_METRICS
         )
+        public fun public(): List<MediaField> = listOf(
+            DURATION_MS, HEIGHT,
+            MEDIA_KEY,
+            PREVIEW_IMAGE_URL,
+            TYPE,
+            URL,
+            WIDTH,
+            PUBLIC_METRICS,
+        )
     }
 }

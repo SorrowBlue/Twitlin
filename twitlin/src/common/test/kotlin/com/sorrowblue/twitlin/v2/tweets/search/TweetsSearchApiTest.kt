@@ -5,64 +5,53 @@
 package com.sorrowblue.twitlin.v2.tweets.search
 
 import com.sorrowblue.twitlin.TwitterV2API
-import com.sorrowblue.twitlin.v2.field.Expansion
-import com.sorrowblue.twitlin.v2.field.MediaField
 import com.sorrowblue.twitlin.v2.field.TweetField
-import com.sorrowblue.twitlin.v2.objects.Tweet
+import com.sorrowblue.twitlin.v2.objects.ReferenceTweet
 import com.sorrowblue.twitlin.v2.testResult
-import com.sorrowblue.twitlin.v2.tweets.PagingData
-import test.AbstractTest
+import com.sorrowblue.twitlin.v2.util.TweetNode
 import kotlin.test.Test
-import kotlin.test.assertTrue
+import test.AbstractTest
 
 class TweetsSearchApiTest : AbstractTest {
 
     @Test
     fun testSearchRecent() = runBlocking {
-        val result = mutableListOf<PagingData<Tweet>>()
-        searchRecent()?.let {
-            result.add(it)
-//            searchRecent(it.meta.nextToken)?.let {
-//                result.add(it)
-//                searchRecent(it.meta.nextToken)?.let {
-//                    result.add(it)
-//                }
-//            }
-        }
-        assertTrue(result.isNotEmpty())
+        TwitterV2API.tweetsSearchApi.searchRecent(query = "python").testResult()
     }
+
+    /**
+     * Test conversion id to build
+     *
+     * Tweet url: [https://twitter.com/VaporPreview/status/1408720499828432900]
+     */
+    @Test
+    fun testBuildConversation() = runBlocking {
+        val conversationId = "1408720499828432900"
+        val root = TwitterV2API.tweetsApi.tweet(conversationId, tweetFields = TweetField.public()).dataOrNull()?.data
+            ?: return@runBlocking
+        val pager = TwitterV2API.tweetsSearchApi.searchRecent(
+            query = "conversation_id:$conversationId",
+            tweetFields = TweetField.public()
+        ).dataOrNull()?.data ?: return@runBlocking
+        TweetNode.buildConversation(root, pager).printTree()
+    }
+
 
     @Test
     fun testAddStreamRules() = runBlocking {
         TwitterV2API.tweetsSearchApi.addStreamRules(
-            listOf(
-                SearchStreamRule("tostones recipe", "")
-            ),
+            listOf(SearchStreamRule("tostones recipe", "")),
             dryRun = true
         ).testResult()
     }
 
-    private suspend fun searchRecent(nextToken: String? = null): PagingData<Tweet>? =
-        TwitterV2API.tweetsSearchApi.searchRecent(query = "python", nextToken = nextToken)
-            .testResult()
-
-    @Test
-    fun testTweetsId() = runBlocking {
-        TwitterV2API.tweetsApi.tweet(
-            "1263145271946551300",
-            expansions = listOf(Expansion.AUTHOR_ID, Expansion.ATTACHMENTS_MEDIA_KEYS),
-            mediaFields = listOf(
-                MediaField.URL,
-                MediaField.PREVIEW_IMAGE_URL,
-                MediaField.DURATION_MS,
-                MediaField.HEIGHT,
-                MediaField.MEDIA_KEY,
-                MediaField.WIDTH,
-                MediaField.TYPE,
-                MediaField.PUBLIC_METRICS,
-            ),
-            tweetFields = listOf(TweetField.ATTACHMENTS, TweetField.AUTHOR_ID, TweetField.ENTITIES)
-        )
-            .testResult()
+    private fun TweetNode.printTree(level: Int = 0) {
+        val text = tweet.text.replace("\n", "")
+        val replyTo = tweet.referencedTweets?.find { it.type == ReferenceTweet.Type.REPLIED_TO }?.id
+        println("${IntArray(level).joinToString("") { "_" }}$level}: $replyTo -> ${tweet.id}: $text")
+        val l = level + 1
+        children.forEach {
+            it.printTree(l)
+        }
     }
 }

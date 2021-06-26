@@ -21,6 +21,7 @@ public enum class TweetField(override val value: String) : OptionalField {
     PROMOTED_METRICS("promoted_metrics"),
     POSSIBLY_SENSITIVE("possibly_sensitive"),
     REFERENCED_TWEETS("referenced_tweets"),
+    REPLY_SETTINGS("reply_settings"),
     SOURCE("source"),
     TEXT("text"),
     WITHHELD("withheld");
@@ -43,6 +44,27 @@ public enum class TweetField(override val value: String) : OptionalField {
             PROMOTED_METRICS,
             POSSIBLY_SENSITIVE,
             REFERENCED_TWEETS,
+            REPLY_SETTINGS,
+            SOURCE,
+            TEXT,
+            WITHHELD
+        )
+
+        public fun public(): List<TweetField> = listOf(
+            ATTACHMENTS,
+            AUTHOR_ID,
+            CONTEXT_ANNOTATIONS,
+            CONVERSATION_ID,
+            CREATED_AT,
+            ENTITIES,
+            GEO,
+            ID,
+            IN_REPLY_TO_USER_ID,
+            LANG,
+            PUBLIC_METRICS,
+            POSSIBLY_SENSITIVE,
+            REFERENCED_TWEETS,
+            REPLY_SETTINGS,
             SOURCE,
             TEXT,
             WITHHELD

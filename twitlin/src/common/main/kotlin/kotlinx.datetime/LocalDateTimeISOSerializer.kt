@@ -22,7 +22,7 @@ internal object LocalDateTimeISOSerializer : KSerializer<LocalDateTime> {
         decoder.decodeString().toInstant().toLocalDateTime(Twitlin.defaultTimeZone)
 
     override fun serialize(encoder: Encoder, value: LocalDateTime) {
-        val s = value.toInstant(Twitlin.defaultTimeZone).toString()
+        val s = value.encodeToISOString()
         encoder.encodeString(s)
     }
 }

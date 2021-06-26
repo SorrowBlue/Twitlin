@@ -6,6 +6,8 @@ package com.sorrowblue.twitlin
 
 import com.sorrowblue.twitlin.v2.tweets.TweetsApi
 import com.sorrowblue.twitlin.v2.tweets.TweetsAppApi
+import com.sorrowblue.twitlin.v2.tweets.counts.TweetsCountsAppApi
+import com.sorrowblue.twitlin.v2.tweets.counts.impl.TweetsCountsAppApiImpl
 import com.sorrowblue.twitlin.v2.tweets.impl.TweetsApiImp
 import com.sorrowblue.twitlin.v2.tweets.impl.TweetsAppApiImpl
 import com.sorrowblue.twitlin.v2.tweets.search.TweetsSearchApi
@@ -22,4 +24,6 @@ public object TwitterV2API {
 
     public val tweetsSearchApi: TweetsSearchApi by lazy { TweetsSearchApiImpl(Twitlin.v2UserClient) }
     public val tweetsSearchAppApi: TweetsSearchAppApi by lazy { TweetsSearchAppApiImpl(Twitlin.v2AppClient) }
+
+    public val tweetsCountsApi: TweetsCountsAppApi by lazy { TweetsCountsAppApiImpl(Twitlin.v2AppClient) }
 }
