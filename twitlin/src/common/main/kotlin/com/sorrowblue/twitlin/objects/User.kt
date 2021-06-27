@@ -74,44 +74,44 @@ public data class User(
     val id: Long,
     @SerialName("id_str")
     val idStr: String,
-    val name: String,
+    val name: String? = null,
     @SerialName("screen_name")
-    val screenName: String,
+    val screenName: String? = null,
     val location: String? = null,
     val derived: Derived? = null,
     val description: String? = null,
     val url: String? = null,
-    val entities: UserEntities,
-    val protected: Boolean,
+    val entities: UserEntities? = null,
+    val protected: Boolean? = null,
     @SerialName("followers_count")
-    val followersCount: Int,
+    val followersCount: Int? = null,
     @SerialName("friends_count")
-    val friendsCount: Int,
+    val friendsCount: Int? = null,
     @SerialName("listed_count")
-    val listedCount: Int,
+    val listedCount: Int? = null,
     @SerialName("created_at")
-    val _createdAt: String,
+    val _createdAt: String? = null,
     @SerialName("favourites_count")
-    val favouritesCount: Int,
-    val verified: Boolean,
+    val favouritesCount: Int? = null,
+    val verified: Boolean? = null,
     @SerialName("statuses_count")
-    val statusesCount: Int,
+    val statusesCount: Int? = null,
     val status: Tweet? = null,
     @SerialName("profile_banner_url")
     val profileBannerUrl: String? = null,
     @SerialName("profile_image_url_https")
-    val profileImageUrlHttps: String,
+    val profileImageUrlHttps: String? = null,
     @SerialName("default_profile")
-    val defaultProfile: Boolean,
+    val defaultProfile: Boolean? = null,
     @SerialName("default_profile_image")
-    val defaultProfileImage: Boolean,
+    val defaultProfileImage: Boolean? = null,
     @SerialName("withheld_in_countries")
     val withheldInCountries: List<String>? = null,
     @SerialName("withheld_scope")
     val withheldScope: String? = null,
 ) : AndroidParcelable, JvmSerializable {
 
-    val createdAt: LocalDateTime get() = _createdAt.rfc822ToLocalDateTime()
+    val createdAt: LocalDateTime? get() = _createdAt?.rfc822ToLocalDateTime()
 
     /**
      * TODO
