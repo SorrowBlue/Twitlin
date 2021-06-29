@@ -133,7 +133,7 @@ public data class Entities(
         val url: String,
         @SerialName("video_info")
         val videoInfo: VideoInfo? = null,
-        val additionalMediaInfo: AdditionalMediaInfo? = null
+        @SerialName("additional_media_info") val additionalMediaInfo: AdditionalMediaInfo? = null
     ) : AndroidParcelable, JvmSerializable {
 
         @Serializable
