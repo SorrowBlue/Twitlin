@@ -238,8 +238,17 @@ public data class Entities(
         @AndroidParcelize
         @Serializable
         public data class AdditionalMediaInfo(
+            val title: String? = null,
+            val description: String? = null,
+            @SerialName("call_to_actions") val callToActions: VisitSite? = null,
+            val embeddable: Boolean? = null,
             val monetizable: Boolean
-        ) : AndroidParcelable, JvmSerializable
+        ) : AndroidParcelable, JvmSerializable {
+
+            @AndroidParcelize
+            @Serializable
+            public data class VisitSite(val url: String) : AndroidParcelable, JvmSerializable
+        }
     }
 
     /**
@@ -371,6 +380,7 @@ public data class Entities(
          */
         @AndroidParcelize
         @Serializable
-        public data class Option(val position: Int = -1, val text: String = "") : AndroidParcelable, JvmSerializable
+        public data class Option(val position: Int = -1, val text: String = "") : AndroidParcelable,
+            JvmSerializable
     }
 }

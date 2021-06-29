@@ -23,10 +23,12 @@ public class TweetNode(public val tweet: Tweet) {
     private val _children: MutableList<TweetNode> = mutableListOf()
     private val replyTo: String? get() = tweet.referencedTweets?.find { it.type == ReferenceTweet.Type.REPLIED_TO }?.id
 
+    private val id get() = tweet.referencedTweets?.find { it.type == ReferenceTweet.Type.RETWEETED }?.id ?: tweet.id
+
     public val children: List<TweetNode> get() = _children
 
     public fun findParentOf(node: TweetNode): Boolean {
-        if (node.replyTo == tweet.id) {
+        if (node.replyTo == id) {
             _children.add(node)
             return true
         }
