@@ -240,14 +240,21 @@ public data class Entities(
         public data class AdditionalMediaInfo(
             val title: String? = null,
             val description: String? = null,
-            @SerialName("call_to_actions") val callToActions: VisitSite? = null,
+            @SerialName("call_to_actions") val callToActions: CallToActions? = null,
             val embeddable: Boolean? = null,
             val monetizable: Boolean
         ) : AndroidParcelable, JvmSerializable {
 
             @AndroidParcelize
             @Serializable
-            public data class VisitSite(val url: String) : AndroidParcelable, JvmSerializable
+            public data class CallToActions(
+                @SerialName("visit_site") val visitSite: VisitSite? = null
+            ) : AndroidParcelable, JvmSerializable {
+
+                @AndroidParcelize
+                @Serializable
+                public data class VisitSite(val url: String) : AndroidParcelable, JvmSerializable
+            }
         }
     }
 
