@@ -18,5 +18,6 @@ public data class Trend(
     @SerialName("promoted_content")
     val promotedContent: Boolean?,
     val query: String,
+    @SerialName("tweet_volume")
     val tweetVolume: Long? = null
 ) : AndroidParcelable, JvmSerializable
