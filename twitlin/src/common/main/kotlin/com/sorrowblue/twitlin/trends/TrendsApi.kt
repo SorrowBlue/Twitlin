@@ -5,6 +5,7 @@
 package com.sorrowblue.twitlin.trends
 
 import com.sorrowblue.twitlin.client.Response
+import com.sorrowblue.twitlin.users.TrendLocation
 
 /**
  * ### Get trends near a location
@@ -66,7 +67,7 @@ public interface TrendsApi {
      *
      * @return TODO
      */
-    public suspend fun available(): Response<List<TrendPlaces>>
+    public suspend fun available(): Response<List<TrendLocation>>
 
     /**
      * Returns the locations that Twitter has trending topic information for,

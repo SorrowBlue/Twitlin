@@ -10,6 +10,7 @@ import com.sorrowblue.twitlin.core.Urls
 import com.sorrowblue.twitlin.trends.TrendPlace
 import com.sorrowblue.twitlin.trends.TrendPlaces
 import com.sorrowblue.twitlin.trends.TrendsApi
+import com.sorrowblue.twitlin.users.TrendLocation
 import kotlinx.serialization.builtins.ListSerializer
 
 private const val TRENDS = "${Urls.V1}/trends"
@@ -25,10 +26,10 @@ internal class TrendsApiImpl(private val client: UserClient) : TrendsApi {
         )
     }
 
-    override suspend fun available(): Response<List<TrendPlaces>> {
+    override suspend fun available(): Response<List<TrendLocation>> {
         return client.get(
             "$TRENDS/available.json",
-            Response.serializer(ListSerializer(TrendPlaces.serializer()))
+            Response.serializer(ListSerializer(TrendLocation.serializer()))
         )
     }
 
