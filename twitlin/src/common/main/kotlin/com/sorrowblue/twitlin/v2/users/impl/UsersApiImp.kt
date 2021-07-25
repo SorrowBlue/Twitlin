@@ -113,10 +113,10 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<OptionalData<List<Tweet>>> {
+    ): Response<PagingData<List<Tweet>>> {
         return client.get(
             "$USERS_API/$id/tweets",
-            Response.serializer(OptionalData.serializer(ListSerializer(Tweet.serializer()))),
+            Response.serializer(PagingData.serializer(ListSerializer(Tweet.serializer()))),
             "end_time" to endTime?.encodeToISOString(),
             "exclude" to exclude?.value,
             "expansions" to expansions?.toParameter(),
