@@ -16,6 +16,7 @@ import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.tweets.OptionalData
 import com.sorrowblue.twitlin.v2.tweets.PagingData
 import kotlinx.datetime.LocalDateTime
+import com.sorrowblue.twitlin.v2.field.Expansion as FieldExpansion
 
 public interface UsersApi {
 
@@ -50,13 +51,13 @@ public interface UsersApi {
     public suspend fun tweets(
         id: String,
         endTime: LocalDateTime? = null,
-        start_time: LocalDateTime? = null,
-        exclude: String? = null,
-        max_results: Int = 10,
-        pagination_token: String? = null,
-        since_id: String? = null,
-        until_id: String? = null,
-        expansions: List<Expansion>? = null,
+        startTime: LocalDateTime? = null,
+        exclude: Exclude? = null,
+        maxResults: Int = 10,
+        paginationToken: String? = null,
+        sinceId: String? = null,
+        untilId: String? = null,
+        expansions: List<FieldExpansion>? = null,
         mediaFields: List<MediaField>? = null,
         placeFields: List<PlaceField>? = null,
         pollFields: List<PollField>? = null,
@@ -92,7 +93,7 @@ public interface UsersApi {
 
     public suspend fun likedTweets(
         id: String,
-        expansions: List<com.sorrowblue.twitlin.v2.field.Expansion>? = null,
+        expansions: List<FieldExpansion>? = null,
         mediaFields: List<MediaField>? = null,
         placeFields: List<PlaceField>? = null,
         userFields: List<UserField>? = null,

@@ -17,17 +17,19 @@ import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.tweets.OptionalData
 import com.sorrowblue.twitlin.v2.tweets.PagingData
+import com.sorrowblue.twitlin.v2.users.Exclude
 import com.sorrowblue.twitlin.v2.users.Expansion
 import com.sorrowblue.twitlin.v2.users.Following
-import com.sorrowblue.twitlin.v2.users.response.FollowingResponse
-import com.sorrowblue.twitlin.v2.users.response.UnFollowingResponse
-import com.sorrowblue.twitlin.v2.users.request.LikesRequest
-import com.sorrowblue.twitlin.v2.users.response.LikesResponse
 import com.sorrowblue.twitlin.v2.users.UsersApi
 import com.sorrowblue.twitlin.v2.users.request.BlockingRequest
 import com.sorrowblue.twitlin.v2.users.request.FollowingRequest
+import com.sorrowblue.twitlin.v2.users.request.LikesRequest
 import com.sorrowblue.twitlin.v2.users.response.BlockingResponse
+import com.sorrowblue.twitlin.v2.users.response.FollowingResponse
+import com.sorrowblue.twitlin.v2.users.response.LikesResponse
+import com.sorrowblue.twitlin.v2.users.response.UnFollowingResponse
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.encodeToISOString
 import kotlinx.serialization.builtins.ListSerializer
 import com.sorrowblue.twitlin.v2.field.Expansion as FieldExpansion
 
@@ -99,13 +101,13 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
     override suspend fun tweets(
         id: String,
         endTime: LocalDateTime?,
-        start_time: LocalDateTime?,
-        exclude: String?,
-        max_results: Int,
-        pagination_token: String?,
-        since_id: String?,
-        until_id: String?,
-        expansions: List<Expansion>?,
+        startTime: LocalDateTime?,
+        exclude: Exclude?,
+        maxResults: Int,
+        paginationToken: String?,
+        sinceId: String?,
+        untilId: String?,
+        expansions: List<com.sorrowblue.twitlin.v2.field.Expansion>?,
         mediaFields: List<MediaField>?,
         placeFields: List<PlaceField>?,
         pollFields: List<PollField>?,
@@ -115,11 +117,18 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
         return client.get(
             "$USERS_API/$id/tweets",
             Response.serializer(OptionalData.serializer(ListSerializer(Tweet.serializer()))),
+            "end_time" to endTime?.encodeToISOString(),
+            "exclude" to exclude?.value,
             "expansions" to expansions?.toParameter(),
+            "max_results" to maxResults,
             "media.fields" to mediaFields?.toParameter(),
+            "pagination_token" to paginationToken,
             "place.fields" to placeFields?.toParameter(),
             "poll.fields" to pollFields?.toParameter(),
+            "since_id" to sinceId,
+            "start_time" to startTime?.encodeToISOString(),
             "tweet.fields" to tweetFields?.toParameter(),
+            "until_id" to untilId,
             "user.fields" to userFields?.toParameter()
         )
     }
