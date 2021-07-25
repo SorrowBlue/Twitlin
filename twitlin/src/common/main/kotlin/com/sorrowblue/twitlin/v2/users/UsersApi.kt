@@ -63,7 +63,7 @@ public interface UsersApi {
         pollFields: List<PollField>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
-    ): Response<PagingData<List<Tweet>>>
+    ): Response<PagingData<Tweet>>
 
     public suspend fun blocking(
         id: String,
