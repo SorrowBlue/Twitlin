@@ -15,7 +15,8 @@ public enum class MediaField(override val value: String) : OptionalField {
     PUBLIC_METRICS("public_metrics"),
     NON_PUBLIC_METRICS("non_public_metrics"),
     ORGANIC_METRICS("organic_metrics"),
-    PROMOTED_METRICS("promoted_metrics");
+    PROMOTED_METRICS("promoted_metrics"),
+    ALT_TEXT("alt_text");
 
     public companion object {
         public fun all(): List<MediaField> = listOf(
@@ -28,7 +29,8 @@ public enum class MediaField(override val value: String) : OptionalField {
             PUBLIC_METRICS,
             NON_PUBLIC_METRICS,
             ORGANIC_METRICS,
-            PROMOTED_METRICS
+            PROMOTED_METRICS,
+            ALT_TEXT
         )
         public fun public(): List<MediaField> = listOf(
             DURATION_MS, HEIGHT,
@@ -38,6 +40,7 @@ public enum class MediaField(override val value: String) : OptionalField {
             URL,
             WIDTH,
             PUBLIC_METRICS,
+            ALT_TEXT
         )
     }
 }
