@@ -112,7 +112,7 @@ class TweetsApiTest : AbstractTest {
 
     @Test
     fun testRetweetedBy() = runBlocking {
-        TwitterV2API.tweetsApi.retweetedBy("1428298007938699270").testResult()
+        TwitterV2API.tweetsApi.retweetedBy("1428326155342409728").testResult()
     }
 }
 

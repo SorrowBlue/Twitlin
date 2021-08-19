@@ -14,9 +14,10 @@ import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.field.toParameter
+import com.sorrowblue.twitlin.v2.objects.OptionalData
+import com.sorrowblue.twitlin.v2.objects.OptionalListData
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
-import com.sorrowblue.twitlin.v2.objects.OptionalData
 import com.sorrowblue.twitlin.v2.tweets.TweetsAppApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.builtins.ListSerializer
@@ -95,10 +96,10 @@ internal class TweetsAppApiImpl(private val appClient: AppClient) : TweetsAppApi
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<OptionalData<User>> {
+    ): Response<OptionalListData<User>> {
         return appClient.get(
             "$TWEETS/$tweetId/retweeted_by",
-            serializer = Response.serializer(OptionalData.serializer(User.serializer())),
+            serializer = Response.serializer(OptionalListData.serializer(User.serializer())),
             "expansions" to expansions?.toParameter(),
             "media.fields" to mediaFields?.toParameter(),
             "place.fields" to placeFields?.toParameter(),

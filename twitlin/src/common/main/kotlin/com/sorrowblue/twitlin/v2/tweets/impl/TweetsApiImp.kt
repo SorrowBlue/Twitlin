@@ -15,6 +15,7 @@ import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.field.toParameter
 import com.sorrowblue.twitlin.v2.objects.OptionalData
+import com.sorrowblue.twitlin.v2.objects.OptionalListData
 import com.sorrowblue.twitlin.v2.objects.PagingData
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
@@ -135,10 +136,10 @@ internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<OptionalData<User>> {
+    ): Response<OptionalListData<User>> {
         return userClient.get(
             "$TWEETS/$tweetId/retweeted_by",
-            serializer = Response.serializer(OptionalData.serializer(User.serializer())),
+            serializer = Response.serializer(OptionalListData.serializer(User.serializer())),
             "expansions" to expansions?.toParameter(),
             "media.fields" to mediaFields?.toParameter(),
             "place.fields" to placeFields?.toParameter(),
