@@ -126,4 +126,26 @@ internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
             "user.fields" to userFields?.toParameter()
         )
     }
+
+    override suspend fun retweetedBy(
+        tweetId: String,
+        expansions: List<com.sorrowblue.twitlin.v2.users.Expansion>?,
+        mediaFields: List<MediaField>?,
+        placeFields: List<PlaceField>?,
+        pollFields: List<PollField>?,
+        tweetFields: List<TweetField>?,
+        userFields: List<UserField>?
+    ): Response<OptionalData<User>> {
+        return userClient.get(
+            "$TWEETS/$tweetId/retweeted_by",
+            serializer = Response.serializer(OptionalData.serializer(User.serializer())),
+            "expansions" to expansions?.toParameter(),
+            "media.fields" to mediaFields?.toParameter(),
+            "place.fields" to placeFields?.toParameter(),
+            "poll.fields" to pollFields?.toParameter(),
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter()
+        )
+    }
+
 }

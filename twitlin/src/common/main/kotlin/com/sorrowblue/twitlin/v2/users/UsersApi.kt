@@ -124,4 +124,8 @@ public interface UsersApi {
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
     ): Response<PagingData<User>>
+
+    public suspend fun deleteRetweet(id: String, sourceTweetId: String): Response<Boolean>
+
+    public suspend fun retweet(id: String, tweetId: String): Response<Boolean>
 }

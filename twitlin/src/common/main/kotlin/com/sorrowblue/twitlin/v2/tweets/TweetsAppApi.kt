@@ -12,6 +12,7 @@ import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.objects.Tweet
+import com.sorrowblue.twitlin.v2.objects.User
 import kotlinx.coroutines.flow.Flow
 
 public interface TweetsAppApi {
@@ -91,4 +92,14 @@ public interface TweetsAppApi {
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
     ): Flow<Response<OptionalData<Tweet>>>
+
+    public suspend fun retweetedBy(
+        tweetId: String,
+        expansions: List<com.sorrowblue.twitlin.v2.users.Expansion>? = null,
+        mediaFields: List<MediaField>? = null,
+        placeFields: List<PlaceField>? = null,
+        pollFields: List<PollField>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null
+    ): Response<OptionalData<User>>
 }

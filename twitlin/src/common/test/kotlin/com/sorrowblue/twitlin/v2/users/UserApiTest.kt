@@ -8,9 +8,9 @@ import com.sorrowblue.twitlin.TwitterV2API
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.testResult
-import test.AbstractTest
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import test.AbstractTest
 
 class UserApiTest : AbstractTest {
 
@@ -102,5 +102,15 @@ class UserApiTest : AbstractTest {
     @Test
     fun testFollowers() = runBlocking {
         TwitterV2API.usersApi.followers("938122027231150081").testResult()
+    }
+
+    @Test
+    fun testDeleteRetweet() = runBlocking {
+        TwitterV2API.usersApi.deleteRetweet("938122027231150081","1428302532007194628").testResult()
+    }
+
+    @Test
+    fun testRetweet() = runBlocking {
+        TwitterV2API.usersApi.retweet("938122027231150081","1428302532007194628").testResult()
     }
 }

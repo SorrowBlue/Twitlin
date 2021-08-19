@@ -228,6 +228,7 @@ public interface StatusesApi {
      * Omit this parameter to receive the complete [User].
      * @return TODO
      */
+    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.users.UsersApi#retweet.")
     public suspend fun retweet(id: String, trimUser: Boolean = false): Response<Tweet>
 
     /**
@@ -249,6 +250,7 @@ public interface StatusesApi {
      * complete [User].
      * @return TODO
      */
+    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.users.UsersApi#deleteRetweet.")
     public suspend fun unretweet(id: String, trimUser: Boolean = false): Response<Tweet>
 
     /**
@@ -315,6 +317,7 @@ public interface StatusesApi {
      * will not provide segmented cursors for use with this parameter.
      * @return TODO
      */
+    @Deprecated("The endpoints replaces com.sorrowblue.twitlin.v2.tweets.TweetsApi#retweetedBy.")
     public suspend fun retweetersIds(
         id: String,
         count: Int? = null,

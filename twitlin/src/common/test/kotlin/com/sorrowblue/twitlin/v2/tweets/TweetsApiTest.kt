@@ -109,6 +109,11 @@ class TweetsApiTest : AbstractTest {
     fun testLikingUsers() = runBlocking {
         TwitterV2API.tweetsApi.likingUsers("1394925800470814720").testResult()
     }
+
+    @Test
+    fun testRetweetedBy() = runBlocking {
+        TwitterV2API.tweetsApi.retweetedBy("1428298007938699270").testResult()
+    }
 }
 
 private val idList_100 = listOf(

@@ -118,4 +118,14 @@ public interface TweetsApi {
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
     ): Response<PagingData<User>>
+
+    public suspend fun retweetedBy(
+        tweetId: String,
+        expansions: List<com.sorrowblue.twitlin.v2.users.Expansion>? = null,
+        mediaFields: List<MediaField>? = null,
+        placeFields: List<PlaceField>? = null,
+        pollFields: List<PollField>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null
+    ): Response<OptionalData<User>>
 }

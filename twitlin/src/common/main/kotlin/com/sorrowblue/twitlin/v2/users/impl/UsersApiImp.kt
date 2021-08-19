@@ -24,9 +24,11 @@ import com.sorrowblue.twitlin.v2.users.UsersApi
 import com.sorrowblue.twitlin.v2.users.request.BlockingRequest
 import com.sorrowblue.twitlin.v2.users.request.FollowingRequest
 import com.sorrowblue.twitlin.v2.users.request.LikesRequest
+import com.sorrowblue.twitlin.v2.users.request.RetweetRequest
 import com.sorrowblue.twitlin.v2.users.response.BlockingResponse
 import com.sorrowblue.twitlin.v2.users.response.FollowingResponse
 import com.sorrowblue.twitlin.v2.users.response.LikesResponse
+import com.sorrowblue.twitlin.v2.users.response.RetweetResponse
 import com.sorrowblue.twitlin.v2.users.response.UnFollowingResponse
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.encodeToISOString
@@ -258,5 +260,20 @@ internal class UsersApiImp(private val client: UserClient) : UsersApi {
             "tweet.fields" to tweetFields?.toParameter(),
             "user.fields" to userFields?.toParameter()
         )
+    }
+
+    override suspend fun deleteRetweet(id: String, sourceTweetId: String): Response<Boolean> {
+        return client.delete(
+            "$USERS_API/$id/retweets/$sourceTweetId",
+            serializer = Response.serializer(RetweetResponse.serializer())
+        ).convertData { it.data.retweeted }
+    }
+
+    override suspend fun retweet(id: String, tweetId: String): Response<Boolean> {
+        return client.postJson(
+            "$USERS_API/$id/retweets",
+            RetweetRequest(tweetId),
+            serializer = Response.serializer(RetweetResponse.serializer())
+        ).convertData { it.data.retweeted }
     }
 }
