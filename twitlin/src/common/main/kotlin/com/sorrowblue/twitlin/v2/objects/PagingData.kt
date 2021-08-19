@@ -1,4 +1,4 @@
-package com.sorrowblue.twitlin.v2.tweets
+package com.sorrowblue.twitlin.v2.objects
 
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.v2.client.Error

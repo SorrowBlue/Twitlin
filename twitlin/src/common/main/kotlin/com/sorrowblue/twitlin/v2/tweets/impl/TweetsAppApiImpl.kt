@@ -16,7 +16,7 @@ import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.field.toParameter
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
-import com.sorrowblue.twitlin.v2.tweets.OptionalData
+import com.sorrowblue.twitlin.v2.objects.OptionalData
 import com.sorrowblue.twitlin.v2.tweets.TweetsAppApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.builtins.ListSerializer

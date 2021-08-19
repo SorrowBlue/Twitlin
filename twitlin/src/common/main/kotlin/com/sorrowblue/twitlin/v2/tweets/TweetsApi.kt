@@ -4,9 +4,6 @@
 
 package com.sorrowblue.twitlin.v2.tweets
 
-import com.sorrowblue.twitlin.annotation.JvmSerializable
-import com.sorrowblue.twitlin.v2.client.Error
-import com.sorrowblue.twitlin.v2.client.Includes
 import com.sorrowblue.twitlin.v2.client.Response
 import com.sorrowblue.twitlin.v2.field.Expansion
 import com.sorrowblue.twitlin.v2.field.MediaField
@@ -14,18 +11,12 @@ import com.sorrowblue.twitlin.v2.field.PlaceField
 import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
+import com.sorrowblue.twitlin.v2.objects.OptionalData
+import com.sorrowblue.twitlin.v2.objects.PagingData
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
 import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.Serializable
 import com.sorrowblue.twitlin.v2.users.Expansion as UsersExpansion
-
-@Serializable
-public data class OptionalData<T>(
-    val data: T,
-    val includes: Includes? = null,
-    val errors: List<Error>? = null,
-) : JvmSerializable
 
 /**
  * TODO

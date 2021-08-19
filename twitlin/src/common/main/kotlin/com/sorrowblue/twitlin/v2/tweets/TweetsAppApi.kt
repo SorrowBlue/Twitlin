@@ -11,6 +11,7 @@ import com.sorrowblue.twitlin.v2.field.PlaceField
 import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
+import com.sorrowblue.twitlin.v2.objects.OptionalData
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
 import kotlinx.coroutines.flow.Flow

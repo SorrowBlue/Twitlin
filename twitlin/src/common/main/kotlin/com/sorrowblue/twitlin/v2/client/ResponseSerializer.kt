@@ -4,6 +4,7 @@
 
 package com.sorrowblue.twitlin.v2.client
 
+import com.sorrowblue.twitlin.v2.objects.OptionalData
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer

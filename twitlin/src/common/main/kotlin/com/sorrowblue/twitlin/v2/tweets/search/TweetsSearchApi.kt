@@ -11,8 +11,8 @@ import com.sorrowblue.twitlin.v2.field.PlaceField
 import com.sorrowblue.twitlin.v2.field.PollField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
+import com.sorrowblue.twitlin.v2.objects.PagingData
 import com.sorrowblue.twitlin.v2.objects.Tweet
-import com.sorrowblue.twitlin.v2.tweets.PagingData
 import kotlinx.datetime.LocalDateTime
 
 /**

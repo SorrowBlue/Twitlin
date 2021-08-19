@@ -5,10 +5,10 @@
 package com.sorrowblue.twitlin.v2
 
 import com.sorrowblue.twitlin.v2.client.Response
+import com.sorrowblue.twitlin.v2.objects.PagingData
 import com.sorrowblue.twitlin.v2.objects.Tweet
-import com.sorrowblue.twitlin.v2.tweets.PagingData
-import kotlinx.serialization.json.Json
 import kotlin.test.Test
+import kotlinx.serialization.json.Json
 
 class ResponseSelialiseTest {
 
