@@ -33,12 +33,12 @@ public data class Space(
     val updatedAt: LocalDateTime? get() = _updatedAt?.isoToLocalDateTime()
 
     @Serializable
-    public enum class State {
+    public enum class State(public val value: String) {
         @SerialName("live")
-        LIVE,
+        LIVE("live"),
 
         @SerialName("scheduled")
-        SCHEDULED
+        SCHEDULED("scheduled")
     }
 
 }

@@ -31,4 +31,13 @@ public interface SpacesAppApi {
         spaceFields: List<SpaceField>? = null,
         userFields: List<UserField>? = null
     ): Response<OptionalListData<Space>>
+
+    public suspend fun search(
+        query: String,
+        state: Space.State,
+        maxResults: Int = 100,
+        expansions: List<Expansion>? = null,
+        spaceFields: List<SpaceField>? = null,
+        userFields: List<UserField>? = null
+    ): Response<OptionalListData<Space>>
 }

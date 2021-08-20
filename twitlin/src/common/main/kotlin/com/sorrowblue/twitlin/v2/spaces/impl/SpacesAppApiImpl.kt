@@ -63,4 +63,23 @@ internal class SpacesAppApiImpl(private val client: AppClient) : SpacesAppApi {
             "user.fields" to userFields?.toParameter()
         )
     }
+
+    override suspend fun search(
+        query: String,
+        state: Space.State,
+        maxResults: Int,
+        expansions: List<Expansion>?,
+        spaceFields: List<SpaceField>?,
+        userFields: List<UserField>?
+    ): Response<OptionalListData<Space>> {
+        return client.get(
+            "$SPACES/search",
+            Response.serializer(OptionalListData.serializer(Space.serializer())),
+            "query" to query,
+            "state" to state.value,
+            "expansions" to expansions?.toParameter(),
+            "space.fields" to spaceFields?.toParameter(),
+            "user.fields" to userFields?.toParameter()
+        )
+    }
 }
