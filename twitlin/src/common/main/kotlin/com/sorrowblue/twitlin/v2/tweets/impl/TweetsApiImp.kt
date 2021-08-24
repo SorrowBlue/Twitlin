@@ -24,7 +24,6 @@ import com.sorrowblue.twitlin.v2.tweets.request.HiddenRequest
 import com.sorrowblue.twitlin.v2.tweets.response.HiddenResponse
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.encodeToISOString
-import kotlinx.serialization.builtins.ListSerializer
 import com.sorrowblue.twitlin.v2.users.Expansion as UsersExpansion
 
 private const val TWEETS = "${Urls.V2}/tweets"
@@ -61,9 +60,9 @@ internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<OptionalData<List<Tweet>>> = userClient.get(
+    ): Response<OptionalListData<Tweet>> = userClient.get(
         TWEETS,
-        Response.serializer(OptionalData.serializer(ListSerializer(Tweet.serializer()))),
+        Response.serializer(OptionalListData.serializer(Tweet.serializer())),
         "ids" to ids.joinToString(","),
         "expansions" to expansions?.toParameter(),
         "media.fields" to mediaFields?.toParameter(),
@@ -118,10 +117,10 @@ internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
         expansions: List<UsersExpansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<PagingData<User>> {
+    ): Response<OptionalListData<User>> {
         return userClient.get(
             "$TWEETS/$id/liking_users",
-            serializer = Response.serializer(PagingData.serializer(User.serializer())),
+            serializer = Response.serializer(OptionalListData.serializer(User.serializer())),
             "expansions" to expansions?.toParameter(),
             "tweet.fields" to tweetFields?.toParameter(),
             "user.fields" to userFields?.toParameter()

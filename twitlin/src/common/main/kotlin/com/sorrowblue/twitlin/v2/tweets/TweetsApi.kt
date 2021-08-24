@@ -75,7 +75,7 @@ public interface TweetsApi {
         pollFields: List<PollField>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
-    ): Response<OptionalData<List<Tweet>>>
+    ): Response<OptionalListData<Tweet>>
 
     /**
      * Hides or unhides a reply to a Tweet.
@@ -109,7 +109,7 @@ public interface TweetsApi {
         expansions: List<UsersExpansion>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
-    ): Response<PagingData<User>>
+    ): Response<OptionalListData<User>>
 
     public suspend fun retweetedBy(
         tweetId: String,

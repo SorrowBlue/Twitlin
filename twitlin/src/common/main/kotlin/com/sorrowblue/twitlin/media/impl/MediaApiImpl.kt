@@ -41,7 +41,7 @@ internal class MediaApiImpl(private val client: UserClient) : MediaApi {
         additionalOwners: List<String>?,
         shared: Boolean?
     ): Response<MediaResult> {
-        return client.post(
+        return client.postFormData(
             "$MEDIA/upload.json",
             Response.serializer(MediaResult.serializer()),
             "command" to "INIT",
@@ -59,7 +59,7 @@ internal class MediaApiImpl(private val client: UserClient) : MediaApi {
         mediaData: String?,
         segmentIndex: Int
     ): Response<Unit> {
-        return client.post(
+        return client.postFormData(
             "$MEDIA/upload.json",
             Response.serializer(Unit.serializer()),
             "command" to "APPEND",
@@ -71,7 +71,7 @@ internal class MediaApiImpl(private val client: UserClient) : MediaApi {
     }
 
     override suspend fun uploadFinalize(mediaId: String): Response<MediaResult> {
-        return client.post(
+        return client.postFormData(
             "$MEDIA/upload.json",
             Response.serializer(MediaResult.serializer()),
             "command" to "FINALIZE",

@@ -14,10 +14,10 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.content.TextContent
 import io.ktor.util.InternalAPI
 import io.ktor.util.encodeBase64
+import kotlin.random.Random
 import kotlinx.datetime.Clock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlin.random.Random
 
 internal val Array<out Pair<String, Any?>>.notNullParams: List<Pair<String, String>>
     get() = mapNotNull { pair -> pair.second?.let { pair.first to it.toString() } }
@@ -58,10 +58,10 @@ internal fun HttpRequestBuilder.headerAuthorization(
 internal fun HttpRequestBuilder.headerAuthorization(bearerToken: BearerToken?) =
     header(HttpHeaders.Authorization, "Bearer ${bearerToken?.accessToken}")
 
-internal fun HttpRequestBuilder.bodyFormUrlEncoded(params: List<Pair<String, String>>) {
+internal fun HttpRequestBuilder.bodyFormUrlEncoded(params: List<Pair<String, String>>, contentType: ContentType = ContentType.Application.FormUrlEncoded) {
     params.mapNotNull { if (it.first.startsWith("oauth_")) null else it }
         .joinToString("&") { "${it.first.urlEncode()}=${it.second.urlEncode()}" }.also {
-            body = TextContent(it, ContentType.Application.FormUrlEncoded)
+            body = TextContent(it, contentType)
         }
 }
 

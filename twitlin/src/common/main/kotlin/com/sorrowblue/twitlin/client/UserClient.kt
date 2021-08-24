@@ -16,6 +16,7 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpStatement
 import io.ktor.client.statement.readText
+import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -80,6 +81,13 @@ internal class UserClient(apiKey: String, secretKey: String, var accessToken: Ac
     ): R =
         request(HttpMethod.Post, url.combineParams(params), params, serializer) { bodyJson(clazz) }
 
+    suspend fun <T : Any, R : IResponse<T>> postFormData(
+        url: String,
+        serializer: KSerializer<R>,
+        vararg params: UrlParams
+    ): R = request(HttpMethod.Post, url, params, serializer) {
+        bodyFormUrlEncoded(params.notNullParams, ContentType.MultiPart.FormData)
+    }
     suspend inline fun <T : Any, R : IResponse<T>, reified V : Any> putJson(
         url: String,
         serializer: KSerializer<R>,
