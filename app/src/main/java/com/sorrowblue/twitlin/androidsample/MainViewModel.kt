@@ -43,7 +43,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    val tweet = TwitterV2API.tweetsApi.sampleStream(
+    val tweet = TwitterV2API.tweetsAppApi.sampleStream(
         expansions = listOf(Expansion.AUTHOR_ID),
         userFields = listOf(UserField.PROFILE_IMAGE_URL),
         tweetFields = listOf(TweetField.TEXT, TweetField.AUTHOR_ID)

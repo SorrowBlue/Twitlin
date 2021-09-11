@@ -5,8 +5,8 @@
 package com.sorrowblue.twitlin.v2.tweets.impl
 
 import com.sorrowblue.twitlin.core.Urls
+import com.sorrowblue.twitlin.v2.client.AppClient
 import com.sorrowblue.twitlin.v2.client.Response
-import com.sorrowblue.twitlin.v2.client.UserClient
 import com.sorrowblue.twitlin.v2.field.Expansion
 import com.sorrowblue.twitlin.v2.field.MediaField
 import com.sorrowblue.twitlin.v2.field.PlaceField
@@ -16,21 +16,15 @@ import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.field.toParameter
 import com.sorrowblue.twitlin.v2.objects.OptionalData
 import com.sorrowblue.twitlin.v2.objects.OptionalListData
-import com.sorrowblue.twitlin.v2.objects.PagingData
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
-import com.sorrowblue.twitlin.v2.tweets.TweetsApi
-import com.sorrowblue.twitlin.v2.tweets.request.HiddenRequest
-import com.sorrowblue.twitlin.v2.tweets.response.HiddenResponse
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.encodeToISOString
-import com.sorrowblue.twitlin.v2.users.Expansion as UsersExpansion
+import com.sorrowblue.twitlin.v2.tweets.TweetsAppApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.builtins.ListSerializer
 
 private const val TWEETS = "${Urls.V2}/tweets"
-private const val USERS = "${Urls.V2}/users"
 
-internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
-
+internal class TweetsAppApiImpl(private val appClient: AppClient) : TweetsAppApi {
     override suspend fun tweet(
         id: String,
         expansions: List<Expansion>?,
@@ -40,7 +34,7 @@ internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
     ): Response<OptionalData<Tweet>> {
-        return userClient.get(
+        return appClient.get(
             "$TWEETS/$id",
             Response.serializer(OptionalData.serializer(Tweet.serializer())),
             "expansions" to expansions?.toParameter(),
@@ -60,68 +54,35 @@ internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<OptionalListData<Tweet>> = userClient.get(
-        TWEETS,
-        Response.serializer(OptionalListData.serializer(Tweet.serializer())),
-        "ids" to ids.joinToString(","),
-        "expansions" to expansions?.toParameter(),
-        "media.fields" to mediaFields?.toParameter(),
-        "place.fields" to placeFields?.toParameter(),
-        "poll.fields" to pollFields?.toParameter(),
-        "tweet.fields" to tweetFields?.toParameter(),
-        "user.fields" to userFields?.toParameter()
-    )
+    ): Response<OptionalData<List<Tweet>>> {
+        return appClient.get(
+            TWEETS,
+            Response.serializer(OptionalData.serializer(ListSerializer(Tweet.serializer()))),
+            "ids" to ids.joinToString(","),
+            "expansions" to expansions?.toParameter(),
+            "media.fields" to mediaFields?.toParameter(),
+            "place.fields" to placeFields?.toParameter(),
+            "poll.fields" to pollFields?.toParameter(),
+            "tweet.fields" to tweetFields?.toParameter(),
+            "user.fields" to userFields?.toParameter(),
+        )
+    }
 
-    override suspend fun hidden(id: String, isHidden: Boolean): Response<Boolean> =
-        userClient.putJson(
-            "$TWEETS/$id/hidden",
-            Response.serializer(HiddenResponse.serializer()),
-            HiddenRequest(isHidden)
-        ).convertData { it.data.hidden }
-
-    override suspend fun mentions(
-        id: String,
-        endTime: LocalDateTime?,
-        startTime: LocalDateTime?,
-        maxResults: Int,
-        paginationToken: String?,
-        sinceId: String?,
-        untilId: String?,
+    override fun sampleStream(
         expansions: List<Expansion>?,
         mediaFields: List<MediaField>?,
         placeFields: List<PlaceField>?,
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
-    ): Response<PagingData<Tweet>> {
-        return userClient.get(
-            "$USERS/$id/mentions",
-            serializer = Response.serializer(PagingData.serializer(Tweet.serializer())),
-            "end_time" to endTime?.encodeToISOString(),
-            "start_time" to startTime?.encodeToISOString(),
-            "max_results" to maxResults,
+    ): Flow<Response<OptionalData<Tweet>>> {
+        return appClient.streaming(
+            "$TWEETS/sample/stream",
+            Response.serializer(OptionalData.serializer(Tweet.serializer())),
             "expansions" to expansions?.toParameter(),
-            "pagination_token" to paginationToken,
             "media.fields" to mediaFields?.toParameter(),
             "place.fields" to placeFields?.toParameter(),
             "poll.fields" to pollFields?.toParameter(),
-            "since_id" to sinceId,
-            "until_id" to untilId,
-            "tweet.fields" to tweetFields?.toParameter(),
-            "user.fields" to userFields?.toParameter(),
-        )
-    }
-
-    override suspend fun likingUsers(
-        id: String,
-        expansions: List<UsersExpansion>?,
-        tweetFields: List<TweetField>?,
-        userFields: List<UserField>?
-    ): Response<OptionalListData<User>> {
-        return userClient.get(
-            "$TWEETS/$id/liking_users",
-            serializer = Response.serializer(OptionalListData.serializer(User.serializer())),
-            "expansions" to expansions?.toParameter(),
             "tweet.fields" to tweetFields?.toParameter(),
             "user.fields" to userFields?.toParameter()
         )
@@ -136,7 +97,7 @@ internal class TweetsApiImp(private val userClient: UserClient) : TweetsApi {
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
     ): Response<OptionalListData<User>> {
-        return userClient.get(
+        return appClient.get(
             "$TWEETS/$tweetId/retweeted_by",
             serializer = Response.serializer(OptionalListData.serializer(User.serializer())),
             "expansions" to expansions?.toParameter(),

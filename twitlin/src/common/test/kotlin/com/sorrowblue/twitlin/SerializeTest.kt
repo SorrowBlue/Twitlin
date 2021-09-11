@@ -5,14 +5,12 @@
 package com.sorrowblue.twitlin
 
 import com.sorrowblue.twitlin.v2.client.Error
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-@OptIn(ExperimentalSerializationApi::class)
 class SerializeTest {
 
     @Test

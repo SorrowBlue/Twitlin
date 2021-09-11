@@ -84,7 +84,7 @@ internal open class AppClient(
             do {
                 val body = response.content.readUTF8Line()!!
                 logger.info { "Response Twitter API-> GET:$url, body=$body" }
-                json.decodeFromString(serializer, body).let { this.trySend(it).isSuccess }
+                json.decodeFromString(serializer, body).let { this.offer(it) }
             } while (isClosedForSend.not())
         }
     }.catch {

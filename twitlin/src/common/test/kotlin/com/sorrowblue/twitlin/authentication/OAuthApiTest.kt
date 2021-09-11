@@ -5,11 +5,11 @@
 package com.sorrowblue.twitlin.authentication
 
 import com.sorrowblue.twitlin.TwitterAPI
+import test.AbstractTest
+import test.resultLog
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertNotNull
-import test.AbstractTest
-import test.resultLog
 
 class OAuthApiTest : AbstractTest {
 
@@ -26,7 +26,7 @@ class OAuthApiTest : AbstractTest {
     @Test
     fun authenticateTest() = runBlocking {
         val url =
-            TwitterAPI.oauthApi.requestToken("https://maitter.sorrowblue.com").resultLog()?.let {
+            TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").resultLog()?.let {
                 TwitterAPI.oauthApi.authenticate(it.oauthToken)
             }
         assertNotNull(url, "authenticate url is null")
@@ -35,7 +35,7 @@ class OAuthApiTest : AbstractTest {
     @Test
     fun authorizeTest() = runBlocking {
         val url =
-            TwitterAPI.oauthApi.requestToken("https://maitter.sorrowblue.com").resultLog()?.let {
+            TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").resultLog()?.let {
                 TwitterAPI.oauthApi.authorize(it.oauthToken)
             }
         assertNotNull(url, "authorize url is null")

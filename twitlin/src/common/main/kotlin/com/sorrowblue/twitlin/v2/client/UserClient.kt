@@ -92,7 +92,7 @@ internal open class UserClient(
             do {
                 val body = response.readText()
                 logger.info { "Response Twitter API-> GET:$url, body=$body" }
-                json.decodeFromString(serializer, body).let { channel.trySend(it).isSuccess }
+                json.decodeFromString(serializer, body).let { channel.offer(it) }
             } while (isClosedForSend.not())
         }
     }.catch {

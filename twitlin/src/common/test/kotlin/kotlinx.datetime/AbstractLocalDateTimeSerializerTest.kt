@@ -5,12 +5,11 @@
 package kotlinx.datetime
 
 import com.sorrowblue.twitlin.Twitlin
-import kotlin.test.BeforeTest
-import kotlin.test.assertEquals
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
 
 interface AbstractLocalDateTimeSerializerTest {
 
@@ -27,7 +26,6 @@ interface AbstractLocalDateTimeSerializerTest {
     }
 }
 
-@OptIn(ExperimentalSerializationApi::class)
 inline fun <reified T : LocalDataTimeTestData> AbstractLocalDateTimeSerializerTest.serialize(
     noinline body: (source: LocalDateTime) -> T
 ) {

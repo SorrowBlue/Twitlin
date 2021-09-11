@@ -12,7 +12,6 @@ import com.sorrowblue.twitlin.media.MediaResult
 import com.sorrowblue.twitlin.media.Subtitle
 import com.sorrowblue.twitlin.media.request.MetadataRequest
 import com.sorrowblue.twitlin.media.request.SubtitlesRequest
-import io.ktor.client.request.forms.formData
 import kotlinx.serialization.builtins.serializer
 
 private const val MEDIA = "https://upload.twitter.com/1.1/media"
@@ -42,7 +41,7 @@ internal class MediaApiImpl(private val client: UserClient) : MediaApi {
         additionalOwners: List<String>?,
         shared: Boolean?
     ): Response<MediaResult> {
-        return client.post(
+        return client.postFormData(
             "$MEDIA/upload.json",
             Response.serializer(MediaResult.serializer()),
             "command" to "INIT",
@@ -60,17 +59,19 @@ internal class MediaApiImpl(private val client: UserClient) : MediaApi {
         mediaData: String?,
         segmentIndex: Int
     ): Response<Unit> {
-        return client.submitFormWithBinaryData("$MEDIA/upload.json", Response.serializer(Unit.serializer()), formData {
-            append("command", "APPEND")
-            append("media_id", mediaId)
-            append("segment_index", segmentIndex)
-            media?.let { append("media", it) }
-            mediaData?.let { append("media_data", it) }
-        })
+        return client.postFormData(
+            "$MEDIA/upload.json",
+            Response.serializer(Unit.serializer()),
+            "command" to "APPEND",
+            "media_id" to mediaId,
+            "media" to media?.decodeToString(),
+            "media_data" to mediaData,
+            "segment_index" to segmentIndex
+        )
     }
 
     override suspend fun uploadFinalize(mediaId: String): Response<MediaResult> {
-        return client.post(
+        return client.postFormData(
             "$MEDIA/upload.json",
             Response.serializer(MediaResult.serializer()),
             "command" to "FINALIZE",

@@ -68,7 +68,7 @@ class TweetsApiTest : AbstractTest {
 
     @Test
     fun testMentions() = runBlocking {
-        TwitterV2API.usersApi.mentions("986174595660005377").testResult()
+        TwitterV2API.tweetsApi.mentions("986174595660005377").testResult()
     }
 
     /**
@@ -92,7 +92,7 @@ class TweetsApiTest : AbstractTest {
         runCatching {
             runBlocking {
                 var c = 0
-                TwitterV2API.tweetsApi.sampleStream(tweetFields = listOf(TweetField.TEXT))
+                TwitterV2API.tweetsAppApi.sampleStream(tweetFields = listOf(TweetField.TEXT))
                     .collect {
                         if (100 < c) {
                             cancel("Manual cancel")

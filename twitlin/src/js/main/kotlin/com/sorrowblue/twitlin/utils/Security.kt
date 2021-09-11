@@ -35,10 +35,4 @@ internal actual object Security {
             hexStringToByte(substring(pointer, pointer + 2))
         }
     }
-
-    actual fun sha256(key: ByteArray): ByteArray {
-        val jsSha = JsSHA1("SHA-256", "TEXT", Options("UTF8"))
-        jsSha.update(key.toHexString())
-        return jsSha.getHMAC("HEX").hexToByteArray()
-    }
 }
