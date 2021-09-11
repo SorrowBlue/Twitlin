@@ -4,15 +4,17 @@
 
 package com.sorrowblue.twitlin.v2.serializers
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalDateTimeISOSerializer
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
+@OptIn(ExperimentalSerializationApi::class)
 internal class LocalDateTimeRFC822SerializerTest {
 
     private val source = LocalDateTime(2010, 6, 1, 22, 19, 44, 475)

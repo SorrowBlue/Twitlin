@@ -13,11 +13,12 @@ import com.sorrowblue.twitlin.core.headerAuthorization
 import com.sorrowblue.twitlin.core.notNullParams
 import io.ktor.client.features.ClientRequestException
 import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpStatement
 import io.ktor.client.statement.readText
-import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
+import io.ktor.http.content.PartData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -68,7 +69,7 @@ internal class UserClient(apiKey: String, secretKey: String, var accessToken: Ac
             do {
                 val body = response.readText()
                 logger.info { "Response Twitter API-> GET:$url, body=$body" }
-                json.decodeFromString(serializer, body).let { channel.offer(it) }
+                json.decodeFromString(serializer, body).let { channel.trySend(it).isSuccess }
             } while (isClosedForSend.not())
         }
     }
@@ -81,13 +82,23 @@ internal class UserClient(apiKey: String, secretKey: String, var accessToken: Ac
     ): R =
         request(HttpMethod.Post, url.combineParams(params), params, serializer) { bodyJson(clazz) }
 
-    suspend fun <T : Any, R : IResponse<T>> postFormData(
+    suspend fun <T : Any, R : IResponse<T>> submitFormWithBinaryData(
         url: String,
         serializer: KSerializer<R>,
-        vararg params: UrlParams
-    ): R = request(HttpMethod.Post, url, params, serializer) {
-        bodyFormUrlEncoded(params.notNullParams, ContentType.MultiPart.FormData)
+        partData: List<PartData>
+    ): R {
+        return runCatchingResponse(serializer) {
+            httpClient.submitFormWithBinaryData<String>(url = url, formData = partData) {
+                headerAuthorization(apiKey, secretKey, emptyList(), accessToken)
+                val header = headers.entries().joinToString(", ") { it.key + ": " + it.value }
+                logger.info { "Request Twitter API-> POST:$url, header = $header, body =${this.body}" }
+            }.let {
+                logger.info { "Response Twitter API-> POST:$url, body=$it" }
+                json.decodeFromString(serializer, it)
+            }
+        }
     }
+
     suspend inline fun <T : Any, R : IResponse<T>, reified V : Any> putJson(
         url: String,
         serializer: KSerializer<R>,

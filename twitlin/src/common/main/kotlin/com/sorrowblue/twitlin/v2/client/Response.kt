@@ -42,6 +42,7 @@ public sealed class Response<T : Any> : IResponse<T>, JvmSerializable {
         val required_enrollment: String? = null,
         val registration_url: String? = null,
         val reason: String? = null,
+        val throwable: Throwable? = null
     ) : Response<T>(),
         JvmSerializable {
 

@@ -8,6 +8,15 @@ import com.sorrowblue.twitlin.authentication.AccessToken
 import com.sorrowblue.twitlin.authentication.BearerToken
 import com.sorrowblue.twitlin.client.AppClient
 import com.sorrowblue.twitlin.client.UserClient
+import com.sorrowblue.twitlin.core.buildHeaderString
+import com.sorrowblue.twitlin.core.calculateSignatureBase64
+import com.sorrowblue.twitlin.core.collectingParameters
+import com.sorrowblue.twitlin.core.creatingSignatureBaseString
+import com.sorrowblue.twitlin.core.gettingSigningKey
+import io.ktor.util.InternalAPI
+import io.ktor.util.encodeBase64
+import kotlin.random.Random
+import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import mu.KLogger
 import mu.KotlinLogging
@@ -59,6 +68,21 @@ public object Twitlin {
         public var accessToken: AccessToken? = null
         public var bearerToken: BearerToken? = null
         public var timeZone: TimeZone = TimeZone.UTC
+    }
+
+    @OptIn(InternalAPI::class)
+    public fun authorizationHeader(url: String): String {
+        val nc = Random.nextBytes(32).encodeBase64().trim('=')
+        val ts = Clock.System.now().epochSeconds.toString()
+
+        val parameterString =
+            collectingParameters(v2UserClient.apiKey, nc, ts, accessToken?.oauthToken, emptyList())
+        val baseString = creatingSignatureBaseString("GET", url, parameterString)
+        val signingKey = gettingSigningKey(v2UserClient.secretKey, accessToken?.oauthTokenSecret)
+        val sign = calculateSignatureBase64(baseString, signingKey)
+        val parameters =
+            collectingParameters(v2UserClient.apiKey, nc, sign, ts, accessToken?.oauthToken, emptyList())
+        return buildHeaderString(parameters)
     }
 }
 

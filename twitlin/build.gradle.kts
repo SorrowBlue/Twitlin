@@ -14,10 +14,10 @@ plugins {
     id("kotlin-parcelize")
     `maven-publish`
     signing
-    kotlin("plugin.serialization") version "1.5.20"
-    id("org.jetbrains.dokka") version "1.4.32"
-    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
-    id("com.codingfeline.buildkonfig") version "0.8.0"
+    kotlin("plugin.serialization") version "1.5.30"
+    id("org.jetbrains.dokka") version "1.5.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
+    id("com.codingfeline.buildkonfig") version "0.9.0"
 }
 
 group = "com.sorrowblue.twitlin"
@@ -46,7 +46,7 @@ kotlin {
     }
     sourceSets {
         all {
-            languageSettings.useExperimentalAnnotation("kotlin.RequiresOptIn")
+            languageSettings.optIn("kotlin.RequiresOptIn")
         }
         commonMain {
             kotlin.srcDirs("src/common/main/kotlin")
@@ -55,7 +55,8 @@ kotlin {
                 implementation(libs.bundles.kotlinx.serialization)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.serialization)
-                implementation(kotlin("reflect", "1.5.20"))
+                implementation(libs.ktor.client.logging)
+                implementation(kotlin("reflect", "1.5.30"))
                 implementation(libs.kotlin.logging)
             }
         }

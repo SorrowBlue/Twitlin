@@ -13,15 +13,13 @@ import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.objects.OptionalData
 import com.sorrowblue.twitlin.v2.objects.OptionalListData
-import com.sorrowblue.twitlin.v2.objects.PagingData
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.objects.User
-import kotlinx.datetime.LocalDateTime
+import kotlinx.coroutines.flow.Flow
 import com.sorrowblue.twitlin.v2.users.Expansion as UsersExpansion
 
 /**
  * TODO
- *
  */
 public interface TweetsApi {
 
@@ -78,6 +76,47 @@ public interface TweetsApi {
     ): Response<OptionalListData<Tweet>>
 
     /**
+     * Streams about 1% of all Tweets in real-time.
+     *
+     * @param expansions List of extensions. [Expansion] enable requests to expand an ID into a full object in the `includes` response object.
+     * @param mediaFields List of additional fields to return in the [Media](com.sorrowblue.twitlin.v2.objects.Media) object.
+     * The response will contain the selected fields only if a Tweet contains media attachments.
+     * @param placeFields List of additional fields to return in the [Place](com.sorrowblue.twitlin.v2.objects.Place) object.
+     * The response will contain the selected fields only if location data is present in any of the response objects.
+     * @param pollFields List of additional fields to return in the [Poll](com.sorrowblue.twitlin.v2.objects.Poll) object.
+     * The response will contain the selected fields only if a Tweet contains a poll.
+     * @param tweetFields List of additional fields to return in the [Tweet] object. By default, the endpoint only returns `id` and `text`.
+     * @param userFields List of additional fields to return in the [User](com.sorrowblue.twitlin.v2.objects.User) object.
+     * By default, the endpoint does not return any user field. To use this parameter, you must include the [TweetField.AUTHOR_ID] expansion parameter in the request.
+     * @return About 1% of all Tweets.
+     */
+    public fun sampleStream(
+        expansions: List<Expansion>? = null,
+        mediaFields: List<MediaField>? = null,
+        placeFields: List<PlaceField>? = null,
+        pollFields: List<PollField>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null
+    ): Flow<Response<OptionalData<Tweet>>>
+
+    public suspend fun retweetedBy(
+        id: String,
+        expansions: List<UsersExpansion>? = null,
+        mediaFields: List<MediaField>? = null,
+        placeFields: List<PlaceField>? = null,
+        pollFields: List<PollField>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null
+    ): Response<OptionalListData<User>>
+
+    public suspend fun likingUsers(
+        id: String,
+        expansions: List<UsersExpansion>? = null,
+        tweetFields: List<TweetField>? = null,
+        userFields: List<UserField>? = null
+    ): Response<OptionalListData<User>>
+
+    /**
      * Hides or unhides a reply to a Tweet.
      *
      * @param id Unique identifier of the Tweet to hide or unhide. The Tweet must belong to a conversation initiated by the authenticating user.
@@ -87,37 +126,4 @@ public interface TweetsApi {
      * @return `true` if the reply is visible, `false` if hidden.
      */
     public suspend fun hidden(id: String, isHidden: Boolean = true): Response<Boolean>
-
-    public suspend fun mentions(
-        id: String,
-        endTime: LocalDateTime? = null,
-        startTime: LocalDateTime? = null,
-        maxResults: Int = 10,
-        paginationToken: String? = null,
-        sinceId: String? = null,
-        untilId: String? = null,
-        expansions: List<Expansion>? = null,
-        mediaFields: List<MediaField>? = null,
-        placeFields: List<PlaceField>? = null,
-        pollFields: List<PollField>? = null,
-        tweetFields: List<TweetField>? = null,
-        userFields: List<UserField>? = null
-    ): Response<PagingData<Tweet>>
-
-    public suspend fun likingUsers(
-        id: String,
-        expansions: List<UsersExpansion>? = null,
-        tweetFields: List<TweetField>? = null,
-        userFields: List<UserField>? = null
-    ): Response<OptionalListData<User>>
-
-    public suspend fun retweetedBy(
-        tweetId: String,
-        expansions: List<com.sorrowblue.twitlin.v2.users.Expansion>? = null,
-        mediaFields: List<MediaField>? = null,
-        placeFields: List<PlaceField>? = null,
-        pollFields: List<PollField>? = null,
-        tweetFields: List<TweetField>? = null,
-        userFields: List<UserField>? = null
-    ): Response<OptionalListData<User>>
 }
