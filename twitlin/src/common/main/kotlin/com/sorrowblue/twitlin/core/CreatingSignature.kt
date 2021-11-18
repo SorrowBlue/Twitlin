@@ -1,10 +1,6 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.core
 
-import com.sorrowblue.twitlin.utils.Security
+import com.sorrowblue.twitlin.utils.hmacSHA1
 import com.sorrowblue.twitlin.utils.urlEncode
 import io.ktor.util.InternalAPI
 import io.ktor.util.encodeBase64
@@ -12,7 +8,7 @@ import io.ktor.util.encodeBase64
 /**
  * Collecting parameters
  *
- * Next, gather all of the parameters included in the request.
+ * Next, gather all the parameters included in the request.
  * There are two such locations for these additional parameters - the URL (as part of the query string) and the request body.
  *
  * @param consumerKey The [consumerKey] identifies which application is making the request.
@@ -117,12 +113,12 @@ internal fun gettingSigningKey(consumerSecret: String, oAuthTokenSecret: String?
  * The output of the HMAC signing function is a binary string. This needs to be base64 encoded to
  * produce the signature string.
  *
- * @param baseString TODO
- * @param signingKey TODO
- * @return TODO
+ * @param baseString
+ * @param signingKey
+ * @return
  */
 internal fun calculateSignature(baseString: String, signingKey: String): ByteArray =
-    Security.hmacSHA1(signingKey.encodeToByteArray(), baseString.encodeToByteArray())
+    hmacSHA1(signingKey.encodeToByteArray(), baseString.encodeToByteArray())
 
 /**
  * Finally, the signature is calculated by passing the signature base string and signing key to the
@@ -130,9 +126,9 @@ internal fun calculateSignature(baseString: String, signingKey: String): ByteArr
  * The output of the HMAC signing function is a binary string. This needs to be base64 encoded to
  * produce the signature string.
  *
- * @param baseString TODO
- * @param signingKey TODO
- * @return TODO
+ * @param baseString
+ * @param signingKey
+ * @return
  */
 @OptIn(InternalAPI::class)
 internal fun calculateSignatureBase64(baseString: String, signingKey: String): String =

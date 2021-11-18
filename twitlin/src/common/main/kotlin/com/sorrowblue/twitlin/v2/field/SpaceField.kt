@@ -1,6 +1,5 @@
 package com.sorrowblue.twitlin.v2.field
 
-
 public enum class SpaceField(override val value: String) : OptionalField {
     HOST_IDS("host_ids"),
     CREATED_AT("created_at"),

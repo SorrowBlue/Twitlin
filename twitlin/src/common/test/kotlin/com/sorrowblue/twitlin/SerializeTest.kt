@@ -1,18 +1,16 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin
 
 import com.sorrowblue.twitlin.v2.client.Error
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class SerializeTest {
 
+    @OptIn(ExperimentalSerializationApi::class)
     @Test
     fun emptyTest() {
         val json = "{}"
@@ -24,6 +22,7 @@ class SerializeTest {
         assertEquals(json, string)
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     @Test
     fun errorTest() {
         val json = """

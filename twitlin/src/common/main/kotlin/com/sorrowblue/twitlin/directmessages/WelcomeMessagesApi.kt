@@ -1,11 +1,8 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.directmessages
 
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.media.MediaResult
+import com.sorrowblue.twitlin.objects.MediaId
 
 /**
  * Welcome Messages provide the ability to display a message to people who are entering a Direct
@@ -103,7 +100,7 @@ public interface WelcomeMessagesApi {
     public suspend fun new(
         name: String,
         text: String,
-        mediaId: String? = null,
+        mediaId: MediaId? = null,
         quickReply: QuickReply? = null
     ): Response<WelcomeMessageData>
 
@@ -142,7 +139,7 @@ public interface WelcomeMessagesApi {
     public suspend fun update(
         id: String,
         text: String,
-        mediaId: String? = null,
+        mediaId: MediaId? = null,
         quickReply: QuickReply? = null
     ): Response<WelcomeMessageData>
 }

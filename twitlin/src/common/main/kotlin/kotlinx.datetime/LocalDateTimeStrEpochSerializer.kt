@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package kotlinx.datetime
 
 import com.sorrowblue.twitlin.Twitlin
@@ -28,5 +24,4 @@ internal object LocalDateTimeStrEpochSerializer : KSerializer<LocalDateTime> {
     }
 }
 
-public fun String.epochToLocalDateTime(): LocalDateTime = Instant.fromEpochMilliseconds(padEnd(13, '0').toLong())
-    .toLocalDateTime(Twitlin.defaultTimeZone)
+public fun String.epochToLocalDateTime(): LocalDateTime = toLong().epochToLocalDateTime()

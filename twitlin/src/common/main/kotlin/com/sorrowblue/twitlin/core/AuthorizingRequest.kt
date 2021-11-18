@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.core
 
 import com.sorrowblue.twitlin.utils.urlEncode
@@ -44,8 +40,8 @@ similar header will allow you to specify authorization for the request.
  * for your account on the settings page for your
  * [Twitter app](https://developer.twitter.com/content/developer-twitter/en/docs/basics/developer-portal/guides/apps)
  * on the [developer portal](https://developer.twitter.com/content/developer-twitter/en/docs/basics/developer-portal/overview).
- * @param params TODO
- * @return TODO
+ * @param params
+ * @return
  */
 internal fun collectingParameters(
     consumerKey: String,
@@ -84,21 +80,8 @@ internal fun collectingParameters(
  * For example, the `oauth_signature` value of `tnnArxj06cWHq44gCs1OSKk/jLY=` must be encoded as
  * `tnnArxj06cWHq44gCs1OSKk%2FjLY%3D`.
  *
- * @param params TODO
- * @return TODO
+ * @param params
+ * @return
  */
-internal fun buildHeaderString(params: List<Pair<String, String>>): String {
-    val dst = StringBuilder()
-    dst.append("OAuth ")
-    params.forEachIndexed { index, it ->
-        dst.append(it.first.urlEncode())
-        dst.append("=")
-        dst.append("\"")
-        dst.append(it.second.urlEncode())
-        dst.append("\"")
-        if (index != params.lastIndex) {
-            dst.append(", ")
-        }
-    }
-    return dst.toString()
-}
+internal fun buildHeaderString(params: List<Pair<String, String>>): String =
+    """OAuth ${params.joinToString(", ") { """${it.first.urlEncode()}="${it.second.urlEncode()}"""" }}"""

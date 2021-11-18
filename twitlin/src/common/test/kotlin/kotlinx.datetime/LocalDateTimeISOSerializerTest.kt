@@ -1,12 +1,8 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package kotlinx.datetime
 
+import kotlin.test.Test
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlin.test.Test
 
 @Serializable
 class ISOTestData(

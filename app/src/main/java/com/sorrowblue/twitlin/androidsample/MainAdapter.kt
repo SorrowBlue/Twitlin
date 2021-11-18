@@ -1,12 +1,9 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.androidsample
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.sorrowblue.twitlin.androidsample.databinding.RecyclerViewItemBinding
@@ -16,16 +13,14 @@ import kotlin.properties.Delegates
 
 typealias TweetObject = Pair<Tweet, User>
 
-class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
-
-    var currentItem: List<TweetObject> by Delegates.observable(emptyList()) { _, oldValue, newValue ->
-        DiffUtil.calculateDiff(Diff(oldValue, newValue)).dispatchUpdatesTo(this)
-    }
-
-    override fun getItemCount() = currentItem.size
+class MainAdapter : ListAdapter<TweetObject, MainAdapter.ViewHolder>(object : DiffUtil.ItemCallback<TweetObject>() {
+    override fun areItemsTheSame(oldItem: TweetObject, newItem: TweetObject) = oldItem.first.id == newItem.first.id
+    override fun areContentsTheSame(oldItem: TweetObject, newItem: TweetObject) =
+        oldItem.first == newItem.first && oldItem.second == newItem.second
+}) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(currentItem[position])
+        holder.bind(getItem(position))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(parent)
@@ -41,22 +36,11 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
         fun bind(tweetObject: TweetObject) {
             binding.textView.text = tweetObject.first.text
-            binding.textView2.text =
+            binding.name.text = tweetObject.second.name
+            binding.createdAt.text = tweetObject.first._createdAt
+            binding.username.text =
                 binding.root.resources.getString(R.string.username, tweetObject.second.username)
             binding.imageView.load(tweetObject.second.profileImageUrl)
         }
-    }
-
-    class Diff(private val old: List<TweetObject>, private val new: List<TweetObject>) :
-        DiffUtil.Callback() {
-
-        override fun getOldListSize() = old.size
-
-        override fun getNewListSize() = new.size
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-            old[oldItemPosition].first.id == new[newItemPosition].first.id
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-            old[oldItemPosition] == new[newItemPosition]
     }
 }

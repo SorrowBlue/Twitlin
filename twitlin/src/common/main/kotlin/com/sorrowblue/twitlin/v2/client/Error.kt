@@ -1,14 +1,15 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.v2.client
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
 import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 @AndroidParcelize
 @Serializable
@@ -29,133 +30,127 @@ public data class Error(
 //    val status: Int? = null
 ) : AndroidParcelable, JvmSerializable {
 
-    @Serializable
-    public enum class Type {
+    @Serializable(with = ErrorTypeSerializer::class)
+    public enum class Type(public val value: String) {
+
         /**
          * about:blank
          * A generic problem with no additional information beyond that provided by the HTTP status code.
          */
-        @SerialName("Generic Problem")
-        GENERIC_PROBLEM,
+        @SerialName("about:blank")
+        GENERIC_PROBLEM("about:blank"),
 
         /**
          * https://api.twitter.com/2/problems/invalid-request
          * A problem that indicates this request is invalid.
          */
         @SerialName("https://api.twitter.com/2/problems/invalid-request")
-        INVALID_REQUEST_PROBLEM,
+        INVALID_REQUEST_PROBLEM("https://api.twitter.com/2/problems/invalid-request"),
 
         /**
          * https://api.twitter.com/2/problems/resource-not-found
          * A problem that indicates that a given Tweet, User, etc. does not exist.
          */
         @SerialName("https://api.twitter.com/2/problems/resource-not-found")
-        RESOURCE_NOT_FOUND,
+        RESOURCE_NOT_FOUND("https://api.twitter.com/2/problems/resource-not-found"),
 
         /**
          * https://api.twitter.com/2/problems/not-authorized-for-resource
          * A problem that indicates you are not allowed to see a particular Tweet, User, etc.
          */
-        @SerialName("Resource Unauthorized Problem")
-        RESOURCE_UNAUTHORIZED_PROBLEM,
-
         @SerialName("https://api.twitter.com/2/problems/not-authorized-for-resource")
-        NOT_AUTHORIZED_FOR_RESOURCE,
+        RESOURCE_UNAUTHORIZED_PROBLEM("https://api.twitter.com/2/problems/not-authorized-for-resource"),
+
+        /**
+         * https://api.twitter.com/2/problems/not-authorized-for-field
+         * A problem that indicates you are not allowed to see a particular Tweet, User, etc.
+         */
+        @SerialName("https://api.twitter.com/2/problems/not-authorized-for-field")
+        FIELD_UNAUTHORIZED_PROBLEM("https://api.twitter.com/2/problems/not-authorized-for-field"),
 
         /**
          * https://api.twitter.com/2/problems/client-forbidden
          * A problem that indicates your client is forbidden from making this request.
          */
         @SerialName("https://api.twitter.com/2/problems/client-forbidden")
-        CLIENT_FORBIDDEN_PROBLEM,
+        CLIENT_FORBIDDEN_PROBLEM("https://api.twitter.com/2/problems/client-forbidden"),
 
         /**
-         *
+         * https://api.twitter.com/2/problems/disallowed-resource
          * A problem that indicates that the resource requested violates the precepts of this API.
          */
         @SerialName("https://api.twitter.com/2/problems/disallowed-resource")
-        DISALLOWED_RESOURCE,
-
-        @SerialName("https://api.twitter.com/2/problems/not-authorized-for-field")
-        FIELD_AUTHORIZATION_ERROR,
+        DISALLOWED_RESOURCE("https://api.twitter.com/2/problems/disallowed-resource"),
 
         /**
          * https://api.twitter.com/2/problems/unsupported-authentication
          * A problem that indicates that the authentication used is not supported.
          */
-        @SerialName("Unsupported Authentication Problem")
-        UNSUPPORTED_AUTHENTICATION_PROBLEM,
+        @SerialName("https://api.twitter.com/2/problems/unsupported-authentication")
+        UNSUPPORTED_AUTHENTICATION_PROBLEM("https://api.twitter.com/2/problems/unsupported-authentication"),
 
         /**
          * https://api.twitter.com/2/problems/usage-capped
          * A problem that indicates that a usage cap has been exceeded.
          */
-        @SerialName("Usage Capped Problem")
-        USAGE_CAPPED_PROBLEM,
+        @SerialName("https://api.twitter.com/2/problems/usage-capped")
+        USAGE_CAPPED_PROBLEM("https://api.twitter.com/2/problems/usage-capped"),
 
         /**
          * https://api.twitter.com/2/problems/streaming-connection
          * A problem that indicates something is wrong with the connection.
          */
-        @SerialName("Connection Exception Problem")
-        CONNECTION_EXCEPTION_PROBLEM,
+        @SerialName("https://api.twitter.com/2/problems/streaming-connection")
+        CONNECTION_EXCEPTION_PROBLEM("https://api.twitter.com/2/problems/streaming-connection"),
 
         /**
          * https://api.twitter.com/2/problems/client-disconnected
          * Your client has gone away.
          */
-        @SerialName("Client Disconnected Problem")
-        CLIENT_DISCONNECTED_PROBLEM,
+        @SerialName("https://api.twitter.com/2/problems/client-disconnected")
+        CLIENT_DISCONNECTED_PROBLEM("https://api.twitter.com/2/problems/client-disconnected"),
 
         /**
          * https://api.twitter.com/2/problems/operational-disconnect
          * You have been disconnected for operational reasons.
          */
-        @SerialName("Operational Disconnect Problem")
-        OPERATIONAL_DISCONNECT_PROBLEM,
+        @SerialName("https://api.twitter.com/2/problems/operational-disconnect")
+        OPERATIONAL_DISCONNECT_PROBLEM("https://api.twitter.com/2/problems/operational-disconnect"),
 
         /**
          * https://api.twitter.com/2/problems/rule-cap
          * You have exceeded the maximum number of rules.
          */
-        @SerialName("Rule Cap Problem")
-        RILE_CAP_PROBLEM,
+        @SerialName("https://api.twitter.com/2/problems/rule-cap")
+        RILE_CAP_PROBLEM("https://api.twitter.com/2/problems/rule-cap"),
 
         /**
          * https://api.twitter.com/2/problems/invalid-rules
          * The rule you have submitted is invalid.
          */
-        @SerialName("Invalid Rules Problem")
-        INVALID_RULES_PROBLEM,
+        @SerialName("https://api.twitter.com/2/problems/invalid-rules")
+        INVALID_RULES_PROBLEM("https://api.twitter.com/2/problems/invalid-rules"),
 
         /**
          * https://api.twitter.com/2/problems/duplicate-rules
          * The rule you have submitted is a duplicate.
          */
-        @SerialName("Duplicate Rules Problem")
-        DUPLICATE_RULES_PROBLEM,
-
-        /**
-         * UnknownHostException
-         */
-        @SerialName("UnknownHostException")
-        UNKNOWN_HOST_EXCEPTION,
+        @SerialName("https://api.twitter.com/2/problems/duplicate-rules")
+        DUPLICATE_RULES_PROBLEM("https://api.twitter.com/2/problems/duplicate-rules"),
 
         /**
          * unknown
          */
-        UNKNOWNS,
-
-        /**
-         * about:blank
-         */
-        @SerialName("about:blank")
-        ABOUT_BLANK,
-
-        /**
-         * Invalid rules
-         */
-        @SerialName("https://api.twitter.com/2/problems/invalid-rules")
-        INVALID_RULES
+        UNDEFINED("undefined"),
     }
+}
+
+@OptIn(ExperimentalSerializationApi::class)
+@Serializer(forClass = Error.Type::class)
+internal object ErrorTypeSerializer : KSerializer<Error.Type> {
+
+    override fun serialize(encoder: Encoder, value: Error.Type) = encoder.encodeString(value.value)
+
+    override fun deserialize(decoder: Decoder) =
+        kotlin.runCatching { Error.Type.valueOf(decoder.decodeString()) }.getOrElse { Error.Type.UNDEFINED }
 }

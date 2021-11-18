@@ -1,19 +1,18 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.objects
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
 import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
+import com.sorrowblue.twitlin.annotation.KotlinIgnoredOnParcel
 import com.sorrowblue.twitlin.objects.Tweet.ExtendedEntities
 import com.sorrowblue.twitlin.objects.Tweet.FilterLevel
-import com.sorrowblue.twitlin.tweets.FavoritesApi
-import com.sorrowblue.twitlin.tweets.StatusesApi
+import com.sorrowblue.twitlin.objects.Tweet.WithheldScope
+import com.sorrowblue.twitlin.tweets.favorites.FavoritesApi
+import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.rfc822ToLocalDateTime
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Transient
 import kotlinx.serialization.Serializable
 
 /**
@@ -24,16 +23,11 @@ import kotlinx.serialization.Serializable
  * [extendedEntities]. Tweets that are geo-tagged will have a [place] child object.
  *
  * @property createdAt LocalDate time when this Tweet was created.
- * @property id The integer representation of the unique identifier for this Tweet. This number is
- * greater than 53 bits and some programming languages may have difficulty/silent defects in
- * interpreting it. Using a signed 64 bit integer for storing this identifier is safe. Use [idStr]
- * to fetch the identifier to be safe. See
- * [Twitter IDs](https://developer.twitter.com/en/docs/twitter-ids) for more information.
- * @property idStr The string representation of the unique identifier for this Tweet.
- * Implementations should use this rather than the large integer in [id].
- * @property text The actual UTF-8 text of the status update. See
- * [twitter-text](https://github.com/twitter/twitter-text/blob/master/rb/lib/twitter-text/regex.rb)
- * for details on what characters are currently considered valid.
+ * @property id The string representation of the unique identifier for this Tweet.
+ * See [Twitter IDs](https://developer.twitter.com/en/docs/twitter-ids) for more information.
+ * @property text The actual UTF-8 text of the status update.
+ * See [twitter-text](https://github.com/twitter/twitter-text/blob/master/rb/lib/twitter-text/regex.rb) for details on
+ * what characters are currently considered valid.
  * @property truncated Indicates whether the value of the [text] parameter was truncated, for example,
  * as a result of a retweet exceeding the original Tweet text length limit of 140 characters.
  * Truncated text will end in ellipsis, like this `...` Since Twitter now rejects long Tweets vs
@@ -41,20 +35,14 @@ import kotlinx.serialization.Serializable
  * native retweets may have their toplevel `text` property shortened, the original text will be
  * available under the [retweetedStatus] object and the [truncated] parameter will be set to the
  * value of the original status (in most cases, `false`).
- * @property entities Entities which have been parsed out of the text of the Tweet.
- * Additionally see [Entities].
+ * @property entities Entities which have been parsed out of the text of the Tweet. Additionally see [Entities].
  * @property source Utility used to post the Tweet, as an HTML-formatted string.
  * Tweets from the Twitter website have a source value of `web`.
  * @property inReplyToStatusId Nullable. If the represented Tweet is a reply,
  * this field will contain the integer representation of the original Tweet’s ID.
- * @property inReplyToStatusIdStr Nullable. If the represented Tweet is a reply,
- * this field will contain the string representation of the original Tweet’s ID.
  * @property inReplyToUserId Nullable. If the represented Tweet is a reply, this field will contain
  * the integer representation of the original Tweet’s author ID. This will not necessarily always
  * be the user directly mentioned in the Tweet.
- * @property inReplyToUserIdStr Nullable. If the represented Tweet is a reply, this field will
- * contain the string representation of the original Tweet’s author ID. This will not necessarily
- * always be the user directly mentioned in the Tweet.
  * @property inReplyToScreenName Nullable. If the represented Tweet is a reply, this field will
  * contain the screen name of the original Tweet’s author.
  * @property user The user who posted this Tweet. See User data dictionary for complete list of
@@ -66,8 +54,6 @@ import kotlinx.serialization.Serializable
  * necessarily originating from) a [Place].
  * @property quotedStatusId This field only surfaces when the Tweet is a quote Tweet. This field
  * contains the integer value Tweet ID of the quoted Tweet.
- * @property quotedStatusIdStr This field only surfaces when the Tweet is a quote Tweet.
- * This is the string representation Tweet ID of the quoted Tweet.
  * @property isQuoteStatus Indicates whether this is a Quoted Tweet.
  * @property quotedStatus This field only surfaces when the Tweet is a quote Tweet.
  * This attribute contains the Tweet object of the original Tweet that was quoted.
@@ -77,17 +63,13 @@ import kotlinx.serialization.Serializable
  * was retweeted. Note that retweets of retweets do not show representations of the intermediary
  * retweet, but only the original Tweet. (Users can also [StatusesApi.destroy] a retweet they
  * created by deleting their retweet.)
- * @property quoteCount Nullable. Indicates approximately how many times this Tweet has been quoted
- * by Twitter users.
+ * @property quoteCount Nullable. Indicates approximately how many times this Tweet has been quoted by Twitter users.
  * @property replyCount Number of times this Tweet has been replied to.
  * @property retweetCount Number of times this Tweet has been retweeted.
- * @property favouriteCount Nullable. Indicates approximately how many times this Tweet has been
- * [FavoritesApi.create] by Twitter users.
- * @property extendedEntities When between one and four native photos or one video or one animated
- * GIF are in Tweet, contains an array 'media' metadata. This is also available in Quote Tweets.
- * Additionally see [ExtendedEntities].
- * @property favorited Nullable. Indicates whether this Tweet has been liked by the authenticating
- * user.
+ * @property favouriteCount Nullable. Indicates approximately how many times this Tweet has been [FavoritesApi.create] by Twitter users.
+ * @property extendedEntities When between one and four native photos or one video or one animated GIF are in Tweet,
+ * contains an array 'media' metadata. This is also available in Quote Tweets. Additionally see [ExtendedEntities].
+ * @property favorited Nullable. Indicates whether this Tweet has been liked by the authenticating user.
  * @property retweeted Indicates whether this Tweet has been Retweeted by the authenticating user.
  * @property possiblySensitive Nullable. This field only surfaces when a Tweet contains a link.
  * The meaning of the field doesn’t pertain to the Tweet content itself, but instead it is an
@@ -107,48 +89,37 @@ import kotlinx.serialization.Serializable
  * @property currentUserRetweet Perspectival Only surfaces on methods supporting the
  * include_my_retweet parameter, when set to true. Details the Tweet ID of the user’s own retweet
  * (if existent) of this Tweet.
- * @property scopes A set of key-value pairs indicating the intended contextual delivery of the
- * containing Tweet. Currently used by Twitter’s Promoted Products.
- * @property withheldCopyright When present and set to “true”, it indicates that this piece of
- * content has been withheld due to a
- * [DMCA complaint](http://en.wikipedia.org/wiki/Digital_Millennium_Copyright_Act).
- * @property withheldInCountries When present, indicates a list of uppercase
- * [two-letter country codes](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) this content is
- * withheld from. Twitter supports the following non-country values for this field:
- *
- * “XX” - Content is withheld in all countries “XY” - Content is withheld due to a DMCA request.
- * @property withheldScope When present, indicates whether the content being withheld is the
- * “status” or a “user”.
+ * @property scopes A set of key-value pairs indicating the intended contextual delivery of the containing Tweet.
+ * Currently used by Twitter’s Promoted Products.
+ * @property withheldCopyright When present and set to `true`, it indicates that this piece of content has been withheld
+ * due to a [DMCA complaint](http://en.wikipedia.org/wiki/Digital_Millennium_Copyright_Act).
+ * @property withheldInCountries When present, indicates a list of uppercase [two-letter country codes](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+ * this content is withheld from. Twitter supports the following non-country values for this field: `XX` - Content is
+ * withheld in all countries `XY` - Content is withheld due to a DMCA request.
+ * @property withheldScope When present, indicates whether the content being withheld is the [WithheldScope.STATUS] or a [WithheldScope.USER].
  */
 @AndroidParcelize
 @Serializable
 public data class Tweet(
     @SerialName("created_at")
     val _createdAt: String,
-    val id: Long,
     @SerialName("id_str")
-    val idStr: String,
+    val id: TweetId,
     val text: String,
     val truncated: Boolean,
     val entities: Entities? = null,
     val source: String,
-    @SerialName("in_reply_to_status_id")
-    val inReplyToStatusId: Long?,
     @SerialName("in_reply_to_status_id_str")
-    val inReplyToStatusIdStr: String?,
-    @SerialName("in_reply_to_user_id")
-    val inReplyToUserId: Long?,
+    val inReplyToStatusId: TweetId?,
     @SerialName("in_reply_to_user_id_str")
-    val inReplyToUserIdStr: String?,
+    val inReplyToUserId: UserId?,
     @SerialName("in_reply_to_screen_name")
     val inReplyToScreenName: String?,
     val user: User? = null,
     val coordinates: Coordinates?,
     val place: Place? = null,
-    @SerialName("quoted_status_id")
-    val quotedStatusId: Long? = null,
     @SerialName("quoted_status_id_str")
-    val quotedStatusIdStr: String? = null,
+    val quotedStatusId: TweetId? = null,
     @SerialName("is_quote_status")
     val isQuoteStatus: Boolean,
     @SerialName("quoted_status")
@@ -185,7 +156,9 @@ public data class Tweet(
     val withheldScope: WithheldScope? = null
 ) : AndroidParcelable, JvmSerializable {
 
-    val createdAt: LocalDateTime get() = _createdAt.rfc822ToLocalDateTime()
+    @KotlinIgnoredOnParcel
+    @Transient
+    val createdAt: LocalDateTime = _createdAt.rfc822ToLocalDateTime()
 
     /**
      * TODO
@@ -205,9 +178,8 @@ public data class Tweet(
     @AndroidParcelize
     @Serializable
     public data class CurrentUserRetweet(
-        val id: Long,
         @SerialName("id_str")
-        val idStr: String
+        val id: TweetId
     ) : AndroidParcelable, JvmSerializable
 
     /**
@@ -245,15 +217,13 @@ public data class Tweet(
      *
      * @property tag TODO
      * @property id TODO
-     * @property idStr TODO
      */
     @AndroidParcelize
     @Serializable
     public data class Rule(
         val tag: String,
-        val id: Long,
         @SerialName("id_str")
-        val idStr: String
+        val id: String
     ) : AndroidParcelable, JvmSerializable
 
     /**

@@ -1,46 +1,53 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.client
 
-import com.sorrowblue.twitlin.core.IResponse
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import com.sorrowblue.twitlin.client.Error as ClientError
 
 /**
- * TODO
+ * Response
  *
- * @param T TODO
+ * @param T
+ * @constructor Create empty Response
  */
 @Serializable(ResponseSerializer::class)
-public sealed class Response<T : Any> : IResponse<T> {
+public sealed class Response<T : Any> : TwitterResponse {
 
     /**
-     * TODO
+     * Success
      *
-     * @param T TODO
-     * @property data TODO
+     * @param T
+     * @property data
+     * @constructor Create empty Success
      */
     @Serializable
-    public data class Success<T : Any>(val data: T) : Response<T>()
+    public data class Success<T : Any>(val data: T) : Response<T>() {
+        @Transient
+        override lateinit var rateLimitInfo: RateLimitInfo
+    }
 
     /**
-     * TODO
+     * Error
      *
-     * @param T TODO
-     * @property errors TODO
+     * @param T
+     * @property errors
+     * @constructor Create empty Error
      */
     @Serializable
-    public data class Error<T : Any>(val errors: List<ClientError>) : Response<T>()
+    public data class Error<T : Any>(val errors: List<ClientError>) : Response<T>() {
+        @Transient
+        override lateinit var rateLimitInfo: RateLimitInfo
+    }
 
     /**
-     * TODO
+     * Fold
      *
-     * @param R TODO
-     * @param onSuccess TODO
-     * @param onError TODO
-     * @return TODO
+     * @param R
+     * @param onSuccess
+     * @param onError
+     * @receiver
+     * @receiver
+     * @return
      */
     public inline fun <R : Any> fold(onSuccess: (Success<T>) -> R, onError: (Error<T>) -> R): R =
         when (this) {
@@ -49,10 +56,11 @@ public sealed class Response<T : Any> : IResponse<T> {
         }
 
     /**
-     * TODO
+     * On success
      *
-     * @param action TODO
-     * @return TODO
+     * @param action
+     * @receiver
+     * @return
      */
     public inline fun onSuccess(action: (T) -> Unit): Response<T> {
         if (this is Success) {
@@ -62,10 +70,11 @@ public sealed class Response<T : Any> : IResponse<T> {
     }
 
     /**
-     * TODO
+     * On error
      *
-     * @param action TODO
-     * @return TODO
+     * @param action
+     * @receiver
+     * @return
      */
     public inline fun onError(action: (List<ClientError>) -> Unit): Response<T> {
         if (this is Error) {
@@ -75,20 +84,39 @@ public sealed class Response<T : Any> : IResponse<T> {
     }
 
     /**
-     * TODO
+     * Data or null
      *
-     * @return TODO
+     * @return
      */
     public fun dataOrNull(): T? = if (this is Success) data else null
 
+    /**
+     * Convert data
+     *
+     * @param R
+     * @param convert
+     * @receiver
+     * @return
+     */
     public fun <R : Any> convertData(convert: (T) -> R): Response<R> {
         return when (this) {
-            is Success -> Success(convert.invoke(data))
-            is Error -> Error(errors)
+            is Success -> Success(convert.invoke(data)).also {
+                it.rateLimitInfo = rateLimitInfo
+            }
+            is Error -> Error<R>(errors).also {
+                it.rateLimitInfo = rateLimitInfo
+            }
         }
     }
 
     internal companion object {
+
+        /**
+         * Error
+         *
+         * @param T
+         * @param error
+         */
         fun <T : Any> error(error: ClientError) = Error<T>(listOf(error))
     }
 }

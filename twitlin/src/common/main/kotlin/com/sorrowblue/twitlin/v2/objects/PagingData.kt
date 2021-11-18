@@ -1,18 +1,39 @@
 package com.sorrowblue.twitlin.v2.objects
 
-import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.v2.client.Error
 import com.sorrowblue.twitlin.v2.client.Includes
+import kotlin.collections.List
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Paging data
+ *
+ * @param T
+ * @property data
+ * @property includes
+ * @property meta
+ * @property errors
+ * @constructor Create empty Paging data
+ */
 @Serializable
 public data class PagingData<T>(
     val data: List<T>,
-    val includes: Includes? = null,
+    val includes: Includes = Includes(),
     val meta: Meta,
     val errors: List<Error>? = null
-) : JvmSerializable {
+) {
+
+    /**
+     * Meta
+     *
+     * @property oldestId
+     * @property newestId
+     * @property resultCount
+     * @property nextToken
+     * @property previousToken
+     * @constructor Create empty Meta
+     */
     @Serializable
     public data class Meta(
         @SerialName("oldest_id")
@@ -25,5 +46,5 @@ public data class PagingData<T>(
         val nextToken: String? = null,
         @SerialName("previous_token")
         val previousToken: String? = null
-    ) : JvmSerializable
+    )
 }

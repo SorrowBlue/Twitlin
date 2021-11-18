@@ -1,31 +1,38 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.authentication.impl
 
 import com.sorrowblue.twitlin.authentication.BearerToken
 import com.sorrowblue.twitlin.authentication.InvalidateToken
 import com.sorrowblue.twitlin.authentication.OAuth2Api
-import com.sorrowblue.twitlin.client.AppClient
+import com.sorrowblue.twitlin.client.Oauth2Client
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.core.Urls
+import com.sorrowblue.twitlin.utils.API_OAUTH2
+import com.sorrowblue.twitlin.utils.urlEncode
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
+import io.ktor.http.Parameters
+import io.ktor.util.InternalAPI
+import io.ktor.util.encodeBase64
 
-private const val OAUTH2 = "${Urls.FQDN}/oauth2"
+@Suppress("EXPERIMENTAL_API_USAGE_FUTURE_ERROR")
+internal class OAuth2ApiImpl(private val client: Oauth2Client) : OAuth2Api {
 
-internal class OAuth2ApiImpl(private val client: AppClient) : OAuth2Api {
+    @OptIn(InternalAPI::class)
     override suspend fun token(): Response<BearerToken> {
-        return client.postForClientCredentials(
-            "$OAUTH2/token",
-            Response.serializer(BearerToken.serializer())
-        )
+        return client.submitForm(
+            "$API_OAUTH2/token",
+            Response.serializer(BearerToken.serializer()),
+            Parameters.build { append("grant_type", "client_credentials") }) {
+            val token = "${client.consumerKeys.key.urlEncode()}:${client.consumerKeys.secret.urlEncode()}"
+            header(HttpHeaders.Authorization, "Basic ${token.encodeBase64()}")
+        }
     }
 
     override suspend fun invalidateToken(): Response<InvalidateToken> {
-        return client.post(
-            "$OAUTH2/invalidate_token",
+        return client.submitForm(
+            "$API_OAUTH2/invalidate_token",
             Response.serializer(InvalidateToken.serializer()),
-            "access_token" to client.bearerToken?.accessToken
-        )
+            Parameters.build {
+                client.bearerToken?.let { append("access_token", it.accessToken) }
+            })
     }
 }

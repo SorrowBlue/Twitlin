@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.authentication
 
 import com.sorrowblue.twitlin.client.Response
@@ -63,7 +59,7 @@ public interface OAuth2Api {
      *
      * Successful responses include a JSON-structure describing the revoked Bearer Token.
      *
-     * @return TODO
+     * @return
      */
     public suspend fun invalidateToken(): Response<InvalidateToken>
 }

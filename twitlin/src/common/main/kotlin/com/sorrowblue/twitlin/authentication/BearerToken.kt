@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.authentication
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
@@ -11,10 +7,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * TODO
+ * Bearer token
  *
  * @property tokenType
  * @property accessToken
+ * @constructor Create empty Bearer token
  */
 @AndroidParcelize
 @Serializable

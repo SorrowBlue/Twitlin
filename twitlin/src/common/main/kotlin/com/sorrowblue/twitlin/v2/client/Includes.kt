@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.v2.client
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
@@ -26,9 +22,9 @@ import kotlinx.serialization.Serializable
 @AndroidParcelize
 @Serializable
 public data class Includes(
-    val tweets: List<Tweet>? = null,
-    val users: List<User>? = null,
-    val places: List<Place>? = null,
-    val media: List<Media>? = null,
-    val polls: List<Poll>? = null,
+    val tweets: List<Tweet> = emptyList(),
+    val users: List<User> = emptyList(),
+    val places: List<Place> = emptyList(),
+    val media: List<Media> = emptyList(),
+    val polls: List<Poll> = emptyList(),
 ) : AndroidParcelable, JvmSerializable

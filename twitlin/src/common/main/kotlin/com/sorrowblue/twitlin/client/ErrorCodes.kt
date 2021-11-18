@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.client
 
 /**
@@ -31,5 +27,8 @@ public object ErrorCodes {
         407, 415, 416, 417
     )
 
+    /**
+     * C l i e n t_e r r o r
+     */
     public const val CLIENT_ERROR: Int = 1000
 }

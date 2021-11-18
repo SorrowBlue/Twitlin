@@ -1,6 +1,5 @@
 package com.sorrowblue.twitlin.v2.util
 
-import com.sorrowblue.twitlin.v2.objects.ReferenceTweet
 import com.sorrowblue.twitlin.v2.objects.Tweet
 
 public class TweetNode(public val tweet: Tweet) {
@@ -21,9 +20,10 @@ public class TweetNode(public val tweet: Tweet) {
     }
 
     private val _children: MutableList<TweetNode> = mutableListOf()
-    private val replyTo: String? get() = tweet.referencedTweets?.find { it.type == ReferenceTweet.Type.REPLIED_TO }?.id
+    private val replyTo get() = tweet.referencedTweets?.find { it.type == Tweet.ReferenceTweet.Type.REPLIED_TO }?.id
 
-    private val id get() = tweet.referencedTweets?.find { it.type == ReferenceTweet.Type.RETWEETED }?.id ?: tweet.id
+    private val id
+        get() = tweet.referencedTweets?.find { it.type == Tweet.ReferenceTweet.Type.RETWEETED }?.id ?: tweet.id
 
     public val children: List<TweetNode> get() = _children
 

@@ -1,15 +1,15 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.v2.objects
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
 import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
-import com.sorrowblue.twitlin.v2.field.Expansion
+import com.sorrowblue.twitlin.objects.PlaceId
+import com.sorrowblue.twitlin.objects.TweetId
+import com.sorrowblue.twitlin.objects.UserId
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
+import com.sorrowblue.twitlin.v2.tweets.Expansion
+import kotlin.collections.List
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.isoToLocalDateTime
 import kotlinx.serialization.SerialName
@@ -40,7 +40,7 @@ import kotlinx.serialization.Serializable
  * @property authorId The unique identifier of the User who posted this Tweet.
  * @property contextAnnotations Contains context annotations for the Tweet.
  * @property conversationId The Tweet ID of the original Tweet of the conversation (which includes direct replies, replies of replies).
- * @property createdAt Creation time of the Tweet.
+ * @property _createdAt Creation time of the Tweet.
  * @property entities Entities which have been parsed out of the text of the Tweet. Additionally see entities in Twitter Objects.
  * @property geo Contains details about the location tagged by the user in this Tweet, if they specified one.
  * @property inReplyToUserId If the represented Tweet is a reply, this field will contain the original Tweet’s author ID.
@@ -65,17 +65,22 @@ import kotlinx.serialization.Serializable
 @AndroidParcelize
 @Serializable
 public data class Tweet(
-    val id: String,
+    @SerialName("id")
+    val id: TweetId,
     val text: String,
     val attachments: Attachments? = null,
-    @SerialName("author_id") val authorId: String? = null,
-    @SerialName("context_annotations") val contextAnnotations: List<ContextAnnotation>? = null,
-    @SerialName("conversation_id") val conversationId: String? = null,
+    @SerialName("author_id")
+    val authorId: UserId? = null,
+    @SerialName("context_annotations")
+    val contextAnnotations: List<ContextAnnotation>? = null,
+    @SerialName("conversation_id")
+    val conversationId: TweetId? = null,
     @SerialName("created_at")
     val _createdAt: String? = null,
     val entities: Entities? = null,
     val geo: Geo? = null,
-    @SerialName("in_reply_to_user_id") val inReplyToUserId: String? = null,
+    @SerialName("in_reply_to_user_id")
+    val inReplyToUserId: UserId? = null,
     val lang: String? = null,
     @SerialName("non_public_metrics")
     val nonPublicMetrics: NonPublicMetrics? = null,
@@ -95,8 +100,66 @@ public data class Tweet(
     val withheld: Withheld? = null,
 ) : AndroidParcelable, JvmSerializable {
 
+    /**
+     * Creation time of the Tweet.
+     */
     val createdAt: LocalDateTime? get() = _createdAt?.isoToLocalDateTime()
 
+    /**
+     * Context annotation
+     *
+     * @property domain
+     * @property entity
+     * @constructor Create empty Context annotation
+     */
+    @AndroidParcelize
+    @Serializable
+    public data class ContextAnnotation(
+        val domain: Domain,
+        val entity: Entity
+    ) : AndroidParcelable, JvmSerializable {
+
+        /**
+         * Domain
+         *
+         * @property id
+         * @property name
+         * @property description
+         * @constructor Create empty Domain
+         */
+        @AndroidParcelize
+        @Serializable
+        public data class Domain(
+            val id: String,
+            val name: String,
+            val description: String = ""
+        ) : AndroidParcelable, JvmSerializable
+
+        /**
+         * Entity
+         *
+         * @property id
+         * @property name
+         * @constructor Create empty Entity
+         */
+        @AndroidParcelize
+        @Serializable
+        public data class Entity(
+            val id: String,
+            val name: String,
+        ) : AndroidParcelable, JvmSerializable
+    }
+
+    /**
+     * Entities
+     *
+     * @property annotations
+     * @property cashtags
+     * @property hashtags
+     * @property mentions
+     * @property urls
+     * @constructor Create empty Entities
+     */
     @AndroidParcelize
     @Serializable
     public data class Entities(
@@ -110,19 +173,19 @@ public data class Tweet(
         @AndroidParcelize
         @Serializable
         public data class Annotation(
-            val start: Int,
-            val end: Int,
+            override val start: Int,
+            override val end: Int,
             val probability: Float,
             val type: String,
             @SerialName("normalized_text")
             val normalizedText: String,
-        ) : AndroidParcelable, JvmSerializable
+        ) : TextEntity(), AndroidParcelable, JvmSerializable
 
         @AndroidParcelize
         @Serializable
         public data class Url(
-            val start: Int,
-            val end: Int,
+            override val start: Int,
+            override val end: Int,
             val url: String,
             @SerialName("expanded_url") val expandedUrl: String? = null,
             @SerialName("display_url") val displayUrl: String? = null,
@@ -131,7 +194,7 @@ public data class Tweet(
             val title: String? = null,
             val description: String? = null,
             @SerialName("unwound_url") val unwoundUrl: String? = null,
-        ) : AndroidParcelable, JvmSerializable {
+        ) : TextEntity(), AndroidParcelable, JvmSerializable {
 
             @AndroidParcelize
             @Serializable
@@ -143,6 +206,86 @@ public data class Tweet(
         }
     }
 
+    /**
+     * Geo
+     *
+     * @property coordinates
+     * @property placeId
+     * @constructor Create empty Geo
+     */
+    @AndroidParcelize
+    @Serializable
+    public data class Geo(
+        val coordinates: Coordinates? = null,
+        @SerialName("place_id")
+        val placeId: PlaceId,
+    ) : AndroidParcelable, JvmSerializable {
+
+        /**
+         * Coordinates
+         *
+         * @property type
+         * @property coordinates
+         * @constructor Create empty Coordinates
+         */
+        @AndroidParcelize
+        @Serializable
+        public data class Coordinates(
+            val type: String,
+            val coordinates: List<Double>,
+        ) : AndroidParcelable, JvmSerializable
+    }
+
+    /**
+     * Non public metrics
+     *
+     * @property impressionCount
+     * @property urlLinkClicks
+     * @property userProfileClicks
+     * @constructor Create empty Non public metrics
+     */
+    @AndroidParcelize
+    @Serializable
+    public data class NonPublicMetrics(
+        @SerialName("impression_count")
+        val impressionCount: Int,
+        @SerialName("urlLinkClicks")
+        val urlLinkClicks: Int,
+        @SerialName("user_profile_clicks")
+        val userProfileClicks: Int,
+    ) : AndroidParcelable, JvmSerializable
+
+    /**
+     * Metrics
+     *
+     * @property impressionCount
+     * @property likeCount
+     * @property replyCount
+     * @property retweetCount
+     * @property urlLinkClicks
+     * @property userProfileClicks
+     * @constructor Create empty Metrics
+     */
+    @AndroidParcelize
+    @Serializable
+    public data class Metrics(
+        @SerialName("impression_count") val impressionCount: Int,
+        @SerialName("like_count") val likeCount: Int,
+        @SerialName("reply_count") val replyCount: Int,
+        @SerialName("retweet_count") val retweetCount: Int,
+        @SerialName("url_link_clicks") val urlLinkClicks: Int,
+        @SerialName("user_profile_clicks") val userProfileClicks: Int,
+    ) : AndroidParcelable, JvmSerializable
+
+    /**
+     * Public metrics
+     *
+     * @property likeCount
+     * @property replyCount
+     * @property retweetCount
+     * @property quoteCount
+     * @constructor Create empty Public metrics
+     */
     @AndroidParcelize
     @Serializable
     public data class PublicMetrics(
@@ -152,150 +295,53 @@ public data class Tweet(
         @SerialName("quote_count") val quoteCount: Int,
     ) : AndroidParcelable, JvmSerializable
 
+    /**
+     * Reference tweet
+     *
+     * @property type
+     * @property id
+     * @constructor Create empty Reference tweet
+     */
+    @AndroidParcelize
+    @Serializable
+    public data class ReferenceTweet(
+        val type: Type,
+        @SerialName("id")
+        val id: TweetId,
+    ) : AndroidParcelable, JvmSerializable {
+
+        /**
+         * Type
+         *
+         * @constructor Create empty Type
+         */
+        @Serializable
+        public enum class Type {
+            @SerialName("replied_to")
+            REPLIED_TO,
+
+            @SerialName("quoted")
+            QUOTED,
+
+            @SerialName("retweeted")
+            RETWEETED
+        }
+    }
+
+    /**
+     * Reply settings
+     *
+     * @constructor Create empty Reply settings
+     */
     @Serializable
     public enum class ReplySettings {
         @SerialName("everyone")
         EVERYONE,
 
-        @SerialName("mentioned_users")
+        @SerialName("mentionedUsers")
         MENTIONED_USERS,
 
-        @SerialName("followers")
-        FOLLOWERS
+        @SerialName("following")
+        FOLLOWING
     }
-}
-
-@AndroidParcelize
-@Serializable
-public data class Mention(
-    val start: Int,
-    val end: Int,
-    val username: String,
-) : AndroidParcelable, JvmSerializable
-
-@AndroidParcelize
-@Serializable
-public data class CashTag(
-    val start: Int,
-    val end: Int,
-    val tag: String,
-) : AndroidParcelable, JvmSerializable
-
-@AndroidParcelize
-@Serializable
-public data class Hashtag(
-    val start: Int,
-    val end: Int,
-    val tag: String,
-) : AndroidParcelable, JvmSerializable
-
-@AndroidParcelize
-@Serializable
-public data class Withheld(
-    val copyright: Boolean,
-    @SerialName("country_codes")
-    val countryCodes: List<String>,
-) : AndroidParcelable, JvmSerializable
-
-@AndroidParcelize
-@Serializable
-public data class ReferenceTweet(
-    val type: Type,
-    val id: String,
-) : AndroidParcelable, JvmSerializable {
-
-    @Serializable
-    public enum class Type {
-        @SerialName("replied_to")
-        REPLIED_TO,
-
-        @SerialName("quoted")
-        QUOTED,
-
-        @SerialName("retweeted")
-        RETWEETED
-    }
-}
-
-@AndroidParcelize
-@Serializable
-public data class Attachments(
-    @SerialName("poll_ids")
-    val pollIds: List<String>? = null,
-    @SerialName("media_keys")
-    val media_keys: List<String>? = null
-) : AndroidParcelable, JvmSerializable
-
-@AndroidParcelize
-@Serializable
-public data class ContextAnnotation(
-    val domain: Domain,
-    val entity: Entity
-) : AndroidParcelable, JvmSerializable {
-
-    @AndroidParcelize
-    @Serializable
-    public data class Domain(
-        val id: String,
-        val name: String,
-        val description: String
-    ) : AndroidParcelable, JvmSerializable
-
-    @AndroidParcelize
-    @Serializable
-    public data class Entity(
-        val id: String,
-        val name: String,
-    ) : AndroidParcelable, JvmSerializable
-}
-
-@AndroidParcelize
-@Serializable
-public data class Metrics(
-    @SerialName("impression_count") val impressionCount: Int,
-    @SerialName("like_count") val likeCount: Int,
-    @SerialName("reply_count") val replyCount: Int,
-    @SerialName("retweet_count") val retweetCount: Int,
-    @SerialName("url_link_clicks") val urlLinkClicks: Int,
-    @SerialName("user_profile_clicks") val userProfileClicks: Int,
-) : AndroidParcelable, JvmSerializable
-
-@AndroidParcelize
-@Serializable
-public data class NonPublicMetrics(
-    @SerialName("impression_count")
-    val impressionCount: Int,
-    @SerialName("urlLinkClicks")
-    val urlLinkClicks: Int,
-    @SerialName("user_profile_clicks")
-    val userProfileClicks: Int,
-) : AndroidParcelable, JvmSerializable
-
-@AndroidParcelize
-@Serializable
-public data class PublicMetrics(
-    @SerialName("followers_count")
-    val followersCount: Int,
-    @SerialName("following_count")
-    val followingCount: Int,
-    @SerialName("tweet_count")
-    val tweetCount: Int,
-    @SerialName("listed_count")
-    val listedCount: Int,
-) : AndroidParcelable, JvmSerializable
-
-@AndroidParcelize
-@Serializable
-public data class Geo(
-    val coordinates: Coordinates? = null,
-    @SerialName("place_id")
-    val placeId: String,
-) : AndroidParcelable, JvmSerializable {
-
-    @AndroidParcelize
-    @Serializable
-    public data class Coordinates(
-        val type: String,
-        val coordinates: List<Double>,
-    ) : AndroidParcelable, JvmSerializable
 }

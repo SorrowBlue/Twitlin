@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.objects
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
@@ -282,7 +278,7 @@ public data class Entities(
     public data class URL(
         val url: String,
         @SerialName("expanded_url")
-        val expandedUrl: String,
+        val expandedUrl: String? = null,
         @SerialName("display_url")
         val displayUrl: String? = null,
         val indices: List<Int>,

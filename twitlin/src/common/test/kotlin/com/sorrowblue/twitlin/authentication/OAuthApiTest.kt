@@ -1,24 +1,21 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.authentication
 
-import com.sorrowblue.twitlin.TwitterAPI
-import test.AbstractTest
-import test.resultLog
+import com.sorrowblue.twitlin.Twitlin
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import test.AbstractTest
+import test.resultLog
 
 class OAuthApiTest : AbstractTest {
 
-    @Ignore
+    private val oauthApi = Twitlin.getApi<OAuthApi>(oauth1aClient)
+
     @Test
     fun accessTokenTest() = runBlocking {
-        val accessToken = TwitterAPI.oauthApi.accessToken(
-            "nGBqmgAAAAABEkL_AAABd-0vegc",
-            "2052728"
+        val accessToken = oauthApi.accessToken(
+            "t4O14gAAAAABEkL_AAABfHZeEBw",
+            "6C6qSXhVaifi2VaHHUP2XG7N8azn4vAj"
         ).resultLog()
         assertNotNull(accessToken, "accessToken is null")
     }
@@ -26,33 +23,35 @@ class OAuthApiTest : AbstractTest {
     @Test
     fun authenticateTest() = runBlocking {
         val url =
-            TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").resultLog()?.let {
-                TwitterAPI.oauthApi.authenticate(it.oauthToken)
-            }
+            oauthApi.requestToken("https://maitter.sorrowblue.com").resultLog()?.let {
+                oauthApi.authenticate(it.oauthToken, forceLogin = true)
+            }?.let { println("authenticateUrl: $it") }
         assertNotNull(url, "authenticate url is null")
     }
 
+    @Ignore
     @Test
     fun authorizeTest() = runBlocking {
         val url =
-            TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com").resultLog()?.let {
-                TwitterAPI.oauthApi.authorize(it.oauthToken)
+            oauthApi.requestToken("https://maitter.sorrowblue.com").resultLog()?.let {
+                oauthApi.authorize(it.oauthToken)
             }
         assertNotNull(url, "authorize url is null")
     }
 
+    @Ignore
     @Test
     fun testAuthorize_oob() = runBlocking {
         val url =
-            TwitterAPI.oauthApi.requestToken("oob").resultLog()?.let {
-                TwitterAPI.oauthApi.authorize(it.oauthToken)
+            oauthApi.requestToken("oob").resultLog()?.let {
+                oauthApi.authorize(it.oauthToken)
             }
         assertNotNull(url, "authorize url is null")
     }
 
     @Test
     fun requestTokenTest() = runBlocking {
-        val requestToken = TwitterAPI.oauthApi.requestToken("https://snsmate.sorrowblue.com")
+        val requestToken = oauthApi.requestToken("https://maitter.sorrowblue.com")
             .resultLog()
         assertNotNull(requestToken, "requestToken is null")
     }
@@ -60,6 +59,6 @@ class OAuthApiTest : AbstractTest {
     @Ignore
     @Test
     fun invalidateToken() = runBlocking {
-        assertNotNull(TwitterAPI.oauthApi.invalidateToken().resultLog(), "invalidateToken is null")
+        assertNotNull(oauthApi.invalidateToken().resultLog(), "invalidateToken is null")
     }
 }

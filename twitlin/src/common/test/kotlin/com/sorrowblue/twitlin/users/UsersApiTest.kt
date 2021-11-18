@@ -1,19 +1,17 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.users
 
-import com.sorrowblue.twitlin.TwitterAPI
-import test.AbstractTest
-import test.resultLog
+import com.sorrowblue.twitlin.Twitlin
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import test.AbstractTest
+import test.resultLog
 
 class UsersApiTest : AbstractTest {
 
+    private val usersApi = Twitlin.getApi<UsersApi>(oauth1aClient)
+
     @Test
     fun showTest() = runBlocking {
-        TwitterAPI.usersApi.show(screenName = "Twitter").resultLog().let { assertNotNull(it) }
+        usersApi.show(screenName = "Twitter").resultLog().let { assertNotNull(it) }
     }
 }

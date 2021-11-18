@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.core
 
 internal const val CONSUMER_KEY = "xvz1evFS4wEEPTGEFPHBog"

@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.geo
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable

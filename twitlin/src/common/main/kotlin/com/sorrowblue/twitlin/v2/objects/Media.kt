@@ -1,12 +1,9 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.v2.objects
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
 import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
+import com.sorrowblue.twitlin.objects.MediaKey
 import com.sorrowblue.twitlin.v2.objects.Media.Type
 import com.sorrowblue.twitlin.v2.tweets.TweetsApi
 import kotlinx.serialization.SerialName
@@ -16,7 +13,7 @@ import kotlinx.serialization.Serializable
  * Media refers to any image, GIF, or video attached to a Tweet. The media object is not a primary
  * object on any endpoint, but can be found and expanded in the Tweet object.
  *
- * The object is available for expansion with `expansions=[Attachments.media_keys]` to get the
+ * The object is available for expansion with `expansions=[Attachments.mediaKeys]` to get the
  * condensed object with only default fields. Use the expansion with the field parameter:
  * [TweetsApi.tweet] mediaFields when requesting additional fields to complete the object.
  *
@@ -35,13 +32,13 @@ import kotlinx.serialization.Serializable
  * @property publicMetrics Public engagement metrics for the media content at the time of
  * the request.
  * @property width Width of this content in pixels.
- * @property url TODO
+ * @property url
  */
 @AndroidParcelize
 @Serializable
 public data class Media(
     @SerialName("media_key")
-    val mediaKey: String,
+    val mediaKey: MediaKey,
     val type: Type,
     @SerialName("duration_ms")
     val durationMs: Int? = null,
@@ -63,11 +60,11 @@ public data class Media(
     /**
      * Determine video engagement: how many users played through to each quarter of the video.
      *
-     * @property playback0Count TODO
-     * @property playback100Count TODO
-     * @property playback25Count TODO
-     * @property playback50Count TODO
-     * @property playback75Count TODO
+     * @property playback0Count
+     * @property playback100Count
+     * @property playback25Count
+     * @property playback50Count
+     * @property playback75Count
      */
     @AndroidParcelize
     @Serializable
@@ -87,12 +84,12 @@ public data class Media(
     /**
      * Determine organic media engagement.
      *
-     * @property playback0Count TODO
-     * @property playback100Count TODO
-     * @property playback25Count TODO
-     * @property playback50Count TODO
-     * @property playback75Count TODO
-     * @property viewCount TODO
+     * @property playback0Count
+     * @property playback100Count
+     * @property playback25Count
+     * @property playback50Count
+     * @property playback75Count
+     * @property viewCount
      */
     @AndroidParcelize
     @Serializable
@@ -114,7 +111,7 @@ public data class Media(
     /**
      * Determine total number of views for the video attached to the Tweet.
      *
-     * @property viewCount TODO
+     * @property viewCount
      */
     @AndroidParcelize
     @Serializable

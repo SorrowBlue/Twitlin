@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.v2.tweets.search
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
@@ -12,20 +8,22 @@ import kotlinx.datetime.isoToLocalDateTime
 import kotlinx.serialization.Serializable
 
 /**
- * TODO
+ * Search stream rules
  *
  * @property data
  * @property meta
+ * @constructor Create empty Search stream rules
  */
 @AndroidParcelize
 @Serializable
-public data class SearchStreamRules(val data: List<SearchStreamRule> = emptyList(), val meta: Meta) :
-    AndroidParcelable, JvmSerializable {
+public data class SearchStreamRules(val data: List<SearchStreamRule> = emptyList(), val meta: Meta) : AndroidParcelable,
+    JvmSerializable {
 
     /**
-     * TODO
+     * Meta
      *
-     * @property sent
+     * @property _sent
+     * @constructor Create empty Meta
      */
     @AndroidParcelize
     @Serializable

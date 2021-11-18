@@ -2,31 +2,24 @@
  * (c) 2020-2021 SorrowBlue.
  */
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.github.ben-manes.versions").version("0.39.0")
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("org.ajoberstar.grgit") version "4.1.0"
+    alias(libs.plugins.benmanes.versions)
+    alias(libs.plugins.nexus.publish)
+    alias(libs.plugins.ajoberstar.grgit)
 }
 
 buildscript {
     repositories {
         google()
-        mavenCentral()
     }
     dependencies {
-        classpath(kotlin("gradle-plugin", "1.5.30"))
-        classpath("com.android.tools.build:gradle:4.2.2")
+        classpath(libs.android.gradle)
+        classpath(libs.kotlin.gradle)
     }
 }
 
 group = "com.sorrowblue.twitlin"
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
 
 version = grgit.describe {
     longDescr = false
@@ -38,6 +31,17 @@ nexusPublishing {
         sonatype {
             stagingProfileId.set(findProperty("sonatypeStagingProfileId") as? String)
         }
+    }
+}
+fun String.isNonStable(): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(this)
+    return isStable.not()
+}
+tasks.named<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask>("dependencyUpdates").configure {
+    this.rejectVersionIf {
+        candidate.version.isNonStable() && !currentVersion.isNonStable()
     }
 }
 

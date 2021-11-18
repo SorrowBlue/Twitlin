@@ -1,12 +1,8 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.media
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.tweets.StatusesApi
-import com.sorrowblue.twitlin.users.AccountApi
+import com.sorrowblue.twitlin.objects.MediaId
+import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 
 /**
  * A media object represents a single photo, video or animated GIF. Media objects are used by many
@@ -28,8 +24,7 @@ public interface MediaApi {
      * photo using the [StatusesApi.update] endpoint.
      *
      * All [Ads API endpoints](https://developer.twitter.com/en/docs/ads/) require a
-     * [MediaResult.mediaKey]. For example, a [MediaResult.mediaKey] value can be used to create a
-     * Draft Tweet with a photo using the [AccountApi.draftTweets] endpoint.
+     * [MediaResult.mediaKey].
      *
      * ### Usage
      * This is a simple image upload endpoint with a limited set of features. The preferred
@@ -47,7 +42,7 @@ public interface MediaApi {
      * parameter) of the file, or its base64-encoded contents (`media_data` parameter). Use raw
      * binary when possible, because base64 encoding results in larger file sizes.
      * * The response provides a media identifier in the [MediaResult.mediaId] (64-bit integer) and
-     * [MediaResult.mediaIdString] (string) fields. Use the [MediaResult.mediaIdString] provided in
+     * [MediaResult.mediaId] (string) fields. Use the [MediaResult.mediaId] provided in
      * the API response from JavaScript and other languages that cannot accurately represent a long
      * integer.
      * * The returned [MediaResult.mediaId] and [MediaResult.mediaKey] are only valid for
@@ -66,7 +61,7 @@ public interface MediaApi {
      * @param additionalOwners A comma-separated list of user IDs to set as additional owners
      * allowed to use the returned [MediaResult.mediaId] in Tweets or Cards. Up to `100` additional
      * owners may be specified.
-     * @return TODO
+     * @return
      */
     public suspend fun upload(
         media: ByteArray? = null,
@@ -86,7 +81,7 @@ public interface MediaApi {
      *
      * ### Response
      * The response provides a media identifier in the [MediaResult.mediaId] (64-bit integer) and
-     * [MediaResult.mediaIdString] (string) fields. Use the [MediaResult.mediaIdString] provided in
+     * [MediaResult.mediaId] (string) fields. Use the [MediaResult.mediaId] provided in
      * the API response from JavaScript and other languages that cannot accurately represent a long
      * integer.
      *
@@ -103,8 +98,8 @@ public interface MediaApi {
      * @param additionalOwners A comma-separated list of user IDs to set as additional owners
      * allowed to use the returned [MediaResult.mediaId] in Tweets or Cards. Up to `100` additional
      * owners may be specified.
-     * @param shared TODO
-     * @return TODO
+     * @param shared
+     * @return
      */
     public suspend fun uploadInit(
         totalBytes: Int,
@@ -138,10 +133,10 @@ public interface MediaApi {
      * used with [media]. Use raw binary ([media] parameter) when possible.
      * @param segmentIndex An ordered index of file chunk. It must be between `0`-`999` inclusive.
      * The first segment has index `0`, second segment has index `1`, and so on.
-     * @return TODO
+     * @return
      */
     public suspend fun uploadAppend(
-        mediaId: String,
+        mediaId: MediaId,
         media: ByteArray? = null,
         mediaData: String? = null,
         segmentIndex: Int
@@ -156,7 +151,7 @@ public interface MediaApi {
      *
      * ### Response
      * The response provides a media identifier in the [MediaResult.mediaId] (64-bit integer) and
-     * [MediaResult.mediaIdString] (string) fields. Use the [MediaResult.mediaIdString] provided in
+     * [MediaResult.mediaId] (string) fields. Use the [MediaResult.mediaId] provided in
      * the API response from JavaScript and other languages that cannot accurately represent a long
      * integer.
      *
@@ -177,7 +172,7 @@ public interface MediaApi {
      * @param mediaId The media_id returned from the [uploadInit].
      * @return
      */
-    public suspend fun uploadFinalize(mediaId: String): Response<MediaResult>
+    public suspend fun uploadFinalize(mediaId: MediaId): Response<MediaResult>
 
     /**
      * ### Overview
@@ -194,9 +189,9 @@ public interface MediaApi {
      * Tweet or other entities before the state field is set to [MediaResult.Info.State.SUCCEEDED].
      *
      * @param mediaId The [mediaId] returned from the [uploadInit].
-     * @return TODO
+     * @return
      */
-    public suspend fun uploadStatus(mediaId: String): Response<MediaResult>
+    public suspend fun uploadStatus(mediaId: MediaId): Response<MediaResult>
 
     /**
      * ### Overview
@@ -212,22 +207,22 @@ public interface MediaApi {
      * A successful response returns HTTP 2xx.
      *
      * @param mediaId The [mediaId] returned from the [upload] or the [uploadInit].
-     * @param altText TODO
-     * @return TODO
+     * @param altText
+     * @return
      */
-    public suspend fun createMetadata(mediaId: String, altText: String): Response<Unit>
+    public suspend fun createMetadata(mediaId: MediaId, altText: String): Response<Unit>
 
     /**
      * Use this endpoint to dissociate subtitles from a video and delete the subtitles. You can
      * dissociate subtitles from a video before or after Tweeting.
      *
-     * @param mediaId TODO
-     * @param mediaCategory TODO
-     * @param languageCodes TODO
-     * @return TODO
+     * @param mediaId
+     * @param mediaCategory
+     * @param languageCodes
+     * @return
      */
     public suspend fun deleteSubtitles(
-        mediaId: String,
+        mediaId: MediaId,
         mediaCategory: MediaCategory,
         languageCodes: List<String>
     ): Response<Unit>
@@ -250,13 +245,13 @@ public interface MediaApi {
      * and get the subtitle media_id.
      * 1. Call this endpoint to associate the subtitle to the video.
      *
-     * @param mediaId TODO
-     * @param mediaCategory TODO
-     * @param subtitles TODO
-     * @return TODO
+     * @param mediaId
+     * @param mediaCategory
+     * @param subtitles
+     * @return
      */
     public suspend fun createSubtitles(
-        mediaId: String,
+        mediaId: MediaId,
         mediaCategory: MediaCategory,
         subtitles: List<Subtitle>
     ): Response<Unit>

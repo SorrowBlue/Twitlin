@@ -1,10 +1,5 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.v2.client
 
-import com.sorrowblue.twitlin.v2.objects.OptionalData
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -43,7 +38,9 @@ internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializ
             return Response.Error(listOf())
         }
         return kotlin.runCatching {
-            if (("data" in element || "meta" in element)) {
+            if ("data" in element || "meta" in element || kotlin.runCatching { decoder.json.decodeFromJsonElement(dataSerializer, element) }.isSuccess) {
+                println("dataSerializer: $dataSerializer")
+                println("element: $element")
                 Response.Success(decoder.json.decodeFromJsonElement(dataSerializer, element))
             } else {
                 element.asError(decoder)

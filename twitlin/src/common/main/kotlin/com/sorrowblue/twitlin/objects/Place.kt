@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.objects
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
@@ -28,15 +24,13 @@ import kotlinx.serialization.Serializable
  * @property attributes When using PowerTrack, 30-Day and Full-Archive Search APIs, and Volume
  * Streams this hash is null.
  * @property boundingBox A bounding box of coordinates which encloses this place.
- * @property centroid TODO
- * @property containedWithin TODO
- * @property polylines TODO
- * @property geometry TODO
+ * @property centroid
+ * @property containedWithin
  */
 @AndroidParcelize
 @Serializable
 public data class Place(
-    val id: String,
+    val id: PlaceId,
     val name: String,
     @SerialName("full_name")
     val fullName: String,
@@ -52,8 +46,6 @@ public data class Place(
     val centroid: List<Double>? = null,
     @SerialName("contained_within")
     val containedWithin: List<Place>? = null,
-//    val polylines: JsonObject? = null,
-//    val geometry: JsonObject? = null
 ) : AndroidParcelable, JvmSerializable {
 
     /**

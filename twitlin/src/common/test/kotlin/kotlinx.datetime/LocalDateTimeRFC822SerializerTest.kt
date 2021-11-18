@@ -1,11 +1,7 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package kotlinx.datetime
 
-import kotlinx.serialization.Serializable
 import kotlin.test.Test
+import kotlinx.serialization.Serializable
 
 @Serializable
 class RFC822TestData(

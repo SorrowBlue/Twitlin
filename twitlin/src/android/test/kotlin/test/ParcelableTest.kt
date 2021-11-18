@@ -1,10 +1,7 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package test
 
 import android.os.Bundle
+import com.sorrowblue.twitlin.objects.TweetId
 import com.sorrowblue.twitlin.v2.objects.Tweet
 import io.ktor.http.formUrlEncode
 import kotlinx.datetime.Clock
@@ -19,7 +16,7 @@ internal class ParcelableTest {
     fun testDateTime() {
         val data = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         val bundle = Bundle()
-        val tweet = Tweet("", "", _createdAt = data.encodeToISOString())
+        val tweet = Tweet(TweetId(""), "", _createdAt = data.encodeToISOString())
         bundle.putParcelable("key", tweet)
         bundle.getParcelable<Tweet>("key")
     }

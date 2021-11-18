@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.authentication
 
 import com.sorrowblue.twitlin.client.Response
@@ -50,12 +46,12 @@ public interface OAuthApi {
      * application. To realize this behavior, you must enable the Use Sign in with Twitter setting
      * on your [application record](https://developer.twitter.com/apps).
      *
-     * @param oauthToken TODO
+     * @param oauthToken
      * @param forceLogin Forces the user to enter their credentials to ensure the correct users
      * account is authorized.
      * @param screenName Prefills the username input box of the OAuth login screen with the given
      * value.
-     * @return TODO
+     * @return
      */
     public fun authenticate(
         oauthToken: String,
@@ -72,12 +68,12 @@ public interface OAuthApi {
      * ***Usage Note:*** An `oauth_Callback` is never sent to this method, provide it to
      * [OAuthApi.requestToken] instead.
      *
-     * @param oauthToken TODO
+     * @param oauthToken
      * @param forceLogin Forces the user to enter their credentials to ensure the correct users
      * account is authorized.
      * @param screenName Prefills the username input box of the OAuth login screen with the given
      * value.
-     * @return TODO
+     * @return
      */
     public fun authorize(
         oauthToken: String,
@@ -94,9 +90,9 @@ public interface OAuthApi {
      *
      * ***Usage Note:*** Only ASCII values are accepted for the `oauth_nonce`
      *
-     * @param oauthCallback TODO
-     * @param xAuthAccessType TODO
-     * @return TODO
+     * @param oauthCallback
+     * @param xAuthAccessType
+     * @return
      */
     public suspend fun requestToken(
         oauthCallback: String,
@@ -108,7 +104,7 @@ public interface OAuthApi {
      * client credentials. Once an access_token has been invalidated, new creation attempts will
      * yield a different Access Token and usage of the invalidated token will no longer be allowed.
      *
-     * @return TODO
+     * @return
      */
     public suspend fun invalidateToken(): Response<InvalidateToken>
 }

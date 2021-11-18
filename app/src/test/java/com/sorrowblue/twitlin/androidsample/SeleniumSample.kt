@@ -1,7 +1,9 @@
 package com.sorrowblue.twitlin.androidsample
 
 import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.TwitterAPI
+import com.sorrowblue.twitlin.authentication.OAuthApi
+import com.sorrowblue.twitlin.client.ConsumerKeys
+import com.sorrowblue.twitlin.client.Oauth1aClient
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertNotNull
@@ -16,10 +18,12 @@ import org.openqa.selenium.chrome.ChromeOptions
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.time.Duration
 import java.util.concurrent.TimeUnit
 
 class SeleniumSample {
     private lateinit var driver: WebDriver
+    private val consumerKeys: ConsumerKeys = ConsumerKeys(BuildConfig.TWITTER_API_KEY,BuildConfig.TWITTER_API_SECRET)
 
     @Before
     fun setUp() {
@@ -30,11 +34,6 @@ class SeleniumSample {
             //chromeのパスを指定
             setBinary(File("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"))
         })
-        Twitlin.initialize(
-            "ImbKKbcGqVBcgTUlh3eLeQGJc",
-            "xFCAagFydlcFgL6eAc84f161X6u7RXkybJkpu2Q36C6KMYoWwb"
-        ) {
-        }
     }
 
     @After
@@ -45,25 +44,26 @@ class SeleniumSample {
     @Test
     fun test_sample() {
         runBlocking {
+            val oauthApi = Twitlin.getApi<OAuthApi>(Oauth1aClient(consumerKeys, null))
             var token = ""
-            val url = TwitterAPI.oauthApi.requestToken("oob").dataOrNull()?.let {
+            val url = oauthApi.requestToken("oob").dataOrNull()?.let {
                 token = it.oauthToken
-                TwitterAPI.oauthApi.authorize(it.oauthToken)
+                oauthApi.authorize(it.oauthToken)
             }
             driver.get(url)
-            driver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS)
-            driver.findElement(By.id("username_or_email")).sendKeys("sorrowblue.dev@gmail.com")
-            driver.findElement(By.id("password")).sendKeys("twiasadashinon4894")
+            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(5))
+            driver.findElement(By.id("username_or_email")).sendKeys(BuildConfig.TWITTER_EMAIL)
+            driver.findElement(By.id("password")).sendKeys(BuildConfig.TWITTER_PASS)
             val file = (driver as TakesScreenshot).getScreenshotAs(OutputType.FILE)
             Files.copy(
                 file.toPath(),
                 Paths.get("${System.getProperty("user.dir")}/build/reports/${file.name}")
             )
             driver.findElement(By.id("allow")).click()
-            driver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS)
-            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS)
+            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(5))
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5))
             val pinCode = driver.findElement(By.xpath("/html/body/div[2]/div/p/kbd/code")).text
-            TwitterAPI.oauthApi.accessToken(token, pinCode).dataOrNull().let {
+            oauthApi.accessToken(token, pinCode).dataOrNull().let {
                 assertNotNull(it)
             }
         }

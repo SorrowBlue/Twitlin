@@ -1,31 +1,33 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.users
 
-import com.sorrowblue.twitlin.TwitterAPI
-import test.AbstractTest
-import test.resultLog
+import com.sorrowblue.twitlin.Twitlin
+import com.sorrowblue.twitlin.objects.ListId
+import com.sorrowblue.twitlin.users.lists.ListsApi
+import com.sorrowblue.twitlin.users.lists.UserList
+import kotlin.jvm.JvmInline
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import test.AbstractTest
+import test.resultLog
 
 class ListsApiTest : AbstractTest {
 
+    private val listsApi = Twitlin.getApi<ListsApi>(oauth1aClient)
+
     @Test
     fun listTest() = runBlocking {
-        TwitterAPI.listsApi.list(screenName = "twitterapi").resultLog().let { assertNotNull(it) }
+        listsApi.list(screenName = "sorrowblue_sb").resultLog().let { assertNotNull(it) }
     }
 
     @Test
     fun membersTest() = runBlocking {
-        TwitterAPI.listsApi.members(slug = "team", ownerScreenName = "twitterapi").resultLog()
+        listsApi.members(slug = "team", ownerScreenName = "twitterapi").resultLog()
             .let { assertNotNull(it) }
     }
 
     @Test
     fun membersShowTest() = runBlocking {
-        TwitterAPI.listsApi.showMembers(
+        listsApi.showMember(
             slug = "team",
             ownerScreenName = "twitterapi",
             screenName = "froginthevalley"
@@ -34,58 +36,55 @@ class ListsApiTest : AbstractTest {
 
     @Test
     fun membershipsTest() = runBlocking {
-        TwitterAPI.listsApi.memberships(screenName = "twitter").resultLog()
+        listsApi.memberships(screenName = "twitter").resultLog()
             .let { assertNotNull(it) }
     }
 
     @Test
     fun ownershipsTest() = runBlocking {
-        TwitterAPI.listsApi.ownerships(screenName = "twitter", count = 2).resultLog()
+        listsApi.ownerships(screenName = "twitter", count = 2).resultLog()
             .let { assertNotNull(it) }
     }
 
     @Test
     fun showTest() = runBlocking {
-        TwitterAPI.listsApi.show(listId = "222408616").resultLog().let { assertNotNull(it) }
+        listsApi.show(listId = ListId("1364175218340556801")).resultLog().let { assertNotNull(it) }
     }
 
     @Test
     fun statusesTest() = runBlocking {
-        TwitterAPI.listsApi.statuses(listId = "222408616")
+        listsApi.statuses(listId = ListId("222408616"))
             .resultLog().let { assertNotNull(it) }
     }
 
     @Test
     fun subscribersTest() = runBlocking {
-        TwitterAPI.listsApi.subscribers(listId = "222408616").resultLog().let { assertNotNull(it) }
+        listsApi.subscribers(listId = ListId("222408616")).resultLog().let { assertNotNull(it) }
     }
 
     @Test
     fun showSubscribersTest() = runBlocking {
-        TwitterAPI.listsApi.showSubscribers(
-            listId = "222408616",
+        listsApi.showSubscribers(
+            listId = ListId("222408616"),
             screenName = "sorrowblue_sb"
         ).resultLog().let { assertNotNull(it) }
     }
 
     @Test
     fun subscriptionsTest() = runBlocking {
-        TwitterAPI.listsApi.subscriptions(screenName = "syarihu").resultLog()
+        listsApi.subscriptions(screenName = "syarihu").resultLog()
             .let { assertNotNull(it) }
     }
 
     @Test
     fun createTest() = runBlocking {
-        TwitterAPI.listsApi.create(
-            "test_list",
-            UserList.Mode.PUBLIC,
-            "This is test list. Created by Twitlin"
-        ).resultLog().let { assertNotNull(it) }
+        listsApi.create("test_list", UserList.Mode.PUBLIC, "This is test list. Created by Twitlin")
+            .resultLog().let { assertNotNull(it) }
     }
 
     @Test
     fun updateTest() = runBlocking {
-        TwitterAPI.listsApi.update(
+        listsApi.update(
             "1099005549159493632",
             name = "a2Test",
             mode = UserList.Mode.PRIVATE,
@@ -95,9 +94,21 @@ class ListsApiTest : AbstractTest {
 
     @Test
     fun createAllMembersTest() = runBlocking {
-        TwitterAPI.listsApi.createAllMembers(
-            "1345721054384193541",
-            screenNames = listOf("Nyelvi_pien", "psvita_1000")
-        ).resultLog().let { assertNotNull(it) }
+        listsApi.createAllMembers("1345721054384193541", screenNames = listOf("Nyelvi_pien", "psvita_1000"))
+            .resultLog().let { assertNotNull(it) }
+    }
+}
+
+@JvmInline
+value class Name(val s: String) {
+    init {
+        require(s.length > 0) { }
+    }
+
+    val length: Int
+        get() = s.length
+
+    fun greet() {
+        println("Hello, $s")
     }
 }

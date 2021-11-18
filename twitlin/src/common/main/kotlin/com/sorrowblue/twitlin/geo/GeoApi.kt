@@ -1,13 +1,10 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.geo
 
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.objects.Place
+import com.sorrowblue.twitlin.objects.PlaceId
 import com.sorrowblue.twitlin.objects.PlaceType
-import com.sorrowblue.twitlin.tweets.StatusesApi
+import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 
 /**
  * Returns all the information about a known "place". Please see the Geo objects data dictionary
@@ -21,7 +18,7 @@ public interface GeoApi {
      * @param placeId A place in the world. These IDs can be retrieved from [GeoApi.reverseGeocode].
      * @return TODO
      */
-    public suspend fun id(placeId: String): Response<Place>
+    public suspend fun id(placeId: PlaceId): Response<Place>
 
     /**
      * Given a latitude and a longitude, searches for up to 20 places that can be used as a

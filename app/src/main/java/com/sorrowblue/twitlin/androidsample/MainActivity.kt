@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.androidsample
 
 import android.content.Intent
@@ -9,19 +5,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.sorrowblue.twitlin.androidsample.databinding.ActivityMainBinding
-import com.sorrowblue.twitlin.v2.objects.Tweet
-import com.sorrowblue.twitlin.v2.objects.User
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModels()
+
+    private val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(javaClass.simpleName, "Log test")
@@ -52,29 +48,16 @@ internal class MainActivity : AppCompatActivity() {
             DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL)
         )
         lifecycleScope.launchWhenStarted {
-            viewModel.tweet.collect {
-                delay(1000)
-                it.onSuccess { success ->
-                    val tweet = success.data.data
-                    val user = success.data.includes?.users?.find { it.id == tweet.authorId }
-                    if (user != null) {
-                        viewModel.adapter.currentItem =
-                            listOf(tweet to user) + viewModel.adapter.currentItem
-                    }
-                    binding.state.text = viewModel.adapter.currentItem.size.toString()
-                    binding.recyclerView.smoothScrollToPosition(0)
+            viewModel.tweet.collect { optionalData ->
+                delay(300)
+                val tweet = optionalData.data
+                val user = optionalData.includes.users.find { it.id == tweet.authorId }
+                if (user != null) {
+                    viewModel.adapter.submitList(listOf(tweet to user) + viewModel.adapter.currentList)
                 }
+                binding.state.text = viewModel.adapter.itemCount.toString()
+                binding.recyclerView.smoothScrollToPosition(0)
             }
         }
-        viewModel.adapter.currentItem += Tweet(
-            authorId = "4727639925",
-            id = "1350774705633046529",
-            text = "Hambre de ti 😈💫 https://t.co/oRC3WGVO6c"
-        ) to User(
-            username = "lokdeseass",
-            id = "4727639925",
-            profileImageUrl = "https://pbs.twimg.com/profile_images/1302597533592682496/PejMYjSK_normal.jpg",
-            name = "Martha"
-        )
     }
 }

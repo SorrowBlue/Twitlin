@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.authentication
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
@@ -11,12 +7,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * TODO
+ * Invalidate token
  *
- * @property accessToken TODO
+ * @property accessToken
+ * @constructor Create empty Invalidate token
  */
 @AndroidParcelize
 @Serializable
 public data class InvalidateToken(
-    @SerialName("access_token") val accessToken: String
+    @SerialName("access_token")
+    val accessToken: String
 ) : AndroidParcelable, JvmSerializable

@@ -1,11 +1,8 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.directmessages
 
 import com.sorrowblue.twitlin.client.Response
 import com.sorrowblue.twitlin.media.MediaResult
+import com.sorrowblue.twitlin.objects.MediaId
 
 /**
  * ### Sending message events
@@ -40,7 +37,7 @@ public interface DirectMessagesApi {
         text: String,
         quickReply: QuickReply? = null,
         ctas: List<CallToAction>? = null,
-        mediaId: String? = null
+        mediaId: MediaId? = null
     ): Response<DirectMessage>
 
     /**

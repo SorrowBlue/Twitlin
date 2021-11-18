@@ -8,16 +8,17 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("kotlin-parcelize")
     `maven-publish`
     signing
-    kotlin("plugin.serialization") version "1.5.30"
-    id("org.jetbrains.dokka") version "1.5.0"
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
-    id("com.codingfeline.buildkonfig") version "0.9.0"
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.jetbrains.dokka)
+    alias(libs.plugins.jlleitschuh.ktlint)
+    alias(libs.plugins.codingfeline.buildkonfig)
 }
 
 group = "com.sorrowblue.twitlin"
@@ -34,7 +35,7 @@ kotlin {
         publishLibraryVariants("release")
     }
     jvm()
-    js(IR) {
+    js {
         nodejs()
         browser {
             testTask {
@@ -55,8 +56,8 @@ kotlin {
                 implementation(libs.bundles.kotlinx.serialization)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.serialization)
-                implementation(kotlin("reflect", "1.5.30"))
-                implementation(libs.kotlin.logging)
+                implementation(kotlin("reflect", "1.6.0"))
+                api(libs.ktor.client.logging)
             }
         }
         commonTest {
@@ -82,7 +83,6 @@ kotlin {
             dependencies {
                 implementation(libs.ktor.client.android)
                 implementation(libs.jsoup)
-                implementation(libs.slf4j.android)
             }
         }
         val androidAndroidTestRelease by getting
@@ -96,11 +96,13 @@ kotlin {
             dependencies {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.jsoup)
-                implementation(libs.slf4j.simple)
             }
         }
         val jvmTest by getting {
             kotlin.srcDirs("src/jvm/test/kotlin")
+            dependencies {
+                implementation(libs.logback.classic)
+            }
         }
     }
 }
@@ -161,6 +163,7 @@ val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
 }
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    version.set("0.43.0")
     reporters {
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
         filter {

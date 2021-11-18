@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.utils
 
 import kotlin.test.Test
@@ -91,7 +87,7 @@ class SecurityTest {
         val valueByte =
             hexData?.drop(2)?.hexToByteArray() ?: strData?.encodeToByteArray() ?: data
         val digest = hexDigest.drop(2).hexToByteArray()
-        val result = Security.hmacSHA1(keyByte!!, valueByte!!)
+        val result = hmacSHA1(keyByte!!, valueByte!!)
         assertEquals(digest.toList(), result.toList())
     }
 

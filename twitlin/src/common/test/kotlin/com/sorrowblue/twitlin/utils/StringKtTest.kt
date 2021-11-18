@@ -1,9 +1,4 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 @file:Suppress("SpellCheckingInspection")
-
 package com.sorrowblue.twitlin.utils
 
 import kotlin.test.Test

@@ -1,15 +1,13 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.objects
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
 import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
+import com.sorrowblue.twitlin.annotation.KotlinIgnoredOnParcel
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.rfc822ToLocalDateTime
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Transient
 import kotlinx.serialization.Serializable
 
 /**
@@ -71,9 +69,8 @@ import kotlinx.serialization.Serializable
 @AndroidParcelize
 @Serializable
 public data class User(
-    val id: Long,
     @SerialName("id_str")
-    val idStr: String,
+    val id: UserId,
     val name: String? = null,
     @SerialName("screen_name")
     val screenName: String? = null,
@@ -111,7 +108,9 @@ public data class User(
     val withheldScope: String? = null,
 ) : AndroidParcelable, JvmSerializable {
 
-    val createdAt: LocalDateTime? get() = _createdAt?.rfc822ToLocalDateTime()
+    @KotlinIgnoredOnParcel
+    @Transient
+    val createdAt: LocalDateTime? = _createdAt?.rfc822ToLocalDateTime()
 
     /**
      * TODO

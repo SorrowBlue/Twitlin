@@ -1,23 +1,25 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.v2.users
 
-import com.sorrowblue.twitlin.TwitterV2API
+import com.sorrowblue.twitlin.Twitlin
+import com.sorrowblue.twitlin.objects.ListId
+import com.sorrowblue.twitlin.objects.UserId
+import com.sorrowblue.twitlin.v2.field.ListField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.testResult
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 import test.AbstractTest
+import com.sorrowblue.twitlin.v2.lists.Expansion.Companion as ListsExpansion
 
 class UserApiTest : AbstractTest {
 
+    private val usersApi = Twitlin.getApi<UsersApi>(oauth1aClient)
+
     @Test
     fun usersIdTest() = runBlocking {
-        TwitterV2API.usersApi.users(
-            "938122027231150081",
+        usersApi.users(
+            UserId("938122027231150081"),
             tweetFields = TweetField.all(),
             userFields = UserField.all(),
             expansions = Expansion.all()
@@ -26,8 +28,8 @@ class UserApiTest : AbstractTest {
 
     @Test
     fun usersIdsTest() = runBlocking {
-        TwitterV2API.usersApi.users(
-            listOf("2244994945", "6253282"),
+        usersApi.users(
+            listOf(UserId("2244994945"), UserId("6253282")),
             tweetFields = TweetField.all(),
             userFields = UserField.all(),
             expansions = Expansion.all()
@@ -38,7 +40,7 @@ class UserApiTest : AbstractTest {
 
     @Test
     fun byUsernameTest() = runBlocking {
-        TwitterV2API.usersApi.byUsername(
+        usersApi.byUsername(
             "TwitterDev",
             tweetFields = TweetField.all(),
             userFields = UserField.all(),
@@ -49,68 +51,80 @@ class UserApiTest : AbstractTest {
     }
 
     @Test
-    fun tweetsTest() = runBlocking {
-        TwitterV2API.usersApi.tweets("2244994945", tweetFields = listOf(TweetField.TEXT))
-            .testResult()
-    }
-
-    @Test
     fun testBlockingList() = runBlocking {
-        TwitterV2API.usersApi.blocking("938122027231150081").testResult()
+        usersApi.blocking(UserId("938122027231150081")).testResult()
     }
 
     @Test
     fun testBlocking() = runBlocking {
-        TwitterV2API.usersApi.blocking("938122027231150081", "783214").testResult()
+        usersApi.blocking(UserId("938122027231150081"), UserId("783214")).testResult()
     }
 
     @Test
     fun testUnBlocking() = runBlocking {
-        TwitterV2API.usersApi.unBlocking("938122027231150081", "783214").testResult()
-    }
-
-    @Test
-    fun testLikedTweets() = runBlocking {
-        TwitterV2API.usersApi.likedTweets("938122027231150081").testResult()
-    }
-
-    @Test
-    fun testLikes() = runBlocking {
-        TwitterV2API.usersApi.likes("938122027231150081", "1394925800470814720").testResult()
-    }
-
-    @Test
-    fun testUnLikes() = runBlocking {
-        TwitterV2API.usersApi.unLikes("938122027231150081", "1394925800470814720").testResult()
+        usersApi.unBlocking(UserId("938122027231150081"), UserId("783214")).testResult()
     }
 
     @Test
     fun testFollowingList() = runBlocking {
-        TwitterV2API.usersApi.following("938122027231150081").testResult()
+        usersApi.following(UserId("938122027231150081")).testResult()
     }
 
     @Test
     fun testFollowing() = runBlocking {
-        TwitterV2API.usersApi.following("938122027231150081", "1613102274").testResult()
+        usersApi.following(UserId("938122027231150081"), UserId("1613102274")).testResult()
     }
 
     @Test
     fun testUnFollowing() = runBlocking {
-        TwitterV2API.usersApi.unFollowing("938122027231150081", "1613102274").testResult()
+        usersApi.unFollowing(UserId("938122027231150081"), UserId("1613102274")).testResult()
     }
 
     @Test
     fun testFollowers() = runBlocking {
-        TwitterV2API.usersApi.followers("938122027231150081").testResult()
+        usersApi.followers(UserId("938122027231150081")).testResult()
     }
 
     @Test
-    fun testDeleteRetweet() = runBlocking {
-        TwitterV2API.usersApi.deleteRetweet("938122027231150081","1428302532007194628").testResult()
+    fun testMutingUser() = runBlocking {
+        usersApi.mutingUser(UserId("938122027231150081")).testResult()
     }
 
     @Test
-    fun testRetweet() = runBlocking {
-        TwitterV2API.usersApi.retweet("938122027231150081","1428302532007194628").testResult()
+    fun testOwnedLists() = runBlocking {
+        usersApi.ownedLists(UserId("938122027231150081"), ListsExpansion.all(), ListField.all(), UserField.all())
+            .testResult()
+    }
+
+    @Test
+    fun testMembershipsList() = runBlocking {
+        usersApi.membershipsList(UserId("938122027231150081"), ListsExpansion.all(), ListField.all(), UserField.all())
+            .testResult()
+    }
+
+    @Test
+    fun testFollowedLists() = runBlocking {
+        usersApi.followedLists(UserId("938122027231150081"), ListsExpansion.all(), ListField.all(), UserField.all())
+            .testResult()
+    }
+
+    @Test
+    fun testFollowAndUnFollowList() = runBlocking {
+        usersApi.followList(UserId("938122027231150081"), ListId("61954239")).onSuccess {
+            usersApi.unFollowList(UserId("938122027231150081"), ListId("61954239")).testResult()
+        }.testResult()
+    }
+
+    @Test
+    fun testPinnedLists() = runBlocking {
+        usersApi.pinnedLists(UserId("938122027231150081"), ListsExpansion.all(), ListField.all(), UserField.all())
+            .testResult()
+    }
+
+    @Test
+    fun testPinAndUnPinList() = runBlocking {
+        usersApi.pinList(UserId("938122027231150081"), ListId("222408616")).onSuccess {
+            usersApi.unPinList(UserId("938122027231150081"), ListId("222408616")).testResult()
+        }.testResult()
     }
 }

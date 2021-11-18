@@ -1,27 +1,26 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.authentication
 
-import com.sorrowblue.twitlin.TwitterAPI
-import test.AbstractTest
-import test.resultLog
+import com.sorrowblue.twitlin.Twitlin
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import test.AbstractTest
+import test.resultLog
 
 class OAuth2ApiTest : AbstractTest {
 
+    private val oauth2Api = Twitlin.getApi<OAuth2Api>(oauth2Client)
+
+    @Ignore
     @Test
     fun tokenTest() = runBlocking {
-        val accessToken = TwitterAPI.oauth2Api.token().resultLog()
+        val accessToken = oauth2Api.token().resultLog()
         assertNotNull(accessToken, "token is null")
     }
 
     @Ignore
     @Test
     fun invalidateToken() = runBlocking {
-        assertNotNull(TwitterAPI.oauth2Api.invalidateToken().resultLog(), "invalidateToken is null")
+        assertNotNull(oauth2Api.invalidateToken().resultLog(), "invalidateToken is null")
     }
 }

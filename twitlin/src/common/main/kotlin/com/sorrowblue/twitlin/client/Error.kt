@@ -1,7 +1,3 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.client
 
 import com.sorrowblue.twitlin.annotation.AndroidParcelable
@@ -10,10 +6,11 @@ import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.serialization.Serializable
 
 /**
- * TODO
+ * Error
  *
- * @property message TODO
- * @property code TODO
+ * @property message
+ * @property code
+ * @constructor Create empty Error
  */
 @AndroidParcelize
 @Serializable

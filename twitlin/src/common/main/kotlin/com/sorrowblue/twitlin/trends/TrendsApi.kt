@@ -1,11 +1,7 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.trends
 
 import com.sorrowblue.twitlin.client.Response
-import com.sorrowblue.twitlin.users.TrendLocation
+import com.sorrowblue.twitlin.objects.TrendLocation
 
 /**
  * ### Get trends near a location

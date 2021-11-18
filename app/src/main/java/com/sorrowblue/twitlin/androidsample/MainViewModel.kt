@@ -1,22 +1,38 @@
-/*
- * (c) 2020-2021 SorrowBlue.
- */
-
 package com.sorrowblue.twitlin.androidsample
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.TwitterV2API
+import com.sorrowblue.twitlin.authentication.OAuthApi
 import com.sorrowblue.twitlin.client.Error
-import com.sorrowblue.twitlin.v2.field.Expansion
+import com.sorrowblue.twitlin.client.Oauth1aClient
+import com.sorrowblue.twitlin.client.Oauth2Client
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
+import com.sorrowblue.twitlin.v2.tweets.Expansion
+import com.sorrowblue.twitlin.v2.tweets.TweetsApi
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+interface TwitterRepository {
+    fun oauthApi(): OAuthApi
+    fun tweetsAppApi(): TweetsApi
+}
+
+class TwitterRepositoryImpl(private val oauth1aClient: Oauth1aClient, private val oauth2Client: Oauth2Client) :
+    TwitterRepository {
+    override fun oauthApi(): OAuthApi {
+        return Twitlin.getApi(oauth1aClient)
+    }
+
+    override fun tweetsAppApi(): TweetsApi {
+        return Twitlin.getApi(oauth2Client)
+    }
+
+}
+
+class MainViewModel(val repository: TwitterRepository) : ViewModel() {
 
     val adapter = MainAdapter()
 
@@ -25,9 +41,9 @@ class MainViewModel : ViewModel() {
 
     fun requestAuthUrl() {
         viewModelScope.launch {
-            TwitterAPI.oauthApi.requestToken("https://twitlinsample.sorrowblue.com")
+            repository.oauthApi().requestToken("https://twitlinsample.sorrowblue.com")
                 .onSuccess {
-                    url.postValue(TwitterAPI.oauthApi.authenticate(it.oauthToken))
+                    url.postValue(repository.oauthApi().authenticate(it.oauthToken))
                 }
                 .onError {
                     errorCodes.postValue(it)
@@ -37,15 +53,15 @@ class MainViewModel : ViewModel() {
 
     fun accessToken(oauthToken: String, oauthVerifier: String) {
         viewModelScope.launch {
-            TwitterAPI.oauthApi.accessToken(oauthToken, oauthVerifier).dataOrNull()?.let {
-                Twitlin.accessToken = it
+            repository.oauthApi().accessToken(oauthToken, oauthVerifier).dataOrNull()?.let {
+                accessToken = it
             }
         }
     }
 
-    val tweet = TwitterV2API.tweetsAppApi.sampleStream(
+    val tweet = repository.tweetsAppApi().sampleStream(
         expansions = listOf(Expansion.AUTHOR_ID),
         userFields = listOf(UserField.PROFILE_IMAGE_URL),
         tweetFields = listOf(TweetField.TEXT, TweetField.AUTHOR_ID)
-    )
+    ).mapNotNull { it.dataOrNull() }
 }

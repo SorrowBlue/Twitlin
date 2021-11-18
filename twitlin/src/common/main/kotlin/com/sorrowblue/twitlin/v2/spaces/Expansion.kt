@@ -2,6 +2,12 @@ package com.sorrowblue.twitlin.v2.spaces
 
 import com.sorrowblue.twitlin.v2.field.OptionalField
 
+/**
+ * Expansion
+ *
+ * @property value
+ * @constructor Create empty Expansion
+ */
 public enum class Expansion(override val value: String) : OptionalField {
     INVITED_USER_IDS("invited_user_ids"),
     SPEAKER_IDS("speaker_ids"),
