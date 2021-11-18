@@ -1,7 +1,7 @@
 [versions]
 kotlin = "1.6.0"
 ktor = "1.6.5"
-android-buildToolsVersion = "31.0.0"
+android-buildToolsVersion = "30.0.3"
 android-minSdkVersion = "23"
 android-targetSdkVersion = "31"
 
