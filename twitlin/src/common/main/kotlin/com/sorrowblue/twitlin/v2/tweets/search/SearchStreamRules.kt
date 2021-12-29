@@ -5,6 +5,7 @@ import com.sorrowblue.twitlin.annotation.AndroidParcelize
 import com.sorrowblue.twitlin.annotation.JvmSerializable
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.isoToLocalDateTime
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -16,8 +17,10 @@ import kotlinx.serialization.Serializable
  */
 @AndroidParcelize
 @Serializable
-public data class SearchStreamRules(val data: List<SearchStreamRule> = emptyList(), val meta: Meta) : AndroidParcelable,
-    JvmSerializable {
+public data class SearchStreamRules(
+    val data: List<SearchStreamRule> = emptyList(),
+    val meta: Meta
+) : AndroidParcelable, JvmSerializable {
 
     /**
      * Meta
@@ -27,7 +30,7 @@ public data class SearchStreamRules(val data: List<SearchStreamRule> = emptyList
      */
     @AndroidParcelize
     @Serializable
-    public data class Meta(val _sent: String) : AndroidParcelable, JvmSerializable {
+    public data class Meta(@SerialName("sent") val _sent: String) : AndroidParcelable, JvmSerializable {
 
         val sent: LocalDateTime get() = _sent.isoToLocalDateTime()
     }

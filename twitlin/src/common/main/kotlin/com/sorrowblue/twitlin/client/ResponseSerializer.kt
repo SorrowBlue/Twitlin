@@ -3,7 +3,6 @@ package com.sorrowblue.twitlin.client
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildSerialDescriptor
@@ -13,7 +12,6 @@ import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.encodeToJsonElement
-import kotlinx.serialization.json.jsonArray
 
 @OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
 internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializer<T>) : KSerializer<Response<T>> {
@@ -31,10 +29,8 @@ internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializ
         val element = runCatching(decoder::decodeJsonElement).getOrElse { JsonObject(emptyMap()) }
 //        JsonElement -> value
         return kotlin.runCatching {
-            if (element is JsonObject && "errors" in element) {
-                val errors = element.getValue("errors").jsonArray
-                val errorListSerializer = ListSerializer(Error.serializer())
-                Response.Error(decoder.json.decodeFromJsonElement(errorListSerializer, errors))
+            if (element is JsonObject && element.size == 1 && "errors" in element) {
+                decoder.json.decodeFromJsonElement(Response.Error.serializer(dataSerializer), element)
             } else {
                 Response.Success(decoder.json.decodeFromJsonElement(dataSerializer, element))
             }

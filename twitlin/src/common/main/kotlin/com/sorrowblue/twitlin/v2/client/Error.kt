@@ -18,7 +18,7 @@ public data class Error(
     val title: String? = null,
     val details: List<String>? = null,
     val type: Type? = null,
-//    val id: String? = null,
+    val id: String? = null,
     @SerialName("resource_type")
     val resourceType: String? = null,
     val field: String? = null,
@@ -26,8 +26,7 @@ public data class Error(
     val value: String? = null,
     val section: String? = null,
     val parameters: Map<String, List<String>>? = null,
-    val message: String? = null,
-//    val status: Int? = null
+    val message: String? = null
 ) : AndroidParcelable, JvmSerializable {
 
     @Serializable(with = ErrorTypeSerializer::class)

@@ -6,7 +6,6 @@ import com.sorrowblue.twitlin.annotation.JvmSerializable
 import com.sorrowblue.twitlin.client.Error
 import com.sorrowblue.twitlin.objects.Coordinates
 import com.sorrowblue.twitlin.objects.Place
-import com.sorrowblue.twitlin.objects.PlaceType
 import kotlinx.serialization.Serializable
 
 /**
@@ -51,7 +50,7 @@ public data class ReverseGeocode(
         public data class Params(
             val accuracy: Float,
             val coordinates: Coordinates,
-            val granularity: PlaceType
+            val granularity: String
         ) : AndroidParcelable, JvmSerializable
     }
 

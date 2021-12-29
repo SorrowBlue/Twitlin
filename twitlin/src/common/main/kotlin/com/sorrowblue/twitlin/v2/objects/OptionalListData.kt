@@ -1,7 +1,7 @@
 package com.sorrowblue.twitlin.v2.objects
 
-import com.sorrowblue.twitlin.v2.client.Error
 import com.sorrowblue.twitlin.v2.client.Includes
+import com.sorrowblue.twitlin.v2.client.Problem
 import kotlin.collections.List
 import kotlinx.serialization.Serializable
 
@@ -18,5 +18,5 @@ import kotlinx.serialization.Serializable
 public data class OptionalListData<T>(
     val data: List<T> = emptyList(),
     val includes: Includes = Includes(),
-    val errors: List<Error>? = null,
+    val errors: List<Problem> = emptyList(),
 )

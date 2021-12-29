@@ -4,15 +4,18 @@ import com.sorrowblue.twitlin.Twitlin
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import test.AbstractTest
 import test.resultLog
 
+@ExperimentalCoroutinesApi
 class OAuthApiTest : AbstractTest {
 
     private val oauthApi = Twitlin.getApi<OAuthApi>(oauth1aClient)
 
     @Test
-    fun accessTokenTest() = runBlocking {
+    fun accessTokenTest() = runTest {
         val accessToken = oauthApi.accessToken(
             "t4O14gAAAAABEkL_AAABfHZeEBw",
             "6C6qSXhVaifi2VaHHUP2XG7N8azn4vAj"
@@ -21,7 +24,7 @@ class OAuthApiTest : AbstractTest {
     }
 
     @Test
-    fun authenticateTest() = runBlocking {
+    fun authenticateTest() = runTest {
         val url =
             oauthApi.requestToken("https://maitter.sorrowblue.com").resultLog()?.let {
                 oauthApi.authenticate(it.oauthToken, forceLogin = true)
@@ -31,7 +34,7 @@ class OAuthApiTest : AbstractTest {
 
     @Ignore
     @Test
-    fun authorizeTest() = runBlocking {
+    fun authorizeTest() = runTest {
         val url =
             oauthApi.requestToken("https://maitter.sorrowblue.com").resultLog()?.let {
                 oauthApi.authorize(it.oauthToken)
@@ -41,7 +44,7 @@ class OAuthApiTest : AbstractTest {
 
     @Ignore
     @Test
-    fun testAuthorize_oob() = runBlocking {
+    fun testAuthorize_oob() = runTest {
         val url =
             oauthApi.requestToken("oob").resultLog()?.let {
                 oauthApi.authorize(it.oauthToken)
@@ -50,7 +53,7 @@ class OAuthApiTest : AbstractTest {
     }
 
     @Test
-    fun requestTokenTest() = runBlocking {
+    fun requestTokenTest() = runTest {
         val requestToken = oauthApi.requestToken("https://maitter.sorrowblue.com")
             .resultLog()
         assertNotNull(requestToken, "requestToken is null")
@@ -58,7 +61,7 @@ class OAuthApiTest : AbstractTest {
 
     @Ignore
     @Test
-    fun invalidateToken() = runBlocking {
+    fun invalidateToken() = runTest {
         assertNotNull(oauthApi.invalidateToken().resultLog(), "invalidateToken is null")
     }
 }

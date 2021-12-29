@@ -2,24 +2,24 @@ package com.sorrowblue.twitlin.directmessages
 
 import com.sorrowblue.twitlin.Twitlin
 import kotlin.test.Test
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import test.AbstractTest
 import test.resultLog
 
+@ExperimentalCoroutinesApi
 class WelcomeMessagesApiTest : AbstractTest {
-    val welcomeMessagesApi = Twitlin.getApi<WelcomeMessagesApi>(oauth1aClient)
+
+    private val welcomeMessagesApi = Twitlin.getApi<WelcomeMessagesApi>(oauth1aClient)
 
     @Test
-    fun listTest() = runBlocking {
-        welcomeMessagesApi.list().resultLog()
-    }
+    fun listTest() = runTest { welcomeMessagesApi.list().resultLog() }
 
     @Test
-    fun listRuleTest() = runBlocking {
-        welcomeMessagesApi.listRule().resultLog()
-    }
+    fun listRuleTest() = runTest { welcomeMessagesApi.listRule().resultLog() }
 
     @Test
-    fun newTest() = runBlocking {
+    fun newTest() = runTest {
         welcomeMessagesApi.new(
             "Welcome message name",
             "text",
@@ -31,32 +31,20 @@ class WelcomeMessagesApiTest : AbstractTest {
     }
 
     @Test
-    fun newRuleTest() = runBlocking {
-        welcomeMessagesApi.newRule("1345260745752133639").resultLog()
-    }
+    fun newRuleTest() = runTest { welcomeMessagesApi.newRule("1345260745752133639").resultLog() }
 
     @Test
-    fun updateTest() = runBlocking {
-        welcomeMessagesApi.update("1345260617335115782", "update text").resultLog()
-    }
+    fun updateTest() = runTest { welcomeMessagesApi.update("1345260617335115782", "update text").resultLog() }
 
     @Test
-    fun destroyTest() = runBlocking {
-        welcomeMessagesApi.destroy("1345229369879396357").resultLog()
-    }
+    fun destroyTest() = runTest { welcomeMessagesApi.destroy("1345229369879396357").resultLog() }
 
     @Test
-    fun destroyRuleTest() = runBlocking {
-        welcomeMessagesApi.destroyRule("1345651167691374592").resultLog()
-    }
+    fun destroyRuleTest() = runTest { welcomeMessagesApi.destroyRule("1345651167691374592").resultLog() }
 
     @Test
-    fun showTest() = runBlocking {
-        welcomeMessagesApi.show("1345260745752133639").resultLog()
-    }
+    fun showTest() = runTest { welcomeMessagesApi.show("1345260745752133639").resultLog() }
 
     @Test
-    fun showRule() = runBlocking {
-        welcomeMessagesApi.showRule("1345317235041075200").resultLog()
-    }
+    fun showRule() = runTest { welcomeMessagesApi.showRule("1345317235041075200").resultLog() }
 }

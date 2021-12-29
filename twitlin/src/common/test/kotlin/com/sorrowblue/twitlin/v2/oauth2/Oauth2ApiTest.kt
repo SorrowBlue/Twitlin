@@ -8,9 +8,11 @@ import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
-import test.TestUtils
 
+@ExperimentalCoroutinesApi
 class Oauth2ApiTest {
 
     @Ignore
@@ -28,7 +30,7 @@ class Oauth2ApiTest {
 
     @Ignore
     @Test
-    fun tokenTest() = TestUtils.runBlocking {
+    fun tokenTest() = runTest {
         val api = OAuth2ApiImpl(Oauth2Client("MkFMT1pMT0tDYll5OXpQQ25xamI6MTpjaQ"))
         val codeVerifier =
             "b0X7WpT8t-1KFaohFzQnP3Xt-hewQFjAnwd~HcMrfaDXO76yaIA6ovcXvNisCKw.yM6f_0R9tm6rxT~4WdDdGUmyS6PBam8Wnq~FClWKq2Hjro0Mc8.vJHCPw26EFzmX"

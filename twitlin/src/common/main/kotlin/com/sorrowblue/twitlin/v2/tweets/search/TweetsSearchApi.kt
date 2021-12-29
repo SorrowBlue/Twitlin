@@ -28,6 +28,8 @@ public interface TweetsSearchApi {
     /**
      * Streams Tweets in real-time based on a specific set of filter rules.
      *
+     * The Tweets returned by this endpoint count towards the Project-level Tweet cap.
+     *
      * @param expansions List of extensions. [Expansion] enable requests to expand an ID into a full object in the `includes` response object.
      * @param mediaFields List of additional fields to return in the [Media](com.sorrowblue.twitlin.v2.objects.Media) object.
      * The response will contain the selected fields only if a Tweet contains media attachments.
@@ -82,15 +84,15 @@ public interface TweetsSearchApi {
      */
     public suspend fun deleteStreamRules(
         ids: List<RuleId>,
-        dryRun: Boolean= false
+        dryRun: Boolean = false
     ): Response<DeletedSearchStreamRules>
 
     /**
-     * This endpoint is part of a **private beta** for academic researchers only.
-     * *Please do not share this documentation.*
+     * This endpoint is only available to those users who have been approved for [Academic Research access](https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api#v2-access-level).
+     * The full-archive search endpoint returns the complete history of public Tweets matching a search query; since the
+     * first Tweet was created March 26, 2006.
      *
-     * The full-archive search endpoint returns the complete history of public Tweets matching
-     * a search query; since the first Tweet was created March 26, 2006.
+     * The Tweets returned by this endpoint count towards the Project-level [Tweet cap](https://developer.twitter.com/en/docs/twitter-api/tweet-caps).
      *
      * @param query One query for matching Tweets. Up to 1024 characters.
      * @param maxResults The maximum number of search results to be returned by a request.
@@ -132,7 +134,7 @@ public interface TweetsSearchApi {
      * By default, the endpoint does not return any user field. To use this parameter,
      * you must include the [Expansion.AUTHOR_ID] parameter in the request. Make sure to not
      * include a space between commas and fields.
-     * @return TODO
+     * @return
      */
     public suspend fun all(
         query: String,

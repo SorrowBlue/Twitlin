@@ -2,6 +2,7 @@ package com.sorrowblue.twitlin.utils
 
 import io.ktor.util.InternalAPI
 import io.ktor.util.decodeBase64Bytes
+import io.ktor.util.encodeBase64
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 
@@ -20,10 +21,10 @@ internal class Options(val encoding: String)
 
 @OptIn(InternalAPI::class)
 internal actual fun hmacSHA1(key: ByteArray, value: ByteArray): ByteArray {
-    val jsSha = JsSHA1("SHA-1", "TEXT", Options("UTF8"))
-    jsSha.setHMACKey(key.decodeToString(), "TEXT")
+    val jsSha = JsSHA1("SHA-1", "HEX", Options("UTF8"))
+    jsSha.setHMACKey(key.toHexString(), "HEX")
     jsSha.update(value.toHexString())
-    return jsSha.getHMAC("B64").decodeBase64Bytes()
+    return jsSha.getHMAC("HEX").hexToByteArray()
 }
 
 private fun ByteArray.toHexString() =

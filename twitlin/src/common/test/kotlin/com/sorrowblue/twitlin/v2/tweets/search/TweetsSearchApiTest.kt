@@ -7,18 +7,23 @@ import com.sorrowblue.twitlin.v2.objects.Tweet
 import com.sorrowblue.twitlin.v2.testResult
 import com.sorrowblue.twitlin.v2.tweets.TweetsApi
 import com.sorrowblue.twitlin.v2.util.TweetNode
+import kotlin.random.Random
 import kotlin.test.Test
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import test.AbstractTest
 
+@ExperimentalCoroutinesApi
 class TweetsSearchApiTest : AbstractTest {
 
     private val tweetsApi = Twitlin.getApi<TweetsApi>(oauth1aClient)
-    private val tweetsSearchApi = Twitlin.getApi<TweetsSearchApi>(oauth1aClient)
+    private val tweetsSearchApi = Twitlin.getApi<TweetsSearchApi>(oauth2Client)
 
     @Test
-    fun testSearchRecent() = runBlocking {
-        tweetsSearchApi.recent(query = "python").testResult()
-    }
+    fun testSearchRecent() = runTest { tweetsSearchApi.recent(query = "python").testResult() }
+
+    @Test
+    fun testSearchAll() = runTest { tweetsSearchApi.all(query = "python").testResult() }
 
     /**
      * Test conversion id to build
@@ -26,25 +31,31 @@ class TweetsSearchApiTest : AbstractTest {
      * Tweet url: [https://twitter.com/VaporPreview/status/1408720499828432900]
      */
     @Test
-    fun testBuildConversation() = runBlocking {
+    fun testBuildConversation() = runTest {
         val conversationId = TweetId("1446912819652284419")
         val root = tweetsApi.tweet(conversationId, tweetFields = TweetField.public()).dataOrNull()?.data
-            ?: return@runBlocking
+            ?: return@runTest
         val pager = tweetsSearchApi.recent(
             query = "conversation_id:${conversationId.id}",
             maxResults = 20,
             tweetFields = TweetField.public()
-        ).dataOrNull()?.data ?: return@runBlocking
+        ).dataOrNull()?.data ?: return@runTest
         TweetNode.buildConversation(root, pager).printTree()
     }
 
+    @Test
+    fun testStreamRules() = runTest {
+        tweetsSearchApi.streamRules().testResult()
+    }
 
     @Test
-    fun testAddStreamRules() = runBlocking {
+    fun testAddStreamRules() = runTest {
         tweetsSearchApi.addStreamRules(
-            listOf(SearchStreamRule("tostones recipe", "")),
-            dryRun = true
-        ).testResult()
+            listOf(SearchStreamRule("cat has:media", "cats with media"))
+        ).onSuccess {
+            tweetsSearchApi.deleteStreamRules(it.data.data?.map(SearchStreamRule::id).orEmpty())
+                .testResult()
+        }.testResult()
     }
 
     private fun TweetNode.printTree(level: Int = 0) {

@@ -9,14 +9,10 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.encodeToJsonElement
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 
 @OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
 internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializer<T>) :
@@ -35,18 +31,18 @@ internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializ
         val element = runCatching(decoder::decodeJsonElement).getOrElse { JsonObject(emptyMap()) }
 //        JsonElement -> value
         if (element !is JsonObject) {
-            return Response.Error(listOf())
+            return Response.Error(listOf(UndefinedProblem()))
         }
         return kotlin.runCatching {
-            if ("data" in element || "meta" in element || kotlin.runCatching { decoder.json.decodeFromJsonElement(dataSerializer, element) }.isSuccess) {
-                println("dataSerializer: $dataSerializer")
-                println("element: $element")
+            if ("data" in element || "meta" in element) {
+                println("decode success")
                 Response.Success(decoder.json.decodeFromJsonElement(dataSerializer, element))
             } else {
+                println("decode error")
                 element.asError(decoder)
             }
         }.getOrElse {
-            Response.Error(listOf(), "Decode failed", it.message)
+            Response.Error(listOf(UndefinedProblem()))
         }
     }
 
@@ -59,21 +55,11 @@ internal class ResponseSerializer<T : Any>(private val dataSerializer: KSerializ
     }
 
     private fun JsonObject.asError(decoder: JsonDecoder): Response.Error<T> {
-        val errors = jsonObject["errors"]?.jsonArray?.let {
-            decoder.json.decodeFromJsonElement(ListSerializer(Error.serializer()), it)
+        if ("type" in this) {
+            return Response.Error(listOf(decoder.json.decodeFromJsonElement(Problem.serializer(), this)))
         }
-
-        fun JsonObject.getString(key: String) = get(key)?.jsonPrimitive?.content
         return Response.Error(
-            errors.orEmpty(),
-            jsonObject.getString("title"),
-            jsonObject.getString("detail"),
-            type = jsonObject["type"]?.let {
-                Json.decodeFromJsonElement(
-                    Error.Type.serializer(),
-                    it
-                )
-            }
+            decoder.json.decodeFromJsonElement(ListSerializer(Problem.serializer()), getValue("errors"))
         )
     }
 }

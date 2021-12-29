@@ -20,6 +20,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.Duration
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.test.runTest
 
 class SeleniumSample {
     private lateinit var driver: WebDriver
@@ -43,7 +44,7 @@ class SeleniumSample {
 
     @Test
     fun test_sample() {
-        runBlocking {
+        runTest {
             val oauthApi = Twitlin.getApi<OAuthApi>(Oauth1aClient(consumerKeys, null))
             var token = ""
             val url = oauthApi.requestToken("oob").dataOrNull()?.let {

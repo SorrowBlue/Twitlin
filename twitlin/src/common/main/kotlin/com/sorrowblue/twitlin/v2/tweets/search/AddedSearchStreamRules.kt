@@ -34,7 +34,10 @@ public data class AddedSearchStreamRules(
      */
     @AndroidParcelize
     @Serializable
-    public data class Meta(val _sent: String, val summary: Summary) : AndroidParcelable, JvmSerializable {
+    public data class Meta(
+        @SerialName("sent") val _sent: String,
+        val summary: Summary
+    ) : AndroidParcelable, JvmSerializable {
 
         /**
          * Sent

@@ -10,30 +10,35 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * TODO
+ * Deleted search stream rules
  *
  * @property meta
  * @property errors
  */
 @AndroidParcelize
 @Serializable
-public data class DeletedSearchStreamRules(val meta: Meta, val errors: List<Error>? = null) :
-    AndroidParcelable, JvmSerializable {
+public data class DeletedSearchStreamRules(
+    val meta: Meta,
+    val errors: List<Error>? = null
+) : AndroidParcelable, JvmSerializable {
 
     /**
-     * TODO
+     * Meta
      *
-     * @property sent
+     * @property _sent
      * @property summary
      */
     @AndroidParcelize
     @Serializable
-    public data class Meta(val _sent: String, val summary: Summary) : AndroidParcelable, JvmSerializable {
+    public data class Meta(
+        @SerialName("sent") val _sent: String,
+        val summary: Summary
+    ) : AndroidParcelable, JvmSerializable {
 
         val sent: LocalDateTime get() = _sent.isoToLocalDateTime()
 
         /**
-         * TODO
+         * Summary
          *
          * @property deleted
          * @property notDeleted

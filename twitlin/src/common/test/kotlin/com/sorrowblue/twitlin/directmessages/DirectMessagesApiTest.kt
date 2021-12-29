@@ -4,16 +4,19 @@ import com.sorrowblue.twitlin.Twitlin
 import com.sorrowblue.twitlin.media.MediaApi
 import com.sorrowblue.twitlin.media.MediaCategory
 import kotlin.test.Test
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import test.AbstractTest
 import test.resultLog
 
+@ExperimentalCoroutinesApi
 class DirectMessagesApiTest : AbstractTest {
 
-    val mediaApi = Twitlin.getApi<MediaApi>(oauth1aClient)
-    val messagesApi = Twitlin.getApi<DirectMessagesApi>(oauth1aClient)
+    private val mediaApi = Twitlin.getApi<MediaApi>(oauth1aClient)
+    private val messagesApi = Twitlin.getApi<DirectMessagesApi>(oauth1aClient)
 
     @Test
-    fun newEventsTest() = runBlocking {
+    fun newEventsTest() = runTest {
         messagesApi.new(
             "1287220831773319168",
             "Hello!! plane text message.2222222222"
@@ -21,7 +24,7 @@ class DirectMessagesApiTest : AbstractTest {
     }
 
     @Test
-    fun newEventsCtaTest() = runBlocking {
+    fun newEventsCtaTest() = runTest {
         messagesApi.new(
             "1287220831773319168",
             "Hello!! plane cta message.",
@@ -30,7 +33,7 @@ class DirectMessagesApiTest : AbstractTest {
     }
 
     @Test
-    fun newEventsOptionsTest() = runBlocking {
+    fun newEventsOptionsTest() = runTest {
         val quickReply = QuickReply(
             QuickReply.Type.OPTIONS,
             (1..4).map {
@@ -46,7 +49,7 @@ class DirectMessagesApiTest : AbstractTest {
     }
 
     @Test
-    fun newMediaTest() = runBlocking {
+    fun newMediaTest() = runTest {
         mediaApi.uploadInit(
             23213,
             "image/jpg",
@@ -65,12 +68,8 @@ class DirectMessagesApiTest : AbstractTest {
     }
 
     @Test
-    fun listTest() = runBlocking {
-        messagesApi.list(count = 100).resultLog()
-    }
+    fun listTest() = runTest { messagesApi.list(count = 100).resultLog() }
 
     @Test
-    fun indicateTypingTest() = runBlocking {
-        messagesApi.indicateTyping("938122027231150081").resultLog()
-    }
+    fun indicateTypingTest() = runTest { messagesApi.indicateTyping("938122027231150081").resultLog() }
 }

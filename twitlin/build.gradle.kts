@@ -35,7 +35,7 @@ kotlin {
         publishLibraryVariants("release")
     }
     jvm()
-    js {
+    js(IR) {
         nodejs()
         browser {
             testTask {
@@ -56,7 +56,8 @@ kotlin {
                 implementation(libs.bundles.kotlinx.serialization)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.serialization)
-                implementation(kotlin("reflect", "1.6.0"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+                implementation(kotlin("reflect", "1.6.10"))
                 api(libs.ktor.client.logging)
             }
         }
@@ -65,6 +66,7 @@ kotlin {
             resources.srcDirs("src/common/test/resources")
             dependencies {
                 implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
             }
         }
         val jsMain by getting {
@@ -163,7 +165,7 @@ val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
 }
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    version.set("0.43.0")
+    version.set("0.43.2")
     reporters {
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
         filter {

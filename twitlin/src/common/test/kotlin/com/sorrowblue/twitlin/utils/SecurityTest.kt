@@ -1,5 +1,6 @@
 package com.sorrowblue.twitlin.utils
 
+import io.ktor.utils.io.core.toByteArray
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -40,7 +41,7 @@ class SecurityTest {
     fun testHmacSHA1_4() {
         hmacSHA1(
             hexKey = "0x0102030405060708090a0b0c0d0e0f10111213141516171819",
-            data = ByteArray(50) { hexStringToByte("cd") },
+            hexData = ("0x" + List(50) { "cd" }.joinToString("")),
             hexDigest = "0x4c9007f4026250c6bc8414f9bf50c86c2d7235da"
         )
     }
@@ -57,7 +58,7 @@ class SecurityTest {
     @Test
     fun testHmacSHA1_6() {
         hmacSHA1(
-            key = ByteArray(80) { hexStringToByte("aa") },
+            hexKey = ("0x" + List(80) { "aa" }.joinToString("")),
             strData = "Test Using Larger Than Block-Size Key - Hash Key First",
             hexDigest = "0xaa4ae5e15272d00e95705637ce8a3b55ed402112"
         )
@@ -66,7 +67,7 @@ class SecurityTest {
     @Test
     fun testHmacSHA1_7() {
         hmacSHA1(
-            key = ByteArray(80) { hexStringToByte("aa") },
+            hexKey = ("0x" + List(80) { "aa" }.joinToString("")),
             strData = "Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data",
             hexDigest = "0xe8e99d0f45237d786d6bbaa7965c7808bbff1a91"
         )
@@ -97,4 +98,38 @@ class SecurityTest {
             hexStringToByte(substring(pointer, pointer + 2))
         }
     }
+
+    @Test
+    fun testSHA256_1() {
+        val sha = sha256("abc".encodeToByteArray())
+        assertEquals("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad", sha.toHexString())
+    }
+
+    @Test
+    fun testSHA256_2() {
+        val sha = sha256("".encodeToByteArray())
+        assertEquals("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", sha.toHexString())
+    }
+
+    @Test
+    fun testSHA256_3() {
+        val sha = sha256("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq".toByteArray())
+        assertEquals("248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1", sha.toHexString())
+    }
+
+    @Test
+    fun testSHA256_4() {
+        val sha =
+            sha256("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu".encodeToByteArray())
+        assertEquals("cf5b16a778af8380036ce59e7b0492370b249b11e8f07a51afac45037afee9d1", sha.toHexString())
+    }
+
+    @Test
+    fun testSHA256_5() {
+        val sha = sha256(List(1000000) { "a" }.joinToString("").also { println(it) }.encodeToByteArray())
+        assertEquals("cdc76e5c9914fb9281a1c7e284d73e67f1809a48a497200e046d39ccc7112cd0", sha.toHexString())
+    }
+
+    private fun ByteArray.toHexString() =
+        joinToString("") { (0xFF and it.toInt()).toString(16).padStart(2, '0') }
 }

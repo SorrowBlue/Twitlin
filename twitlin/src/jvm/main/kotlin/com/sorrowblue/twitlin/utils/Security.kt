@@ -10,6 +10,9 @@ internal actual fun hmacSHA1(key: ByteArray, value: ByteArray): ByteArray =
         doFinal(value)
     }
 
+private fun ByteArray.toHexString() =
+    joinToString("") { (0xFF and it.toInt()).toString(16).padStart(2, '0') }
+
 internal actual fun sha256(value: ByteArray): ByteArray {
     return MessageDigest.getInstance("SHA-256").apply {
         update(value)

@@ -4,15 +4,16 @@ import com.sorrowblue.twitlin.Twitlin
 import com.sorrowblue.twitlin.users.mutes.MutesApi
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import test.AbstractTest
 import test.resultLog
 
+@ExperimentalCoroutinesApi
 class MutesApiTest : AbstractTest {
 
     private val mutesApi = Twitlin.getApi<MutesApi>(oauth1aClient)
 
     @Test
-    fun createTest() = runBlocking {
-        mutesApi.create("shinya_yuunari").resultLog().let { assertNotNull(it) }
-    }
+    fun createTest() = runTest { mutesApi.create("shinya_yuunari").resultLog().let { assertNotNull(it) } }
 }

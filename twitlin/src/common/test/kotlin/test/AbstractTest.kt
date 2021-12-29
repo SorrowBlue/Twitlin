@@ -10,6 +10,8 @@ import com.sorrowblue.twitlin.objects.UserId
 import com.sorrowblue.twitlin.v2.oauth2.OAuth2Token
 import kotlin.test.BeforeTest
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 
 interface AbstractTest {
 
@@ -39,5 +41,7 @@ interface AbstractTest {
     fun initializeTwitlin() {
     }
 
-    fun runBlocking(block: suspend CoroutineScope.() -> Unit) = TestUtils.runBlocking(block)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Deprecated("a", ReplaceWith("runTest { block(this) }", "kotlinx.coroutines.test.runTest"))
+    fun runBlocking(block: suspend CoroutineScope.() -> Unit) = runTest { block(this) }
 }

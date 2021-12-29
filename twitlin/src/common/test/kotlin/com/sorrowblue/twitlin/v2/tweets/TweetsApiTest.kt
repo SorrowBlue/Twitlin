@@ -3,7 +3,6 @@ package com.sorrowblue.twitlin.v2.tweets
 import com.sorrowblue.twitlin.Twitlin
 import com.sorrowblue.twitlin.objects.TweetId
 import com.sorrowblue.twitlin.objects.UserId
-import com.sorrowblue.twitlin.tweets.statuses.StatusesApi
 import com.sorrowblue.twitlin.v2.field.MediaField
 import com.sorrowblue.twitlin.v2.field.PlaceField
 import com.sorrowblue.twitlin.v2.field.PollField
@@ -17,78 +16,59 @@ import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.testResult
 import com.sorrowblue.twitlin.v2.users.Exclude
 import kotlin.test.Test
-import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.test.runTest
 import test.AbstractTest
 
+@ExperimentalCoroutinesApi
 class TweetsApiTest : AbstractTest {
 
     private val tweetsApi = Twitlin.getApi<TweetsApi>(oauth1aClient)
     private val tweetsAppApi = Twitlin.getApi<TweetsApi>(oauth2Client)
-    private val statusesApi = Twitlin.getApi<StatusesApi>(oauth1aClient)
-
-    private val SORROWBLUE_SB = UserId("938122027231150081")
-    private val HIDDEN_TWEET = TweetId("1299752435855036420")
-    private val TWEET = TweetId("1441013982161031168")
+    private val sorrowBlueSB = UserId("938122027231150081")
+    private val hiddenTweetId = TweetId("1299752435855036420")
+    private val tweetId = TweetId("1441013982161031168")
 
     /**
      * [See tweet](https://twitter.com/sorrowblue_sb/status/1299752429290885127)
      */
     @Test
-    fun testHidden() = runBlocking {
-        tweetsApi.hidden(HIDDEN_TWEET).testResult()
-    }
+    fun testHidden() = runTest { tweetsApi.hidden(hiddenTweetId).testResult() }
 
     /**
      * [See tweet](https://twitter.com/sorrowblue_sb/status/1299752429290885127)
      */
     @Test
-    fun testUnHidden() = runBlocking {
-        tweetsApi.hidden(HIDDEN_TWEET, false).testResult()
-    }
+    fun testUnHidden() = runTest { tweetsApi.hidden(hiddenTweetId, false).testResult() }
 
     @Test
-    fun testUnLikes() = runBlocking {
-        tweetsApi.unLikes(SORROWBLUE_SB, TWEET).testResult()
-    }
+    fun testUnLikes() = runTest { tweetsApi.unLikes(sorrowBlueSB, tweetId).testResult() }
 
     @Test
-    fun testLikingUsers() = runBlocking {
-        tweetsApi.likingUsers(TweetId("1394925800470814720")).testResult()
-    }
+    fun testLikingUsers() = runTest { tweetsApi.likingUsers(TweetId("1394925800470814720")).testResult() }
 
     @Test
-    fun testLikedTweets() = runBlocking {
-        tweetsApi.likedTweets(SORROWBLUE_SB).testResult()
-    }
+    fun testLikedTweets() = runTest { tweetsApi.likedTweets(sorrowBlueSB).testResult() }
 
     @Test
-    fun testLikes() = runBlocking {
-        tweetsApi.likes(SORROWBLUE_SB, TWEET).testResult()
-    }
+    fun testLikes() = runTest { tweetsApi.likes(sorrowBlueSB, tweetId).testResult() }
 
     @Test
-    fun testUnRetweet() = runBlocking {
-        tweetsApi.unRetweet(SORROWBLUE_SB, TWEET).testResult()
-    }
+    fun testUnRetweet() = runTest { tweetsApi.unRetweet(sorrowBlueSB, tweetId).testResult() }
 
     @Test
-    fun testRetweetedBy() = runBlocking {
-        tweetsApi.retweetedBy(TweetId("1428326155342409728")).testResult()
-    }
+    fun testRetweetedBy() = runTest { tweetsApi.retweetedBy(TweetId("1428326155342409728")).testResult() }
 
     @Test
-    fun testRetweet() = runBlocking {
-        tweetsApi.retweet(SORROWBLUE_SB, TWEET).testResult()
-    }
+    fun testRetweet() = runTest { tweetsApi.retweet(sorrowBlueSB, tweetId).testResult() }
 
     @Test
     fun testSampleStream() {
         runCatching {
-            runBlocking {
+            runTest {
                 var c = 0
                 tweetsAppApi.sampleStream(tweetFields = listOf(TweetField.TEXT))
                     .collect {
@@ -104,12 +84,10 @@ class TweetsApiTest : AbstractTest {
     }
 
     @Test
-    fun testMentions() = runBlocking {
-        tweetsApi.mentions(UserId("986174595660005377")).testResult()
-    }
+    fun testMentions() = runTest { tweetsApi.mentions(UserId("986174595660005377")).testResult() }
 
     @Test
-    fun testTweets() = runBlocking {
+    fun testTweets() = runTest {
         tweetsApi.tweets(
             UserId("1627919538"),
             exclude = Exclude.REPLIES,
@@ -124,17 +102,7 @@ class TweetsApiTest : AbstractTest {
     }
 
     @Test
-    fun testMentionsByUsername() = runBlocking {
-        tweetsApi.mentionsByUsername("sorrowblue_sb").testResult()
-    }
-
-    @Test
-    fun testTweetsByUsername() = runBlocking {
-        tweetsApi.tweetsByUsername("sorrowblue_sb").testResult()
-    }
-
-    @Test
-    fun testTweet_id() = runBlocking {
+    fun testTweet_id() = runTest {
         tweetsApi.tweet(
             TweetId("1446829727184941056"),
             expansions = Expansion.all(),
@@ -143,13 +111,11 @@ class TweetsApiTest : AbstractTest {
             pollFields = PollField.all(),
             tweetFields = TweetField.public(),
             userFields = UserField.all()
-        ).testResult().also(::assertNotNull)?.let {
-            println("formatted text: \n${it.data.formattedText}")
-        }
+        ).testResult()
     }
 
     @Test
-    fun testTweet_ids() = runBlocking {
+    fun testTweet_ids() = runTest {
         tweetsApi.tweet(
             idList_100,
             expansions = Expansion.all(),
@@ -158,12 +124,12 @@ class TweetsApiTest : AbstractTest {
             pollFields = PollField.all(),
             tweetFields = TweetField.public(),
             userFields = UserField.all()
-        )
+        ).testResult()
     }
 
     @Test
-    fun testTweet() = runBlocking {
-        tweetsApi.tweet("Test reply tweet from twitlin dm", directMessageUserId = SORROWBLUE_SB).testResult()
+    fun testTweet() = runTest {
+        tweetsApi.tweet("Test reply tweet from twitlin dm", directMessageUserId = sorrowBlueSB).testResult()
     }
 }
 

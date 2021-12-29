@@ -2,12 +2,8 @@ package com.sorrowblue.twitlin.v2.client
 
 import com.sorrowblue.twitlin.client.RateLimitInfo
 import com.sorrowblue.twitlin.client.TwitterResponse
-import kotlin.Any
-import kotlin.String
-import kotlin.Unit
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import com.sorrowblue.twitlin.v2.client.Error as ClientError
 
 /**
  * Response
@@ -35,29 +31,12 @@ public sealed class Response<T : Any> : TwitterResponse {
      * Error
      *
      * @param T
-     * @property errors
-     * @property title
-     * @property detail
-     * @property type
-     * @property client_id
-     * @property required_enrollment
-     * @property registration_url
-     * @property reason
-     * @constructor Create empty Error
+     * @param problem
      */
     @Serializable
-    public data class Error<T : Any>(
-        val errors: List<ClientError>,
-        val title: String? = null,
-        val detail: String? = null,
-        val type: ClientError.Type? = null,
-        val client_id: String? = null,
-        val required_enrollment: String? = null,
-        val registration_url: String? = null,
-        val reason: String? = null,
+    public data class Error<T : Any> constructor(
+        val errors: List<Problem>
     ) : Response<T>() {
-
-        public constructor(error: ClientError) : this(listOf(error))
 
         @Transient
         override lateinit var rateLimitInfo: RateLimitInfo
@@ -116,18 +95,13 @@ public sealed class Response<T : Any> : TwitterResponse {
      * @return
      */
     public inline fun <R : Any> convertData(convert: (T) -> R): Response<R> {
-        return when (this) {
-            is Success -> Success(convert.invoke(data))
-            is Error -> Error(
-                errors,
-                title,
-                detail,
-                type,
-                client_id,
-                required_enrollment,
-                registration_url,
-                reason
-            )
+        return when (val res = this) {
+            is Success -> Success(convert.invoke(res.data)).apply {
+                rateLimitInfo = res.rateLimitInfo
+            }
+            is Error -> Error<R>(res.errors).apply {
+                rateLimitInfo = res.rateLimitInfo
+            }
         }
     }
 

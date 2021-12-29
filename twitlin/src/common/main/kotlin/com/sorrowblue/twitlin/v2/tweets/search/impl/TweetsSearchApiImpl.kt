@@ -90,7 +90,7 @@ internal class TweetsSearchApiImpl(private val client: TwitterClient) : TweetsSe
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?
     ): Response<PagingData<Tweet>> {
-        return client.post("$TWEETS_SEARCH/all", Response.serializer(PagingData.serializer(Tweet.serializer()))) {
+        return client.get("$TWEETS_SEARCH/all", Response.serializer(PagingData.serializer(Tweet.serializer()))) {
             parameter("query", query)
             parameter("max_results", maxResults)
             parameter("next_token", nextToken)
