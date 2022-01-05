@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class PagingData<T>(
-    val data: List<T>,
+    val data: List<T> = emptyList(),
     val includes: Includes = Includes(),
     val meta: Meta,
     val errors: List<Error>? = null
