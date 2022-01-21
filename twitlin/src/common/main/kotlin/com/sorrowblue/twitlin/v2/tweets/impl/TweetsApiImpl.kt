@@ -58,15 +58,19 @@ internal class TweetsApiImpl(private val client: TwitterClient) : TweetsApi {
         id: TweetId,
         expansions: List<UsersExpansion>?,
         tweetFields: List<TweetField>?,
-        userFields: List<UserField>?
-    ): Response<OptionalListData<User>> {
+        userFields: List<UserField>?,
+        maxResults: Int,
+        paginationToken: String?
+    ): Response<PagingData<User>> {
         return client.get(
             "${Endpoints.TWEETS}/${id.id}/liking_users",
-            Response.serializer(OptionalListData.serializer(User.serializer()))
+            Response.serializer(PagingData.serializer(User.serializer()))
         ) {
             parameter("expansions", expansions?.toParameter())
             parameter("tweet.fields", tweetFields?.toParameter())
             parameter("user.fields", userFields?.toParameter())
+            parameter("max_results", maxResults)
+            parameter("pagination_token", paginationToken)
         }
     }
 
@@ -117,11 +121,13 @@ internal class TweetsApiImpl(private val client: TwitterClient) : TweetsApi {
         placeFields: List<PlaceField>?,
         pollFields: List<PollField>?,
         tweetFields: List<TweetField>?,
-        userFields: List<UserField>?
-    ): Response<OptionalListData<User>> {
+        userFields: List<UserField>?,
+        maxResults: Int,
+        paginationToken: String?
+    ): Response<PagingData<User>> {
         return client.get(
             "${Endpoints.TWEETS}/${tweetId.id}/retweeted_by",
-            Response.serializer(OptionalListData.serializer(User.serializer()))
+            Response.serializer(PagingData.serializer(User.serializer()))
         ) {
             parameter("expansions", expansions?.toParameter())
             parameter("media.fields", mediaFields?.toParameter())
@@ -129,6 +135,8 @@ internal class TweetsApiImpl(private val client: TwitterClient) : TweetsApi {
             parameter("poll.fields", pollFields?.toParameter())
             parameter("tweet.fields", tweetFields?.toParameter())
             parameter("user.fields", userFields?.toParameter())
+            parameter("max_results", maxResults)
+            parameter("pagination_token", paginationToken)
         }
     }
 

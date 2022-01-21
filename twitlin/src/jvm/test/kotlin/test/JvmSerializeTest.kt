@@ -14,7 +14,7 @@ class JvmSerializeTest {
     fun testWriteAndReadObject() {
         val data = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
             .toJavaLocalDateTime()
-        ObjectOutputStream(FileOutputStream("testWriteTo")).use {
+        ObjectOutputStream(FileOutputStream("testWriteTo.txt")).use {
             it.writeObject(data)
         }
         println(data)

@@ -75,8 +75,10 @@ public interface TweetsApi {
         id: TweetId,
         expansions: List<UserExpansion>? = null,
         tweetFields: List<TweetField>? = null,
-        userFields: List<UserField>? = null
-    ): Response<OptionalListData<User>>
+        userFields: List<UserField>? = null,
+        maxResults: Int = 100,
+        paginationToken: String? = null
+    ): Response<PagingData<User>>
 
     /**
      * Liked tweets
@@ -107,7 +109,7 @@ public interface TweetsApi {
     /**
      * Causes the user ID identified in the path parameter to Like the target Tweet.
      *
-     * @param id The user ID who you are liking a Tweet on behalf of. It must match your own user ID or that of an
+     * @param userId The user ID who you are liking a Tweet on behalf of. It must match your own user ID or that of an
      * authenticating user, meaning that you must pass the [OAuthApi.accessToken] associated with the user ID when
      * authenticating your request.
      * @param tweetId The ID of the Tweet that you would like the user `id` to Like.
@@ -145,8 +147,10 @@ public interface TweetsApi {
         placeFields: List<PlaceField>? = null,
         pollFields: List<PollField>? = null,
         tweetFields: List<TweetField>? = null,
-        userFields: List<UserField>? = null
-    ): Response<OptionalListData<User>>
+        userFields: List<UserField>? = null,
+        maxResults: Int = 100,
+        paginationToken: String? = null
+    ): Response<PagingData<User>>
 
     /**
      * Retweet

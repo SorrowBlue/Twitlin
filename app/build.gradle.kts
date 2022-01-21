@@ -13,12 +13,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(libs.versions.android.targetSdkVersion.get().toInt())
+    compileSdk = libs.versions.android.targetSdkVersion.get().toInt()
     buildToolsVersion = libs.versions.android.buildToolsVersion.get()
     defaultConfig {
         applicationId = "com.sorrowblue.twitlin.androidsample"
-        minSdkVersion(libs.versions.android.minSdkVersion.get().toInt())
-        targetSdkVersion(libs.versions.android.targetSdkVersion.get().toInt())
+        minSdk = libs.versions.android.minSdkVersion.get().toInt()
+        targetSdk = libs.versions.android.targetSdkVersion.get().toInt()
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -38,7 +38,7 @@ android {
         }
     }
     packagingOptions {
-        exclude("META-INF/**.kotlin_module")
+        resources.excludes += "META-INF/**.kotlin_module"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -55,14 +55,14 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.activity:activity-ktx:1.4.0")
-    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
     implementation("androidx.webkit:webkit:1.4.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("io.coil-kt:coil:1.4.0")
-    implementation("io.insert-koin:koin-android:3.1.4")
+    implementation("io.insert-koin:koin-android:3.1.5")
     testImplementation("org.seleniumhq.selenium:selenium-java:4.1.1")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
     testImplementation("junit:junit:4.13.2")

@@ -12,7 +12,7 @@ androidx-security-crypto = "androidx.security:security-crypto:1.1.0-alpha03"
 
 kotlinx-serialization-core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2"
 kotlinx-serialization-properties = "org.jetbrains.kotlinx:kotlinx-serialization-properties:1.3.2"
-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.1"
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.2"
 
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -28,7 +28,7 @@ logback-classic = "ch.qos.logback:logback-classic:1.2.10"
 kotlinx-serialization = ["kotlinx-serialization-core", "kotlinx-serialization-properties"]
 
 [plugins]
-benmanes-versions ="com.github.ben-manes.versions:0.39.0"
+benmanes-versions ="com.github.ben-manes.versions:0.41.0"
 nexus-publish = "io.github.gradle-nexus.publish-plugin:1.1.0"
 ajoberstar-grgit = "org.ajoberstar.grgit:4.1.1"
 

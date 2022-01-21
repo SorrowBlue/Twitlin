@@ -1,16 +1,15 @@
 package com.sorrowblue.twitlin.users
 
 import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.objects.PagingIds
 import com.sorrowblue.twitlin.objects.UserId
-import com.sorrowblue.twitlin.users.friendships.Friendships
 import com.sorrowblue.twitlin.users.friendships.FriendshipsApi
-import com.sorrowblue.twitlin.users.friendships.Relationship
 import kotlin.test.Test
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import test.AbstractTest
 import test.resultLog
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class FriendshipsApiTest : AbstractTest {
 
     private val friendshipsApi = Twitlin.getApi<FriendshipsApi>(oauth1aClient)
