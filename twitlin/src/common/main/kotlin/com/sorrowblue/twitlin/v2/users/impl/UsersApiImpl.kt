@@ -14,6 +14,7 @@ import com.sorrowblue.twitlin.v2.lists.impl.ListFollowOrPinRequest
 import com.sorrowblue.twitlin.v2.lists.impl.ListFollowResponse
 import com.sorrowblue.twitlin.v2.lists.impl.ListPinResponse
 import com.sorrowblue.twitlin.v2.objects.OptionalData
+import com.sorrowblue.twitlin.v2.objects.OptionalListData
 import com.sorrowblue.twitlin.v2.objects.PagingData
 import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.users.Expansion
@@ -148,8 +149,8 @@ internal class UsersApiImpl(private val client: TwitterClient) : UsersApi {
         expansions: List<Expansion>?,
         tweetFields: List<TweetField>?,
         userFields: List<UserField>?,
-    ): Response<OptionalData<List<User>>> {
-        return client.get(USERS, Response.serializer(OptionalData.serializer(ListSerializer(User.serializer())))) {
+    ): Response<OptionalListData<User>> {
+        return client.get(USERS, Response.serializer(OptionalListData.serializer(User.serializer()))) {
             parameter("ids", ids.joinToString(",", transform = UserId::id))
             parameter("expansions", expansions?.toParameter())
             parameter("tweet.fields", tweetFields?.toParameter())

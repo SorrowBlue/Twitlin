@@ -110,12 +110,12 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(libs.versions.android.targetSdkVersion.get().toInt())
-    buildToolsVersion = (libs.versions.android.buildToolsVersion.get())
+    compileSdk = libs.versions.android.targetSdkVersion.get().toInt()
+    buildToolsVersion = libs.versions.android.buildToolsVersion.get()
 
     defaultConfig {
-        minSdkVersion(libs.versions.android.minSdkVersion.get().toInt())
-        targetSdkVersion(libs.versions.android.targetSdkVersion.get().toInt())
+        minSdk = libs.versions.android.minSdkVersion.get().toInt()
+        targetSdk = libs.versions.android.targetSdkVersion.get().toInt()
     }
     buildTypes {
         getByName("release") {

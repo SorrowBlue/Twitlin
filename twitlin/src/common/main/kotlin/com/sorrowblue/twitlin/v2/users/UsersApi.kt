@@ -7,6 +7,7 @@ import com.sorrowblue.twitlin.v2.field.ListField
 import com.sorrowblue.twitlin.v2.field.TweetField
 import com.sorrowblue.twitlin.v2.field.UserField
 import com.sorrowblue.twitlin.v2.objects.OptionalData
+import com.sorrowblue.twitlin.v2.objects.OptionalListData
 import com.sorrowblue.twitlin.v2.objects.PagingData
 import com.sorrowblue.twitlin.v2.objects.User
 import com.sorrowblue.twitlin.v2.lists.Expansion as ListsExpansion
@@ -164,7 +165,7 @@ public interface UsersApi {
         expansions: List<Expansion>? = null,
         tweetFields: List<TweetField>? = null,
         userFields: List<UserField>? = null
-    ): Response<OptionalData<List<User>>>
+    ): Response<OptionalListData<User>>
 
     /**
      * Users
