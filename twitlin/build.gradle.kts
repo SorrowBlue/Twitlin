@@ -4,8 +4,6 @@
 
 @file:Suppress("UNUSED_VARIABLE")
 
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
 
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -15,10 +13,10 @@ plugins {
     id("kotlin-parcelize")
     `maven-publish`
     signing
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.jetbrains.dokka)
-    alias(libs.plugins.jlleitschuh.ktlint)
-    alias(libs.plugins.codingfeline.buildkonfig)
+    kotlin("plugin.serialization")
+    id("org.jetbrains.dokka")
+    id("org.jlleitschuh.gradle.ktlint")
+    id("org.ajoberstar.grgit")
 }
 
 group = "com.sorrowblue.twitlin"
@@ -52,40 +50,22 @@ kotlin {
         commonMain {
             kotlin.srcDirs("src/common/main/kotlin")
             dependencies {
-                api(libs.kotlinx.datetime)
-                implementation(libs.bundles.kotlinx.serialization)
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.client.serialization)
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
-                implementation(kotlin("reflect", "1.6.10"))
-                api(libs.ktor.client.logging)
+                api(project(":twitlin:api"))
+                api(project(":twitlin:api-v2"))
             }
         }
         commonTest {
             kotlin.srcDirs("src/common/test/kotlin")
             resources.srcDirs("src/common/test/resources")
-            dependencies {
-                implementation(kotlin("test"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
-            }
         }
         val jsMain by getting {
             kotlin.srcDirs("src/js/main/kotlin")
-            dependencies {
-                implementation(libs.ktor.client.js)
-                implementation(npm("jssha", "3.2.0"))
-                implementation(npm("@sinonjs/text-encoding", "0.7.1"))
-            }
         }
         val jsTest by getting {
             kotlin.srcDirs("src/js/test/kotlin")
         }
         val androidMain by getting {
             kotlin.srcDir("src/android/main/kotlin")
-            dependencies {
-                implementation(libs.ktor.client.android)
-                implementation(libs.jsoup)
-            }
         }
         val androidAndroidTestRelease by getting
         val androidTest by getting {
@@ -95,16 +75,9 @@ kotlin {
         val jvmMain by getting {
             kotlin.srcDirs("src/jvm/main/kotlin")
             resources.srcDirs("src/jvm/main/resources")
-            dependencies {
-                implementation(libs.ktor.client.okhttp)
-                implementation(libs.jsoup)
-            }
         }
         val jvmTest by getting {
             kotlin.srcDirs("src/jvm/test/kotlin")
-            dependencies {
-                implementation(libs.logback.classic)
-            }
         }
     }
 }
@@ -126,15 +99,6 @@ android {
         unitTests.isReturnDefaultValues = true
     }
     sourceSets["main"].manifest.srcFile("src/android/main/AndroidManifest.xml")
-}
-
-buildkonfig {
-    packageName = group.toString()
-    defaultConfigs {
-        gradleLocalProperties(rootDir).toList().filter { it.first.toString().startsWith("TWITTER_API_") }.forEach {
-            buildConfigField(FieldSpec.Type.STRING, it.first.toString(), it.second.toString())
-        }
-    }
 }
 
 tasks.dokkaHtml.configure {
@@ -165,7 +129,7 @@ val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
 }
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    version.set("0.43.2")
+    version.set("0.44.0")
     reporters {
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
         filter {
@@ -227,10 +191,4 @@ afterEvaluate {
         }
         sign(publishing.publications)
     }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile>().configureEach {
-    kotlinOptions.freeCompilerArgs += listOf(
-        "-Xir-property-lazy-initialization"
-    )
 }

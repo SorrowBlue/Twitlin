@@ -1,12 +1,12 @@
 package com.sorrowblue.twitlin.androidsample
 
 import android.app.Application
-import com.sorrowblue.twitlin.authentication.AccessToken
-import com.sorrowblue.twitlin.authentication.BearerToken
-import com.sorrowblue.twitlin.client.ConsumerKeys
-import com.sorrowblue.twitlin.client.Oauth1aClient
-import com.sorrowblue.twitlin.client.Oauth2Client
-import com.sorrowblue.twitlin.objects.UserId
+import com.sorrowblue.twitlin.core.authentication.AccessToken
+import com.sorrowblue.twitlin.core.authentication.BearerToken
+import com.sorrowblue.twitlin.core.client.ConsumerKeys
+import com.sorrowblue.twitlin.core.client.Oauth1aClient
+import com.sorrowblue.twitlin.core.client.Oauth2Client
+import com.sorrowblue.twitlin.core.objects.UserId
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel

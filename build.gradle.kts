@@ -7,24 +7,20 @@ plugins {
     alias(libs.plugins.benmanes.versions)
     alias(libs.plugins.nexus.publish)
     alias(libs.plugins.ajoberstar.grgit)
-}
-
-buildscript {
-    repositories {
-        google()
-    }
-    dependencies {
-        classpath(libs.android.gradle)
-        classpath(libs.kotlin.gradle)
-    }
+    kotlin("multiplatform") version "1.6.20-RC" apply false
+    id("com.android.application") version "7.0.4" apply false
+    id("com.android.library") version "7.0.4" apply false
+    kotlin("plugin.serialization") version "1.6.20-RC"
+    id("org.jetbrains.dokka") version "1.6.10"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
 }
 
 group = "com.sorrowblue.twitlin"
 
 version = grgit.describe {
     longDescr = false
-    isTags = true
-}?.toVersion().also { logger.lifecycle("version: $it") } ?: "0.0.1-SNAPSHOT"
+    tags = true
+}.toVersion().also { logger.lifecycle("version: $it") }
 
 nexusPublishing {
     repositories {
