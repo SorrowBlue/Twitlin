@@ -14,28 +14,6 @@
 ## 導入と参考資料
 
 ```kotlin
-import com.sorrowblue.twitlin.TwitterAPI
-import com.sorrowblue.twitlin.authentication.AccessToken
-import com.sorrowblue.twitlin.initializeTwitlin
-
-fun main() {
-    initializeTwitlin(
-        API_KEY,
-        API_KEY_SECRET,
-        AccessToken(OAUTH_TOKEN, OAUTH_TOKEN_SECRET, "", "")
-    )
-    runBlocking {
-        TwitterAPI.statuses.homeTimeline()
-            .onSuccess { tweets ->
-                // タイムラインのツイートを出力します。
-                tweets.forEach { println(it) }
-            }
-            .onError { errors ->
-                // ネットワーク・クライアント・リクエストのエラーを出力します。
-                errors.forEach { println(it) }
-            }
-    }
-}
 ```
 
 > [ここ](https://twitlin.sorrowblue.com/docs) で完全なドキュメントを入手できます。
@@ -62,10 +40,6 @@ repositories {
             password = System.getenv("GITHUB_YOUR_PACKAGES_TOKEN")
         }
     }
-    // Twltlinが使用しているkotlinx.datetimeライブラリのために
-    // kotlinx bintrayリポジトリを追加する必要があります。
-    // まもなくjcenterになります。
-    maven(url = "https://kotlin.bintray.com/kotlinx/")
 }
 
 dependencies {
