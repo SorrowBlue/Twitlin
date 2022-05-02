@@ -7,12 +7,12 @@ plugins {
     alias(libs.plugins.benmanes.versions)
     alias(libs.plugins.nexus.publish)
     alias(libs.plugins.ajoberstar.grgit)
-    kotlin("multiplatform") version "1.6.20-RC" apply false
-    id("com.android.application") version "7.0.4" apply false
-    id("com.android.library") version "7.0.4" apply false
-    kotlin("plugin.serialization") version "1.6.20-RC"
-    id("org.jetbrains.dokka") version "1.6.10"
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
+    kotlin("multiplatform") version libs.versions.kotlin.get() apply false
+    kotlin("plugin.serialization") version libs.versions.kotlin.get()
+    id("com.android.application") version libs.versions.android.gradle.get() apply false
+    id("com.android.library") version libs.versions.android.gradle.get() apply false
+    id("org.jlleitschuh.gradle.ktlint") version libs.versions.ktlint.get() apply false
+    id("org.jetbrains.dokka") version libs.versions.dokka.get()
 }
 
 group = "com.sorrowblue.twitlin"

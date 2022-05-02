@@ -1,12 +1,14 @@
 [versions]
-kotlin = "1.6.10"
-ktor = "1.6.7"
+kotlin = "1.6.21"
+android-gradle = "7.0.4"
+dokka = "1.6.21"
+ktlint = "10.2.1"
+ktor = "2.0.1"
 android-buildToolsVersion = "32.0.0"
 android-minSdkVersion = "23"
 android-targetSdkVersion = "31"
-
+kotest = "5.3.0"
 [libraries]
-android-gradle = "com.android.tools.build:gradle:7.0.4"
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 androidx-security-crypto = "androidx.security:security-crypto:1.1.0-alpha03"
 
@@ -18,10 +20,20 @@ kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.2"
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-client-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
-ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
+kotest-framework-datatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+
+
+selenium = "org.seleniumhq.selenium:selenium-java:4.1.4"
 jsoup = "org.jsoup:jsoup:1.14.3"
 logback-classic = "ch.qos.logback:logback-classic:1.2.11"
 

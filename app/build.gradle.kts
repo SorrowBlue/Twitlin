@@ -23,8 +23,8 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         gradleLocalProperties(rootDir).forEach { any, any2 ->
-            if (any.toString().indexOf('.') == -1) {
-                buildConfigField("String", "$any", "\"$any2\"")
+            if (any.toString().startsWith("BuildKonfig.")) {
+                buildConfigField("String", any.toString().replace("BuildKonfig.", ""), "\"$any2\"")
             }
         }
     }
@@ -50,9 +50,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":twitlin"))
-    implementation(kotlin("stdlib-jdk8", "1.6.10"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+    implementation(project(":library"))
+    implementation(kotlin("stdlib-jdk8", "1.6.21"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.activity:activity-ktx:1.4.0")
     implementation("androidx.appcompat:appcompat:1.4.1")
@@ -62,9 +62,9 @@ dependencies {
     implementation("androidx.webkit:webkit:1.4.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("io.coil-kt:coil:1.4.0")
-    implementation("io.insert-koin:koin-android:3.1.5")
-    testImplementation("org.seleniumhq.selenium:selenium-java:4.1.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
+    implementation("io.insert-koin:koin-android:3.1.6")
+    testImplementation(libs.selenium)
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")

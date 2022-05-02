@@ -12,7 +12,7 @@ import org.junit.Test
 
 class SampleTest {
 
-    @Test
+    
     fun userTest() {
         val data = User(UserId("513546515448"), "name", "username")
         Log.d(javaClass.simpleName, "data: ${saveToAndRestoreFromParcel(data)}")

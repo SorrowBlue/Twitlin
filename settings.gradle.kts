@@ -20,6 +20,7 @@ pluginManagement {
 }
 
 enableFeaturePreview("VERSION_CATALOGS")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
@@ -33,7 +34,7 @@ dependencyResolutionManagement {
 rootProject.name = "Twitlin"
 
 include(":app")
-include(":twitlin")
-include(":twitlin:core")
-include(":twitlin:api")
-include(":twitlin:api-v2")
+include(":library")
+include(":library:core")
+include(":library:api")
+include(":library:api-v2")

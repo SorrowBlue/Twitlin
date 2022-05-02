@@ -1,6 +1,5 @@
 package com.sorrowblue.twitlin.androidsample
 
-import com.sorrowblue.twitlin.core.CoreApiGetter
 import com.sorrowblue.twitlin.core.client.ConsumerKeys
 import com.sorrowblue.twitlin.core.client.Oauth1aClient
 import java.io.File
@@ -39,8 +38,8 @@ class SeleniumSample {
         driver.quit()
     }
 
-    @Test
-    fun test_sample() {
+    
+    test("_sample") {
         runTest {
             val oauthApi = CoreApiGetter.oAuthApi(Oauth1aClient(consumerKeys, null))
             var token = ""
