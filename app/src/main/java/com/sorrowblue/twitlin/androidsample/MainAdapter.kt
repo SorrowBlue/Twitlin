@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.sorrowblue.twitlin.androidsample.databinding.RecyclerViewItemBinding
-import com.sorrowblue.twitlin.v2.objects.Tweet
-import com.sorrowblue.twitlin.v2.objects.User
-import kotlin.properties.Delegates
+import com.sorrowblue.twitlin.api.v2.objects.Tweet
+import com.sorrowblue.twitlin.api.v2.objects.User
 
 typealias TweetObject = Pair<Tweet, User>
 
@@ -37,7 +36,7 @@ class MainAdapter : ListAdapter<TweetObject, MainAdapter.ViewHolder>(object : Di
         fun bind(tweetObject: TweetObject) {
             binding.textView.text = tweetObject.first.text
             binding.name.text = tweetObject.second.name
-            binding.createdAt.text = tweetObject.first._createdAt
+            binding.createdAt.text = tweetObject.first.createdAt.toString()
             binding.username.text =
                 binding.root.resources.getString(R.string.username, tweetObject.second.username)
             binding.imageView.load(tweetObject.second.profileImageUrl)

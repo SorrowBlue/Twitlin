@@ -4,22 +4,15 @@ import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
-import com.sorrowblue.twitlin.objects.UserId
-import com.sorrowblue.twitlin.v2.objects.User
+import com.sorrowblue.twitlin.api.v2.objects.User
+import com.sorrowblue.twitlin.core.objects.UserId
 import java.io.Serializable
 import kotlinx.parcelize.Parcelize
 import org.junit.Test
 
-@JvmInline
-@Parcelize
-value class SpecialUuid(val uuid: Int) : Parcelable
-
-@Parcelize
-data class SomeDataClass(val uuid: SpecialUuid) : Parcelable, Serializable
-
 class SampleTest {
 
-    @Test
+    
     fun userTest() {
         val data = User(UserId("513546515448"), "name", "username")
         Log.d(javaClass.simpleName, "data: ${saveToAndRestoreFromParcel(data)}")

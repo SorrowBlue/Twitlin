@@ -3,15 +3,15 @@ package com.sorrowblue.twitlin.androidsample
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.authentication.OAuthApi
-import com.sorrowblue.twitlin.client.Error
-import com.sorrowblue.twitlin.client.Oauth1aClient
-import com.sorrowblue.twitlin.client.Oauth2Client
-import com.sorrowblue.twitlin.v2.field.TweetField
-import com.sorrowblue.twitlin.v2.field.UserField
-import com.sorrowblue.twitlin.v2.tweets.Expansion
-import com.sorrowblue.twitlin.v2.tweets.TweetsApi
+import com.sorrowblue.twitlin.api.TwitlinApi
+import com.sorrowblue.twitlin.api.client.Oauth1aClient
+import com.sorrowblue.twitlin.api.client.Oauth2Client
+import com.sorrowblue.twitlin.api.oauth.OAuthApi
+import com.sorrowblue.twitlin.api.v2.TwitlinApiV2
+import com.sorrowblue.twitlin.api.v2.field.TweetField
+import com.sorrowblue.twitlin.api.v2.field.UserField
+import com.sorrowblue.twitlin.api.v2.tweets.Expansion
+import com.sorrowblue.twitlin.api.v2.tweets.TweetsApi
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 
@@ -23,11 +23,11 @@ interface TwitterRepository {
 class TwitterRepositoryImpl(private val oauth1aClient: Oauth1aClient, private val oauth2Client: Oauth2Client) :
     TwitterRepository {
     override fun oauthApi(): OAuthApi {
-        return Twitlin.getApi(oauth1aClient)
+        return TwitlinApi.getApi<OAuthApi>(oauth1aClient)
     }
 
     override fun tweetsAppApi(): TweetsApi {
-        return Twitlin.getApi(oauth2Client)
+        return TwitlinApiV2.getApi<TweetsApi>(oauth2Client)
     }
 
 }
@@ -36,7 +36,7 @@ class MainViewModel(val repository: TwitterRepository) : ViewModel() {
 
     val adapter = MainAdapter()
 
-    val errorCodes: MutableLiveData<List<Error>> = MutableLiveData()
+    val errorCodes: MutableLiveData<List<com.sorrowblue.twitlin.api.client.Error>> = MutableLiveData()
     val url: MutableLiveData<String> = MutableLiveData()
 
     fun requestAuthUrl() {

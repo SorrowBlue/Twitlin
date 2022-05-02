@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.sorrowblue.twitlin.androidsample.databinding.ActivityMainBinding
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class MainActivity : AppCompatActivity() {

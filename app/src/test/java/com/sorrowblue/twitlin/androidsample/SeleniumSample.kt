@@ -1,10 +1,12 @@
 package com.sorrowblue.twitlin.androidsample
 
-import com.sorrowblue.twitlin.Twitlin
-import com.sorrowblue.twitlin.authentication.OAuthApi
-import com.sorrowblue.twitlin.client.ConsumerKeys
-import com.sorrowblue.twitlin.client.Oauth1aClient
-import kotlinx.coroutines.runBlocking
+import com.sorrowblue.twitlin.core.client.ConsumerKeys
+import com.sorrowblue.twitlin.core.client.Oauth1aClient
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.time.Duration
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -15,12 +17,6 @@ import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.time.Duration
-import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.test.runTest
 
 class SeleniumSample {
     private lateinit var driver: WebDriver
@@ -42,10 +38,10 @@ class SeleniumSample {
         driver.quit()
     }
 
-    @Test
-    fun test_sample() {
+    
+    test("_sample") {
         runTest {
-            val oauthApi = Twitlin.getApi<OAuthApi>(Oauth1aClient(consumerKeys, null))
+            val oauthApi = CoreApiGetter.oAuthApi(Oauth1aClient(consumerKeys, null))
             var token = ""
             val url = oauthApi.requestToken("oob").dataOrNull()?.let {
                 token = it.oauthToken
